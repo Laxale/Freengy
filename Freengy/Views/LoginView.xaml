@@ -1,0 +1,108 @@
+﻿<catel:UserControl x:Class="Freengy.UI.Views.LoginView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                      
+                   xmlns:prism="http://prismlibrary.com/" 
+                   xmlns:catel="http://catel.codeplex.com"
+             
+                   xmlns:local="clr-namespace:Freengy"
+                   xmlns:basehelpers="clr-namespace:Prm.UI.Base.Helpers;assembly=Prm.UI.Base"
+                   xmlns:basexamlresources="clr-namespace:Prm.UI.Base.XamlResources;assembly=Prm.UI.Base"
+             
+                   Margin="60, 0, 60, 0"
+                   mc:Ignorable="d" d:DesignWidth="300" 
+             
+                   d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
+    <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
+
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="LoginWaitTemplate">
+                <StackPanel>
+                    <TextBlock Text="Connecting"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Caption" FontSize="16" Background="LightBlue" Padding="4" Visibility="Collapsed"/>
+
+        <basexamlresources:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
+            <Grid VerticalAlignment="Center">
+                <Grid.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
+                        <Setter Property="MaxLength" Value="100"/>
+
+
+                        <Style.Triggers>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="ToolTip" 
+                                        Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static base:Resources.HostNameText}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static base:Resources.UserNameText}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static base:Resources.PasswordText}"/>
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0" IsEnabled="{Binding Path=IsDebug}" 
+                             Text="{Binding HostName, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Column="1" Text="{x:Static base:Resources.PortText}"/>
+
+                    <TextBox Grid.Column="2" MaxWidth="60" MinWidth="60" MaxLength="5"
+                             Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+
+                <TextBox Grid.Row="1" Grid.Column="1" 
+                     Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <PasswordBox Grid.Row="2" Grid.Column="1" 
+                             Margin="{StaticResource All4Margin}"
+                             basehelpers:PasswordBoxBinder.BindPassword="True"
+                             basehelpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
+                                                                                   NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DockPanel Grid.Row="3" Grid.Column="1">
+                    <CheckBox DockPanel.Dock="Left" Content="{x:Static base:Resources.SavePasswordText}" 
+                              Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
+
+                    <Button DockPanel.Dock="Right" Content="Log in" Padding="0, -2, 0, 2" HorizontalAlignment="Right" IsDefault="True" Command="{Binding Path=LoginCommand}"/>
+                </DockPanel>
+            </Grid>
+        </basexamlresources:WaitableDecorator>
+
+        <TextBlock Grid.Row="2" VerticalAlignment="Bottom" Foreground="Crimson" Margin="10, 10" TextWrapping="Wrap"
+                   Text="{Binding Path=Information, Mode=OneWay}" 
+                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
+    </Grid>
+</catel:UserControl>
