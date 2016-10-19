@@ -10,11 +10,12 @@
                    xmlns:local="clr-namespace:Freengy"
                    xmlns:basehelpers="clr-namespace:Prm.UI.Base.Helpers;assembly=Prm.UI.Base"
                    xmlns:basexamlresources="clr-namespace:Prm.UI.Base.XamlResources;assembly=Prm.UI.Base"
-             
+                   xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
              
-                   d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
+                   d:DataContext="{d:DesignInstance Type=viewModels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
     <Grid>
