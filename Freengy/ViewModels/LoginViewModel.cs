@@ -9,29 +9,34 @@ namespace Freengy.UI.ViewModels
     using System.Text;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    
+    using System.Security.Cryptography;
+
+    using Freengy.Base.Extensions;
+    using Freengy.Networking.Interfaces;
+
     using Catel.IoC;
     using Catel.Data;
     using Catel.MVVM;
     using Catel.Services;
 
     using Prism.Regions;
+    
+    using CommonRes = CommonResources.StringResources;
 
     
     public class LoginViewModel : Base.ViewModels.WaitableViewModel, INavigationAware 
     {
         #region Variables
 
-        private readonly LoginLogicHolder loginLogicHolder;
-
         public readonly IPleaseWaitService waiter;
-
+        private readonly ILoginController loginController;
+        
         #endregion Variables
 
 
         public LoginViewModel() : base(true) 
         {
-            this.loginLogicHolder = new LoginLogicHolder(this);
+            this.loginController = new LoginLogicHolder(this);
             this.waiter = this.serviceLocator.ResolveType<IPleaseWaitService>();
         }
 
@@ -138,7 +143,7 @@ namespace Freengy.UI.ViewModels
             this.LoginCommand = new Command(() => this.loginLogicHolder.WrapLoginAction(true), this.loginLogicHolder.CanLogin);
         }
 
-        protected override async Task InitializeAsync()
+        protected override async Task InitializeAsync() 
         {
             await base.InitializeAsync();
         }
@@ -150,7 +155,7 @@ namespace Freengy.UI.ViewModels
             this.Information = information;
         }
 
-        protected override void InitializationContinuator(Task parentTask)
+        protected override void InitializationContinuator(Task parentTask) 
         {
             base.InitializationContinuator(parentTask);
 
@@ -160,8 +165,8 @@ namespace Freengy.UI.ViewModels
             }
             else
             {
-                ((Action)this.LoadCredsFromSettings)
-                    .ExecuteWithExceptionWrap(exception => this.ReportMessage(exception.GetReallyRootException().Message));
+//                ((Action)this.LoadCredsFromSettings)
+//                    .ExecuteWithExceptionWrap(exception => this.ReportMessage(exception.GetReallyRootException().Message));
             }
         }
 
@@ -173,8 +178,8 @@ namespace Freengy.UI.ViewModels
             {
                 validationResults.Add
                 (
-                    //new FieldValidationResult(HostNameProperty, ValidationResultType.Error, BaseResorces.ValueCannotBeEmptyFormat, BaseResorces.HostNameText)
-                    FieldValidationResult.CreateError(HostNameProperty, BaseResorces.ValueCannotBeEmptyFormat, BaseResorces.HostNameText)
+                    //new FieldValidationResult(HostNameProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.HostNameText)
+                    FieldValidationResult.CreateError(HostNameProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.HostNameText)
                 );
             }
 
@@ -182,7 +187,7 @@ namespace Freengy.UI.ViewModels
             {
                 validationResults.Add
                 (
-                    new FieldValidationResult(UserNameProperty, ValidationResultType.Error, BaseResorces.ValueCannotBeEmptyFormat, BaseResorces.UserNameText)
+                    new FieldValidationResult(UserNameProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText)
                 );
             }
 
@@ -190,7 +195,7 @@ namespace Freengy.UI.ViewModels
             {
                 validationResults.Add
                 (
-                    new FieldValidationResult(PasswordProperty, ValidationResultType.Error, BaseResorces.ValueCannotBeEmptyFormat, BaseResorces.PasswordText)
+                    new FieldValidationResult(PasswordProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
                 );
             }
 
@@ -198,7 +203,7 @@ namespace Freengy.UI.ViewModels
             {
                 validationResults.Add
                 (
-                    new FieldValidationResult(PortProperty, ValidationResultType.Error, BaseResorces.ValueCannotBeEmptyFormat, BaseResorces.PasswordText)
+                    new FieldValidationResult(PortProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
                 );
             }
         }
@@ -208,7 +213,7 @@ namespace Freengy.UI.ViewModels
 
         #region Privates
 
-        private void LoadCredsFromSettings()
+        private void LoadCredsFromSettings() 
         {
             var settings = AppSettings.Instance;
 
@@ -221,7 +226,7 @@ namespace Freengy.UI.ViewModels
             //            this.HostName = @"w610sstd64en-55";
             //            this.UserName = @"w610sstd64en-55\Debugger";
             this.Password = "Qwerty123";
-            return;
+//            return;
 
             this.SavePassword = settings.SavePassword;
 
@@ -237,7 +242,7 @@ namespace Freengy.UI.ViewModels
                 {
                     this.Password = string.Empty;
 
-                    this.ReportMessage(BaseResorces.FailedToDecryptPasswordError);
+//                    this.ReportMessage(CommonRes.FailedToDecryptPasswordError);
                 }
             }
         }

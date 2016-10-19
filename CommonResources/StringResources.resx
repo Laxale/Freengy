@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HostNameText" xml:space="preserve">
+    <value>Hostname</value>
+  </data>
+  <data name="PasswordText" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="ProjectName" xml:space="preserve">
     <value>Freengy</value>
+  </data>
+  <data name="UserNameText" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ValueCannotBeEmptyFormat" xml:space="preserve">
+    <value>'{0}' cannot be empty</value>
   </data>
 </root>
