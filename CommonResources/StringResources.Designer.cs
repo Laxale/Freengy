@@ -88,6 +88,15 @@ namespace CommonResources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Save password.
+        /// </summary>
+        public static string SavePasswordText {
+            get {
+                return ResourceManager.GetString("SavePasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Username.
         /// </summary>
         public static string UserNameText {

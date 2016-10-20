@@ -11,8 +11,11 @@ namespace Freengy.UI.ViewModels
     using System.Collections.Generic;
     using System.Security.Cryptography;
 
+    using Freengy.Base.Settings;
     using Freengy.Base.Extensions;
+    using Freengy.Base.ViewModels;
     using Freengy.Networking.Interfaces;
+    using Freengy.Networking.DefaultImpl;
 
     using Catel.IoC;
     using Catel.Data;
@@ -24,7 +27,7 @@ namespace Freengy.UI.ViewModels
     using CommonRes = CommonResources.StringResources;
 
     
-    public class LoginViewModel : Base.ViewModels.WaitableViewModel, INavigationAware 
+    public class LoginViewModel : WaitableViewModel, INavigationAware 
     {
         #region Variables
 
@@ -36,7 +39,7 @@ namespace Freengy.UI.ViewModels
 
         public LoginViewModel() : base(true) 
         {
-            this.loginController = new LoginLogicHolder(this);
+            this.loginController = new LoginController();
             this.waiter = this.serviceLocator.ResolveType<IPleaseWaitService>();
         }
 
@@ -112,14 +115,14 @@ namespace Freengy.UI.ViewModels
         }
 
 
-        public string Information
+        public string Information 
         {
             get { return (string)this.GetValue(InformationProperty); }
 
             private set { this.SetValue(InformationProperty, value); }
         }
 
-        public bool HasInformation
+        public bool HasInformation 
         {
             get { return (bool)GetValue(HasInformationProperty); }
 
@@ -140,7 +143,7 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.LoginCommand = new Command(() => this.loginLogicHolder.WrapLoginAction(true), this.loginLogicHolder.CanLogin);
+            this.LoginCommand = new Command(() => this.loginController.LogIn(), LoginViewModel.CanLogIn);
         }
 
         protected override async Task InitializeAsync() 
@@ -245,6 +248,11 @@ namespace Freengy.UI.ViewModels
 //                    this.ReportMessage(CommonRes.FailedToDecryptPasswordError);
                 }
             }
+        }
+
+        private static bool CanLogIn() 
+        {
+            return true;
         }
 
         #endregion Privates

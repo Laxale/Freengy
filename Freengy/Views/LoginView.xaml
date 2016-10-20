@@ -8,10 +8,11 @@
                    xmlns:catel="http://catel.codeplex.com"
              
                    xmlns:local="clr-namespace:Freengy"
-                   xmlns:basehelpers="clr-namespace:Prm.UI.Base.Helpers;assembly=Prm.UI.Base"
-                   xmlns:basexamlresources="clr-namespace:Prm.UI.Base.XamlResources;assembly=Prm.UI.Base"
+                   xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
-
+                   xmlns:commonres="clr-namespace:CommonResources;assembly=CommonResources"
+                   xmlns:basexamlresources="clr-namespace:CommonResources.XamlResources;assembly=CommonResources"
+                   
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
              
@@ -20,11 +21,17 @@
 
     <Grid>
         <Grid.Resources>
-            <DataTemplate x:Key="LoginWaitTemplate">
-                <StackPanel>
-                    <TextBlock Text="Connecting"/>
-                </StackPanel>
-            </DataTemplate>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <basexamlresources:CommonXamlResources/>
+                </ResourceDictionary.MergedDictionaries>
+                
+                <DataTemplate x:Key="LoginWaitTemplate">
+                    <StackPanel>
+                        <TextBlock Text="Connecting"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ResourceDictionary>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -38,9 +45,8 @@
         <basexamlresources:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
             <Grid VerticalAlignment="Center">
                 <Grid.Resources>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
+                    <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}" x:Key="LoginTextBoxStyle">
                         <Setter Property="MaxLength" Value="100"/>
-
 
                         <Style.Triggers>
                             <Trigger Property="Validation.HasError" Value="True">
@@ -63,9 +69,9 @@
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static base:Resources.HostNameText}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static base:Resources.UserNameText}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static base:Resources.PasswordText}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.HostNameText}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
 
                 <Grid Grid.Row="0" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -74,30 +80,32 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0" IsEnabled="{Binding Path=IsDebug}" 
+                    <TextBox Grid.Column="0" IsEnabled="{Binding Path=IsDebug}" Style="{StaticResource LoginTextBoxStyle}"
                              Text="{Binding HostName, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Grid.Column="1" Text="{x:Static base:Resources.PortText}"/>
+                    <TextBlock Grid.Column="1" Text="porttt"/>
 
                     <TextBox Grid.Column="2" MaxWidth="60" MinWidth="60" MaxLength="5"
                              Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
 
-                <TextBox Grid.Row="1" Grid.Column="1" 
-                     Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource LoginTextBoxStyle}"
+                         Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <PasswordBox Grid.Row="2" Grid.Column="1" 
                              Margin="{StaticResource All4Margin}"
-                             basehelpers:PasswordBoxBinder.BindPassword="True"
-                             basehelpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
-                                                                                   NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                             helpers:PasswordBoxBinder.BindPassword="True"
+                             helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
+                                                                               NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <DockPanel Grid.Row="3" Grid.Column="1">
-                    <CheckBox DockPanel.Dock="Left" Content="{x:Static base:Resources.SavePasswordText}" 
+                    <CheckBox DockPanel.Dock="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
                               Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
 
-                    <Button DockPanel.Dock="Right" Content="Log in" Padding="0, -2, 0, 2" HorizontalAlignment="Right" IsDefault="True" Command="{Binding Path=LoginCommand}"/>
+                    <Button DockPanel.Dock="Right" Content="Log in"  Margin="{StaticResource All4Margin}"
+                            HorizontalAlignment="Right" MinWidth="{StaticResource MinButtonWidth}"
+                            IsDefault="True" Command="{Binding Path=LoginCommand}"/>
                 </DockPanel>
             </Grid>
         </basexamlresources:WaitableDecorator>

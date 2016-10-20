@@ -126,6 +126,9 @@
   <data name="ProjectName" xml:space="preserve">
     <value>Freengy</value>
   </data>
+  <data name="SavePasswordText" xml:space="preserve">
+    <value>Save password</value>
+  </data>
   <data name="UserNameText" xml:space="preserve">
     <value>Username</value>
   </data>
