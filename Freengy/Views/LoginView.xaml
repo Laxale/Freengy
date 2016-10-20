@@ -89,7 +89,6 @@
                              Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
-
                 <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource LoginTextBoxStyle}"
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -113,5 +112,7 @@
         <TextBlock Grid.Row="2" VerticalAlignment="Bottom" Foreground="Crimson" Margin="10, 10" TextWrapping="Wrap"
                    Text="{Binding Path=Information, Mode=OneWay}" 
                    Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <!-- TODO fix visibility - move converter or use standard one here or wut?  -->
+        
     </Grid>
 </catel:UserControl>

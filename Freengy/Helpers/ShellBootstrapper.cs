@@ -20,6 +20,8 @@ namespace Freengy.UI.Helpers
     using Prism.Regions;
     using Prism.Modularity;
 
+    using Microsoft.Practices.Unity;
+
 
     public class ShellBootstrapper : UnityBootstrapper 
     {
@@ -42,29 +44,38 @@ namespace Freengy.UI.Helpers
 
             return mainWindow;
         }
-        
-//        protected override IModuleCatalog CreateModuleCatalog() 
-//        {
-//            var catalog = new ModuleCatalog();
-//
-////            catalog
-////                .AddModule(typeof(TopRibbonModule))
-////                .AddModule(typeof(PoliciesViewModule))
-////                .AddModule(typeof(ComputersViewModule));
-//
-//            return catalog;
-//        }
 
-//        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
-//        {
-//            var mappings = base.ConfigureRegionAdapterMappings();
-//
-////            mappings.RegisterMapping(typeof(ListBox), base.Container.Resolve<ListBoxAdapter>());
-////            mappings.RegisterMapping(typeof(Ribbon), base.Container.Resolve<RibbonRegionAdapter>());
-////            mappings.RegisterMapping(typeof(RibbonContentPresenter), base.Container.Resolve<RibbonContentPresenterAdapter>());
-////            mappings.RegisterMapping(typeof(RibbonQuickAccessToolBar), base.Container.Resolve<RibbonQuickAccessToolBarAdapter>());
-//
-//            return mappings;
-//        }
+        //        protected override IModuleCatalog CreateModuleCatalog() 
+        //        {
+        //            var catalog = new ModuleCatalog();
+        //
+        ////            catalog
+        ////                .AddModule(typeof(TopRibbonModule))
+        ////                .AddModule(typeof(PoliciesViewModule))
+        ////                .AddModule(typeof(ComputersViewModule));
+        //
+        //            return catalog;
+        //        }
+
+        protected override void ConfigureContainer() 
+        {
+            base.ConfigureContainer();
+
+            base.Container
+                .RegisterType<object, LoginView>(ViewNames.LoginViewName)
+                .RegisterType<object, ShellView>(ViewNames.ShellViewName);
+        }
+
+        //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
+        //        {
+        //            var mappings = base.ConfigureRegionAdapterMappings();
+        //
+        ////            mappings.RegisterMapping(typeof(ListBox), base.Container.Resolve<ListBoxAdapter>());
+        ////            mappings.RegisterMapping(typeof(Ribbon), base.Container.Resolve<RibbonRegionAdapter>());
+        ////            mappings.RegisterMapping(typeof(RibbonContentPresenter), base.Container.Resolve<RibbonContentPresenterAdapter>());
+        ////            mappings.RegisterMapping(typeof(RibbonQuickAccessToolBar), base.Container.Resolve<RibbonQuickAccessToolBarAdapter>());
+        //
+        //            return mappings;
+        //        }
     }
 }
