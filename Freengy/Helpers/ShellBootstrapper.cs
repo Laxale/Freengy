@@ -19,7 +19,7 @@ namespace Freengy.UI.Helpers
     using Prism.Unity;
     using Prism.Regions;
     using Prism.Modularity;
-    
+
 
     public class ShellBootstrapper : UnityBootstrapper 
     {
@@ -31,34 +31,29 @@ namespace Freengy.UI.Helpers
 
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
-            var regionManager = ServiceLocator.Default.ResolveType<IRegionManager>();
+            var regionManager = base.Container.TryResolve<IRegionManager>();
 
             regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
         
-        protected override void ConfigureServiceLocator() 
-        {
-//            throw new NotImplementedException();
-        }
-
         protected override DependencyObject CreateShell() 
         {
             var mainWindow = ServiceLocator.Default.ResolveType<MainWindow>();
 
             return mainWindow;
         }
-
-        protected override IModuleCatalog CreateModuleCatalog() 
-        {
-            var catalog = new ModuleCatalog();
-
-//            catalog
-//                .AddModule(typeof(TopRibbonModule))
-//                .AddModule(typeof(PoliciesViewModule))
-//                .AddModule(typeof(ComputersViewModule));
-
-            return catalog;
-        }
+        
+//        protected override IModuleCatalog CreateModuleCatalog() 
+//        {
+//            var catalog = new ModuleCatalog();
+//
+////            catalog
+////                .AddModule(typeof(TopRibbonModule))
+////                .AddModule(typeof(PoliciesViewModule))
+////                .AddModule(typeof(ComputersViewModule));
+//
+//            return catalog;
+//        }
 
 //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
 //        {

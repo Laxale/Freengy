@@ -11,7 +11,9 @@
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         
         mc:Ignorable="d"
-        Title="{x:Static commonRes:StringResources.ProjectName}" Height="300" Width="300">
+        Title="{x:Static commonRes:StringResources.ProjectName}" 
+        WindowStartupLocation="CenterScreen"
+        Height="300" Width="300">
 
     <Window.Resources>
         <DataTemplate x:Key="WaitTempl">
