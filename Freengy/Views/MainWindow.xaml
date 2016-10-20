@@ -1,0 +1,28 @@
+﻿<Window x:Class="Freengy.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:prism="http://prismlibrary.com/"
+        
+        xmlns:commonRes="clr-namespace:CommonResources;assembly=CommonResources"
+        xmlns:xamlResources="clr-namespace:CommonResources.XamlResources;assembly=CommonResources"
+        xmlns:const="clr-namespace:Freengy.UI.Constants"
+        
+        mc:Ignorable="d"
+        Title="{x:Static commonRes:StringResources.ProjectName}" Height="300" Width="300">
+
+    <Window.Resources>
+        <DataTemplate x:Key="WaitTempl">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="fuuuu"/>
+                <ProgressBar IsIndeterminate="True" Margin="6"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <xamlResources:WaitableDecorator WaitTemplate="{StaticResource WaitTempl}">
+        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
+    </xamlResources:WaitableDecorator>
+</Window>

@@ -38,8 +38,8 @@ namespace Freengy.UI
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
             bootstrapper.Run();         
 
-            serviceLocator.RegisterInstance(ServiceLocator.Default);
-            serviceLocator.RegisterInstance(ServiceLocator.Default.ResolveType<IRegionManager>());
+//            serviceLocator.RegisterInstance(ServiceLocator.Default);
+//            serviceLocator.RegisterInstance(ServiceLocator.Default.ResolveType<IRegionManager>());
 
 //            var controller = typeFactory.CreateInstance<AppController>();
 //            serviceLocator.RegisterInstance(controller);

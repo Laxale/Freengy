@@ -9,38 +9,36 @@ namespace Freengy.UI.Helpers
     using System.Windows;
     using System.Windows.Controls;
 
+    using Freengy.UI.Views;
     using Freengy.UI.Constants;
 
     using Catel.IoC;
     using Catel.Messaging;
 
     using Prism;
+    using Prism.Unity;
     using Prism.Regions;
     using Prism.Modularity;
     
 
-    public class ShellBootstrapper : Bootstrapper 
+    public class ShellBootstrapper : UnityBootstrapper 
     {
         protected override void InitializeShell() 
         {
-            var regionManager = ServiceLocator.Default.ResolveType<IRegionManager>();
-
+            base.InitializeShell();
+            Application.Current.MainWindow = (Window)this.Shell;
             Application.Current.MainWindow.Show();
 
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
+            var regionManager = ServiceLocator.Default.ResolveType<IRegionManager>();
+
             regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
-
-        public override void Run(bool runWithDefaultConfiguration)
-        {
-            // can log here
-//            base.Run();
-        }
-
+        
         protected override void ConfigureServiceLocator() 
         {
-            throw new NotImplementedException();
+//            throw new NotImplementedException();
         }
 
         protected override DependencyObject CreateShell() 
@@ -62,16 +60,16 @@ namespace Freengy.UI.Helpers
             return catalog;
         }
 
-        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
-        {
-            var mappings = base.ConfigureRegionAdapterMappings();
-
-//            mappings.RegisterMapping(typeof(ListBox), base.Container.Resolve<ListBoxAdapter>());
-//            mappings.RegisterMapping(typeof(Ribbon), base.Container.Resolve<RibbonRegionAdapter>());
-//            mappings.RegisterMapping(typeof(RibbonContentPresenter), base.Container.Resolve<RibbonContentPresenterAdapter>());
-//            mappings.RegisterMapping(typeof(RibbonQuickAccessToolBar), base.Container.Resolve<RibbonQuickAccessToolBarAdapter>());
-
-            return mappings;
-        }
+//        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
+//        {
+//            var mappings = base.ConfigureRegionAdapterMappings();
+//
+////            mappings.RegisterMapping(typeof(ListBox), base.Container.Resolve<ListBoxAdapter>());
+////            mappings.RegisterMapping(typeof(Ribbon), base.Container.Resolve<RibbonRegionAdapter>());
+////            mappings.RegisterMapping(typeof(RibbonContentPresenter), base.Container.Resolve<RibbonContentPresenterAdapter>());
+////            mappings.RegisterMapping(typeof(RibbonQuickAccessToolBar), base.Container.Resolve<RibbonQuickAccessToolBarAdapter>());
+//
+//            return mappings;
+//        }
     }
 }
