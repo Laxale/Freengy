@@ -24,6 +24,19 @@
         </DataTemplate>
     </Window.Resources>
 
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0.2, 1" EndPoint="0.5, 1.0">
+            <LinearGradientBrush.Transform>
+                <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
+            </LinearGradientBrush.Transform>
+
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="{StaticResource FirstMainColor}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource SecondMainColor}"/>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+
     <xamlResources:WaitableDecorator WaitTemplate="{StaticResource WaitTempl}">
         <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
     </xamlResources:WaitableDecorator>
