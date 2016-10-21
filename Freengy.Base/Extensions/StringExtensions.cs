@@ -5,13 +5,20 @@
 
 namespace Freengy.Base.Extensions 
 {
-    public static class StringExtensions 
+    public static class StringExtensions
     {
-        public static void FilterNewLineSymbols(this string target) 
-        {
-            if (string.IsNullOrWhiteSpace(target)) return;
+        private static readonly char[] NewLineSymbols = { '\r', '\n' };
 
-            target = target.Replace(System.Environment.NewLine, string.Empty).Replace("\r", string.Empty);
+
+        public static string FilterNewLineSymbols(this string target) 
+        {
+            if (string.IsNullOrWhiteSpace(target)) return target;
+
+            string[] split = target.Split(StringExtensions.NewLineSymbols);
+
+            target = string.Concat(split);
+
+            return target;
         }
     }
 }

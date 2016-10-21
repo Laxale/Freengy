@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Tests 
+namespace Base.Tests 
 {
     internal static class TestAuthors
     {

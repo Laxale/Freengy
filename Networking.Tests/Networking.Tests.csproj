@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40734B7E-3E84-4675-8A6E-9C327C4220C8}</ProjectGuid>
+    <ProjectGuid>{81441A56-AF90-4FAD-89E4-B207BE0FCA54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Freengy.Tests</RootNamespace>
-    <AssemblyName>Freengy.Tests</AssemblyName>
+    <RootNamespace>Networking.Tests</RootNamespace>
+    <AssemblyName>Networking.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=3.0.5813.39035, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -40,26 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\DefaultImpl\TaskWrapper.Tests.cs" />
-    <Compile Include="Base\Extensions\ExceptionExtensions.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestAttributes.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Freengy.Networking.Tests\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
-      <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
-      <Name>Freengy.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Freengy.Networking\Freengy.Networking.csproj">
-      <Project>{b69f33cc-f8a9-42fa-b21b-764ede838179}</Project>
-      <Name>Freengy.Networking</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

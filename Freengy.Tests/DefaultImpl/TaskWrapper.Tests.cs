@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Tests.Base.DefaultImpl 
+namespace Base.Tests.DefaultImpl 
 {
     using System;
     using System.Threading;
@@ -12,7 +12,7 @@ namespace Freengy.Tests.Base.DefaultImpl
     using Freengy.Base.DefaultImpl;
 
     using NUnit.Framework;
-    
+
 
     [TestFixture]
     public class TaskWrapperTests 

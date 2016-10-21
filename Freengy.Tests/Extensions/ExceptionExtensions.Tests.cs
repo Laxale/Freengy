@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Tests.Base.Extensions 
+namespace Base.Tests.Extensions 
 {
     using System;
 

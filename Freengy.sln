@@ -11,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Base", "Freengy.Bas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Networking", "Freengy.Networking\Freengy.Networking.csproj", "{B69F33CC-F8A9-42FA-B21B-764EDE838179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Tests", "Freengy.Tests\Freengy.Tests.csproj", "{40734B7E-3E84-4675-8A6E-9C327C4220C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Tests", "Freengy.Tests\Base.Tests.csproj", "{40734B7E-3E84-4675-8A6E-9C327C4220C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{BB536935-D33E-422B-B22C-9019412411B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.Tests", "Networking.Tests\Networking.Tests.csproj", "{81441A56-AF90-4FAD-89E4-B207BE0FCA54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +43,16 @@ Global
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81441A56-AF90-4FAD-89E4-B207BE0FCA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81441A56-AF90-4FAD-89E4-B207BE0FCA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81441A56-AF90-4FAD-89E4-B207BE0FCA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81441A56-AF90-4FAD-89E4-B207BE0FCA54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40734B7E-3E84-4675-8A6E-9C327C4220C8} = {BB536935-D33E-422B-B22C-9019412411B6}
+		{81441A56-AF90-4FAD-89E4-B207BE0FCA54} = {BB536935-D33E-422B-B22C-9019412411B6}
 	EndGlobalSection
 EndGlobal
