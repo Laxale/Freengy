@@ -39,7 +39,7 @@ namespace Freengy.Base.ViewModels
             // создаёт новый объект, а не возвращает зарегистрированный псевдо-синглетон
             this.taskWrapper = this.serviceLocator.ResolveType<TaskWrapper>();
 
-            this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>(this.serviceLocator);
+            this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
 
             if (initAfterCreate)
             {

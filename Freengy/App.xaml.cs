@@ -5,6 +5,7 @@
 
 namespace Freengy.UI
 {
+    using System;
     using System.Windows;
     
     using Freengy.UI.Helpers;
@@ -36,15 +37,24 @@ namespace Freengy.UI
             var bootstrapper = new ShellBootstrapper();
             // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
-            bootstrapper.Run();         
+            bootstrapper.Run();
 
-//            serviceLocator.RegisterInstance(ServiceLocator.Default);
-//            serviceLocator.RegisterInstance(ServiceLocator.Default.ResolveType<IRegionManager>());
+            //            serviceLocator.RegisterInstance(ServiceLocator.Default);
+            //            serviceLocator.RegisterInstance(ServiceLocator.Default.ResolveType<IRegionManager>());
 
-//            var controller = typeFactory.CreateInstance<AppController>();
-//            serviceLocator.RegisterInstance(controller);
+            //            var controller = typeFactory.CreateInstance<AppController>();
+            //            serviceLocator.RegisterInstance(controller);
 
-//            controller.Register();
+            //            controller.Register();
+
+            Application.Current.MainWindow.Closed += this.OnMainWindowClosed;
+        }
+
+
+        private void OnMainWindowClosed(object sender, EventArgs args) 
+        {
+            // log or whatever
+            this.Shutdown();
         }
     }
 }
