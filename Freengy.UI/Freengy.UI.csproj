@@ -83,6 +83,7 @@
     <Compile Include="Constants\ViewNames.cs" />
     <Compile Include="Helpers\PasswordBoxBinder.cs" />
     <Compile Include="Helpers\ShellBootstrapper.cs" />
+    <Compile Include="Helpers\TypeRegistrator.cs" />
     <Compile Include="Helpers\UiDispatcher.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
@@ -127,7 +128,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />

@@ -1,4 +1,4 @@
-﻿// Created 20.10.2016
+﻿// Created by Laxale 20.10.2016
 //
 //
 
@@ -11,6 +11,8 @@ namespace Freengy.UI.Helpers
 
     using Freengy.UI.Views;
     using Freengy.UI.Constants;
+    using Freengy.Networking.Interfaces;
+    using Freengy.Networking.DefaultImpl;
 
     using Catel.IoC;
     using Catel.Messaging;

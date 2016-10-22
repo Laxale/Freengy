@@ -3,12 +3,12 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                                      
-                   xmlns:prism="http://prismlibrary.com/" 
+                   
                    xmlns:catel="http://catel.codeplex.com"
              
                    xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+                   xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:basexamlresources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
                    
@@ -114,7 +114,7 @@
                     <CheckBox DockPanel.Dock="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
                               Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
 
-                    <Button DockPanel.Dock="Right" Content="Log in"  Margin="{StaticResource All4Margin}"
+                    <Button DockPanel.Dock="Right" Content="{x:Static localprops:Resources.LogInText}" Margin="{StaticResource All4Margin}"
                             HorizontalAlignment="Right" MinWidth="{StaticResource MinButtonWidth}"
                             IsDefault="True" Command="{Binding Path=LoginCommand}"/>
                 </DockPanel>

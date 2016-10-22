@@ -1,4 +1,4 @@
-﻿// Created 19.10.2016
+﻿// Created by Laxale 19.10.2016
 //
 //
 
@@ -37,12 +37,14 @@ namespace Freengy.Base.ViewModels
             this.typeFactory = this.GetTypeFactory();
             // ресолв типа, а не интерфейса ITaskWrapper, так как второй вариант
             // создаёт новый объект, а не возвращает зарегистрированный псевдо-синглетон
+            // TODO убрать реализацию! юзать только интерфейсы
             this.taskWrapper = this.serviceLocator.ResolveType<TaskWrapper>();
 
             this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
 
             if (initAfterCreate)
             {
+                // better init automatically by catel
                 this.taskWrapper.Wrap(async () => await this.InitializeAsync(), this.InitializationContinuator);
             }
         }
@@ -52,7 +54,7 @@ namespace Freengy.Base.ViewModels
 
         #region override
 
-        protected override async System.Threading.Tasks.Task InitializeAsync()
+        protected override async Task InitializeAsync()
         {
             // кател вызывает это сам, если вью вызван через uiVisualizer.ShowDialogAsync(this)
 

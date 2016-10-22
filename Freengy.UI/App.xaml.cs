@@ -1,4 +1,4 @@
-﻿// Created 19.10.2016
+﻿// Created by Laxale 19.10.2016
 //
 //
 
@@ -21,17 +21,19 @@ namespace Freengy.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-//            var splasher = new SplashScreen("Images/splash.jpg");
-//            splasher.Show(true);
+            var splasher = new SplashScreen("Images/splash.jpg");
+            splasher.Show(true);
 
             base.OnStartup(e);
 #if DEBUG
-//            LogManager.AddDebugListener();
+            LogManager.AddDebugListener();
 #endif
             //Catel.Windows.StyleHelper.CreateStyleForwardersForDefaultStyles();
 
 //            var serviceLocator = ServiceLocator.Default;
 //            var typeFactory = this.GetTypeFactory();
+
+            TypeRegistrator.Instance.Register();
 
 //            var bootstrapper = serviceLocator.ResolveType<ShellBootstrapper>();
             var bootstrapper = new ShellBootstrapper();

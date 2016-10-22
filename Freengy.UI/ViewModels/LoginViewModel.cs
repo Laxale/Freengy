@@ -1,4 +1,4 @@
-﻿// Created 19.10.2016
+﻿// Created by Laxale 19.10.2016
 //
 //
 
@@ -31,16 +31,20 @@ namespace Freengy.UI.ViewModels
     {
         #region Variables
 
-        public readonly IPleaseWaitService waiter;
+        private readonly ILoginParameters loginParameters;
+
+        private readonly IPleaseWaitService waiter;
         private readonly ILoginController loginController;
         
         #endregion Variables
 
 
-        public LoginViewModel() : base(true) 
+        public LoginViewModel() : base(true)
         {
-            this.loginController = new LoginController();
-            this.waiter = this.serviceLocator.ResolveType<IPleaseWaitService>();
+            // need to resolve it by interface to avoid knowledge about concrete implementer
+            this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
+            this.loginParameters = base.serviceLocator.ResolveType<ILoginParameters>();
+            this.loginController = base.serviceLocator.ResolveType<ILoginController>();
         }
 
 
@@ -84,7 +88,6 @@ namespace Freengy.UI.ViewModels
 
             set
             {
-                value.FilterNewLineSymbols();
                 SetValue(HostNameProperty, value);
             }
         }
@@ -132,18 +135,28 @@ namespace Freengy.UI.ViewModels
         #endregion Public properties
 
 
-        #region commands
+        #region Commands
 
         public Command LoginCommand { get; private set; }
 
-        #endregion commands
+        #endregion Commands
 
 
         #region Overrides
 
         protected override void SetupCommands() 
         {
-            this.LoginCommand = new Command(() => this.loginController.LogIn(), LoginViewModel.CanLogIn);
+            this.LoginCommand = 
+                new Command
+                (
+                    () =>
+                    {
+                        this.loginController.LogIn(this.loginParameters);
+                        return;
+                    }
+                        , 
+                    this.CanLogIn
+                );
         }
 
         protected override async Task InitializeAsync() 
@@ -250,9 +263,13 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        private static bool CanLogIn() 
+        private bool CanLogIn() 
         {
-            return true;
+            bool canLogin =
+                !string.IsNullOrWhiteSpace(this.UserName) &&
+                !string.IsNullOrWhiteSpace(this.Password);
+
+            return canLogin;
         }
 
         #endregion Privates
