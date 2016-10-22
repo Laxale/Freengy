@@ -52,7 +52,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Caption" FontSize="16" Background="LightBlue" Padding="4" Visibility="Collapsed"/>
+        <TextBlock Grid.Row="0" Text="Caption" FontSize="16" Padding="4" Visibility="Visible"/>
 
         <basexamlresources:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
             <Grid VerticalAlignment="Center">
@@ -78,7 +78,7 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.HostNameText}"/>
@@ -110,21 +110,18 @@
                              helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DockPanel Grid.Row="3" Grid.Column="1">
-                    <CheckBox DockPanel.Dock="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
-                              Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
+                <!-- TODO какого хера кнопка не в любом месте юзерконтрола работает? -->
+                <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=LoginCommand}"
+                        MinWidth="{StaticResource MinButtonWidth}" HorizontalAlignment="Right" IsDefault="True" 
+                        Content="{x:Static localprops:Resources.LogInText}" DockPanel.Dock="Right" Margin="{StaticResource All4Margin}"/>
 
-                    <Button DockPanel.Dock="Right" Content="{x:Static localprops:Resources.LogInText}" Margin="{StaticResource All4Margin}"
-                            HorizontalAlignment="Right" MinWidth="{StaticResource MinButtonWidth}"
-                            IsDefault="True" Command="{Binding Path=LoginCommand}"/>
-                </DockPanel>
+                <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
+                          Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
             </Grid>
         </basexamlresources:WaitableDecorator>
 
         <TextBlock Grid.Row="2" VerticalAlignment="Bottom" Foreground="Crimson" Margin="10, 10" TextWrapping="Wrap"
                    Text="{Binding Path=Information, Mode=OneWay}" 
                    Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <!-- TODO fix visibility - move converter or use standard one here or wut?  -->
-        
     </Grid>
 </catel:UserControl>

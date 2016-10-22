@@ -45,7 +45,7 @@ namespace Freengy.Base.ViewModels
             if (initAfterCreate)
             {
                 // better init automatically by catel
-                this.taskWrapper.Wrap(async () => await this.InitializeAsync(), this.InitializationContinuator);
+//                this.taskWrapper.Wrap(async () => await this.InitializeAsync(), this.InitializationContinuator);
             }
         }
 

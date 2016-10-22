@@ -39,7 +39,7 @@ namespace Freengy.UI.ViewModels
         #endregion Variables
 
 
-        public LoginViewModel() : base(true)
+        public LoginViewModel() : base(true) 
         {
             // need to resolve it by interface to avoid knowledge about concrete implementer
             this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
@@ -86,10 +86,7 @@ namespace Freengy.UI.ViewModels
         {
             get { return (string)GetValue(HostNameProperty); }
 
-            set
-            {
-                SetValue(HostNameProperty, value);
-            }
+            set { SetValue(HostNameProperty, value); }
         }
 
         public string UserName 
@@ -146,22 +143,14 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.LoginCommand = 
-                new Command
-                (
-                    () =>
-                    {
-                        this.loginController.LogIn(this.loginParameters);
-                        return;
-                    }
-                        , 
-                    this.CanLogIn
-                );
+            this.LoginCommand = new Command(() => this.loginController.LogIn(this.loginParameters), this.CanLogIn);
         }
 
         protected override async Task InitializeAsync() 
         {
             await base.InitializeAsync();
+
+            this.LoadCredsFromSettings();
         }
 
         public override void ReportMessage(string information) 
@@ -263,7 +252,7 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        private bool CanLogIn() 
+        public bool CanLogIn() 
         {
             bool canLogin =
                 !string.IsNullOrWhiteSpace(this.UserName) &&

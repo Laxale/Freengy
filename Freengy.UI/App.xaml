@@ -54,6 +54,7 @@
             <Setter Property="Padding"             Value="-2"/>
             <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
             <Setter Property="MinWidth"            Value="{StaticResource MinButtonWidth}"/>
+            <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
             <!--<Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>-->
         </Style>
         <Style TargetType="Button" x:Key="{x:Type Button}" BasedOn="{StaticResource CommonButtonStyle}">
