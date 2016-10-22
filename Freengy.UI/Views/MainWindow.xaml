@@ -6,10 +6,10 @@
         
         xmlns:prism="http://prismlibrary.com/"
         
-        xmlns:commonRes="clr-namespace:CommonResources;assembly=CommonResources"
-        xmlns:xamlResources="clr-namespace:CommonResources.XamlResources;assembly=CommonResources"
+        xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+        xmlns:xamlResources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
         xmlns:const="clr-namespace:Freengy.UI.Constants"
-        
+
         mc:Ignorable="d"
         Title="{x:Static commonRes:StringResources.ProjectName}" 
         WindowStartupLocation="CenterScreen"

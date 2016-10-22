@@ -3,11 +3,11 @@
 //
 
 
-namespace CommonResources.Converters 
+namespace Freengy.CommonResources.Converters 
 {
     using System;
-    using System.Windows.Data;
     using System.Globalization;
+    using System.Windows.Data;
 
 
     public class PropertyNameToBindingConverter : IValueConverter 

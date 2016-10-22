@@ -9,8 +9,8 @@
              
                    xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
-                   xmlns:commonres="clr-namespace:CommonResources;assembly=CommonResources"
-                   xmlns:basexamlresources="clr-namespace:CommonResources.XamlResources;assembly=CommonResources"
+                   xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+                   xmlns:basexamlresources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
                    
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
@@ -35,7 +35,7 @@
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 
                 <DataTemplate x:Key="LoginWaitTemplate">

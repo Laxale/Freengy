@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.UI", "Freengy\Freengy.UI.csproj", "{86F95ABB-14B3-4344-89CD-9491796243E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonResources", "CommonResources\CommonResources.csproj", "{2E1330E3-C913-41C5-8979-13BBE707D2E5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Base", "Freengy.Base\Freengy.Base.csproj", "{AAEFC67F-E1DA-450A-BCA6-B01B0AE862DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Networking", "Freengy.Networking\Freengy.Networking.csproj", "{B69F33CC-F8A9-42FA-B21B-764EDE838179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Tests", "Freengy.Tests\Base.Tests.csproj", "{40734B7E-3E84-4675-8A6E-9C327C4220C8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{BB536935-D33E-422B-B22C-9019412411B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.Tests", "Networking.Tests\Networking.Tests.csproj", "{81441A56-AF90-4FAD-89E4-B207BE0FCA54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.UI", "Freengy.UI\Freengy.UI.csproj", "{86F95ABB-14B3-4344-89CD-9491796243E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.CommonResources", "Freengy.CommonResources\Freengy.CommonResources.csproj", "{2E1330E3-C913-41C5-8979-13BBE707D2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Tests", "Unit\Base.Tests\Base.Tests.csproj", "{40734B7E-3E84-4675-8A6E-9C327C4220C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.Tests", "Unit\Networking.Tests\Networking.Tests.csproj", "{81441A56-AF90-4FAD-89E4-B207BE0FCA54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{86F95ABB-14B3-4344-89CD-9491796243E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86F95ABB-14B3-4344-89CD-9491796243E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86F95ABB-14B3-4344-89CD-9491796243E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86F95ABB-14B3-4344-89CD-9491796243E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AAEFC67F-E1DA-450A-BCA6-B01B0AE862DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AAEFC67F-E1DA-450A-BCA6-B01B0AE862DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAEFC67F-E1DA-450A-BCA6-B01B0AE862DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +31,14 @@ Global
 		{B69F33CC-F8A9-42FA-B21B-764EDE838179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B69F33CC-F8A9-42FA-B21B-764EDE838179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B69F33CC-F8A9-42FA-B21B-764EDE838179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86F95ABB-14B3-4344-89CD-9491796243E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86F95ABB-14B3-4344-89CD-9491796243E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86F95ABB-14B3-4344-89CD-9491796243E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86F95ABB-14B3-4344-89CD-9491796243E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1330E3-C913-41C5-8979-13BBE707D2E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8}.Release|Any CPU.ActiveCfg = Release|Any CPU

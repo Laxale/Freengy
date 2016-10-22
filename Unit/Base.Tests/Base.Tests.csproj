@@ -52,11 +52,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
+    <ProjectReference Include="..\..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Freengy.Networking\Freengy.Networking.csproj">
+    <ProjectReference Include="..\..\Freengy.Networking\Freengy.Networking.csproj">
       <Project>{b69f33cc-f8a9-42fa-b21b-764ede838179}</Project>
       <Name>Freengy.Networking</Name>
     </ProjectReference>

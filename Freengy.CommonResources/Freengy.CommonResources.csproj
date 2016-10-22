@@ -7,8 +7,8 @@
     <ProjectGuid>{2E1330E3-C913-41C5-8979-13BBE707D2E5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonResources</RootNamespace>
-    <AssemblyName>CommonResources</AssemblyName>
+    <RootNamespace>Freengy.CommonResources</RootNamespace>
+    <AssemblyName>Freengy.CommonResources</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

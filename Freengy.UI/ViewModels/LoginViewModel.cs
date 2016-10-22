@@ -24,7 +24,7 @@ namespace Freengy.UI.ViewModels
 
     using Prism.Regions;
     
-    using CommonRes = CommonResources.StringResources;
+    using CommonRes = Freengy.CommonResources.StringResources;
 
     
     public class LoginViewModel : WaitableViewModel, INavigationAware 

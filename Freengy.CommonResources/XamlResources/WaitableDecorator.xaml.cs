@@ -3,7 +3,7 @@
 //
 
 
-namespace CommonResources.XamlResources 
+namespace Freengy.CommonResources.XamlResources 
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -22,8 +22,8 @@ namespace CommonResources.XamlResources
         /// </summary>
         public string IsWaitingPropertyName 
         {
-            get { return (string)this.GetValue(IsWaitingPropertyNameProperty); }
-            set { this.SetValue(IsWaitingPropertyNameProperty, value); }
+            get { return (string)this.GetValue(WaitableDecorator.IsWaitingPropertyNameProperty); }
+            set { this.SetValue(WaitableDecorator.IsWaitingPropertyNameProperty, value); }
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace CommonResources.XamlResources
         /// </summary>
         public System.Windows.DataTemplate WaitTemplate 
         {
-            get { return (System.Windows.DataTemplate)this.GetValue(WaitTemplateProperty); }
-            set { this.SetValue(WaitTemplateProperty, value); }
+            get { return (System.Windows.DataTemplate)this.GetValue(WaitableDecorator.WaitTemplateProperty); }
+            set { this.SetValue(WaitableDecorator.WaitTemplateProperty, value); }
         }
 
 
