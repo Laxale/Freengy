@@ -37,6 +37,11 @@ namespace Freengy.UI.Helpers
 
             var regionManager = base.Container.TryResolve<IRegionManager>();
 
+            ServiceLocator.Default.RegisterInstance(regionManager);
+            ServiceLocator.Default.RegisterInstance(base.Container);
+
+            TypeRegistrator.Instance.Register();
+
             regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
         

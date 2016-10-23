@@ -10,9 +10,10 @@ namespace Freengy.UI.Helpers
     using Catel.IoC;
 
     using Freengy.Base.Interfaces;
+    using Freengy.Base.DefaultImpl;
     using Freengy.Networking.Interfaces;
     using Freengy.Networking.DefaultImpl;
-
+    
 
     public sealed class TypeRegistrator : IRegistrator
     {
@@ -34,9 +35,14 @@ namespace Freengy.UI.Helpers
 
         public void Register() 
         {
-            ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
-            ServiceLocator.Default.RegisterType<ILoginParameters, LoginParameters>(RegistrationType.Transient);
+            ServiceLocator.Default.RegisterInstance(UiNavigator.Instance);
 
+            ServiceLocator.Default.RegisterType<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+            // login controller uses task wrapper, so must register them this order
+            ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
+            
+            ServiceLocator.Default.RegisterType<ILoginParameters, LoginParameters>(RegistrationType.Transient);
+            
             this.IsRegistered = true;
         }
 

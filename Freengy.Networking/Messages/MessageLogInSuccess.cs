@@ -5,13 +5,10 @@
 
 namespace Freengy.Networking.Messages 
 {
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// Says that client has logged in to a server
     /// </summary>
-    public sealed class MessageLoggedIn : MessageBase 
+    public sealed class MessageLogInSuccess : MessageLogInBase 
     {
 
     }

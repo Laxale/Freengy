@@ -43,7 +43,10 @@
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Interfaces\ILoginParameters.cs" />
-    <Compile Include="Messages\MessageLoggedIn.cs" />
+    <Compile Include="Messages\MessageLogInFailed.cs" />
+    <Compile Include="Messages\MessageLogInSuccess.cs" />
+    <Compile Include="Messages\MessageLogInAttempt.cs" />
+    <Compile Include="Messages\MessageLogInBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -43,11 +43,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
+    <Compile Include="Exceptions\FreengyExceptionBase.cs" />
+    <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
+    <Compile Include="Interfaces\IResponsibilityChainer.cs" />
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.UI
+namespace Freengy.UI 
 {
     using System;
     using System.Windows;
@@ -19,7 +19,7 @@ namespace Freengy.UI
 
     public partial class App : Application 
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e) 
         {
             var splasher = new SplashScreen("Images/splash.jpg");
             splasher.Show(true);
@@ -32,18 +32,13 @@ namespace Freengy.UI
 
 //            var serviceLocator = ServiceLocator.Default;
 //            var typeFactory = this.GetTypeFactory();
-
-            TypeRegistrator.Instance.Register();
-
+            
 //            var bootstrapper = serviceLocator.ResolveType<ShellBootstrapper>();
             var bootstrapper = new ShellBootstrapper();
             // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
             bootstrapper.Run();
-
-            //            serviceLocator.RegisterInstance(ServiceLocator.Default);
-            //            serviceLocator.RegisterInstance(ServiceLocator.Default.ResolveType<IRegionManager>());
-
+            
             //            var controller = typeFactory.CreateInstance<AppController>();
             //            serviceLocator.RegisterInstance(controller);
 

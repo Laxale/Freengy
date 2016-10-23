@@ -8,9 +8,12 @@ namespace Freengy.UI.Constants
     using Freengy.UI.Views;
 
 
-    public static class ViewNames 
+    public static class ViewNames
     {
-        public static readonly string LoginViewName = typeof(LoginView).FullName;
-        public static readonly string ShellViewName = typeof(ShellView).FullName;
+        private static string loginViewName;
+        private static string shellViewName;
+        
+        public static string LoginViewName => ViewNames.loginViewName ?? (ViewNames.loginViewName = typeof(LoginView).FullName);
+        public static string ShellViewName => ViewNames.shellViewName ?? (ViewNames.shellViewName = typeof(ShellView).FullName);
     }
 }

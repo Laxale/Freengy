@@ -52,15 +52,13 @@ namespace Freengy.UI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext) 
         {
+            // need to log?
             var t = 0;
             if (t > 0) { }
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) 
         {
-            var t = 0;
-            if (t > 0) { }
-
             return true;
         }
 
@@ -218,6 +216,15 @@ namespace Freengy.UI.ViewModels
 
         #region Privates
 
+        private bool CanLogIn() 
+        {
+            bool canLogin =
+                !string.IsNullOrWhiteSpace(this.UserName) &&
+                !string.IsNullOrWhiteSpace(this.Password);
+
+            return canLogin;
+        }
+
         private void LoadCredsFromSettings() 
         {
             var settings = AppSettings.Instance;
@@ -251,16 +258,7 @@ namespace Freengy.UI.ViewModels
                 }
             }
         }
-
-        public bool CanLogIn() 
-        {
-            bool canLogin =
-                !string.IsNullOrWhiteSpace(this.UserName) &&
-                !string.IsNullOrWhiteSpace(this.Password);
-
-            return canLogin;
-        }
-
+        
         #endregion Privates
 
 
