@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Tests", "Unit\Base.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking.Tests", "Unit\Networking.Tests\Networking.Tests.csproj", "{81441A56-AF90-4FAD-89E4-B207BE0FCA54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Friendlist", "Freengy.Friendlist\Freengy.Friendlist.csproj", "{2403ECA0-3E70-4BFA-B656-AD7EBD45B33B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{DE4E7583-BF82-4E1E-91A2-7D893C62EC32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Friendlist", "Modules\Freengy.Friendlist\Freengy.Friendlist.csproj", "{2403ECA0-3E70-4BFA-B656-AD7EBD45B33B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,5 +62,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{40734B7E-3E84-4675-8A6E-9C327C4220C8} = {BB536935-D33E-422B-B22C-9019412411B6}
 		{81441A56-AF90-4FAD-89E4-B207BE0FCA54} = {BB536935-D33E-422B-B22C-9019412411B6}
+		{2403ECA0-3E70-4BFA-B656-AD7EBD45B33B} = {DE4E7583-BF82-4E1E-91A2-7D893C62EC32}
 	EndGlobalSection
 EndGlobal
