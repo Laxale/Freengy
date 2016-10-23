@@ -5,11 +5,14 @@
 
 namespace Freengy.Base.Interfaces 
 {
+    using System;
+
+
     /// <summary>
-    /// Any piece of UI (module) must expose its root view name to allow shell register this module
+    /// Any piece of UI (module) must expose its root view type to allow shell register this module
     /// </summary>
     public interface IUiModule 
     {
-        string ExportedViewName { get; }
+        Type ExportedViewType { get; }
     }
 }

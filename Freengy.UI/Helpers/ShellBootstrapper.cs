@@ -13,6 +13,7 @@ namespace Freengy.UI.Helpers
     using Freengy.UI.Constants;
     using Freengy.Networking.Interfaces;
     using Freengy.Networking.DefaultImpl;
+    using Freengy.Friendlist.Module;
 
     using Catel.IoC;
     using Catel.Messaging;
@@ -25,8 +26,11 @@ namespace Freengy.UI.Helpers
     using Microsoft.Practices.Unity;
 
 
-    public class ShellBootstrapper : UnityBootstrapper 
+    public class ShellBootstrapper : UnityBootstrapper
     {
+        private IRegionManager regionManager;
+
+
         protected override void InitializeShell() 
         {
             base.InitializeShell();
@@ -35,14 +39,18 @@ namespace Freengy.UI.Helpers
 
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
-            var regionManager = base.Container.TryResolve<IRegionManager>();
+            this.regionManager = base.Container.TryResolve<IRegionManager>();
 
-            ServiceLocator.Default.RegisterInstance(regionManager);
+            this
+                .regionManager
+                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendlistModule.Instance.ExportedViewType);
+
             ServiceLocator.Default.RegisterInstance(base.Container);
+            ServiceLocator.Default.RegisterInstance(this.regionManager);
 
             TypeRegistrator.Instance.Register();
 
-            regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
+            this.regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
         
         protected override DependencyObject CreateShell() 
@@ -52,25 +60,28 @@ namespace Freengy.UI.Helpers
             return mainWindow;
         }
 
-        //        protected override IModuleCatalog CreateModuleCatalog() 
-        //        {
-        //            var catalog = new ModuleCatalog();
-        //
-        ////            catalog
-        ////                .AddModule(typeof(TopRibbonModule))
-        ////                .AddModule(typeof(PoliciesViewModule))
-        ////                .AddModule(typeof(ComputersViewModule));
-        //
-        //            return catalog;
-        //        }
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            var catalog = new ModuleCatalog();
+
+            //            catalog
+            //                .AddModule(typeof(TopRibbonModule))
+            //                .AddModule(typeof(PoliciesViewModule))
+            //                .AddModule(typeof(ComputersViewModule));
+
+            return catalog;
+        }
 
         protected override void ConfigureContainer() 
         {
             base.ConfigureContainer();
 
+            string friendListViewName = FriendlistModule.Instance.ExportedViewType.FullName;
+
             base.Container
                 .RegisterType<object, LoginView>(ViewNames.LoginViewName)
-                .RegisterType<object, ShellView>(ViewNames.ShellViewName);
+                .RegisterType<object, ShellView>(ViewNames.ShellViewName)
+                .RegisterType(typeof(object), FriendlistModule.Instance.ExportedViewType, friendListViewName);
         }
 
         //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 

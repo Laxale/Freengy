@@ -30,6 +30,6 @@
             <Button Content="test butt"/>
         </StackPanel>
 
-        <ListBox Grid.Row="1" Margin="{StaticResource All4Margin}"/>
+        <ListBox Grid.Row="1" />
     </Grid>
 </catel:UserControl>

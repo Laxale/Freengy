@@ -14,9 +14,9 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="180"/>
+            <ColumnDefinition Width="*" MinWidth="180" />
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="180"/>
+            <ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="360"/>
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -27,12 +27,12 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Games list" Margin="4" HorizontalAlignment="Stretch" 
                    TextAlignment="Center" Background="Coral"/>
 
-        <ContentControl Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="{StaticResource All4Margin}" Opacity="0.9"
-                        HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
-
         <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeBehavior="PreviousAndNext"
                       Width="4" Margin="{StaticResource All4Margin}" Background="Gray"/>
-        
+
+        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="{StaticResource All4Margin}" Opacity="0.9"
+                        HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
+
         <Grid Grid.Row="1" Grid.Column="0" Margin="4" Background="SandyBrown" Opacity="0.9">
             <TextBlock Text="Game and chat region" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center"/>
         </Grid>
