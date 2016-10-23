@@ -4,15 +4,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              
-             xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
+             xmlns:prism="http://prismlibrary.com/"
+             
+             xmlns:const="clr-namespace:Freengy.UI.Constants"
+             xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              
              mc:Ignorable="d"
-             Height="350" Width="525">
+             MinWidth="600" MinHeight="400">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto" MinWidth="100"/>
+            <ColumnDefinition Width="*" MinWidth="180"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="180"/>
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -20,12 +24,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Games list" Margin="4" HorizontalAlignment="Stretch" TextAlignment="Center" Background="Coral"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Games list" Margin="4" HorizontalAlignment="Stretch" 
+                   TextAlignment="Center" Background="Coral"/>
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="Friends list" Margin="4" HorizontalAlignment="Stretch" 
-                   TextAlignment="Center" Background="Wheat"/>
+        <ContentControl Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Margin="{StaticResource All4Margin}" Opacity="0.9"
+                        HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
+
+        <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeBehavior="PreviousAndNext"
+                      Width="4" Margin="{StaticResource All4Margin}" Background="Gray"/>
         
-        <Grid Grid.Row="1" Grid.Column="0" Margin="4" Background="SandyBrown">
+        <Grid Grid.Row="1" Grid.Column="0" Margin="4" Background="SandyBrown" Opacity="0.9">
             <TextBlock Text="Game and chat region" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center"/>
         </Grid>
     </Grid>

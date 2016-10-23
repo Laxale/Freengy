@@ -19,19 +19,6 @@
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0.2, 1" EndPoint="0.5, 1.0">
-                <LinearGradientBrush.Transform>
-                    <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
-                </LinearGradientBrush.Transform>
-                
-                <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="{StaticResource FirstMainColor}" Offset="0.5"/>
-                    <GradientStop Color="{StaticResource SecondMainColor}"/>
-                </LinearGradientBrush.GradientStops>
-            </LinearGradientBrush>
-        </Grid.Background>
-        
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

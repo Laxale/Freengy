@@ -3,4 +3,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <Thickness x:Key="StdMargin" Left="2" Top="2"/>
+    <Thickness x:Key="4Left2TopMargin" Left="4" Top="2"/>
+    <Thickness x:Key="4Left4TopMargin" Left="4" Top="4"/>
+    <Thickness x:Key="All4Margin" Left="4" Top="4" Bottom="4" Right="4"/>
 </ResourceDictionary>

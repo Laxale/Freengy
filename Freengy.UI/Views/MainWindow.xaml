@@ -6,13 +6,13 @@
         
         xmlns:prism="http://prismlibrary.com/"
         
+        xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
         xmlns:xamlResources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
-        xmlns:const="clr-namespace:Freengy.UI.Constants"
-
+        
         mc:Ignorable="d"
         Title="{x:Static commonRes:StringResources.ProjectName}" 
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
         MinHeight="300" MinWidth="600" Height="300" Width="600">
 
     <Window.Resources>
@@ -25,16 +25,7 @@
     </Window.Resources>
 
     <Window.Background>
-        <LinearGradientBrush StartPoint="0.2, 1" EndPoint="0.5, 1.0">
-            <LinearGradientBrush.Transform>
-                <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
-            </LinearGradientBrush.Transform>
-
-            <LinearGradientBrush.GradientStops>
-                <GradientStop Color="{StaticResource FirstMainColor}" Offset="0.5"/>
-                <GradientStop Color="{StaticResource SecondMainColor}"/>
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
+        <ImageBrush ImageSource="/Images/ShellBackground.jpg"/>
     </Window.Background>
 
     <xamlResources:WaitableDecorator WaitTemplate="{StaticResource WaitTempl}">

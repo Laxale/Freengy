@@ -87,9 +87,16 @@
     <Compile Include="Helpers\UiDispatcher.cs" />
     <Compile Include="Helpers\UiNavigator.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Views\FriendListView.xaml.cs">
+      <DependentUpon>FriendListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\FriendListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,7 +163,9 @@
       <Name>Freengy.Networking</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\ShellBackground.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\splash.jpg" />
   </ItemGroup>
