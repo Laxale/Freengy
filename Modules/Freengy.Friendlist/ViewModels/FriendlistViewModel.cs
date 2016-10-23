@@ -39,11 +39,7 @@ namespace Freengy.Friendlist.ViewModels
         {
             await base.InitializeAsync();
 
-            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
-            var friendTwo = base.serviceLocator.ResolveType<IUserAccount>();
-
-            this.friendList.Add(friendOne);
-            this.friendList.Add(friendTwo);
+            this.FillFriendList();
 
             this.FriendList = CollectionViewSource.GetDefaultView(this.friendList);
         }
@@ -60,6 +56,17 @@ namespace Freengy.Friendlist.ViewModels
 
         #endregion Commands
 
+
+        #region privates
+
+        private void FillFriendList() 
+        {
+            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
+            var friendTwo = base.serviceLocator.ResolveType<IUserAccount>();
+            
+            this.friendList.Add(friendOne);
+            this.friendList.Add(friendTwo);
+        }
 
         private void AddFriendImpl() 
         {
@@ -80,5 +87,7 @@ namespace Freengy.Friendlist.ViewModels
             // check if friend is not null and exists
             return friendAccount != null;
         }
+
+        #endregion privates
     }
 }

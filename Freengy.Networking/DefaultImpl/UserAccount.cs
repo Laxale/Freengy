@@ -12,6 +12,12 @@ namespace Freengy.Networking.DefaultImpl
 
     public class UserAccount : IUserAccount 
     {
+        public UserAccount() 
+        {
+            this.Name = Guid.NewGuid().ToString();
+        }
+
+
         public Guid Id { get; }
 
         public string Name { get; }

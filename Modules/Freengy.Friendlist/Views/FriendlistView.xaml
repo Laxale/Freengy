@@ -5,16 +5,14 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
                    xmlns:catel="http://catel.codeplex.com" 
-                   xmlns:prism="http://prismlibrary.com/"
                    
                    xmlns:local="clr-namespace:Freengy.Friendlist.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.Friendlist.ViewModels"
+                   xmlns:networkinginterfaces="clr-namespace:Freengy.Networking.Interfaces;assembly=Freengy.Networking"
                    
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300"
-                   d:DataContext="{d:DesignInstance Type=viewmodels:FriendlistViewModel}"
-                   >
-<!--    prism:ViewModelLocator.AutoWireViewModel="True"-->
+                   d:DataContext="{d:DesignInstance Type=viewmodels:FriendlistViewModel}">
     
     <Grid>
         <Grid.Resources>
@@ -35,9 +33,10 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="{StaticResource All4Margin}">
-            <Button Content="Add"/>
+            <Button Content="Add" Command="{Binding Path=CommandAddFriend}"/>
 
-            <Button Content="Remove"/>
+            <Button Content="Remove" Command="{Binding Path=CommandRemoveFriend}" 
+                    CommandParameter="{Binding ElementName=FriendList, Path=SelectedItem}"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -47,7 +46,31 @@
                 </Border.Effect>
             </Border>
 
-            <ListBox Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=FriendList}"/>
+            <ListBox Background="Transparent" Name="FriendList" BorderThickness="0" ItemsSource="{Binding Path=FriendList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type networkinginterfaces:IUserAccount}">
+                        <Grid>
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Chat"/>
+                                    <MenuItem Header="Remove this faggot!"/>
+                                    <Separator/>
+                                    <MenuItem Header="See info"/>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Text="Friend:" Foreground="Gray" FontWeight="DemiBold"/>
+
+                            <TextBlock Grid.Row="1" Text="{Binding Path=Name}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </catel:UserControl>
