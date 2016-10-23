@@ -11,7 +11,7 @@
     <AssemblyName>Freengy.Friendlist</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\Output\</OutputPath>
+    <OutputPath>..\..\output\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
