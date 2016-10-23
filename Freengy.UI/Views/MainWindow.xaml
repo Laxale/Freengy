@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         Title="{x:Static commonRes:StringResources.ProjectName}" 
         WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
-        MinHeight="300" MinWidth="620" Height="300" Width="620"
+        MinHeight="340" MinWidth="630" Height="340" Width="620"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 
     <Window.Resources>

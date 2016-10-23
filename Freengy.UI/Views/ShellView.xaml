@@ -10,14 +10,11 @@
              xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              
              mc:Ignorable="d"
-             MinWidth="600" MinHeight="400">
+             MinWidth="600" MinHeight="300" >
 
     <Grid>
         <Grid.Resources>
-            <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="4"/>
-<!--                <Setter Property="BorderThickness" Value="1"/>-->
-            </Style>
+            <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}"/>
         </Grid.Resources>
         
         <Grid.ColumnDefinitions>

@@ -10,8 +10,14 @@ namespace Freengy.Friendlist.Module
     using Freengy.Base.Interfaces;
     using Freengy.Friendlist.Views;
 
+    using Prism.Modularity;
 
-    public class FriendlistModule : IUiModule 
+    using Catel.IoC;
+
+
+    public class FriendlistModule : IUiModule
+//        , IModule 
+// remove this if no any types to register
     {
         #region Singleton
 
@@ -29,5 +35,11 @@ namespace Freengy.Friendlist.Module
 
         private Type exportedViewType;
         public Type ExportedViewType => this.exportedViewType ?? (this.exportedViewType = typeof (FriendlistView));
+
+
+//        public void Initialize() 
+//        {
+//            ServiceLocator.Default.RegisterType<i>
+//        }
     }
 }

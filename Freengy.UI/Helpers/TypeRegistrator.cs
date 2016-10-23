@@ -11,10 +11,12 @@ namespace Freengy.UI.Helpers
 
     using Freengy.Base.Interfaces;
     using Freengy.Base.DefaultImpl;
-    using Freengy.Networking.Interfaces;
-    using Freengy.Networking.DefaultImpl;
     
 
+    /// <summary>
+    /// Registers interfaces and implementations to service loctor
+    /// TODO: may be move to common IModule implementation?
+    /// </summary>
     public sealed class TypeRegistrator : IRegistrator
     {
         #region Singleton
@@ -38,10 +40,6 @@ namespace Freengy.UI.Helpers
             ServiceLocator.Default.RegisterInstance(UiNavigator.Instance);
 
             ServiceLocator.Default.RegisterType<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
-            // login controller uses task wrapper, so must register them this order
-            ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
-            
-            ServiceLocator.Default.RegisterType<ILoginParameters, LoginParameters>(RegistrationType.Transient);
             
             this.IsRegistered = true;
         }

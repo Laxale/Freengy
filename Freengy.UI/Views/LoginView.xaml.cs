@@ -12,7 +12,7 @@ namespace Freengy.UI.Views
     {
         public LoginView() 
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

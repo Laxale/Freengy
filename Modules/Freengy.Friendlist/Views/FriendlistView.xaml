@@ -5,11 +5,17 @@
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
                    xmlns:catel="http://catel.codeplex.com" 
+                   xmlns:prism="http://prismlibrary.com/"
                    
                    xmlns:local="clr-namespace:Freengy.Friendlist.Views" 
+                   xmlns:viewmodels="clr-namespace:Freengy.Friendlist.ViewModels"
                    
                    mc:Ignorable="d" 
-                   d:DesignHeight="300" d:DesignWidth="300">
+                   d:DesignHeight="300" d:DesignWidth="300"
+                   d:DataContext="{d:DesignInstance Type=viewmodels:FriendlistViewModel}"
+                   >
+<!--    prism:ViewModelLocator.AutoWireViewModel="True"-->
+    
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
@@ -17,6 +23,8 @@
                     <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
+                
+                <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}"/>
             </ResourceDictionary>
         </Grid.Resources>
         
@@ -26,10 +34,20 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="{StaticResource All4Margin}">
-            <Button Content="test butt"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="{StaticResource All4Margin}">
+            <Button Content="Add"/>
+
+            <Button Content="Remove"/>
         </StackPanel>
 
-        <ListBox Grid.Row="1" />
+        <Grid Grid.Row="1">
+            <Border Background="Orange" Opacity="0.5" CornerRadius="4">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" Opacity="0.5" Direction="220"/>
+                </Border.Effect>
+            </Border>
+
+            <ListBox Background="Transparent" BorderThickness="0" ItemsSource="{Binding Path=FriendList}"/>
+        </Grid>
     </Grid>
 </catel:UserControl>

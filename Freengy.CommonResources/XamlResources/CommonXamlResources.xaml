@@ -8,4 +8,9 @@
     <Thickness x:Key="4Left2TopMargin" Left="4" Top="2"/>
     <Thickness x:Key="4Left4TopMargin" Left="4" Top="4"/>
     <Thickness x:Key="All4Margin" Left="4" Top="4" Bottom="4" Right="4"/>
+
+    <Style TargetType="Border" x:Key="CommonBorderStyle">
+        <Setter Property="CornerRadius" Value="4"/>
+        <!--                <Setter Property="BorderThickness" Value="1"/>-->
+    </Style>
 </ResourceDictionary>

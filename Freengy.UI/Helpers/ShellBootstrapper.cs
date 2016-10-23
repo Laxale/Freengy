@@ -11,8 +11,8 @@ namespace Freengy.UI.Helpers
 
     using Freengy.UI.Views;
     using Freengy.UI.Constants;
+    using Freengy.Networking.Module;
     using Freengy.Networking.Interfaces;
-    using Freengy.Networking.DefaultImpl;
     using Freengy.Friendlist.Module;
 
     using Catel.IoC;
@@ -64,10 +64,7 @@ namespace Freengy.UI.Helpers
         {
             var catalog = new ModuleCatalog();
 
-            //            catalog
-            //                .AddModule(typeof(TopRibbonModule))
-            //                .AddModule(typeof(PoliciesViewModule))
-            //                .AddModule(typeof(ComputersViewModule));
+            catalog.AddModule(typeof(NetworkingModule));
 
             return catalog;
         }

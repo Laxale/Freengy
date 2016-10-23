@@ -5,19 +5,80 @@
 
 namespace Freengy.Friendlist.ViewModels 
 {
+    using System;
+    using System.Windows.Data;
+    using System.ComponentModel;
+    using System.Threading.Tasks;
+    using System.Collections.ObjectModel;
+
     using Freengy.Base.ViewModels;
+    using Freengy.Networking.Interfaces;
+    
+    using Catel.IoC;
+    using Catel.MVVM;
 
 
     public class FriendlistViewModel : WaitableViewModel 
     {
-        public FriendlistViewModel(bool initAfterCreate) : base(initAfterCreate) 
-        {
+        private readonly ObservableCollection<IUserAccount> friendList = new ObservableCollection<IUserAccount>();
 
+
+        public FriendlistViewModel() : base(true) 
+        {
+            
         }
+
 
         protected override void SetupCommands() 
         {
-            throw new System.NotImplementedException();
+            this.CommandAddFriend = new Command(this.AddFriendImpl, this.CanAddFriend);
+            this.CommandRemoveFriend = new Command<IUserAccount>(this.RemoveFriendImpl, this.CanRemoveFriend);
+        }
+
+        protected override async Task InitializeAsync() 
+        {
+            await base.InitializeAsync();
+
+            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
+            var friendTwo = base.serviceLocator.ResolveType<IUserAccount>();
+
+            this.friendList.Add(friendOne);
+            this.friendList.Add(friendTwo);
+
+            this.FriendList = CollectionViewSource.GetDefaultView(this.friendList);
+        }
+
+
+        public ICollectionView FriendList { get; private set; }
+
+
+        #region Commands
+
+        public Command CommandAddFriend { get; private set; }
+
+        public Command<IUserAccount> CommandRemoveFriend { get; private set; }
+
+        #endregion Commands
+
+
+        private void AddFriendImpl() 
+        {
+            
+        }
+        private bool CanAddFriend() 
+        {
+            // just a stub
+            return true;
+        }
+
+        private void RemoveFriendImpl(IUserAccount friendAccount) 
+        {
+
+        }
+        private bool CanRemoveFriend(IUserAccount friendAccount) 
+        {
+            // check if friend is not null and exists
+            return friendAccount != null;
         }
     }
 }

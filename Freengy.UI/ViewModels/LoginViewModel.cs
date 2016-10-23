@@ -109,7 +109,7 @@ namespace Freengy.UI.ViewModels
         {
             get { return (bool)GetValue(SavePasswordProperty); }
 
-            private set { SetValue(SavePasswordProperty, value); }
+            set { SetValue(SavePasswordProperty, value); }
         }
 
 

@@ -10,12 +10,7 @@ namespace Freengy.UI
     
     using Freengy.UI.Helpers;
 
-    using Catel.IoC;
-    using Catel.MVVM;
     using Catel.Logging;
-
-    using Prism.Regions;
-
 
     public partial class App : Application 
     {
@@ -28,22 +23,11 @@ namespace Freengy.UI
 #if DEBUG
             LogManager.AddDebugListener();
 #endif
-            //Catel.Windows.StyleHelper.CreateStyleForwardersForDefaultStyles();
-
-//            var serviceLocator = ServiceLocator.Default;
-//            var typeFactory = this.GetTypeFactory();
-            
-//            var bootstrapper = serviceLocator.ResolveType<ShellBootstrapper>();
             var bootstrapper = new ShellBootstrapper();
             // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
             bootstrapper.Run();
             
-            //            var controller = typeFactory.CreateInstance<AppController>();
-            //            serviceLocator.RegisterInstance(controller);
-
-            //            controller.Register();
-
             Application.Current.MainWindow.Closed += this.OnMainWindowClosed;
         }
 
