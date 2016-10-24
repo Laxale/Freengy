@@ -1,16 +1,19 @@
-﻿<UserControl x:Class="Freengy.UI.Views.ShellView" 
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             
-             xmlns:prism="http://prismlibrary.com/"
-             
-             xmlns:const="clr-namespace:Freengy.UI.Constants"
-             xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-             
-             mc:Ignorable="d"
-             MinWidth="600" MinHeight="300" >
+﻿<catel:UserControl x:Class="Freengy.UI.Views.ShellView" 
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   
+                   xmlns:prism="http://prismlibrary.com/" 
+                   xmlns:catel="http://catel.codeplex.com" 
+                   
+                   xmlns:const="clr-namespace:Freengy.UI.Constants" 
+                   xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels" 
+                   xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
+                   
+                   mc:Ignorable="d" 
+                   MinWidth="600" MinHeight="300" 
+                   d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
 
     <Grid>
         <Grid.Resources>
@@ -29,7 +32,65 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Background="Chocolate" Opacity="0.8" Margin="{StaticResource All4Margin}">
-            <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
+
+                <Button Grid.Column="1" MaxWidth="24" MaxHeight="24" Width="24" 
+                        ToolTip="{x:Static commonRes:StringResources.SettingsText}"
+                        Command="{Binding Path=CommandShowSettings}"
+                        Margin="{StaticResource All4Margin}" HorizontalAlignment="Right" Style="{x:Null}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" RenderTransformOrigin="0.5, 0.5"
+                                   MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}" 
+                                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">
+
+                                <Image.RenderTransform>
+                                    <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="Rotator"/>
+                                </Image.RenderTransform>
+
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="MouseDown">
+                                                <EventTrigger.Actions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard 
+                                                            Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)">
+                                                            <DoubleAnimation BeginTime="0" 
+                                                                             AutoReverse="False" From="0" To="360" Duration="0:0:1">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <SineEase EasingMode="EaseInOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+
+                                                    <BeginStoryboard>
+                                                        <Storyboard Storyboard.TargetProperty="Width">
+                                                            <DoubleAnimation BeginTime="0" AutoReverse="True" From="24" To="16" 
+                                                                             Duration="0:0:0.4">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <BounceEase Bounces="1" EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger.Actions>
+                                            </EventTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
         </Border>
         
         <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeBehavior="PreviousAndNext"
@@ -44,4 +105,4 @@
             <TextBlock Text="Game and chat region" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center"/>
         </Grid>
     </Grid>
-</UserControl>
+</catel:UserControl>

@@ -5,14 +5,14 @@
 
 namespace Freengy.UI.Views 
 {
-    using System.Windows.Controls;
+    using CatelControl = Catel.Windows.Controls.UserControl;
 
 
-    public partial class ShellView : UserControl 
+    public partial class ShellView : CatelControl 
     {
-        public ShellView()
+        public ShellView() 
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

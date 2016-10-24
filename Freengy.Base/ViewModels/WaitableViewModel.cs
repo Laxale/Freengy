@@ -35,16 +35,14 @@ namespace Freengy.Base.ViewModels
         protected WaitableViewModel(bool initAfterCreate) 
         {
             this.typeFactory = this.GetTypeFactory();
-            // ресолв типа, а не интерфейса ITaskWrapper, так как второй вариант
-            // создаёт новый объект, а не возвращает зарегистрированный псевдо-синглетон
-            // TODO убрать реализацию! юзать только интерфейсы
-            this.taskWrapper = this.serviceLocator.ResolveType<TaskWrapper>();
+
+            this.taskWrapper = this.serviceLocator.ResolveType<ITaskWrapper>();
 
             this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
 
             if (initAfterCreate)
             {
-                // better init automatically by catel
+                // better init automatically by catel - viewmodel is initialized by catel controls
 //                this.taskWrapper.Wrap(async () => await this.InitializeAsync(), this.InitializationContinuator);
             }
         }
