@@ -128,6 +128,10 @@
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
+      <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
+      <Name>Freengy.GamePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Freengy.Networking\Freengy.Networking.csproj">
       <Project>{b69f33cc-f8a9-42fa-b21b-764ede838179}</Project>
       <Name>Freengy.Networking</Name>
@@ -135,6 +139,10 @@
     <ProjectReference Include="..\Modules\Freengy.Friendlist\Freengy.FriendList.csproj">
       <Project>{2403eca0-3e70-4bfa-b656-ad7ebd45b33b}</Project>
       <Name>Freengy.FriendList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Modules\Freengy.GameList\Freengy.GameList.csproj">
+      <Project>{6663782b-d61c-4f18-9a68-3a0fb7a5016a}</Project>
+      <Name>Freengy.GameList</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

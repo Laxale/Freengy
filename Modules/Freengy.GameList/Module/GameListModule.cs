@@ -11,20 +11,20 @@ namespace Freengy.GameList.Module
     using Freengy.Base.Interfaces;
     
 
-    public class FriendlistModule : IUiModule 
+    public class GameListModule : IUiModule 
 //        , IModule 
 // remove this if no any types to register
     {
         #region Singleton
 
-        private static FriendlistModule instance;
+        private static GameListModule instance;
 
-        private FriendlistModule() 
+        private GameListModule() 
         {
 
         }
 
-        public static FriendlistModule Instance => FriendlistModule.instance ?? (FriendlistModule.instance = new FriendlistModule());
+        public static GameListModule Instance => GameListModule.instance ?? (GameListModule.instance = new GameListModule());
 
         #endregion Singleton
 

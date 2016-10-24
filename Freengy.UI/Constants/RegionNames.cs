@@ -9,6 +9,7 @@ namespace Freengy.UI.Constants
     {
         public const string MainWindowRegion = "MainWindowReggion";
 
+        public const string GameListRegion   = "GameListRegion";
         public const string FriendListRegion = "FriendListRegion";
     }
 }

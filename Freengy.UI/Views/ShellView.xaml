@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Background="Chocolate" Opacity="0.8" Margin="{StaticResource All4Margin}">
-            <TextBlock Text="Games list" Margin="4" HorizontalAlignment="Stretch" TextAlignment="Center" />
+            <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
         </Border>
         
         <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeBehavior="PreviousAndNext"

@@ -12,7 +12,8 @@ namespace Freengy.UI.Helpers
     using Freengy.UI.Views;
     using Freengy.UI.Constants;
     using Freengy.Networking.Module;
-    using Freengy.Networking.Interfaces;
+    using Freengy.GameList.Module;
+    using Freengy.GamePlugin.Module;
     using Freengy.Friendlist.Module;
 
     using Catel.IoC;
@@ -26,7 +27,7 @@ namespace Freengy.UI.Helpers
     using Microsoft.Practices.Unity;
 
 
-    public class ShellBootstrapper : UnityBootstrapper
+    public class ShellBootstrapper : UnityBootstrapper 
     {
         private IRegionManager regionManager;
 
@@ -41,9 +42,7 @@ namespace Freengy.UI.Helpers
 
             this.regionManager = base.Container.TryResolve<IRegionManager>();
 
-            this
-                .regionManager
-                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
+            this.Register();
 
             ServiceLocator.Default.RegisterInstance(base.Container);
             ServiceLocator.Default.RegisterInstance(this.regionManager);
@@ -64,7 +63,8 @@ namespace Freengy.UI.Helpers
         {
             var catalog = new ModuleCatalog();
 
-            catalog.AddModule(typeof(NetworkingModule));
+            catalog.AddModule(typeof(NetworkingModule))
+                   .AddModule(typeof(GamePluginModule));
 
             return catalog;
         }
@@ -92,5 +92,14 @@ namespace Freengy.UI.Helpers
         //
         //            return mappings;
         //        }
+
+
+        private void Register() 
+        {
+            this
+                .regionManager
+                .RegisterViewWithRegion(RegionNames.GameListRegion, GameListModule.Instance.ExportedViewType)
+                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
+        }
     }
 }
