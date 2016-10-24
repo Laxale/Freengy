@@ -18,25 +18,27 @@ namespace Freengy.GameList.ViewModels
     using Catel.IoC;
 
 
-    public class GameListViewModel : WaitableViewModel
+    public class GameListViewModel : WaitableViewModel 
     {
         private readonly IGameListProvider gameListProvider;
         private readonly ObservableCollection<IGamePlugin> gameList = new ObservableCollection<IGamePlugin>();
 
 
-        public GameListViewModel() : base(true)
+        public GameListViewModel() : base(true) 
         {
             this.gameListProvider = base.serviceLocator.ResolveType<IGameListProvider>();
-        }
-
-        protected override void SetupCommands() 
-        {
-            
         }
 
 
         public ICollectionView GameList { get; private set; }
 
+
+        #region Override
+
+        protected override void SetupCommands() 
+        {
+
+        }
 
         protected override async Task InitializeAsync() 
         {
@@ -47,6 +49,8 @@ namespace Freengy.GameList.ViewModels
             this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
         }
 
+        #endregion Override
+        
 
         private void FillGameList() 
         {

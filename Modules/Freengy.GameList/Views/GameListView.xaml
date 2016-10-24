@@ -7,11 +7,33 @@
                    xmlns:catel="http://catel.codeplex.com" 
                    
                    xmlns:local="clr-namespace:Freengy.GameList.Views" 
+                   xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
                    
                    mc:Ignorable="d" 
-                   d:DesignHeight="300" d:DesignWidth="300">
+                   d:DesignHeight="300" d:DesignWidth="300"
+                   d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
     
     <Grid>
-        <TextBlock Text="Game list" FontSize="24"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
     </Grid>
 </catel:UserControl>
