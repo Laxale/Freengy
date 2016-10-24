@@ -10,7 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
 
             <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
             <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
@@ -19,10 +19,7 @@
             <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />
             <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
 
-            <system:Double x:Key="MinButtonWidth">60</system:Double>
-            <system:Double x:Key="MinButtonHeight">20</system:Double>
-            <system:Double x:Key="MinTextBoxWidth">30</system:Double>
-            <system:Double x:Key="MaxButtonHeight">22</system:Double>
+
 
 
             <!-- TextBox -->
@@ -48,19 +45,7 @@
 
             </Style>
 
-            <!-- Button -->
-            <Style TargetType="Button" x:Key="CommonButtonStyle">
-                <Setter Property="UseLayoutRounding"   Value="True"/>
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="Padding"             Value="-2"/>
-                <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
-                <Setter Property="MinWidth"            Value="{StaticResource MinButtonWidth}"/>
-                <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
-                <!--<Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>-->
-            </Style>
-            <Style TargetType="Button" x:Key="{x:Type Button}" BasedOn="{StaticResource CommonButtonStyle}">
 
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

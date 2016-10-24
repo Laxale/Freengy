@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Created by Laxale 24.10.2016
+//
+//
 
-namespace Freengy.UI.Views
+
+namespace Freengy.UI.Views 
 {
-    /// <summary>
-    /// Логика взаимодействия для SettingsView.xaml
-    /// </summary>
-    public partial class SettingsView : UserControl
+    using CatelControl = Catel.Windows.Controls.UserControl;
+
+
+    public partial class SettingsView : CatelControl 
     {
-        public SettingsView()
+        public SettingsView() 
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }
