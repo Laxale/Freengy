@@ -1,33 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\CommonTargets.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6663782B-D61C-4F18-9A68-3A0FB7A5016A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Freengy.GameList</RootNamespace>
     <AssemblyName>Freengy.GameList</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <OutputPath>..\..\output\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">
@@ -60,11 +44,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
+    <ProjectReference Include="..\..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
+    <ProjectReference Include="..\..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
       <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
       <Name>Freengy.GamePlugin</Name>
     </ProjectReference>
