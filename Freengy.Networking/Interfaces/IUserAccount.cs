@@ -7,14 +7,14 @@ namespace Freengy.Networking.Interfaces
 {
     using System;
 
+    using Freengy.Base.Interfaces;
+
 
     /// <summary>
     /// Exposes user 
     /// </summary>
-    public interface IUserAccount 
+    public interface IUserAccount : INamedObject, IObjectWithId 
     {
-        Guid Id { get; }
-
-        string Name { get; }
+        // nothin special for now
     }
 }

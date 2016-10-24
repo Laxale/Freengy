@@ -3,7 +3,6 @@
 //
 
 
-
 namespace Freengy.Friendlist.Views 
 {
     using System.Windows.Controls;
