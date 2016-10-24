@@ -70,7 +70,10 @@ namespace Freengy.Friendlist.ViewModels
 
         private void AddFriendImpl() 
         {
-            
+            // just for testing
+            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
+
+            this.friendList.Add(friendOne);
         }
         private bool CanAddFriend() 
         {
@@ -78,9 +81,11 @@ namespace Freengy.Friendlist.ViewModels
             return true;
         }
 
-        private void RemoveFriendImpl(IUserAccount friendAccount) 
+        private void RemoveFriendImpl(IUserAccount friendAccount)
         {
+            if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
 
+            this.friendList.Remove(friendAccount);
         }
         private bool CanRemoveFriend(IUserAccount friendAccount) 
         {
