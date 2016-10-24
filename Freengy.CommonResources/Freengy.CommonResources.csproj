@@ -10,7 +10,6 @@
     <RootNamespace>Freengy.CommonResources</RootNamespace>
     <AssemblyName>Freengy.CommonResources</AssemblyName>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -51,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AppIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SettingsIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
