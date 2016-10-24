@@ -8,33 +8,33 @@ namespace Freengy.Friendlist.Module
     using System;
 
     using Freengy.Base.Interfaces;
-    using Freengy.Friendlist.Views;
+    using Freengy.FriendList.Views;
 
     using Prism.Modularity;
 
     using Catel.IoC;
 
 
-    public class FriendlistModule : IUiModule
+    public class FriendListModule : IUiModule
 //        , IModule 
 // remove this if no any types to register
     {
         #region Singleton
 
-        private static FriendlistModule instance;
+        private static FriendListModule instance;
 
-        private FriendlistModule() 
+        private FriendListModule() 
         {
 
         }
 
-        public static FriendlistModule Instance => FriendlistModule.instance ?? (FriendlistModule.instance = new FriendlistModule());
+        public static FriendListModule Instance => FriendListModule.instance ?? (FriendListModule.instance = new FriendListModule());
 
         #endregion Singleton
 
 
         private Type exportedViewType;
-        public Type ExportedViewType => this.exportedViewType ?? (this.exportedViewType = typeof (FriendlistView));
+        public Type ExportedViewType => this.exportedViewType ?? (this.exportedViewType = typeof (FriendListView));
 
 
 //        public void Initialize() 

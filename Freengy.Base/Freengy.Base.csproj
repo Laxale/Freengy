@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  
   <Import Project="..\CommonTargets.targets" />
-  
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +10,6 @@
     <RootNamespace>Freengy.Base</RootNamespace>
     <AssemblyName>Freengy.Base</AssemblyName>
   </PropertyGroup>
-    
   <ItemGroup>
     <Reference Include="Catel.Core">
       <HintPath>..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
@@ -20,9 +17,12 @@
     <Reference Include="Catel.MVVM">
       <HintPath>..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -33,6 +33,8 @@
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Interfaces\INamedObject.cs" />
+    <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
     <Compile Include="Interfaces\IResponsibilityChainer.cs" />

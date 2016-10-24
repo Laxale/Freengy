@@ -43,7 +43,7 @@ namespace Freengy.UI.Helpers
 
             this
                 .regionManager
-                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendlistModule.Instance.ExportedViewType);
+                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
 
             ServiceLocator.Default.RegisterInstance(base.Container);
             ServiceLocator.Default.RegisterInstance(this.regionManager);
@@ -73,12 +73,12 @@ namespace Freengy.UI.Helpers
         {
             base.ConfigureContainer();
 
-            string friendListViewName = FriendlistModule.Instance.ExportedViewType.FullName;
+            string friendListViewName = FriendListModule.Instance.ExportedViewType.FullName;
 
             base.Container
                 .RegisterType<object, LoginView>(ViewNames.LoginViewName)
                 .RegisterType<object, ShellView>(ViewNames.ShellViewName)
-                .RegisterType(typeof(object), FriendlistModule.Instance.ExportedViewType, friendListViewName);
+                .RegisterType(typeof(object), FriendListModule.Instance.ExportedViewType, friendListViewName);
         }
 
         //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 

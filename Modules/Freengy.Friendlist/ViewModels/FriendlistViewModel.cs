@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Friendlist.ViewModels 
+namespace Freengy.FriendList.ViewModels 
 {
     using System;
     using System.Windows.Data;
@@ -18,12 +18,12 @@ namespace Freengy.Friendlist.ViewModels
     using Catel.MVVM;
 
 
-    public class FriendlistViewModel : WaitableViewModel 
+    public class FriendListViewModel : WaitableViewModel 
     {
         private readonly ObservableCollection<IUserAccount> friendList = new ObservableCollection<IUserAccount>();
 
 
-        public FriendlistViewModel() : base(true) 
+        public FriendListViewModel() : base(true) 
         {
             
         }

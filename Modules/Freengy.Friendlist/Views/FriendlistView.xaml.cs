@@ -3,18 +3,18 @@
 //
 
 
-namespace Freengy.Friendlist.Views 
+namespace Freengy.FriendList.Views 
 {
     using System.Windows.Controls;
 
-    using Freengy.Friendlist.ViewModels;
+    using Freengy.FriendList.ViewModels;
 
     using CatelControl = Catel.Windows.Controls.UserControl;
 
 
-    public partial class FriendlistView : CatelControl 
+    public partial class FriendListView : CatelControl 
     {
-        public FriendlistView() 
+        public FriendListView() 
         {
             this.InitializeComponent();
         }
@@ -26,7 +26,7 @@ namespace Freengy.Friendlist.Views
 
             if (friendListSender == null) return;
 
-            var friendListViewModel = friendListSender.DataContext as FriendlistViewModel;
+            var friendListViewModel = friendListSender.DataContext as FriendListViewModel;
 
             if (friendListViewModel == null) return;
 

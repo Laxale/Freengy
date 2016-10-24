@@ -15,11 +15,14 @@ namespace Freengy.Networking.DefaultImpl
         public UserAccount() 
         {
             this.Name = Guid.NewGuid().ToString();
+            this.DisplayedName = $"Displayed: { Guid.NewGuid().ToString() }";
         }
 
 
         public Guid Id { get; }
 
         public string Name { get; }
+
+        public string DisplayedName { get; }
     }
 }
