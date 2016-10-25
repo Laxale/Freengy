@@ -8,12 +8,22 @@
                    
                    xmlns:local="clr-namespace:Freengy.GameList.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
+                   xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
                    
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300"
                    d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
     
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary 
+                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -22,17 +32,22 @@
         <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ItemsControl">
-                    <Setter Property="ItemsPanel">
-                        <Setter.Value>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="gameinterfaces:IGamePlugin>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=GameIcon}" Margin="{StaticResource All4Margin}"/>
+
+                        <TextBlock Text="{Binding Path=DisplayedName}" Foreground="BlueViolet" FontWeight="DemiBold"
+                                   Margin="{StaticResource All4Margin}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
         </ListBox>
 
     </Grid>

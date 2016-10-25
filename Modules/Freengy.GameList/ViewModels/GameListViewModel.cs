@@ -44,7 +44,7 @@ namespace Freengy.GameList.ViewModels
         {
             await base.InitializeAsync();
 
-            this.FillGameList();
+            await this.FillGameList();
 
             this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
         }
@@ -52,9 +52,9 @@ namespace Freengy.GameList.ViewModels
         #endregion Override
         
 
-        private void FillGameList() 
+        private async Task FillGameList() 
         {
-            IEnumerable<IGamePlugin> installedGameList = this.gameListProvider.GetInstalledGames();
+            IEnumerable<IGamePlugin> installedGameList = await this.gameListProvider.GetInstalledGamesAsync();
 
             foreach (var installedGame in installedGameList)
             {

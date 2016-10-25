@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Base", "Freengy.Base\Freengy.Base.csproj", "{AAEFC67F-E1DA-450A-BCA6-B01B0AE862DA}"
 EndProject
@@ -29,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.GamePlugin", "Freengy.GamePlugin\Freengy.GamePlugin.csproj", "{35B54274-F354-47EA-BC7C-37119903C093}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.GameList", "Modules\Freengy.GameList\Freengy.GameList.csproj", "{6663782B-D61C-4F18-9A68-3A0FB7A5016A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.SampleGame", "Freengy.SampleGame\Freengy.SampleGame.csproj", "{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,10 @@ Global
 		{6663782B-D61C-4F18-9A68-3A0FB7A5016A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6663782B-D61C-4F18-9A68-3A0FB7A5016A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6663782B-D61C-4F18-9A68-3A0FB7A5016A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
