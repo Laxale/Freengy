@@ -38,6 +38,9 @@
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\DllFileSearchFilter.cs" />
+    <Compile Include="Helpers\ExeFileSearchFilter.cs" />
+    <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
@@ -52,9 +55,7 @@
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

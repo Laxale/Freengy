@@ -3,6 +3,9 @@
 //
 
 
+using Freengy.Base.Helpers;
+
+
 namespace Freengy.Base.DefaultImpl 
 {
     using System;
@@ -36,6 +39,11 @@ namespace Freengy.Base.DefaultImpl
         public IEnumerable<string> GetExecutablesInSubFolder(string subFolderName) 
         {
             return this.GetFilesInSubfolderByFilter(subFolderName, "*.exe");
+        }
+
+        public IEnumerable<string> GetAnyFilesInSubFolder(string subFolderName, FileSearchFilterBase filter) 
+        {
+            return this.GetFilesInSubfolderByFilter(subFolderName, filter?.SearchFilter ?? "*");
         }
 
 
