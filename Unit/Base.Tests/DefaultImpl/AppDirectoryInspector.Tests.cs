@@ -171,8 +171,7 @@ namespace Base.Tests.DefaultImpl
 
             Assert.AreEqual(filesCount, foundFiles.Count());
         }
-
-
+        
 
         private void CreateTestDlls() 
         {
