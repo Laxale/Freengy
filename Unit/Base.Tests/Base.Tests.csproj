@@ -22,6 +22,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultImpl\AppDirectoryInspector.Tests.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.Tests.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.Tests.cs" />
     <Compile Include="Extensions\ExceptionExtensions.Tests.cs" />

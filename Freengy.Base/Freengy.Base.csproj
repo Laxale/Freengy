@@ -31,12 +31,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
