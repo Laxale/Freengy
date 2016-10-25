@@ -37,7 +37,9 @@
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\Common.cs" />
     <Compile Include="Helpers\DllFileSearchFilter.cs" />
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />

@@ -3,21 +3,19 @@
 //
 
 
-using Freengy.GamePlugin.Constants;
-
-
-namespace Freengy.GamePlugin.DefaultImpl
+namespace Freengy.GamePlugin.DefaultImpl 
 {
     using System;
     using System.Collections.Generic;
 
     using Freengy.Base.Interfaces;
+    using Freengy.GamePlugin.Constants;
     using Freengy.GamePlugin.Interfaces;
     
     using Catel.IoC;
 
 
-    public class GameListProvider : IGameListProvider
+    public class GameListProvider : IGameListProvider 
     {
         private readonly IAppDirectoryInspector directoryInspector;
 
