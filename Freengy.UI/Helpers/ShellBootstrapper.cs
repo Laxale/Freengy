@@ -7,12 +7,13 @@ namespace Freengy.UI.Helpers
 {
     using System;
     using System.Windows;
-    using System.Windows.Controls;
-
+    
     using Freengy.UI.Views;
     using Freengy.UI.Constants;
-    using Freengy.Networking.Module;
+
+    using Freengy.Base.Module;
     using Freengy.GameList.Module;
+    using Freengy.Networking.Module;
     using Freengy.GamePlugin.Module;
     using Freengy.Friendlist.Module;
 
@@ -59,11 +60,12 @@ namespace Freengy.UI.Helpers
             return mainWindow;
         }
 
-        protected override IModuleCatalog CreateModuleCatalog()
+        protected override IModuleCatalog CreateModuleCatalog() 
         {
             var catalog = new ModuleCatalog();
 
-            catalog.AddModule(typeof(NetworkingModule))
+            catalog.AddModule(typeof(BaseModule))
+                   .AddModule(typeof(NetworkingModule))
                    .AddModule(typeof(GamePluginModule));
 
             return catalog;

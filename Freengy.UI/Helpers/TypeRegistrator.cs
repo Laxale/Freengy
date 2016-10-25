@@ -38,8 +38,6 @@ namespace Freengy.UI.Helpers
         public void Register() 
         {
             ServiceLocator.Default.RegisterInstance(UiNavigator.Instance);
-
-            ServiceLocator.Default.RegisterType<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
             
             this.IsRegistered = true;
         }
