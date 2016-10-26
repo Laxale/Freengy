@@ -14,6 +14,7 @@ namespace Freengy.GameList.ViewModels
 
     using Freengy.Base.ViewModels;
     using Freengy.GamePlugin.Interfaces;
+    using Freengy.GamePlugin.DefaultImpl;
 
     using Catel.IoC;
 

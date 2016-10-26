@@ -5,16 +5,14 @@
 
 namespace Freengy.GamePlugin.Interfaces 
 {
+    using System;
     using System.Windows.Controls;
 
     using Freengy.Base.Interfaces;
+    
 
-
-    /// <summary>
-    /// Represents pluggable game
-    /// </summary>
-    internal interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
+    public interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
     {
-        Image GameIcon { get; }
+        string GameIconSource { get; }
     }
 }

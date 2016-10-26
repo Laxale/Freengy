@@ -40,7 +40,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="gameinterfaces:IGamePlugin">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=GameIcon}" Margin="{StaticResource All4Margin}"/>
+                        <Image Source="{Binding Path=GameIconSource}" Margin="{StaticResource All4Margin}"/>
 
                         <TextBlock Text="{Binding Path=DisplayedName}" Foreground="BlueViolet" FontWeight="DemiBold"
                                    Margin="{StaticResource All4Margin}"/>

@@ -24,14 +24,12 @@ namespace Freengy.Base.Extensions
         {
             Common.ThrowIfArgumentsHasNull(assembly, targetInterfaceType);
 
-            Type implementingType = assembly.DefinedTypes.FirstOrDefault(definedType => definedType.Implements(targetInterfaceType));
+            Type implementingType = 
+                assembly
+                .DefinedTypes
+                .FirstOrDefault(definedType => definedType.ImplementsInterface(targetInterfaceType));
 
-            if (implementingType == null)
-            {
-                var message = $"Assembly '{ assembly.FullName }' doesnt implement '{ targetInterfaceType.FullName }'";
-
-                throw new Exception(message);
-            }
+            ThrowNotImplementsIfNull(assembly, implementingType, targetInterfaceType);
 
             return implementingType;
         }
@@ -41,14 +39,9 @@ namespace Freengy.Base.Extensions
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             Type interfaceType = typeof (TInterfaceType);
-            Type implementingType = assembly.DefinedTypes.FirstOrDefault(definedType => definedType.Implements(interfaceType));
+            Type implementingType = assembly.DefinedTypes.FirstOrDefault(definedType => definedType.ImplementsInterface(interfaceType));
 
-            if (implementingType == null)
-            {
-                var message = $"Assembly '{assembly.FullName }' doesnt implement '{ interfaceType.FullName }'";
-
-                throw new Exception(message);
-            }
+            ThrowNotImplementsIfNull(assembly, implementingType, interfaceType);
 
             return implementingType;
         }
@@ -59,7 +52,7 @@ namespace Freengy.Base.Extensions
         /// <typeparam name="TInterfaceType">Interface type to check </typeparam>
         /// <param name="type"></param>
         /// <returns>True or false</returns>
-        public static bool Implements<TInterfaceType>(this Type type) 
+        public static bool ImplementsInterface<TInterfaceType>(this Type type) 
         {
             var implementedInterfaces = type.GetInterfaces();
 
@@ -68,13 +61,25 @@ namespace Freengy.Base.Extensions
             return isImplementingType;
         }
 
-        public static bool Implements(this Type type, Type interfaceType) 
+        public static bool ImplementsInterface(this Type type, Type interfaceType)
         {
-            var implementedInterfaces = type.GetInterfaces();
+            if (type == null) throw new ArgumentNullException(nameof(type));
 
+            var implementedInterfaces = type.GetInterfaces();
+            
             bool isImplementingType = implementedInterfaces.Contains(interfaceType);
 
             return isImplementingType;
+        }
+
+        
+        private static void ThrowNotImplementsIfNull(Assembly assembly, Type type, Type targetType) 
+        {
+            if (type != null) return;
+
+            var message = $"Assembly '{ assembly.GetName().Name }' doesnt implement or inherit '{ targetType.FullName }'";
+
+            throw new NotImplementedException(message);
         }
     }
 }

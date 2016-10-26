@@ -121,7 +121,7 @@
     <value>Author forgot to name me :(</value>
   </data>
   <data name="DefaultGameIconSource" xml:space="preserve">
-    <value />
+    <value>pack://application:,,,/Freengy.CommonResources;component/Images/DefaultGameIcon.png</value>
   </data>
   <data name="DefaultGameName" xml:space="preserve">
     <value>Author forgot to display me :(</value>
