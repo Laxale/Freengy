@@ -11,8 +11,7 @@ namespace Freengy.GamePlugin.DefaultImpl
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    using System.Collections.Concurrent;
-
+    
     using Freengy.Base.Interfaces;
     using Freengy.Base.Extensions;
     using Freengy.GamePlugin.Constants;
@@ -26,7 +25,7 @@ namespace Freengy.GamePlugin.DefaultImpl
         public IEnumerable<IGamePlugin> LoadedGamePlugins => base.Values.Select(assemblyKey => assemblyKey.Value);
     }
 
-    public class GameListProvider : IGameListProvider
+    public class GameListProvider : IGameListProvider 
     {
         private static readonly object Locker = new object();
         private readonly ITypeFactory typeFactory;

@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary x:Class="Freengy.CommonResources.XamlResources.CommonXamlResources" 
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converters="clr-namespace:Freengy.CommonResources.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
 
     <Thickness x:Key="StdMargin" Left="2" Top="2"/>
     <Thickness x:Key="4Left2TopMargin" Left="4" Top="2"/>

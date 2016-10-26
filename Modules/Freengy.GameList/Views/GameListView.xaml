@@ -31,9 +31,14 @@
         
         <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}">
+        <TextBlock Grid.Row="1" Text="No games :(" Foreground="Red" FontSize="24"
+                   Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}" 
+                 Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="gameinterfaces:IGamePlugin>
+                <DataTemplate DataType="gameinterfaces:IGamePlugin">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding Path=GameIcon}" Margin="{StaticResource All4Margin}"/>
 
@@ -42,13 +47,12 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-
     </Grid>
 </catel:UserControl>
