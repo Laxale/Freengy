@@ -33,16 +33,28 @@
   <ItemGroup>
     <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="DefaultImpl\GameListProvider.cs" />
+    <Compile Include="DefaultImpl\GamePluginBase.cs" />
     <Compile Include="Interfaces\IGameListProvider.cs" />
     <Compile Include="Interfaces\IGamePlugin.cs" />
     <Compile Include="Module\GamePluginModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

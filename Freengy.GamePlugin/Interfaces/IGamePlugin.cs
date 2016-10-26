@@ -13,7 +13,7 @@ namespace Freengy.GamePlugin.Interfaces
     /// <summary>
     /// Represents pluggable game
     /// </summary>
-    public interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
+    internal interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
     {
         Image GameIcon { get; }
     }
