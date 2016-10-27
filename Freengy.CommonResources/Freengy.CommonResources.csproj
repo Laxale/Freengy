@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="Converters\PropertyNameToBindingConverter.cs" />
     <Compile Include="Converters\ReverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringUriToImageSourceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -56,7 +57,7 @@
     <Resource Include="Images\SettingsIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\DefaultGameIcon.png" />
+    <Resource Include="Images\DefaultGameIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
