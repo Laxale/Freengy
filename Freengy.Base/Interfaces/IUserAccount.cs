@@ -8,7 +8,7 @@ namespace Freengy.Base.Interfaces
     /// <summary>
     /// Exposes user 
     /// </summary>
-    public interface IUserAccount : INamedObject, IObjectWithId 
+    public interface IUserAccount : INamedObject, IObjectWithId
     {
         // nothin special for now
     }

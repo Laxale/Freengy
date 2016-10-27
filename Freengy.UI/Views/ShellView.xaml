@@ -31,7 +31,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Background="Chocolate" Opacity="0.8" Margin="{StaticResource All4Margin}">
+        <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="Chocolate" Offset="0.6"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -40,7 +47,7 @@
                 
                 <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
 
-                <Button Grid.Column="1" MaxWidth="24" MaxHeight="24" Width="24" 
+                <Button Grid.Column="1" MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top"
                         ToolTip="{x:Static commonRes:StringResources.SettingsText}"
                         Command="{Binding Path=CommandShowSettings}"
                         Margin="{StaticResource All4Margin}" HorizontalAlignment="Right" Style="{x:Null}">
@@ -102,7 +109,7 @@
         <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource All4Margin}">
             <Border Background="Gray" Opacity="0.6"/>
 
-            <TextBlock Text="Game and chat region" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+            <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameRegion}"/>
         </Grid>
     </Grid>
 </catel:UserControl>

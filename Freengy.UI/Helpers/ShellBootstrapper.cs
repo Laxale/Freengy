@@ -82,7 +82,8 @@ namespace Freengy.UI.Helpers
             base.Container
                 .RegisterType<object, LoginView>(ViewNames.LoginViewName)
                 .RegisterType<object, ShellView>(ViewNames.ShellViewName)
-                .RegisterType(typeof(object), FriendListModule.Instance.ExportedViewType, friendListViewName);
+//                .RegisterType(typeof(object), FriendListModule.Instance.ExportedViewType, friendListViewName)
+                ;
         }
 
         //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 

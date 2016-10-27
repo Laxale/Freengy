@@ -8,6 +8,7 @@ namespace Freengy.GamePlugin.DefaultImpl
     using System;
     using System.Windows;
 
+    using Freengy.Base.Messages;
     using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Interfaces;
     
@@ -45,6 +46,8 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public bool UnloadCurrentGame() 
         {
+            if (this.CurrentRunningGame == null) return true;
+
             if (MessageBox.Show("Leave current game session?", "Leaving game", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 // some logic
@@ -63,7 +66,9 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             if (!this.UnloadCurrentGame()) return false;
 
-            //add load game logic
+            MessageBase requestGameUiMessage = new MessageRequestGameUi(gamePlugin.ExportedViewType);
+
+            this.messageMediator.SendMessage(requestGameUiMessage);
 
             this.CurrentRunningGame = gamePlugin;
 
@@ -72,7 +77,11 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public bool CanLoadGame(IGamePlugin gamePlugin) 
         {
-            throw new NotImplementedException();
+            if (gamePlugin == null) throw new ArgumentNullException(nameof(gamePlugin));
+
+            bool canLoad = gamePlugin != this.CurrentRunningGame;
+
+            return canLoad;
         }
 
 

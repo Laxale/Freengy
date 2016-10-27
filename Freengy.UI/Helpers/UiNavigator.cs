@@ -13,6 +13,7 @@ namespace Freengy.UI.Helpers
     using Freengy.Base.Exceptions;
     using Freengy.Base.DefaultImpl;
     using Freengy.Networking.Messages;
+    using Freengy.GamePlugin.Messages;
 
     using Prism.Regions;
 
@@ -76,6 +77,7 @@ namespace Freengy.UI.Helpers
             this.requestHandleChain.AddHandler(this.HandleLogInFailedMessage);
             this.requestHandleChain.AddHandler(this.HandleLogInAttemptMessage);
             this.requestHandleChain.AddHandler(this.HandleLogInSuccessMessage);
+            this.requestHandleChain.AddHandler(this.HandleRequestNavigate);
             // default handler is a good thing to catch unknown messages
             this.requestHandleChain.AddHandler(this.DefaultHandler);
         }
@@ -88,6 +90,23 @@ namespace Freengy.UI.Helpers
         private bool DefaultHandler(MessageBase message) 
         {
             // log situation or do smth else
+            return true;
+        }
+
+        private bool HandleRequestNavigate(MessageBase message) 
+        {
+            var requestGameUi = message as MessageRequestGameUi;
+
+            if (requestGameUi == null) return false;
+
+            UiDispatcher.Invoke(() => this.regionManager.RegisterViewWithRegion(RegionNames.GameRegion, requestGameUi.GameUiType));
+
+            string gameViewName = requestGameUi.GameUiType.FullName;
+
+            this.unityContainer.RegisterType(typeof(object), requestGameUi.GameUiType, gameViewName);
+
+            this.Navigate(RegionNames.GameRegion, gameViewName);
+
             return true;
         }
 

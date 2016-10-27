@@ -8,9 +8,10 @@
                    
                    xmlns:local="clr-namespace:Freengy.GameList.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
+                   xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
                    xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
-                   xmlns:gameresources="clr-namespace:Freengy.GamePlugin.XamlResources;assembly=Freengy.GamePlugin"
-                   
+                   xmlns:system="clr-namespace:System;assembly=mscorlib"
+
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300"
                    d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
@@ -38,11 +39,15 @@
         <TextBlock Grid.Row="1" Text="No games :(" Foreground="Red" FontSize="24"
                    Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}"
+        <ListBox Grid.Row="1" Name="GameListBox" ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}" 
                  Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
-
+            
+            <ListBox.Resources>
+                <helpers:DataContextProxy x:Key="ViewModelContextProxy" Data="{Binding}"/>
+            </ListBox.Resources>
+            
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="gameinterfaces:IGamePlugin">
+                <DataTemplate DataType="{x:Type gameinterfaces:IGamePlugin}">
                     <Grid MaxWidth="{StaticResource GameSignMaxSize}">
                         <Grid.Resources>
                             <Style TargetType="Image" x:Key="GameIconStyle">
@@ -50,7 +55,8 @@
                                 <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
                                 <Setter Property="MaxWidth" Value="{StaticResource CommonIconSize}"/>
                                 <Setter Property="MaxHeight" Value="{StaticResource CommonIconSize}"/>
-                                <Setter Property="Source" Value="{Binding Path=GameIconSource, Converter={StaticResource StringUriToImageSourceConverter}}"/>
+                                <Setter Property="Source" 
+                                        Value="{Binding Path=GameIconSource, Converter={StaticResource StringUriToImageSourceConverter}}"/>
                             </Style>
 
                             <Style TargetType="TextBlock" x:Key="NameTextBlockStyle">
@@ -58,6 +64,8 @@
                                 <Setter Property="Foreground" Value="BlueViolet"/>
                                 <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
                             </Style>
+
+                            <helpers:DataContextProxy x:Key="PluginContextProxy" Data="{Binding}"/>
                         </Grid.Resources>
                         
                         <Grid.RowDefinitions>
@@ -77,19 +85,32 @@
                             </StackPanel>
                         </Grid.ToolTip>
 
-                        <Image Grid.Row="0" Style="{StaticResource GameIconStyle}"/>
-
-                        <TextBlock Grid.Row="1" Style="{StaticResource NameTextBlockStyle}" TextTrimming="CharacterEllipsis"
-                                   MaxWidth="{StaticResource GameSignMaxSize}" TextAlignment="Center" Text="{Binding Path=DisplayedName}"/>
-
                         <Grid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Play"/>
+                            <ContextMenu DataContext="{StaticResource PluginContextProxy}">
+                                <!-- Doesnt work through style, pass proxy to each menuitem -->
+                                <MenuItem Header="Play" DataContext="{StaticResource ViewModelContextProxy}"
+                                          Command="{Binding Path=Data.CommandRequestLoadGame}">
+                                    <MenuItem.CommandParameter>
+                                        <Binding Path="DataContext.Data">
+                                            <Binding.RelativeSource>
+                                                <RelativeSource Mode="FindAncestor" AncestorType="{x:Type ContextMenu}"/>
+                                            </Binding.RelativeSource>
+                                        </Binding>
+                                    </MenuItem.CommandParameter>
+                                </MenuItem>
+                                
                                 <MenuItem Header="Invite friend"/>
                                 <Separator/>
                                 <MenuItem Header="Remove"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
+
+                        <Line Name="PluginHolder" Visibility="Visible" />
+                        
+                        <Image Grid.Row="0" Style="{StaticResource GameIconStyle}"/>
+
+                        <TextBlock Grid.Row="1" Style="{StaticResource NameTextBlockStyle}" TextTrimming="CharacterEllipsis"
+                                   MaxWidth="{StaticResource GameSignMaxSize}" TextAlignment="Center" Text="{Binding Path=DisplayedName}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

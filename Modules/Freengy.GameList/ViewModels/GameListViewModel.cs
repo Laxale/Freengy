@@ -60,6 +60,8 @@ namespace Freengy.GameList.ViewModels
             }
 
             this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
+
+            base.RaisePropertyChanged(() => this.GameList);
         }
 
         #endregion Override
@@ -67,7 +69,9 @@ namespace Freengy.GameList.ViewModels
 
         private void CommandRequestLoadGameImpl(IGamePlugin gamePluginToLoad)
         {
-            base.messageMediator.SendMessage(new MessageLoadGameRequest(gamePluginToLoad, null));
+            MessageGameStateRequest loadRequest = new MessageLoadGameRequest(gamePluginToLoad, null);
+
+            base.messageMediator.SendMessage(loadRequest);
         }
         private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
         {
