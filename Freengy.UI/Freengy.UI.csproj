@@ -63,6 +63,7 @@
     <Compile Include="Helpers\TypeRegistrator.cs" />
     <Compile Include="Helpers\UiDispatcher.cs" />
     <Compile Include="Helpers\UiNavigator.cs" />
+    <Compile Include="Module\MainModule.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
