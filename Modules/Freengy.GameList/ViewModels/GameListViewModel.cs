@@ -50,18 +50,7 @@ namespace Freengy.GameList.ViewModels
         {
             await base.InitializeAsync();
 
-            //await this.FillGameList();
-
-            IEnumerable<IGamePlugin> installedGameList = await this.gameListProvider.GetInstalledGamesAsync();
-
-            foreach (var installedGame in installedGameList)
-            {
-                this.gameList.Add(installedGame);
-            }
-
-            this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
-
-            base.RaisePropertyChanged(() => this.GameList);
+            await this.FillGameList();
         }
 
         #endregion Override
@@ -85,17 +74,36 @@ namespace Freengy.GameList.ViewModels
             Action fillAction =
                 () =>
                 {
-                    IEnumerable<IGamePlugin> installedGameList = this.gameListProvider.GetInstalledGames();
+                    this.PutInstalledGamesToList();
 
-                    foreach (var installedGame in installedGameList)
-                    {
-                        this.gameList.Add(installedGame);
-                    }
-
-                    
+                    this.InitGameListOnUiThread();
                 };
 
             await base.taskWrapper.Wrap(fillAction, this.OnFillGameListException);
+        }
+
+        private void PutInstalledGamesToList() 
+        {
+            IEnumerable<IGamePlugin> installedGameList = this.gameListProvider.GetInstalledGames();
+
+            foreach (var installedGame in installedGameList)
+            {
+                this.gameList.Add(installedGame);
+            }
+        }
+
+        private void InitGameListOnUiThread() 
+        {
+            base.guiDispatcher
+                .InvokeOnGuiThread
+                (
+                    () =>
+                    {
+                        this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
+
+                        base.RaisePropertyChanged(() => this.GameList);
+                    }
+                );
         }
 
         private void OnFillGameListException(Task parentTask) 

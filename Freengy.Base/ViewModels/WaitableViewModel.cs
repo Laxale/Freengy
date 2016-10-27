@@ -3,12 +3,11 @@
 //
 
 
-namespace Freengy.Base.ViewModels
+namespace Freengy.Base.ViewModels 
 {
     using System.Threading.Tasks;
 
     using Freengy.Base.Interfaces;
-    using Freengy.Base.DefaultImpl;
 
     using Catel.IoC;
     using Catel.Data;
@@ -23,6 +22,7 @@ namespace Freengy.Base.ViewModels
 
         protected readonly ITaskWrapper taskWrapper;
         protected readonly ITypeFactory typeFactory;
+        protected readonly IGuiDispatcher guiDispatcher;
         protected readonly IUIVisualizerService uiVisualizer;
         protected readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         protected readonly IMessageMediator messageMediator = MessageMediator.Default;
@@ -35,11 +35,10 @@ namespace Freengy.Base.ViewModels
         protected WaitableViewModel(bool initAfterCreate) 
         {
             this.typeFactory = this.GetTypeFactory();
-
             this.taskWrapper = this.serviceLocator.ResolveType<ITaskWrapper>();
-
+            this.guiDispatcher = this.serviceLocator.ResolveType<IGuiDispatcher>();
             this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
-
+            
             if (initAfterCreate)
             {
                 // better init automatically by catel - viewmodel is initialized by catel controls
@@ -52,7 +51,7 @@ namespace Freengy.Base.ViewModels
 
         #region override
 
-        protected override async Task InitializeAsync()
+        protected override async Task InitializeAsync() 
         {
             // кател вызывает это сам, если вью вызван через uiVisualizer.ShowDialogAsync(this)
 
@@ -62,6 +61,7 @@ namespace Freengy.Base.ViewModels
 
             if (this.IsInitialized || this.IsInitializing)
             {
+                // TODO move this bullshit to a message
                 this.messageMediator.SendMessage
                     (
                         $"{(string.IsNullOrWhiteSpace(this.Name) ? "ViewModel" : this.Name)} " +

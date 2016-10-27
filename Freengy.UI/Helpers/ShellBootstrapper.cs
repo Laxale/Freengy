@@ -77,13 +77,9 @@ namespace Freengy.UI.Helpers
         {
             base.ConfigureContainer();
 
-            string friendListViewName = FriendListModule.Instance.ExportedViewType.FullName;
-
             base.Container
                 .RegisterType<object, LoginView>(ViewNames.LoginViewName)
-                .RegisterType<object, ShellView>(ViewNames.ShellViewName)
-//                .RegisterType(typeof(object), FriendListModule.Instance.ExportedViewType, friendListViewName)
-                ;
+                .RegisterType<object, ShellView>(ViewNames.ShellViewName);
         }
 
         //        protected override RegionAdapterMappings ConfigureRegionAdapterMappings() 
