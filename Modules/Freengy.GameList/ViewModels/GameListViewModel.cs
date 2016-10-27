@@ -13,10 +13,12 @@ namespace Freengy.GameList.ViewModels
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
+    using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Interfaces;
     using Freengy.GamePlugin.DefaultImpl;
-
+    
     using Catel.IoC;
+    using Catel.MVVM;
 
 
     public class GameListViewModel : WaitableViewModel 
@@ -34,11 +36,14 @@ namespace Freengy.GameList.ViewModels
         public ICollectionView GameList { get; private set; }
 
 
+        public Command<IGamePlugin> CommandRequestLoadGame { get; private set; }
+
+
         #region Override
 
         protected override void SetupCommands() 
         {
-
+            this.CommandRequestLoadGame = new Command<IGamePlugin>(this.CommandRequestLoadGameImpl, this.CanRequestLoadGame);
         }
 
         protected override async Task InitializeAsync() 
@@ -58,7 +63,18 @@ namespace Freengy.GameList.ViewModels
         }
 
         #endregion Override
-        
+
+
+        private void CommandRequestLoadGameImpl(IGamePlugin gamePluginToLoad)
+        {
+            base.messageMediator.SendMessage(new MessageLoadGameRequest(gamePluginToLoad, null));
+        }
+        private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
+        {
+            bool canRequestLoad = (gamePluginToLoad != null) && this.gameList.Contains(gamePluginToLoad);
+
+            return canRequestLoad;
+        }
 
         private async Task FillGameList() 
         {

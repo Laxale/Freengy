@@ -14,16 +14,17 @@ namespace Freengy.GamePlugin.Messages
     /// Someone requests to load a game
     /// TODO: maybe add request source to filter bad requests?
     /// </summary>
-    public class MessageLoadGameRequest : MessageBase 
+    public class MessageLoadGameRequest : MessageGameStateRequest 
     {
-        private readonly IGamePlugin gamePlugin;
-        private readonly IUserAccount friendToInvite;
-
-        
         public MessageLoadGameRequest(IGamePlugin gamePlugin, IUserAccount friendToInvite) 
         {
-            this.gamePlugin = gamePlugin;
-            this.friendToInvite = friendToInvite;
+            this.Plugin = gamePlugin;
+            this.FriendToInvite = friendToInvite;
         }
+
+
+        public IGamePlugin Plugin { get; }
+
+        public IUserAccount FriendToInvite { get; }
     }
 }

@@ -29,7 +29,8 @@ namespace Freengy.GamePlugin.Module
         public void Initialize() 
         {
             this.TryCreateDefaultGamesDirectory();
-            
+
+            ServiceLocator.Default.RegisterInstance<IGameDispatcher>(GameDispatcher.Instance);
             ServiceLocator.Default.RegisterInstance<IGameListProvider>(GameListProvider.Instance);
         }
 

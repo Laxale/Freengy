@@ -29,10 +29,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\StringConstants.cs" />
+    <Compile Include="DefaultImpl\GameDispatcher.cs" />
     <Compile Include="DefaultImpl\GameListProvider.cs" />
+    <Compile Include="Interfaces\IGameDispatcher.cs" />
     <Compile Include="Interfaces\IGameListProvider.cs" />
     <Compile Include="Interfaces\IGamePlugin.cs" />
+    <Compile Include="Messages\MessageGameStateRequest.cs" />
     <Compile Include="Messages\MessageLoadGameRequest.cs" />
+    <Compile Include="Messages\MessageUnloadGameRequest.cs" />
     <Compile Include="Module\GamePluginModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
