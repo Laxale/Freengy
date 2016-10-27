@@ -12,8 +12,8 @@ namespace Freengy.FriendList.ViewModels
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
-    using Freengy.Networking.Interfaces;
-    
+    using Freengy.Base.Interfaces;
+
     using Catel.IoC;
     using Catel.MVVM;
 
