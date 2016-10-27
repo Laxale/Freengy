@@ -13,6 +13,7 @@
     <Thickness x:Key="4Left4TopMargin" Left="4" Top="4"/>
     <Thickness x:Key="All4Margin" Left="4" Top="4" Bottom="4" Right="4"/>
 
+    <system:Double x:Key="CommonIconSize">32</system:Double>
     <system:Double x:Key="MinButtonWidth">60</system:Double>
     <system:Double x:Key="MinButtonHeight">20</system:Double>
     <system:Double x:Key="MinTextBoxWidth">30</system:Double>

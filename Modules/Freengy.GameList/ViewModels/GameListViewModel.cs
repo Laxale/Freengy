@@ -45,7 +45,14 @@ namespace Freengy.GameList.ViewModels
         {
             await base.InitializeAsync();
 
-            await this.FillGameList();
+            //await this.FillGameList();
+
+            IEnumerable<IGamePlugin> installedGameList = await this.gameListProvider.GetInstalledGamesAsync();
+
+            foreach (var installedGame in installedGameList)
+            {
+                this.gameList.Add(installedGame);
+            }
 
             this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
         }
@@ -55,11 +62,27 @@ namespace Freengy.GameList.ViewModels
 
         private async Task FillGameList() 
         {
-            IEnumerable<IGamePlugin> installedGameList = await this.gameListProvider.GetInstalledGamesAsync();
+            Action fillAction =
+                () =>
+                {
+                    IEnumerable<IGamePlugin> installedGameList = this.gameListProvider.GetInstalledGames();
 
-            foreach (var installedGame in installedGameList)
+                    foreach (var installedGame in installedGameList)
+                    {
+                        this.gameList.Add(installedGame);
+                    }
+
+                    
+                };
+
+            await base.taskWrapper.Wrap(fillAction, this.OnFillGameListException);
+        }
+
+        private void OnFillGameListException(Task parentTask) 
+        {
+            if (parentTask.Exception != null)
             {
-                this.gameList.Add(installedGame);
+                System.Windows.MessageBox.Show(parentTask.Exception.Message, "Failed to load games");
             }
         }
     }

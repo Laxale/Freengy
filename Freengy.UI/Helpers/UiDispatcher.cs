@@ -3,43 +3,54 @@
 //
 
 
-namespace Freengy.UI.Helpers 
+namespace Freengy.UI.Helpers
 {
     using System;
     using System.Windows;
     using System.Threading.Tasks;
     using System.Windows.Threading;
 
+    using Freengy.Base.Interfaces;
 
-    public static class UiDispatcher 
+
+    /// <summary>
+    /// Do not add dispatcher.Invoke() - hangs in deadlock
+    /// </summary>
+    internal sealed class UiDispatcher : IGuiDispatcher
     {
         private static readonly Dispatcher uiDispatcher;
 
 
-        #region ctor
+        #region Singleton
 
-        static UiDispatcher() 
+        private static UiDispatcher instance;
+        
+
+        static UiDispatcher()
         {
             uiDispatcher = Application.Current.MainWindow.Dispatcher;
         }
 
-        #endregion ctor
+        private UiDispatcher()
+        {
+
+        }
+
+        public static UiDispatcher Instance => UiDispatcher.instance ?? (UiDispatcher.instance = new UiDispatcher());
+
+        #endregion Singleton
 
 
-        public static void Invoke(Action method) 
+        public void InvokeOnGuiThread(Action method) 
+        {
+            Invoke(method);
+        }
+
+        internal static void Invoke(Action method) 
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
 
             uiDispatcher.BeginInvoke(method);
-        }
-
-        public static T Invoke<T>(Func<T> function) 
-        {
-            if (function == null) throw new ArgumentNullException(nameof(function));
-
-            T result = (T)uiDispatcher.Invoke(DispatcherPriority.Background, function);
-
-            return result;
         }
     }
 }

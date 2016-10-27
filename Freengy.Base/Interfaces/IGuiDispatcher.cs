@@ -12,6 +12,9 @@ namespace Freengy.Base.Interfaces
     {
         void InvokeOnGuiThread(Action method);
 
+        // doesnt contain Func<T> overload due to problems with Dispatcher deadlock
+        // when calling Dispatcher.Invoke(Func<T>)
+        // asynchronous Dispatcher.BeginInvoke() doesnt work here as we need immediate Func result
         //T InvokeOnGuiThread<T>(Func<T> function);
     }
 }
