@@ -12,6 +12,6 @@ namespace Freengy.Base.Interfaces
     {
         void InvokeOnGuiThread(Action method);
 
-        T InvokeOnGuiThread<T>(Func<T> function);
+        //T InvokeOnGuiThread<T>(Func<T> function);
     }
 }

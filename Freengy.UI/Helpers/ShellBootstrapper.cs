@@ -9,6 +9,7 @@ namespace Freengy.UI.Helpers
     using System.Windows;
     
     using Freengy.UI.Views;
+    using Freengy.UI.Module;
     using Freengy.UI.Constants;
 
     using Freengy.Base.Module;
@@ -65,6 +66,7 @@ namespace Freengy.UI.Helpers
             var catalog = new ModuleCatalog();
 
             catalog.AddModule(typeof(BaseModule))
+                   .AddModule(typeof(MainModule))
                    .AddModule(typeof(NetworkingModule))
                    .AddModule(typeof(GamePluginModule));
 

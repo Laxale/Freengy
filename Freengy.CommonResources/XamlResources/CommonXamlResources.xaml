@@ -5,6 +5,7 @@
                     xmlns:converters="clr-namespace:Freengy.CommonResources.Converters">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:StringUriToImageSourceConverter x:Key="StringUriToImageSourceConverter"/>
     <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
 
     <Thickness x:Key="StdMargin" Left="2" Top="2"/>

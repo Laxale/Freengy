@@ -34,13 +34,13 @@
         <TextBlock Grid.Row="1" Text="No games :(" Foreground="Red" FontSize="24"
                    Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}" 
+        <ListBox Grid.Row="1" ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}"
                  Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="gameinterfaces:IGamePlugin">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=GameIconSource}" Margin="{StaticResource All4Margin}"/>
+                        <Image Source="{Binding Path=GameIconSource, Converter={StaticResource StringUriToImageSourceConverter}}" Margin="{StaticResource All4Margin}"/>
 
                         <TextBlock Text="{Binding Path=DisplayedName}" Foreground="BlueViolet" FontWeight="DemiBold"
                                    Margin="{StaticResource All4Margin}"/>
