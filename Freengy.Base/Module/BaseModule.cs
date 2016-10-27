@@ -17,6 +17,7 @@ namespace Freengy.Base.Module
     {
         public void Initialize() 
         {
+            ServiceLocator.Default.RegisterType<IUserAccount, UserAccount>(RegistrationType.Transient);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
         }

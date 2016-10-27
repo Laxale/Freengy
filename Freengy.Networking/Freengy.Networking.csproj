@@ -10,7 +10,6 @@
     <RootNamespace>Freengy.Networking</RootNamespace>
     <AssemblyName>Freengy.Networking</AssemblyName>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="Catel.Core">
       <HintPath>..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
@@ -26,8 +25,6 @@
   <ItemGroup>
     <Compile Include="DefaultImpl\LoginParameters.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
-    <Compile Include="DefaultImpl\UserAccount.cs" />
-    <Compile Include="Interfaces\IUserAccount.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Interfaces\ILoginParameters.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />

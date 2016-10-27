@@ -3,13 +3,8 @@
 //
 
 
-namespace Freengy.Networking.Interfaces 
+namespace Freengy.Base.Interfaces 
 {
-    using System;
-
-    using Freengy.Base.Interfaces;
-
-
     /// <summary>
     /// Exposes user 
     /// </summary>

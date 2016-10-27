@@ -3,11 +3,11 @@
 //
 
 
-namespace Freengy.Networking.DefaultImpl 
+namespace Freengy.Base.DefaultImpl 
 {
     using System;
 
-    using Freengy.Networking.Interfaces;
+    using Freengy.Base.Interfaces;
 
 
     public class UserAccount : IUserAccount 
@@ -15,7 +15,7 @@ namespace Freengy.Networking.DefaultImpl
         public UserAccount() 
         {
             this.Name = Guid.NewGuid().ToString();
-            this.DisplayedName = $"Displayed: { Guid.NewGuid().ToString() }";
+            this.DisplayedName = $"Displayed: { Guid.NewGuid() }";
         }
 
 

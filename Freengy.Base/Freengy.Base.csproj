@@ -34,6 +34,7 @@
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
+    <Compile Include="DefaultImpl\UserAccount.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Interfaces\IResponsibilityChainer.cs" />
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
+    <Compile Include="Interfaces\IUserAccount.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
