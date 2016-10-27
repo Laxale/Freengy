@@ -44,6 +44,7 @@
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
+    <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />

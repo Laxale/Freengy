@@ -69,7 +69,7 @@ namespace Freengy.Networking.DefaultImpl
             // log in
             // web api or whatever else - details must be hidden by abstract strategy class
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
         }
 
         private void LogInTaskContinuator(Task parentTask) 
