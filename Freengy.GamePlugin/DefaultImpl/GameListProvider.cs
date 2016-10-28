@@ -3,6 +3,10 @@
 //
 
 
+using Freengy.Base.Helpers;
+using Freengy.GamePlugin.Helpers;
+
+
 namespace Freengy.GamePlugin.DefaultImpl 
 {
     using System;
@@ -16,24 +20,96 @@ namespace Freengy.GamePlugin.DefaultImpl
     using Freengy.Base.Extensions;
     using Freengy.GamePlugin.Constants;
     using Freengy.GamePlugin.Interfaces;
-    
+    using Freengy.GamePlugin.Attributes;
+
     using Catel.IoC;
 
 
-    internal class PluginDictionary : Dictionary<string, KeyValuePair<Assembly, IGamePlugin>> 
+    /// <summary>
+    /// Thread-safe plugins cache. No need to use lock() outside
+    /// </summary>
+    internal sealed class PluginsCache 
     {
-        public IEnumerable<IGamePlugin> LoadedGamePlugins => base.Values.Select(assemblyKey => assemblyKey.Value);
+        private static readonly object Locker = new object();
+
+        /// <summary>
+        /// Contains loaded assembly paths and their <see cref="IGamePlugin"/> implementation
+        /// </summary>
+        private readonly IDictionary<string, IGamePlugin> loadedPlugins = new Dictionary<string, IGamePlugin>();
+        /// <summary>
+        /// Contains loaded assembly paths and their main view types (marked with <see cref="MainGameViewAttribute"/>)
+        /// </summary>
+        private readonly IDictionary<string, string> loadedMainViewTypes = new Dictionary<string, string>();
+
+
+        public bool ContainsViewType(string viewType) 
+        {
+            if (string.IsNullOrWhiteSpace(viewType)) throw new ArgumentNullException(nameof(viewType));
+
+            lock (Locker)
+            {
+                bool contains = this.loadedMainViewTypes.Values.Contains(viewType);
+
+                return contains;
+            }
+        }
+
+        public IEnumerable<string> GetLoadedAssemblyPaths() 
+        {
+            lock (Locker)
+            {
+                return this.loadedPlugins.Keys;
+            }
+        }
+
+        public IEnumerable<IGamePlugin> GetCurrentLoadedPlugins() 
+        {
+            lock (PluginsCache.Locker)
+            {
+                return this.loadedPlugins.Values;
+            }
+        }
+
+        public void AddPathAndViewType(string assemblyPath, string viewType) 
+        {
+            Common.ThrowIfArgumentsHasNull(assemblyPath, viewType);
+
+            lock (Locker)
+            {
+                if (this.loadedMainViewTypes.ContainsKey(assemblyPath))
+                {
+                    throw new InvalidOperationException($"Already stored path '{ assemblyPath }'");
+                }
+
+                this.loadedMainViewTypes.Add(assemblyPath, viewType);
+            }
+        }
+
+        public void AddPathAndPlugin(string assemblyPath, IGamePlugin gamePlugin) 
+        {
+            Common.ThrowIfArgumentsHasNull(assemblyPath, gamePlugin);
+
+            lock (Locker)
+            {
+                if (this.loadedPlugins.ContainsKey(assemblyPath))
+                {
+                    throw new InvalidOperationException($"Already stored plugin '{ gamePlugin.Name }' on path '{ assemblyPath }'");
+                }
+
+                this.loadedPlugins.Add(assemblyPath, gamePlugin);
+            }
+        }
     }
 
     public class GameListProvider : IGameListProvider 
     {
-        private static readonly object Locker = new object();
+        #region vars
+
         private readonly ITypeFactory typeFactory;
         private readonly IAppDirectoryInspector directoryInspector;
-        /// <summary>
-        /// Contains loaded assembly paths and assemblies as is
-        /// </summary>
-        private readonly PluginDictionary loadedAssemblies = new PluginDictionary();
+        private readonly PluginsCache pluginsCache = new PluginsCache();
+
+        #endregion vars
 
 
         #region Singleton
@@ -53,14 +129,13 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public IEnumerable<IGamePlugin> GetInstalledGames() 
         {
-            var newDllInGameFolderPaths = this.GetNewDllPathsInGameFolder();
-            
-            foreach (string newDllPath in newDllInGameFolderPaths)
-            {
-                this.LoadIfGameAssembly(newDllPath);
-            }
+            IEnumerable<string> newDllInGameFolderPaths = this.GetNewDllPathsInGameFolder();
 
-            return this.loadedAssemblies.LoadedGamePlugins;
+            IEnumerable<string> dllsWithNotLoadedViewType = this.FilterLoadedViewTyes(newDllInGameFolderPaths);
+
+            this.LoadGameAssemblies(dllsWithNotLoadedViewType);
+
+            return this.pluginsCache.GetCurrentLoadedPlugins();
         }
 
         public async Task<IEnumerable<IGamePlugin>> GetInstalledGamesAsync() 
@@ -69,38 +144,50 @@ namespace Freengy.GamePlugin.DefaultImpl
         }
 
 
-        private string[] GetNewDllPathsInGameFolder() 
+        private IEnumerable<string> GetNewDllPathsInGameFolder() 
         {
+            IEnumerable<string> loadedAssemblyPaths = this.pluginsCache.GetLoadedAssemblyPaths();
+
             var newDllInGameFolderPaths =
                 this
                 .directoryInspector
                 .GetDllsInSubFolder(StringConstants.GamesFolderName)
-                .Except(this.loadedAssemblies.Keys)
-                .ToArray();
+                .Except(loadedAssemblyPaths);
 
             return newDllInGameFolderPaths;
         }
 
-        private void LoadIfGameAssembly(string newDllPath) 
+        private IEnumerable<string> FilterLoadedViewTyes(IEnumerable<string> newDllInGameFolderPaths)
         {
-            Assembly loadedDll = this.LoadAssembly(newDllPath);
+            var filteredPaths = new List<string>();
 
-            Type gamePluginImplementer = loadedDll.FindImplementingType<IGamePlugin>();
-
-            if (gamePluginImplementer == null) return;
-
-            IGamePlugin gamePlugin = this.typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
-
-            var pluginPair = new KeyValuePair<Assembly, IGamePlugin>(loadedDll, gamePlugin);
-
-            lock (GameListProvider.Locker)
+            foreach (var newDllPath in newDllInGameFolderPaths)
             {
-                if (this.loadedAssemblies.ContainsKey(newDllPath))
-                {
-                    throw new InvalidOperationException($"Already loaded '{ newDllPath }'! invalid situation");
-                }
+                var parser = new PluginMetadataParser(newDllPath);
 
-                this.loadedAssemblies.Add(newDllPath, pluginPair);
+                var mainViewType = parser.GetMainPluginViewName();
+
+                if (this.pluginsCache.ContainsViewType(mainViewType)) continue;
+
+                filteredPaths.Add(newDllPath);
+
+                this.pluginsCache.AddPathAndViewType(newDllPath, mainViewType);
+            }
+
+            return filteredPaths;
+        }
+
+        private void LoadGameAssemblies(IEnumerable<string> newGameDllPaths) 
+        {
+            foreach (string newDllPath in newGameDllPaths)
+            {
+                Assembly loadedAssembly = this.LoadAssembly(newDllPath);
+
+                Type gamePluginImplementer = loadedAssembly.FindImplementingType<IGamePlugin>();
+
+                IGamePlugin gamePlugin = this.typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
+
+                this.pluginsCache.AddPathAndPlugin(newDllPath, gamePlugin);
             }
         }
 

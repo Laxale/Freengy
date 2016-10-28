@@ -79,7 +79,9 @@ namespace Freengy.GamePlugin.DefaultImpl
         {
             if (gamePlugin == null) throw new ArgumentNullException(nameof(gamePlugin));
 
-            bool canLoad = gamePlugin != this.CurrentRunningGame;
+            if (gamePlugin.ExportedViewType == null) throw new ArgumentException("gamePlugin.ExportedViewType is null");
+
+            bool canLoad = gamePlugin.ExportedViewType != this.CurrentRunningGame?.ExportedViewType;
 
             return canLoad;
         }

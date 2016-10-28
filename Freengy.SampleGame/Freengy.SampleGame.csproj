@@ -25,6 +25,9 @@
     <Compile Include="Views\SampleGameUi.xaml.cs">
       <DependentUpon>SampleGameUi.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TestControl.xaml.cs">
+      <DependentUpon>TestControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
@@ -38,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\SampleGameUi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

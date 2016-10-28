@@ -42,26 +42,25 @@ namespace Freengy.Base.DefaultImpl
             this.chain.Remove(handler);
         }
 
+        public bool Handle(TObjectType targetToProcess) 
+        {
+            bool handled = false;
+
+            foreach (var handler in this.chain)
+            {
+                handled |= handler(targetToProcess);
+
+                if (handled) break;
+            }
+
+            return handled;
+        }
+
         public async Task<bool> HandleAsync(TObjectType targetToProcess) 
         {
             if (targetToProcess == null) throw new ArgumentNullException(nameof(targetToProcess));
 
-            Func<bool> handleFunc =
-                () =>
-                {
-                    bool handled = false;
-
-                    foreach (var handler in this.chain)
-                    {
-                        handled |= handler(targetToProcess);
-
-                        if (handled) break;
-                    }
-
-                    return handled;
-                };
-
-            return await Task.Run(handleFunc);
+            return await Task.Run(() => this.Handle(targetToProcess));
         }
     }
 }

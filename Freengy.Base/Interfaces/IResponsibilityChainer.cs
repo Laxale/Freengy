@@ -19,6 +19,13 @@ namespace Freengy.Base.Interfaces
         /// </summary>
         ///<param name="targetToProcess">Object that must be processed</param>
         /// <returns>True if object was successfully processed</returns>
+        bool Handle(TObjectType targetToProcess);
+
+        /// <summary>
+        /// Push object through processing chain
+        /// </summary>
+        ///<param name="targetToProcess">Object that must be processed</param>
+        /// <returns>True if object was successfully processed</returns>
         Task<bool> HandleAsync(TObjectType targetToProcess);
 
         /// <summary>
