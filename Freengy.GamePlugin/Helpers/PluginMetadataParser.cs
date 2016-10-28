@@ -44,7 +44,7 @@ namespace Freengy.GamePlugin.Helpers
         #endregion vars
 
         
-        public PluginMetadataParser(string assemblyPath)
+        public PluginMetadataParser(string assemblyPath) 
         {
             if (string.IsNullOrWhiteSpace(assemblyPath)) throw new ArgumentNullException(nameof(assemblyPath));
 
@@ -71,7 +71,8 @@ namespace Freengy.GamePlugin.Helpers
             return mainPluginViewName.Replace(StartOfViewTypeFullNameLine, string.Empty);
         }
 
-        public void ParseFile() 
+
+        private void ParseFile() 
         {
             this.solidTypesLine = this.GetTypesLine();
 
@@ -79,8 +80,7 @@ namespace Freengy.GamePlugin.Helpers
 
             this.isParsed = true;
         }
-
-
+        
         /// <summary>
         /// Get string that contains important assembly's types information
         /// </summary>
