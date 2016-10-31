@@ -65,6 +65,7 @@ namespace Freengy.GamePlugin.Helpers
             
             if (mainPluginViewName == null)
             {
+                // TODO: hardcoded parsing doesnt work with different assemblies. Implement config file for plugins?
                 throw new ArgumentException("Main view full name was not found in metadata. Assembly is invalid?");
             }
 
@@ -107,7 +108,7 @@ namespace Freengy.GamePlugin.Helpers
                 }
             }
 
-            var typeStrings = builder.ToString().Split('\0');
+            var typeStrings = builder.ToString().Split(new[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
 
             return typeStrings;
         }
