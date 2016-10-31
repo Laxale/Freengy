@@ -3,8 +3,7 @@
 //
 
 
-using Freengy.Base.Helpers;
-using Freengy.GamePlugin.Helpers;
+using Freengy.GamePlugin.Messages;
 
 
 namespace Freengy.GamePlugin.DefaultImpl 
@@ -15,14 +14,18 @@ namespace Freengy.GamePlugin.DefaultImpl
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    
+
+    using Freengy.Base.Helpers;
+    using Freengy.Base.Messages;
     using Freengy.Base.Interfaces;
     using Freengy.Base.Extensions;
+    using Freengy.GamePlugin.Helpers;
     using Freengy.GamePlugin.Constants;
     using Freengy.GamePlugin.Interfaces;
     using Freengy.GamePlugin.Attributes;
 
     using Catel.IoC;
+    using Catel.Messaging;
 
 
     /// <summary>
@@ -108,6 +111,7 @@ namespace Freengy.GamePlugin.DefaultImpl
         private readonly ITypeFactory typeFactory;
         private readonly IAppDirectoryInspector directoryInspector;
         private readonly PluginsCache pluginsCache = new PluginsCache();
+        private readonly IMessageMediator messageMediator = MessageMediator.Default;
 
         #endregion vars
 
@@ -120,6 +124,7 @@ namespace Freengy.GamePlugin.DefaultImpl
         {
             this.typeFactory = this.GetTypeFactory();
             this.directoryInspector = ServiceLocator.Default.ResolveType<IAppDirectoryInspector>();
+            this.messageMediator.Register<MessageWorkingDirectoryChanged>(this, this.MessageListener);
         }
 
         public static GameListProvider Instance => GameListProvider.instance ?? (GameListProvider.instance = new GameListProvider());
@@ -199,6 +204,29 @@ namespace Freengy.GamePlugin.DefaultImpl
             var loadedAssembly = Assembly.LoadFrom(assemblyPath);
 
             return loadedAssembly;
+        }
+
+        [MessageRecipient]
+        private void MessageListener(MessageWorkingDirectoryChanged changedMessage) 
+        {
+            // listen only to creation events, not interested in deleting anyth
+            if (changedMessage.ChangedArgs.ChangeType != WatcherChangeTypes.Created) return;
+            // it could be file or folder created - cant say exactly until checking
+            if (!File.Exists(changedMessage.ChangedArgs.FullPath)) return;
+            
+            if (!changedMessage.ChangedArgs.FullPath.Contains(StringConstants.GamesFolderPath)) return;
+
+            var currentGamesList = this.pluginsCache.GetCurrentLoadedPlugins().ToArray();
+
+            var updatedGamesList = this.GetInstalledGames();
+
+            var newGames = updatedGamesList.Except(currentGamesList).ToArray();
+
+            if (newGames.Any())
+            {
+                var gamesAddedMessage = new MessageGamesAdded(newGames);
+                this.messageMediator.SendMessage(gamesAddedMessage);
+            }
         }
     }
 }

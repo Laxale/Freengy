@@ -3,27 +3,38 @@
 //
 
 
-using Freengy.Base.Helpers;
-
-
 namespace Freengy.Base.DefaultImpl 
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Collections.Generic;
 
+    using Freengy.Base.Helpers;
+    using Freengy.Base.Messages;
     using Freengy.Base.Interfaces;
     
+    using Catel.Messaging;
+
 
     /// <summary>
     /// Default <see cref="IAppDirectoryInspector"/> implementer
     /// </summary>
     public class AppDirectoryInspector : IAppDirectoryInspector
     {
+        private readonly FileSystemWatcher watcher;
+        private readonly IMessageMediator messageMediator = MessageMediator.Default;
+
+
         public AppDirectoryInspector() 
         {
-            this.WorkingDirectoryName = new DirectoryInfo(Environment.CurrentDirectory).Name;
+            this.watcher = new FileSystemWatcher(this.WorkingDirectoryPath)
+            {
+                EnableRaisingEvents = true,
+                IncludeSubdirectories = true
+            };
+            this.watcher.Created += this.FileSystemListener;
+
+            this.WorkingDirectoryName = new DirectoryInfo(this.WorkingDirectoryPath).Name;
         }
 
 
@@ -31,7 +42,7 @@ namespace Freengy.Base.DefaultImpl
 
         public string WorkingDirectoryPath => Environment.CurrentDirectory;
 
-        public IEnumerable<string> GetDllsInSubFolder(string subFolderName)
+        public IEnumerable<string> GetDllsInSubFolder(string subFolderName) 
         {
             return this.GetFilesInSubfolderByFilter(subFolderName, "*.dll");
         }
@@ -46,6 +57,12 @@ namespace Freengy.Base.DefaultImpl
             return this.GetFilesInSubfolderByFilter(subFolderName, filter?.SearchFilter ?? "*");
         }
 
+
+        private void FileSystemListener(object sender, FileSystemEventArgs args) 
+        {
+            var changedMessage = new MessageWorkingDirectoryChanged(args);
+            this.messageMediator.SendMessage(changedMessage);
+        }
 
         private IEnumerable<string> GetFilesInSubfolderByFilter(string subFolderName, string filter) 
         {

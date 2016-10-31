@@ -3,6 +3,9 @@
 //
 
 
+using Catel.Messaging;
+
+
 namespace Freengy.GameList.ViewModels 
 {
     using System;
@@ -27,9 +30,10 @@ namespace Freengy.GameList.ViewModels
         private readonly ObservableCollection<IGamePlugin> gameList = new ObservableCollection<IGamePlugin>();
 
 
-        public GameListViewModel() : base(true) 
+        public GameListViewModel() : base(true)
         {
             this.gameListProvider = base.serviceLocator.ResolveType<IGameListProvider>();
+            base.messageMediator.Register<MessageGamesAdded>(this, this.MessageListener);
         }
 
 
@@ -111,6 +115,15 @@ namespace Freengy.GameList.ViewModels
             if (parentTask.Exception != null)
             {
                 System.Windows.MessageBox.Show(parentTask.Exception.Message, "Failed to load games");
+            }
+        }
+
+        [MessageRecipient]
+        private void MessageListener(MessageGamesAdded newGamesMessage) 
+        {
+            foreach (var newGamePlugin in newGamesMessage.NewGames)
+            {
+                this.gameList.Add(newGamePlugin);
             }
         }
     }

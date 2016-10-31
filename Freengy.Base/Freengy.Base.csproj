@@ -56,6 +56,7 @@
     <Compile Include="Interfaces\IUiModule.cs" />
     <Compile Include="Interfaces\IUserAccount.cs" />
     <Compile Include="Messages\MessageBase.cs" />
+    <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />

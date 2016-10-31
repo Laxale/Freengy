@@ -36,6 +36,7 @@
     <Compile Include="Interfaces\IGameDispatcher.cs" />
     <Compile Include="Interfaces\IGameListProvider.cs" />
     <Compile Include="Interfaces\IGamePlugin.cs" />
+    <Compile Include="Messages\MessageGamesAdded.cs" />
     <Compile Include="Messages\MessageGameStateRequest.cs" />
     <Compile Include="Messages\MessageLoadGameRequest.cs" />
     <Compile Include="Messages\MessageRequestGameUi.cs" />
