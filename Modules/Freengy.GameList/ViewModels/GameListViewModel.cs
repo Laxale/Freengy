@@ -3,9 +3,6 @@
 //
 
 
-using Catel.Messaging;
-
-
 namespace Freengy.GameList.ViewModels 
 {
     using System;
@@ -22,6 +19,7 @@ namespace Freengy.GameList.ViewModels
     
     using Catel.IoC;
     using Catel.MVVM;
+    using Catel.Messaging;
 
 
     public class GameListViewModel : WaitableViewModel 
@@ -30,7 +28,7 @@ namespace Freengy.GameList.ViewModels
         private readonly ObservableCollection<IGamePlugin> gameList = new ObservableCollection<IGamePlugin>();
 
 
-        public GameListViewModel() : base(true)
+        public GameListViewModel() 
         {
             this.gameListProvider = base.serviceLocator.ResolveType<IGameListProvider>();
             base.messageMediator.Register<MessageGamesAdded>(this, this.MessageListener);

@@ -39,7 +39,7 @@ namespace Freengy.UI.ViewModels
         #endregion Variables
 
 
-        public LoginViewModel() : base(true) 
+        public LoginViewModel() 
         {
             // need to resolve it by interface to avoid knowledge about concrete implementer
             this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();

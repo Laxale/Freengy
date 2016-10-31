@@ -22,13 +22,7 @@ namespace Freengy.FriendList.ViewModels
     {
         private readonly ObservableCollection<IUserAccount> friendList = new ObservableCollection<IUserAccount>();
 
-
-        public FriendListViewModel() : base(true) 
-        {
-            
-        }
-
-
+        
         protected override void SetupCommands() 
         {
             this.CommandAddFriend = new Command(this.AddFriendImpl, this.CanAddFriend);

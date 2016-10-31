@@ -14,11 +14,6 @@ namespace Freengy.UI.ViewModels
 
     public class SettingsViewModel : WaitableViewModel 
     {
-        public SettingsViewModel() : base(true) 
-        {
-
-        }
-
         protected override void SetupCommands() 
         {
             

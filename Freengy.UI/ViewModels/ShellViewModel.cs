@@ -14,12 +14,6 @@ namespace Freengy.UI.ViewModels
 
     public class ShellViewModel : WaitableViewModel 
     {
-        public ShellViewModel() : base(true) 
-        {
-
-        }
-
-
         protected override void SetupCommands() 
         {
             this.CommandShowSettings = new Command(this.CommandShowSettingsImpl);
@@ -31,6 +25,7 @@ namespace Freengy.UI.ViewModels
 
         private void CommandShowSettingsImpl() 
         {
+            // TODO: implement this pls )
             var t = 0;
         }
     }

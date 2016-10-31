@@ -32,18 +32,12 @@ namespace Freengy.Base.ViewModels
 
         #region ctor
 
-        protected WaitableViewModel(bool initAfterCreate) 
+        protected WaitableViewModel() 
         {
             this.typeFactory = this.GetTypeFactory();
             this.taskWrapper = this.serviceLocator.ResolveType<ITaskWrapper>();
             this.guiDispatcher = this.serviceLocator.ResolveType<IGuiDispatcher>();
             this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
-            
-            if (initAfterCreate)
-            {
-                // better init automatically by catel - viewmodel is initialized by catel controls
-//                this.taskWrapper.Wrap(async () => await this.InitializeAsync(), this.InitializationContinuator);
-            }
         }
 
         #endregion ctor
@@ -51,23 +45,15 @@ namespace Freengy.Base.ViewModels
 
         #region override
 
+        /// <summary>
+        /// To auto-initialize use Catel controls for viewmodels - they call InitializeAsync() internally
+        /// </summary>
+        /// <returns>Initializing <see cref="Task"/></returns>
         protected override async Task InitializeAsync() 
         {
-            // кател вызывает это сам, если вью вызван через uiVisualizer.ShowDialogAsync(this)
-
             await base.InitializeAsync();
 
             this.SetupCommands();
-
-            if (this.IsInitialized || this.IsInitializing)
-            {
-                // TODO move this bullshit to a message
-                this.messageMediator.SendMessage
-                    (
-                        $"{(string.IsNullOrWhiteSpace(this.Name) ? "ViewModel" : this.Name)} " +
-                        $"cannot be initialized: initializing is '{this.IsInitializing}', initialized is '{this.IsInitialized}'"
-                    );
-            }
         }
 
         #endregion override
