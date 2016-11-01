@@ -12,7 +12,7 @@
                    xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
                    
                    mc:Ignorable="d" 
-                   MinWidth="600" MinHeight="300" 
+                   MinWidth="700" MinHeight="400" 
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
 
     <Grid>
@@ -28,7 +28,9 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="180"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="180"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
@@ -100,16 +102,25 @@
             </Grid>
         </Border>
         
-        <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeBehavior="PreviousAndNext"
+        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" ResizeBehavior="PreviousAndNext"
                       Width="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
 
-        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="{StaticResource All4Margin}" Opacity="0.9"
+        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" Margin="{StaticResource All4Margin}" Opacity="0.9"
                         HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
 
         <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource All4Margin}">
             <Border Background="Gray" Opacity="0.6"/>
 
             <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameRegion}"/>
+        </Grid>
+
+        <GridSplitter Grid.Row="2" Grid.Column="0" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"
+                      Height="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
+        
+        <Grid Grid.Row="3" Grid.Column="0" Margin="{StaticResource All4Margin}">
+            <Border Background="LightGray" Opacity="0.6"/>
+
+            <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
         </Grid>
     </Grid>
 </catel:UserControl>

@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Created by Laxale 01.11.2016
+//
+//
 
-namespace Freengy.Chatter.Views
+
+namespace Freengy.Chatter.Views 
 {
-    /// <summary>
-    /// Interaction logic for ChatterView.xaml
-    /// </summary>
-    public partial class ChatterView : UserControl
+    using CatelControl = Catel.Windows.Controls.UserControl;
+
+
+    public partial class ChatterView : CatelControl 
     {
-        public ChatterView()
+        public ChatterView() 
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

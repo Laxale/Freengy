@@ -134,6 +134,10 @@
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Chatter\Freengy.Chatter.csproj">
+      <Project>{d3d20754-2906-4d1d-99f1-ee39b893f9e3}</Project>
+      <Name>Freengy.Chatter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>

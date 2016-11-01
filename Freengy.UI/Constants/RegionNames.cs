@@ -13,5 +13,6 @@ namespace Freengy.UI.Constants
         public const string FriendListRegion = "FriendListRegion";
 
         public const string GameRegion = "GameRegion";
+        public const string ChatRegion = "ChatRegion";
     }
 }

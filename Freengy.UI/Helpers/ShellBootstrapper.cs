@@ -13,6 +13,7 @@ namespace Freengy.UI.Helpers
     using Freengy.UI.Constants;
 
     using Freengy.Base.Module;
+    using Freengy.Chatter.Module;
     using Freengy.GameList.Module;
     using Freengy.Networking.Module;
     using Freengy.GamePlugin.Module;
@@ -99,6 +100,7 @@ namespace Freengy.UI.Helpers
         {
             this
                 .regionManager
+                .RegisterViewWithRegion(RegionNames.ChatRegion, ChatterModule.Instance.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.GameListRegion, GameListModule.Instance.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
         }
