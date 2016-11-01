@@ -11,6 +11,8 @@ namespace Freengy.CommonResources.Converters
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    using Res = CommonResources.StringResources;
+
 
     [ValueConversion(typeof(string), typeof(ImageSource))]
     public class StringUriToImageSourceConverter : IValueConverter 
@@ -32,6 +34,11 @@ namespace Freengy.CommonResources.Converters
 
         private static ImageSource ConvertStringToBitmap(string uri) 
         {
+            if (string.IsNullOrWhiteSpace(uri))
+            {
+                uri = Res.DefaultGameIconUri;
+            }
+            
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
             bitmapImage.UriSource = new Uri(uri);

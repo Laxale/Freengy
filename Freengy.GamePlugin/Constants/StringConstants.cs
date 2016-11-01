@@ -20,5 +20,10 @@ namespace Freengy.GamePlugin.Constants
         /// Path to a game plugins folder
         /// </summary>
         internal static readonly string GamesFolderPath = Path.Combine(Environment.CurrentDirectory, StringConstants.GamesFolderName);
+
+        /// <summary>
+        /// Key for a settings entry to hold plugin's main view full type name
+        /// </summary>
+        internal const string MainGameViewSettingsKey = "MainGameView";
     }
 }

@@ -13,6 +13,10 @@ namespace Freengy.UI.Views
         public MainWindow() 
         {
             this.InitializeComponent();
+
+            var asmVersion = typeof(MainWindow).Assembly.GetName().Version;
+
+            this.Title = $"{ this.Title } | { asmVersion }";
         }
     }
 }

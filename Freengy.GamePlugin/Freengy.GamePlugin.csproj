@@ -25,14 +25,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\MainGameViewAttribute.cs" />
     <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="DefaultImpl\GameDispatcher.cs" />
     <Compile Include="DefaultImpl\GameListProvider.cs" />
-    <Compile Include="Helpers\PluginMetadataParser.cs" />
+    <Compile Include="Helpers\PluginConfigResearcher.cs" />
+    <Compile Include="Helpers\PluginSettingsValidator.cs" />
     <Compile Include="Interfaces\IGameDispatcher.cs" />
     <Compile Include="Interfaces\IGameListProvider.cs" />
     <Compile Include="Interfaces\IGamePlugin.cs" />

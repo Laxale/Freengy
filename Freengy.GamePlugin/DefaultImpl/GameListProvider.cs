@@ -3,9 +3,6 @@
 //
 
 
-using Freengy.GamePlugin.Messages;
-
-
 namespace Freengy.GamePlugin.DefaultImpl 
 {
     using System;
@@ -20,9 +17,11 @@ namespace Freengy.GamePlugin.DefaultImpl
     using Freengy.Base.Interfaces;
     using Freengy.Base.Extensions;
     using Freengy.GamePlugin.Helpers;
+    using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Constants;
     using Freengy.GamePlugin.Interfaces;
-    using Freengy.GamePlugin.Attributes;
+
+    using Prism.Modularity;
 
     using Catel.IoC;
     using Catel.Messaging;
@@ -168,9 +167,10 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             foreach (var newDllPath in newDllInGameFolderPaths)
             {
-                var parser = new PluginMetadataParser(newDllPath);
+                var сonfigResearcher = new PluginConfigResearcher(newDllPath);
 
-                var mainViewType = parser.GetMainPluginViewName();
+                string mainViewType;
+                if(!сonfigResearcher.GetMainPluginViewName(out mainViewType)) continue;
 
                 if (this.pluginsCache.ContainsViewType(mainViewType)) continue;
 
@@ -190,7 +190,9 @@ namespace Freengy.GamePlugin.DefaultImpl
 
                 Type gamePluginImplementer = loadedAssembly.FindImplementingType<IGamePlugin>();
 
-                IGamePlugin gamePlugin = this.typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
+                this.TryInitializePluginModule(loadedAssembly);
+
+                var gamePlugin = this.typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
 
                 this.pluginsCache.AddPathAndPlugin(newDllPath, gamePlugin);
             }
@@ -204,6 +206,23 @@ namespace Freengy.GamePlugin.DefaultImpl
             var loadedAssembly = Assembly.LoadFrom(assemblyPath);
 
             return loadedAssembly;
+        }
+
+        private void TryInitializePluginModule(Assembly pluginAssembly) 
+        {
+            try
+            {
+                Type gameImoduleImplementer = pluginAssembly.FindImplementingType<IModule>();
+
+                var gameModule = this.typeFactory.CreateInstanceWithParameters(gameImoduleImplementer) as IModule;
+
+                gameModule?.Initialize();
+            }
+            catch (Exception)
+            {
+                // log this?
+                throw;
+            }
         }
 
         [MessageRecipient]
