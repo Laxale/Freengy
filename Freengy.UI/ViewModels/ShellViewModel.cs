@@ -7,9 +7,10 @@ namespace Freengy.UI.ViewModels
 {
     using System;
 
+    using Catel.IoC;
     using Catel.MVVM;
-
-    using Freengy.Base.ViewModels;
+    
+    using Base.ViewModels;
 
 
     public class ShellViewModel : WaitableViewModel 
@@ -23,10 +24,11 @@ namespace Freengy.UI.ViewModels
         public Command CommandShowSettings { get; private set; }
 
 
-        private void CommandShowSettingsImpl() 
+        private async void CommandShowSettingsImpl() 
         {
-            // TODO: implement this pls )
-            var t = 0;
+            var settingsViewModel = base.serviceLocator.ResolveType<SettingsViewModel>();
+
+            bool? result = await base.uiVisualizer.ShowDialogAsync(settingsViewModel);
         }
     }
 }

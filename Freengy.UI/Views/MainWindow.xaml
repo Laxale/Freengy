@@ -11,8 +11,10 @@
         xmlns:xamlResources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
         
         mc:Ignorable="d"
+        Style="{StaticResource CommonWindowStyle}"
         Title="{x:Static commonRes:StringResources.ProjectName}" 
-        WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Normal"
         MinHeight="340" MinWidth="630" Height="340" Width="620"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 

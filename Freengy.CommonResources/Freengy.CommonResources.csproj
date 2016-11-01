@@ -30,6 +30,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XamlResources\StylishWindowStyle.xaml.cs">
+      <DependentUpon>StylishWindowStyle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XamlResources\WaitableDecorator.xaml.cs">
       <DependentUpon>WaitableDecorator.xaml</DependentUpon>
     </Compile>
@@ -42,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="XamlResources\CommonXamlResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\StylishWindowStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,6 +10,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                <ResourceDictionary 
+                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/StylishWindowStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>

@@ -5,11 +5,14 @@
 
 namespace Freengy.UI.Module 
 {
+    using Freengy.UI.Views;
     using Freengy.UI.Helpers;
+    using Freengy.UI.ViewModels;
     using Freengy.Base.Interfaces;
     using Freengy.Base.DefaultImpl;
 
     using Catel.IoC;
+    using Catel.Services;
 
     using Prism.Modularity;
 
@@ -18,6 +21,10 @@ namespace Freengy.UI.Module
     {
         public void Initialize() 
         {
+            var uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
+
+            uiVisualizer.Register<SettingsViewModel, SettingsWindow>();
+
             ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
         }

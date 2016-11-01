@@ -14,7 +14,6 @@
                    
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
-             
                    d:DataContext="{d:DesignInstance Type=viewModels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
