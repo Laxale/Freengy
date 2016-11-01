@@ -33,8 +33,7 @@ namespace Freengy.Friendlist.Module
         #endregion Singleton
 
 
-        private Type exportedViewType;
-        public Type ExportedViewType => this.exportedViewType ?? (this.exportedViewType = typeof (FriendListView));
+        public Type ExportedViewType { get; } = typeof (FriendListView);
 
 
 //        public void Initialize() 

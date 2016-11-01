@@ -29,8 +29,7 @@ namespace Freengy.GameList.Module
         #endregion Singleton
 
 
-        private Type exportedViewType;
-        public Type ExportedViewType => this.exportedViewType ?? (this.exportedViewType = typeof (GameListView));
+        public Type ExportedViewType { get; } = typeof (GameListView);
 
 
 //        public void Initialize() 
