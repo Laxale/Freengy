@@ -4,16 +4,17 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
+                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                   
                    xmlns:catel="http://catel.codeplex.com" 
                    
                    xmlns:local="clr-namespace:Freengy.GameList.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
                    xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
                    xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
-                   xmlns:system="clr-namespace:System;assembly=mscorlib"
-
+                   
                    mc:Ignorable="d" 
-                   d:DesignHeight="300" d:DesignWidth="300"
+                   d:DesignHeight="200" d:DesignWidth="300"
                    d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
     
     <Grid>
@@ -36,8 +37,10 @@
         
         <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
 
-        <TextBlock Grid.Row="1" Text="No games :(" Foreground="Red" FontSize="24"
-                   Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Button Grid.Row="1" Content="Discover loading problems" VerticalAlignment="Top" FontSize="18"
+                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="DarkGray" 
+                ToolTip="Games not found. Look for issue resolving" Command="{Binding Path=CommandResolveProblems}"
+                Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <ListBox Grid.Row="1" Name="GameListBox" Background="Transparent" BorderThickness="0"
                  ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}" 
@@ -50,6 +53,14 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type gameinterfaces:IGamePlugin}">
                     <Border Background="Transparent">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <catel:EventToCommand 
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
+                                                      Path=DataContext.CommandRequestLoadGame}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        
                         <Border.Style>
                             <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}">
                                 <Style.Triggers>

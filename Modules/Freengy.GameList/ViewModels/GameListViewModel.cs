@@ -38,13 +38,21 @@ namespace Freengy.GameList.ViewModels
         public ICollectionView GameList { get; private set; }
 
 
+        #region commands
+
+        public Command CommandResolveProblems { get; private set; }
+
         public Command<IGamePlugin> CommandRequestLoadGame { get; private set; }
+
+        #endregion commands
+
 
 
         #region Override
 
         protected override void SetupCommands() 
         {
+            this.CommandResolveProblems = new Command(this.CommandResolveProblemsImpl, this.CanResolveProblems);
             this.CommandRequestLoadGame = new Command<IGamePlugin>(this.CommandRequestLoadGameImpl, this.CanRequestLoadGame);
         }
 
@@ -69,6 +77,15 @@ namespace Freengy.GameList.ViewModels
             bool canRequestLoad = (gamePluginToLoad != null) && this.gameList.Contains(gamePluginToLoad);
 
             return canRequestLoad;
+        }
+
+        private void CommandResolveProblemsImpl() 
+        {
+            
+        }
+        private bool CanResolveProblems() 
+        {
+            return this.GameList?.IsEmpty ?? true;
         }
 
         private async Task FillGameList() 
