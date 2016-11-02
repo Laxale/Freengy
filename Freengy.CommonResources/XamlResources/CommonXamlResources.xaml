@@ -19,6 +19,13 @@
     <system:Double x:Key="MinTextBoxWidth">30</system:Double>
     <system:Double x:Key="MaxButtonHeight">22</system:Double>
 
+    <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
+    <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
+
+    <SolidColorBrush x:Key="FirstMainBrush" Color="Orange" />
+    <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
+
     <!-- Button -->
     <Style TargetType="Button" x:Key="CommonButtonStyle">
         <Setter Property="UseLayoutRounding"   Value="True"/>
@@ -71,6 +78,18 @@
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="{x:Type TextBlock}" BasedOn="{StaticResource CommonTextBlockStyle}">
+
+    </Style>
+
+    <!-- TextBox -->
+    <Style TargetType="TextBox" x:Key="CommonTextBoxStyle">
+        <Setter Property="UseLayoutRounding"   Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
+        <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
+        <Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>
+    </Style>
+    <Style TargetType="TextBox" x:Key="{x:Type TextBox}" BasedOn="{StaticResource CommonTextBoxStyle}">
 
     </Style>
 

@@ -67,7 +67,7 @@
                             between maximized window and screen edges; smaller numbers show parts of
                             the window outside of the current monitor on multi-display computers.
                         -->
-                    <Grid Margin="7" TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display">
+                    <Grid Margin="14" TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display">
                         
                         <Border x:Name="PART_Border" BorderThickness="1" CornerRadius="4"
                                 Background="{TemplateBinding Background}" BorderBrush="{StaticResource CommonWindowBorderBrush}">
