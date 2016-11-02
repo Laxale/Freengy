@@ -45,73 +45,39 @@
         <ListBox Grid.Row="1" Name="GameListBox" Background="Transparent" BorderThickness="0"
                  ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}" 
                  Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
-            
+
             <ListBox.Resources>
                 <helpers:DataContextProxy x:Key="ViewModelContextProxy" Data="{Binding}"/>
             </ListBox.Resources>
-            
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type gameinterfaces:IGamePlugin}">
-                    <Border Background="Transparent">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <catel:EventToCommand 
-                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
-                                                      Path=DataContext.CommandRequestLoadGame}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        
-                        <Border.Style>
-                            <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}">
-                                <Style.Triggers>
-                                    <EventTrigger RoutedEvent="MouseEnter">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                    <ColorAnimation From="Transparent" To="LightGray" BeginTime="0" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-
-                                    <EventTrigger RoutedEvent="MouseLeave">
-                                        <EventTrigger.Actions>
-                                            <BeginStoryboard>
-                                                <Storyboard TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                    <ColorAnimation From="LightGray" To="Transparent" BeginTime="0" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger.Actions>
-                                    </EventTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
+                    <Border>
                         <Grid MaxWidth="{StaticResource GameSignMaxSize}">
                             <Grid.Resources>
-                                <Style TargetType="Image" x:Key="GameIconStyle">
-                                    <Setter Property="Stretch" Value="UniformToFill"/>
-                                    <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
-                                    <Setter Property="MaxWidth" Value="{StaticResource CommonIconSize}"/>
-                                    <Setter Property="MaxHeight" Value="{StaticResource CommonIconSize}"/>
-                                    <Setter Property="Source" 
-                                            Value="{Binding Path=GameIconSource, Converter={StaticResource StringUriToImageSourceConverter}}"/>
-                                </Style>
-
+                                <helpers:DataContextProxy x:Key="PluginContextProxy" Data="{Binding}"/>
+                                
+                                <ImageBrush x:Key="ImgBrush" ImageSource="{Binding Path=GameIconSource, Converter={StaticResource StringUriToImageSourceConverter}}"/>
+                                
                                 <Style TargetType="TextBlock" x:Key="NameTextBlockStyle">
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="Foreground" Value="BlueViolet"/>
                                     <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
                                 </Style>
-
-                                <helpers:DataContextProxy x:Key="PluginContextProxy" Data="{Binding}"/>
+                                
+                                <Style TargetType="Ellipse" x:Key="GameIconEllipseStyle">
+                                    <Setter Property="Height" Value="{StaticResource CommonIconSize}"/>
+                                    <Setter Property="Width" Value="{StaticResource CommonIconSize}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Fill" Value="{StaticResource ImgBrush}"/>
+                                </Style>
                             </Grid.Resources>
 
                             <Grid.ToolTip>
                                 <StackPanel Orientation="Horizontal">
-                                    <!-- Здесь тоже можно заюзать ресурсную картинку, но для примера через конвертер -->
-                                    <Image Style="{StaticResource GameIconStyle}"/>
-
+                                    <Ellipse Style="{StaticResource GameIconEllipseStyle}"/>
+                                    
                                     <StackPanel Orientation="Vertical">
                                         <TextBlock Style="{StaticResource NameTextBlockStyle}" Text="{Binding Path=Name}"/>
                                         <TextBlock Style="{StaticResource NameTextBlockStyle}" Text="{Binding Path=DisplayedName}"/>
@@ -123,7 +89,7 @@
                                 <ContextMenu DataContext="{StaticResource PluginContextProxy}">
                                     <!-- Doesnt work through style, pass proxy to each menuitem -->
                                     <MenuItem Header="Play" DataContext="{StaticResource ViewModelContextProxy}"
-                                              Command="{Binding Path=Data.CommandRequestLoadGame}">
+                                                                      Command="{Binding Path=Data.CommandRequestLoadGame}">
                                         <MenuItem.CommandParameter>
                                             <Binding Path="DataContext.Data">
                                                 <Binding.RelativeSource>
@@ -144,16 +110,70 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Line Name="PluginHolder" Visibility="Visible" />
+                            <Line Name="PluginHolder" Visibility="Visible"/>
 
-                            <Image Grid.Row="0" Style="{StaticResource GameIconStyle}"/>
+                            <Ellipse Grid.Row="0" Style="{StaticResource GameIconEllipseStyle}"/>
 
-                            <TextBlock Grid.Row="1" Style="{StaticResource NameTextBlockStyle}" TextTrimming="CharacterEllipsis"
-                                       MaxWidth="{StaticResource GameSignMaxSize}" TextAlignment="Center" Text="{Binding Path=DisplayedName}"/>
+                            <TextBlock Grid.Row="1" Style="{StaticResource NameTextBlockStyle}" Text="{Binding Path=DisplayedName}" 
+                                       TextTrimming="CharacterEllipsis" MaxWidth="{StaticResource GameSignMaxSize}" TextAlignment="Center"/>
                         </Grid>
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <!-- Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
+                                                      Path=DataContext.CommandRequestLoadGame -->
+                                <catel:EventToCommand Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
+                                                                                                Path=DataContext.CommandRequestLoadGame}"
+                                                                               CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}"
+                                        Style="{StaticResource CommonBorderStyle}">
+                                    
+                                    <ContentPresenter/>
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="ListBoxItem.IsSelected" Value="True">
+                                        <Setter Property="ListBoxItem.Background" Value="Green"/>
+                                    </Trigger>
+
+                                    <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
+                                        <Setter Property="ListBoxItem.Background" Value="Orange"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Black"/>
+<!--                            <Setter Property="BorderThickness" Value="10"/>-->
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="Green"/>
+                            <Setter Property="Background" Value="Orange"/>
+<!--                            <Setter Property="BorderThickness" Value="5"/>-->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

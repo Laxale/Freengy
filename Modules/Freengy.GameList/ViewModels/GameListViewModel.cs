@@ -72,8 +72,9 @@ namespace Freengy.GameList.ViewModels
 
             base.messageMediator.SendMessage(loadRequest);
         }
-        private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
+        private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad)
         {
+            return true;
             bool canRequestLoad = (gamePluginToLoad != null) && this.gameList.Contains(gamePluginToLoad);
 
             return canRequestLoad;
