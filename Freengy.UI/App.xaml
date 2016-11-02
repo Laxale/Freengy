@@ -36,18 +36,6 @@
 
             </Style>
 
-            <!-- Central common style switch for TextBlock -->
-            <Style TargetType="TextBlock" x:Key="CommonTextBlockStyle">
-                <Setter Property="UseLayoutRounding"   Value="True"/>
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="VerticalAlignment"   Value="Center"/>
-                <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
-            </Style>
-            <Style TargetType="TextBlock" x:Key="{x:Type TextBlock}" BasedOn="{StaticResource CommonTextBlockStyle}">
-
-            </Style>
-
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -62,4 +62,57 @@
         <Setter Property="CornerRadius" Value="4"/>
         <!--                <Setter Property="BorderThickness" Value="1"/>-->
     </Style>
+
+    <!-- Central common style switch for TextBlock -->
+    <Style TargetType="TextBlock" x:Key="CommonTextBlockStyle">
+        <Setter Property="UseLayoutRounding"   Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="VerticalAlignment"   Value="Center"/>
+        <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="{x:Type TextBlock}" BasedOn="{StaticResource CommonTextBlockStyle}">
+
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="CoolListBoxItemStyle">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}"
+                            Style="{StaticResource CommonBorderStyle}">
+
+                        <ContentPresenter/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ListBoxItem.IsSelected" Value="True">
+                            <Setter Property="ListBoxItem.Background" Value="Black"/>
+                        </Trigger>
+
+                        <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
+                            <Setter Property="ListBoxItem.Background" Value="Orange"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="Yellow"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="Green"/>
+                <Setter Property="Background" Value="Orange"/>
+                <!--                            <Setter Property="BorderThickness" Value="5"/>-->
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

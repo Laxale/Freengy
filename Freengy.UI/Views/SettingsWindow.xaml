@@ -7,6 +7,7 @@
         xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
         
         xmlns:local="clr-namespace:Freengy.UI.Views"
+        Style="{StaticResource CommonWindowStyle}"
         
         mc:Ignorable="d"
         Title="{x:Static commonres:StringResources.SettingsText}" 
@@ -14,5 +15,18 @@
         Height="300" Width="300" 
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Window.Background>
+        <SolidColorBrush Color="AliceBlue"/>
+    </Window.Background>
+    
     <local:SettingsView/>
 </Window>
