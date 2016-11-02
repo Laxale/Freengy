@@ -10,7 +10,7 @@ namespace Freengy.Base.DefaultImpl
     using Freengy.Base.Interfaces;
 
 
-    public class UserAccount : IUserAccount 
+    internal class UserAccount : IUserAccount 
     {
         public UserAccount() 
         {
@@ -19,10 +19,10 @@ namespace Freengy.Base.DefaultImpl
         }
 
 
-        public Guid Id { get; }
-
         public string Name { get; }
 
         public string DisplayedName { get; }
+
+        public Guid Id { get; } = Guid.NewGuid();
     }
 }

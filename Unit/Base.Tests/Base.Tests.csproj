@@ -23,6 +23,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultImpl\AppDirectoryInspector.Tests.cs" />
+    <Compile Include="DefaultImpl\ChatSession.Tests.cs" />
+    <Compile Include="DefaultImpl\ChatSessionFactory.Tests.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.Tests.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.Tests.cs" />
     <Compile Include="Extensions\ExceptionExtensions.Tests.cs" />

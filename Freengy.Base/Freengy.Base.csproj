@@ -32,6 +32,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
+    <Compile Include="DefaultImpl\ChatMessageDecorator.cs" />
+    <Compile Include="DefaultImpl\ChatSession.cs" />
+    <Compile Include="DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
     <Compile Include="DefaultImpl\UserAccount.cs" />
@@ -46,6 +49,10 @@
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
+    <Compile Include="Interfaces\IChatMessage.cs" />
+    <Compile Include="Interfaces\IChatMessageDecorator.cs" />
+    <Compile Include="Interfaces\IChatSession.cs" />
+    <Compile Include="Interfaces\IChatSessionFactory.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
