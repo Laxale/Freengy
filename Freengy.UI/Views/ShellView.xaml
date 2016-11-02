@@ -12,7 +12,7 @@
                    xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
                    
                    mc:Ignorable="d" 
-                   MinWidth="700" MinHeight="400" 
+                   MinWidth="700" MinHeight="500" 
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
 
     <Grid>

@@ -3,6 +3,9 @@
 //
 
 
+using System.Windows;
+
+
 namespace Freengy.UI.Helpers 
 {
     using System;
@@ -133,6 +136,8 @@ namespace Freengy.UI.Helpers
 
             this.Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
 
+            UiDispatcher.Invoke(this.SetMainWindowSizeForShell);
+
             return true;
         }
 
@@ -153,6 +158,12 @@ namespace Freengy.UI.Helpers
             if (string.IsNullOrWhiteSpace(regionName)) throw new ArgumentNullException(nameof(regionName));
             
             UiDispatcher.Invoke(() => this.regionManager.RequestNavigate(regionName, viewName));
+        }
+
+        private void SetMainWindowSizeForShell() 
+        {
+            Application.Current.MainWindow.MinWidth  = 800;
+            Application.Current.MainWindow.MinHeight = 600;
         }
     }
 }

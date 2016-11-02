@@ -10,7 +10,7 @@
     <SolidColorBrush x:Key="CommonCaptionBrush"                   Color="LightBlue"/>
 <!--    <SolidColorBrush x:Key="CommonWindowBorderBrush"              Color="#007ACC" />-->
     <SolidColorBrush x:Key="CommonWindowBorderBrush"              Color="Transparent" />
-    <SolidColorBrush x:Key="CommonWindowStatusForeground"         Color="#FFFFFF" />
+    <SolidColorBrush x:Key="CommonWindowStatusForeground"         Color="#AA5522" />
     <SolidColorBrush x:Key="CommonWindowBorderBrushInactive"      Color="#999999" />
     <SolidColorBrush x:Key="CommonWindowStatusForegroundInactive" Color="#FFFFFF" />
 
@@ -56,7 +56,6 @@
         <Setter Property="AllowsTransparency"  Value="True"/>
         <Setter Property="WindowStyle"         Value="None"/>
         <Setter Property="Background"          Value="Transparent"/>
-        <Setter Property="SizeToContent"       Value="WidthAndHeight"/>
         <Setter Property="ResizeMode"          Value="CanResizeWithGrip"/>
 
         <Setter Property="Template">
@@ -68,9 +67,7 @@
                             between maximized window and screen edges; smaller numbers show parts of
                             the window outside of the current monitor on multi-display computers.
                         -->
-                    <Grid Margin="7" TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display"
-                          Width="600" Height="400"
-                          MaxWidth="{TemplateBinding MaxWidth}" MaxHeight="{TemplateBinding MaxHeight}">
+                    <Grid Margin="7" TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display">
                         
                         <Border x:Name="PART_Border" BorderThickness="1" CornerRadius="4"
                                 Background="{TemplateBinding Background}" BorderBrush="{StaticResource CommonWindowBorderBrush}">
