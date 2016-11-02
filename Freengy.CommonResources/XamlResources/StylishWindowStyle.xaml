@@ -19,28 +19,9 @@
         <Setter Property="Height" Value="26"/>
         <Setter Property="Width" Value="34"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Border x:Name="PART_border" Visibility="Hidden" Background="{TemplateBinding Background}" />
-                        <ContentPresenter/>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_border" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PART_border" Property="Opacity" Value="0.7" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_border" Property="Background" Value="{StaticResource CommonWindowBorderBrush}"/>
-                            <Setter TargetName="PART_border" Property="Opacity" Value="1" />
-                            <Setter Property="Foreground" Value="#FFF"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
     </Style>
     
     <!-- x:Key="CommonWindowStyle" -->
@@ -105,7 +86,7 @@
                                         <Button x:Name="MinButton" Grid.Column="2" Click="MinButtonClick"
                                                 Style="{StaticResource CommonWindowStyleTitleBarButton}">
 
-                                            <Grid Background="Green">
+                                            <Grid>
                                                 <Path Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
                                                       StrokeThickness="1" Stretch="None" HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
