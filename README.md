@@ -1,10 +1,10 @@
 0. Games are supposed to share plugin interface to be (un)loaded dynamically
 
-1. Любые сборки, реализующий IModule (интерфейс находится в Prism.Modularity, сборка Prism.Wpf), в Initialize могут регистрировать
-   свои внутренние типы в сервислокаторе - так оно и сделано. ShellBootstrapper должен лишь добавить модуль сборки в CreateModuleCatalog();
+1. Any assembly that implement IModule (located in Prism.Modularity => Pris.Wpf) can register their public interfaces to internal 
+   classes in a service locator. ShellBootstrapper must just add assembly's module to his CreateModuleCatalog().
 
-2. Регистрацию модулевых вьюх делает UI, дабы модули не обязаны были знать структуру гуя.
-   Забота модуля - показать наружу через IUiModule тип рутового контрола, который в себе зарегистрирует UI.
+2. Freengy.UI registers pieces of UI (like Freengy.GameList) in ShellBootstrapper. In order to be registered, UI module must expose 
+   its main view type through IUiModule implementation.
 
 3. Initialize viewmodels automatically by using Catel controls - they call viewmodel.InitializeAsync() internally when view is loaded.
 
