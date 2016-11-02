@@ -14,14 +14,39 @@
     <SolidColorBrush x:Key="CommonWindowBorderBrushInactive"      Color="#999999" />
     <SolidColorBrush x:Key="CommonWindowStatusForegroundInactive" Color="#FFFFFF" />
 
-    <Style x:Key="CommonWindowStyleTitleBarButton" TargetType="{x:Type Button}">
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Height" Value="26"/>
+
+    <Style x:Key="TitleBarButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}" Name="Bord">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="False">
+                                            <Setter Property="Opacity" Value="0"/>
+                                        </Trigger>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Opacity" Value="0.6"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <ContentPresenter/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     
     <!-- x:Key="CommonWindowStyle" -->
@@ -44,7 +69,7 @@
                             the window outside of the current monitor on multi-display computers.
                         -->
                     <Grid Margin="7" TextOptions.TextRenderingMode="ClearType" TextOptions.TextFormattingMode="Display"
-                          
+                          Width="600" Height="400"
                           MaxWidth="{TemplateBinding MaxWidth}" MaxHeight="{TemplateBinding MaxHeight}">
                         
                         <Border x:Name="PART_Border" BorderThickness="1" CornerRadius="4"
@@ -66,6 +91,17 @@
                                 <Border x:Name="TitleBar" Grid.Row="0" Background="Transparent" BorderThickness="0" 
                                         MouseLeftButtonDown="TitleBarMouseLeftButtonDown" MouseMove="TitleBarMouseMove">
                                     <Grid Height="32">
+                                        <Grid.Resources>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Stretch" Value="None"/>
+                                                <Setter Property="StrokeThickness" Value="1"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
+                                                <Setter Property="Stroke" Value="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="36"/>
                                             <ColumnDefinition />
@@ -83,43 +119,24 @@
                                                    Margin="4,0,0,0" FontFamily="Segoe UI" FontSize="12" Opacity="0.6"
                                                    Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
-                                        <Button x:Name="MinButton" Grid.Column="2" Click="MinButtonClick"
-                                                Style="{StaticResource CommonWindowStyleTitleBarButton}">
-
-                                            <Grid>
-                                                <Path Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                                                      StrokeThickness="1" Stretch="None" HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"
-                                                      RenderOptions.EdgeMode="Aliased" Data="M0,8 H8 M0,7 H8 M0,6 H8" />
-                                            </Grid>
+                                        <Button x:Name="MinButton" Grid.Column="2" Click="MinButtonClick" Style="{StaticResource TitleBarButtonStyle}">
+                                            <Path Data="M0,8 H8 M0,7 H8 M0,6 H8" />
                                         </Button>
 
-                                        <Button Grid.Column="3" x:Name="MaxButton" Click="MaxButtonClick"
-                                                Style="{StaticResource CommonWindowStyleTitleBarButton}">
-                                            <Grid>
-                                                <Path x:Name="PART_MaxButton_Path"
-                                                      Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                                                      StrokeThickness="1" Stretch="None" RenderOptions.EdgeMode="Aliased" 
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"
-                                                      Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8" />
-                                            </Grid>
+                                        <Button Grid.Column="3" x:Name="MaxButton" Click="MaxButtonClick" Style="{StaticResource TitleBarButtonStyle}">
+                                            <Path x:Name="PART_MaxButton_Path" Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8" />
                                         </Button>
 
                                         <Button Grid.Column="4" x:Name="CloseButton" Click="CloseButtonClick" Background="Red"
-                                                Style="{StaticResource CommonWindowStyleTitleBarButton}">
-                                            <Grid MaxHeight="9" MaxWidth="9">
-                                                <Path Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                                                      StrokeThickness="1.5" Stretch="None" Data="M0,0 L8,8 M0,8 L8,0" />
-                                            </Grid>
+                                                Style="{StaticResource TitleBarButtonStyle}" Padding="4, 0, 0, 0">
+                                            
+                                            <Path StrokeThickness="1.5" Data="M0,0 L8.5,8.5 M0,8 L8,0" />
                                         </Button>
                                     </Grid>
                                 </Border>
 
                                 <ContentPresenter Grid.Row="1" Margin="0" />
-
-                                <!-- Visibility="{Binding Path=IsStatusBarVisible, Mode=OneTime, 
-                                                                Converter={StaticResource BoolToVisibilityConverter}}" -->
+                                
                                 <StatusBar x:Name="PART_StatusBar" Grid.Row="2" Height="24">
                                     <TextBlock Text="{Binding Path=StatusText}" Margin="4,0,0,0"/>
 

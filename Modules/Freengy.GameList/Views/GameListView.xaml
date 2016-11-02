@@ -68,9 +68,7 @@
                                         <EventTrigger.Actions>
                                             <BeginStoryboard>
                                                 <Storyboard TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                    <ColorAnimation From="Transparent" To="LightGray" BeginTime="0" Duration="0:0:0.2">
-                                                        
-                                                    </ColorAnimation>
+                                                    <ColorAnimation From="Transparent" To="LightGray" BeginTime="0" Duration="0:0:0.2"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger.Actions>
@@ -80,9 +78,7 @@
                                         <EventTrigger.Actions>
                                             <BeginStoryboard>
                                                 <Storyboard TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                                    <ColorAnimation From="LightGray" To="Transparent" BeginTime="0" Duration="0:0:0.2">
-
-                                                    </ColorAnimation>
+                                                    <ColorAnimation From="LightGray" To="Transparent" BeginTime="0" Duration="0:0:0.2"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger.Actions>
