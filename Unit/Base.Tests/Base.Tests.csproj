@@ -22,9 +22,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chat\ChatMessageFactory.Tests.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.Tests.cs" />
-    <Compile Include="DefaultImpl\ChatSession.Tests.cs" />
-    <Compile Include="DefaultImpl\ChatSessionFactory.Tests.cs" />
+    <Compile Include="Chat\ChatSession.Tests.cs" />
+    <Compile Include="Chat\ChatSessionFactory.Tests.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.Tests.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.Tests.cs" />
     <Compile Include="Extensions\ExceptionExtensions.Tests.cs" />
@@ -40,6 +41,10 @@
     <ProjectReference Include="..\..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Freengy.CommonResources\Freengy.CommonResources.csproj">
+      <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
+      <Name>Freengy.CommonResources</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

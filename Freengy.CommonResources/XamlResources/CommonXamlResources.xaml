@@ -87,7 +87,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
         <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
-        <Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>
+        <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
     </Style>
     <Style TargetType="TextBox" x:Key="{x:Type TextBox}" BasedOn="{StaticResource CommonTextBoxStyle}">
 

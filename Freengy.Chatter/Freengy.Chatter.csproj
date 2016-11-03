@@ -36,7 +36,11 @@
   <ItemGroup>
     <Compile Include="Module\ChatterModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ChatSessionViewModel.cs" />
     <Compile Include="ViewModels\ChatterViewModel.cs" />
+    <Compile Include="Views\ChatSessionView.xaml.cs">
+      <DependentUpon>ChatSessionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChatterView.xaml.cs">
       <DependentUpon>ChatterView.xaml</DependentUpon>
     </Compile>
@@ -46,8 +50,16 @@
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
+      <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
+      <Name>Freengy.CommonResources</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ChatSessionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChatterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

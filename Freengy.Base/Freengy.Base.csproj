@@ -31,10 +31,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chat\DefaultImpl\ChatMessage.cs" />
+    <Compile Include="Chat\DefaultImpl\ChatMessageFactory.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
-    <Compile Include="DefaultImpl\ChatMessageDecorator.cs" />
-    <Compile Include="DefaultImpl\ChatSession.cs" />
-    <Compile Include="DefaultImpl\ChatSessionFactory.cs" />
+    <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
+    <Compile Include="Chat\DefaultImpl\ChatSession.cs" />
+    <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
     <Compile Include="DefaultImpl\UserAccount.cs" />
@@ -48,11 +50,12 @@
     <Compile Include="Helpers\DllFileSearchFilter.cs" />
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
+    <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
-    <Compile Include="Interfaces\IChatMessage.cs" />
-    <Compile Include="Interfaces\IChatMessageDecorator.cs" />
-    <Compile Include="Interfaces\IChatSession.cs" />
-    <Compile Include="Interfaces\IChatSessionFactory.cs" />
+    <Compile Include="Chat\Interfaces\IChatMessage.cs" />
+    <Compile Include="Chat\Interfaces\IChatMessageDecorator.cs" />
+    <Compile Include="Chat\Interfaces\IChatSession.cs" />
+    <Compile Include="Chat\Interfaces\IChatSessionFactory.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
     <Compile Include="Interfaces\IUserAccount.cs" />
+    <Compile Include="InternalsExposer.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
@@ -69,7 +73,12 @@
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
+      <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
+      <Name>Freengy.CommonResources</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

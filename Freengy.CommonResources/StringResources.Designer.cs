@@ -70,6 +70,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;Empty&gt;.
+        /// </summary>
+        public static string EmptyPlaceHolder {
+            get {
+                return ResourceManager.GetString("EmptyPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hostname.
         /// </summary>
         public static string HostNameText {

@@ -13,5 +13,6 @@ namespace Base.Tests
     internal static class TestCategories 
     {
         internal const string CategoryBase = "Base";
+        internal const string CategoryChat = "Chat";
     }
 }

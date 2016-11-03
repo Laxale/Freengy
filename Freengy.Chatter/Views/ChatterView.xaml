@@ -7,13 +7,62 @@
                    xmlns:catel="http://catel.codeplex.com" 
                    
                    xmlns:local="clr-namespace:Freengy.Chatter.Views" 
-                   xmlns:viewmodels="clr-namespace:Freengy.Chatter.ViewModels" 
+                   xmlns:viewmodels="clr-namespace:Freengy.Chatter.ViewModels"
+                   xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
                    
                    mc:Ignorable="d" 
-                   d:DesignHeight="300" d:DesignWidth="300"
+                   d:DesignHeight="200" d:DesignWidth="400"
                    d:DataContext="{d:DesignInstance Type=viewmodels:ChatterViewModel}">
-    
-    <TabControl>
-        <TabItem Header="Chat!"/>
+
+    <TabControl ItemsSource="{Binding Path=ChatSessions}" IsSynchronizedWithCurrentItem="True">
+        <TabControl.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+
+                <DataTemplate DataType="interfaces:IChatMessageDecorator">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Path=TimeStamp}"/>
+
+                        <TextBlock Grid.Column="1" Text="{Binding Path=OriginalMessage.Text}"/>
+                    </Grid>
+                </DataTemplate>
+            </ResourceDictionary>
+        </TabControl.Resources>
+
+        <TabControl.ContentTemplate>
+            <DataTemplate>
+                <local:ChatSessionView/>
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+        
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="viewmodels:ChatSessionViewModel">
+                <TextBlock Text="{Binding Path=Session.DisplayedName}"/>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+
+        <!--
+        <TabControl.ItemContainerStyle>
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <TabItem Header="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabControl}, 
+                                                      Path=SelectedItem.SessionName}">
+                                <ContentPresenter/>
+                            </TabItem>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </TabControl.ItemContainerStyle>
+        -->
     </TabControl>
 </catel:UserControl>

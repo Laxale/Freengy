@@ -120,6 +120,9 @@
   <data name="DefaultGameIconUri" xml:space="preserve">
     <value>pack://application:,,,/Freengy.CommonResources;component/Images/DefaultGameIcon.png</value>
   </data>
+  <data name="EmptyPlaceHolder" xml:space="preserve">
+    <value>&lt;Empty&gt;</value>
+  </data>
   <data name="HostNameText" xml:space="preserve">
     <value>Hostname</value>
   </data>
