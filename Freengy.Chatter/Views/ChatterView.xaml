@@ -14,7 +14,8 @@
                    d:DesignHeight="200" d:DesignWidth="400"
                    d:DataContext="{d:DesignInstance Type=viewmodels:ChatterViewModel}">
 
-    <TabControl ItemsSource="{Binding Path=ChatSessions}" IsSynchronizedWithCurrentItem="True">
+    <TabControl ItemsSource="{Binding Path=ChatSessions}" IsSynchronizedWithCurrentItem="True" Background="Transparent"
+                BorderThickness="0">
         <TabControl.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -41,28 +42,48 @@
                 <local:ChatSessionView/>
             </DataTemplate>
         </TabControl.ContentTemplate>
-        
+
         <TabControl.ItemTemplate>
             <DataTemplate DataType="viewmodels:ChatSessionViewModel">
                 <TextBlock Text="{Binding Path=Session.DisplayedName}"/>
             </DataTemplate>
         </TabControl.ItemTemplate>
 
-        <!--
         <TabControl.ItemContainerStyle>
-            <Style TargetType="TabItem">
+            <Style TargetType="{x:Type TabItem}">
+                <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate>
-                            <TabItem Header="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabControl}, 
-                                                      Path=SelectedItem.SessionName}">
-                                <ContentPresenter/>
-                            </TabItem>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid>
+                                <Border Name="ContentBorder" Margin="0" Background="Transparent" Style="{StaticResource CommonBorderStyle}" >
+                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      ContentSource="Header" 
+                                                      RecognizesAccessKey="True"/>
+                                </Border>
+                            </Grid>
+                            
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Panel.ZIndex" Value="100" />
+                                    <Setter TargetName="ContentBorder" Property="Background" Value="Orange" />
+                                </Trigger>
+                                
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ContentBorder" Property="Background" Value="DarkRed" />
+                                    <Setter TargetName="ContentBorder" Property="BorderBrush" Value="Black" />
+                                    <Setter Property="Foreground" Value="DarkGray" />
+                                </Trigger>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="Purple" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
         </TabControl.ItemContainerStyle>
-        -->
     </TabControl>
 </catel:UserControl>

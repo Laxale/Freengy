@@ -21,14 +21,12 @@ namespace Freengy.Chatter.ViewModels
 
     public class ChatterViewModel : WaitableViewModel 
     {
-        private readonly IChatMessageFactory chatMessageFactory;
         private readonly IChatSessionFactory chatSessionFactory;
         private readonly ObservableCollection<ChatSessionViewModel> currentChatSessions = new ObservableCollection<ChatSessionViewModel>();
 
 
         public ChatterViewModel() 
         {
-            this.chatMessageFactory = base.serviceLocator.ResolveType<IChatMessageFactory>();
             this.chatSessionFactory = base.serviceLocator.ResolveType<IChatSessionFactory>();
 
             this.ChatSessions = CollectionViewSource.GetDefaultView(this.currentChatSessions);
@@ -65,11 +63,11 @@ namespace Freengy.Chatter.ViewModels
             var firstSession = this.chatSessionFactory.CreateInstance("First test session", "First test session");
             var seconSession = this.chatSessionFactory.CreateInstance("Secon test session", "Secon test session");
 
-            var firstDecorator = new ChatSessionViewModel(firstSession);
-            var seconDecorator = new ChatSessionViewModel(seconSession);
+            var firstViewModel = new ChatSessionViewModel(firstSession);
+            var seconViewModel = new ChatSessionViewModel(seconSession);
 
-            this.currentChatSessions.Add(firstDecorator);
-            this.currentChatSessions.Add(seconDecorator);
+            this.currentChatSessions.Add(firstViewModel);
+            this.currentChatSessions.Add(seconViewModel);
         }
 
 

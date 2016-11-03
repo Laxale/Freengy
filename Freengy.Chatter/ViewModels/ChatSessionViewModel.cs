@@ -3,7 +3,6 @@
 //
 
 
-
 namespace Freengy.Chatter.ViewModels 
 {
     using System;
@@ -14,35 +13,53 @@ namespace Freengy.Chatter.ViewModels
     using Freengy.Base.ViewModels;
     using Freengy.Base.Chat.Interfaces;
 
+    using Catel.IoC;
     using Catel.Data;
     using Catel.MVVM;
 
 
     public class ChatSessionViewModel : WaitableViewModel 
     {
+        private readonly IChatMessageFactory chatMessageFactory;
         private readonly ObservableCollection<IChatMessageDecorator> sessionMessages = new ObservableCollection<IChatMessageDecorator>();
 
-
+        
         public ChatSessionViewModel(IChatSession session) 
         {
             if (session == null) throw new ArgumentNullException(nameof(session));
-
+            
             this.Session = session;
             this.Session.MessageAdded += this.OnMessageAdded;
 
+            this.chatMessageFactory = base.serviceLocator.ResolveType<IChatMessageFactory>();
+
             this.SessionMessages = CollectionViewSource.GetDefaultView(this.sessionMessages);
-        }
 
-        protected override void SetupCommands() 
-        {
+            // this viewmodel is not created by catel. need to init manually
             this.CommandSendMessage = new Command(this.CommandSendMessageImpl, this.CanSendMessage);
+            this.CommandIndentText  = new Command<int>(this.CommandIndentTextImpl, this.CanIndentText);
         }
 
+
+        #region override
+
+        protected override void SetupCommands()
+        {
+
+        }
+
+        #endregion override
+
+
+        #region commands
 
         public Command CommandSendMessage { get; private set; }
+        public Command<int> CommandIndentText { get; private set; }
 
+        #endregion commands
+        
 
-        public IChatSession Session { get; private set; }
+        public IChatSession Session { get; }
         public ICollectionView SessionMessages { get; private set; }
 
         public string MessageText 
@@ -58,11 +75,24 @@ namespace Freengy.Chatter.ViewModels
         {
             IChatMessageDecorator processedMessage;
 
-            this.Session.SendMessage(null, out processedMessage);
+            var newMessage = this.chatMessageFactory.CreateMessage(this.MessageText);
+
+            this.Session.SendMessage(newMessage, out processedMessage);
+
+            this.MessageText = string.Empty;
         }
         private bool CanSendMessage() 
         {
             //return true;
+            return !string.IsNullOrWhiteSpace(this.MessageText);
+        }
+
+        private void CommandIndentTextImpl(int caretIndex)
+        {
+            this.MessageText = this.MessageText.Insert(caretIndex, Environment.NewLine);
+        }
+        private bool CanIndentText(int caretIndex) 
+        {
             return !string.IsNullOrWhiteSpace(this.MessageText);
         }
 

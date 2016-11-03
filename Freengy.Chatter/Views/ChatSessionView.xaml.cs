@@ -5,10 +5,9 @@
 
 namespace Freengy.Chatter.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
-    
+    using System.Windows.Controls;
 
-    public partial class ChatSessionView : CatelControl 
+    public partial class ChatSessionView : UserControl 
     {
         public ChatSessionView() 
         {
