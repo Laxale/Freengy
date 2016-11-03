@@ -13,6 +13,7 @@ namespace Freengy.GameList.ViewModels
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
+    using Freengy.Base.Interfaces;
     using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Interfaces;
     using Freengy.GamePlugin.DefaultImpl;
@@ -135,12 +136,21 @@ namespace Freengy.GameList.ViewModels
         }
 
         [MessageRecipient]
-        private void MessageListener(MessageGamesAdded newGamesMessage) 
+        private void MessageListener(MessageGamesAdded newGamesMessage)
         {
-            foreach (var newGamePlugin in newGamesMessage.NewGames)
-            {
-                this.gameList.Add(newGamePlugin);
-            }
+            var uiDispatcher = base.serviceLocator.ResolveType<IGuiDispatcher>();
+
+            uiDispatcher
+                .InvokeOnGuiThread
+                (
+                    () =>
+                    {
+                        foreach (IGamePlugin newGamePlugin in newGamesMessage.NewGames)
+                        {
+                            this.gameList.Add(newGamePlugin);
+                        }
+                    }
+                );
         }
     }
 }

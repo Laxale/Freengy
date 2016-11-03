@@ -28,7 +28,8 @@
         </Grid.RowDefinitions>
 
         <ListBox Grid.Row="0" VerticalAlignment="Stretch" Margin="{StaticResource All4Margin}" 
-                 Background="Transparent" ItemsSource="{Binding Path=SessionMessages}" BorderThickness="0">
+                 Background="Transparent" ItemsSource="{Binding Path=SessionMessages}" BorderThickness="0"
+                 ItemContainerStyle="{StaticResource CoolListBoxItemStyle}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="interfaces:IChatMessageDecorator">
@@ -49,7 +50,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <GridSplitter Grid.Row="1" Height="2" Width="Auto" ResizeBehavior="PreviousAndNext" Background="Gray" 
+        <GridSplitter Grid.Row="1" Height="6" Width="Auto" ResizeBehavior="PreviousAndNext" Background="LightGray" 
                       Margin="{StaticResource All4Margin}" HorizontalAlignment="Stretch"/>
 
         <Grid Grid.Row="2">

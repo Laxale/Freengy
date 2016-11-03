@@ -21,19 +21,6 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
-
-                <DataTemplate DataType="interfaces:IChatMessageDecorator">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="{Binding Path=TimeStamp}"/>
-
-                        <TextBlock Grid.Column="1" Text="{Binding Path=OriginalMessage.Text}"/>
-                    </Grid>
-                </DataTemplate>
             </ResourceDictionary>
         </TabControl.Resources>
 
@@ -57,10 +44,8 @@
                         <ControlTemplate TargetType="{x:Type TabItem}">
                             <Grid>
                                 <Border Name="ContentBorder" Margin="0" Background="Transparent" Style="{StaticResource CommonBorderStyle}" >
-                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"
-                                                      ContentSource="Header" 
-                                                      RecognizesAccessKey="True"/>
+                                    <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                      ContentSource="Header" RecognizesAccessKey="True"/>
                                 </Border>
                             </Grid>
                             
@@ -71,9 +56,8 @@
                                 </Trigger>
                                 
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter TargetName="ContentBorder" Property="Background" Value="DarkRed" />
-                                    <Setter TargetName="ContentBorder" Property="BorderBrush" Value="Black" />
                                     <Setter Property="Foreground" Value="DarkGray" />
+                                    <Setter TargetName="ContentBorder" Property="Background" Value="DarkRed" />
                                 </Trigger>
 
                                 <Trigger Property="IsMouseOver" Value="True">
