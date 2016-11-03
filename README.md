@@ -15,3 +15,7 @@
        <value>Freengy.SampleGame.Views.SampleGameUi</value>
    </setting>
    Plugin also can ensure config validity by implementing IModule (put some validation logic in Initialize()).
+
+5. I do not use explicit dependency injection, though it may be considered not a good practice. But all resolved services and types
+   are guaranteed to be pre-registered by their assemblies at startup. Yes, unit-testing may become some more implicit and cofusing - 
+   not injecting mocks directly, but registering them in service locator.
