@@ -37,7 +37,6 @@ namespace Freengy.Chatter.ViewModels
 
             // this viewmodel is not created by catel. need to init manually
             this.CommandSendMessage = new Command(this.CommandSendMessageImpl, this.CanSendMessage);
-            this.CommandIndentText  = new Command<int>(this.CommandIndentTextImpl, this.CanIndentText);
         }
 
 
@@ -52,9 +51,7 @@ namespace Freengy.Chatter.ViewModels
 
 
         #region commands
-
         public Command CommandSendMessage { get; private set; }
-        public Command<int> CommandIndentText { get; private set; }
 
         #endregion commands
         
@@ -84,15 +81,6 @@ namespace Freengy.Chatter.ViewModels
         private bool CanSendMessage() 
         {
             //return true;
-            return !string.IsNullOrWhiteSpace(this.MessageText);
-        }
-
-        private void CommandIndentTextImpl(int caretIndex)
-        {
-            this.MessageText = this.MessageText.Insert(caretIndex, Environment.NewLine);
-        }
-        private bool CanIndentText(int caretIndex) 
-        {
             return !string.IsNullOrWhiteSpace(this.MessageText);
         }
 
