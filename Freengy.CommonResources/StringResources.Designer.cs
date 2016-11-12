@@ -140,5 +140,14 @@ namespace Freengy.CommonResources {
                 return ResourceManager.GetString("ValueCannotBeEmptyFormat", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; contains invalid symbols.
+        /// </summary>
+        public static string ValuesContainsInvalidSymbols {
+            get {
+                return ResourceManager.GetString("ValuesContainsInvalidSymbols", resourceCulture);
+            }
+        }
     }
 }

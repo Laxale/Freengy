@@ -120,4 +120,7 @@
   <data name="LogInText" xml:space="preserve">
     <value>Log in</value>
   </data>
+  <data name="RegisterAccountText" xml:space="preserve">
+    <value>Register new account</value>
+  </data>
 </root>

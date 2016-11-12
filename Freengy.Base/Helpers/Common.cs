@@ -6,6 +6,8 @@
 namespace Freengy.Base.Helpers 
 {
     using System;
+    using System.IO;
+    using System.Linq;
 
 
     public static class Common 
@@ -22,6 +24,17 @@ namespace Freengy.Base.Helpers
 
                 throw new ArgumentNullException(nameof(argumentCopy));
             }
+        }
+
+        public static bool HasInvalidSymbols(string arg) 
+        {
+            if (string.IsNullOrWhiteSpace(arg)) return false;
+
+            var badSymbols = Path.GetInvalidFileNameChars().Union(Path.GetInvalidFileNameChars());
+
+            bool hasInvalid = arg.Intersect(badSymbols).Any();
+
+            return hasInvalid;
         }
     }
 }

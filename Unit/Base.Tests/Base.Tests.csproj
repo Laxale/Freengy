@@ -30,6 +30,7 @@
     <Compile Include="DefaultImpl\TaskWrapper.Tests.cs" />
     <Compile Include="Extensions\ExceptionExtensions.Tests.cs" />
     <Compile Include="Extensions\StringExtensions.Tests.cs" />
+    <Compile Include="Helpers\Common.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAttributes.cs" />
   </ItemGroup>

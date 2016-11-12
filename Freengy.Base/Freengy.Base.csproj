@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="Chat\DefaultImpl\ChatMessage.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageFactory.cs" />
+    <Compile Include="Constants\Numeric.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSession.cs" />

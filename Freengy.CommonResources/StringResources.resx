@@ -144,4 +144,7 @@
   <data name="ValueCannotBeEmptyFormat" xml:space="preserve">
     <value>'{0}' cannot be empty</value>
   </data>
+  <data name="ValuesContainsInvalidSymbols" xml:space="preserve">
+    <value>'{0}' contains invalid symbols</value>
+  </data>
 </root>

@@ -27,7 +27,7 @@ namespace Freengy.UI.ViewModels
     using CommonRes = Freengy.CommonResources.StringResources;
 
     
-    public class LoginViewModel : WaitableViewModel, INavigationAware 
+    internal class LoginViewModel : WaitableViewModel, INavigationAware 
     {
         #region Variables
 
