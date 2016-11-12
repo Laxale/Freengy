@@ -79,6 +79,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finish.
+        /// </summary>
+        public static string FinishText {
+            get {
+                return ResourceManager.GetString("FinishText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hostname.
         /// </summary>
         public static string HostNameText {

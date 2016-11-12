@@ -41,12 +41,11 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                   Text="{x:Static localprops:Resources.CreateNewAccountText}" Style="{StaticResource SlidingTitleTextBlockStyle}">
-
-        </TextBlock>
+                   Text="{x:Static localprops:Resources.CreateNewAccountText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxAccountNameLength}"
+        <TextBox Grid.Row="1" Grid.Column="1" Loaded="FocusBox_Loaded"
+                 Name="FocusBox" MaxLength="{x:Static baseconst:Numeric.MaxAccountNameLength}"
                  Text="{Binding Path=UserName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Email"/>
@@ -64,10 +63,13 @@
                       HorizontalAlignment="Stretch" Background="Gray" Margin="4" />
 
         <DockPanel Grid.Row="5" Grid.Column="1">
-            <Button DockPanel.Dock="Right" Content="Okay" IsEnabled="{Binding Path=Registered}"/>
+            <Button DockPanel.Dock="Right" IsEnabled="{Binding Path=Registered}"
+                    Content="{x:Static commonres:StringResources.FinishText}" 
+                    Command="{Binding Path=CommandFinish}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
             <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{x:Static commonres:StringResources.RegisterText}"
-                    Command="{Binding Path=CommandRegister}"/>
+                    IsDefault="True" Command="{Binding Path=CommandRegister}"/>
         </DockPanel>
         
     </Grid>

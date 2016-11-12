@@ -5,6 +5,9 @@
 
 namespace Freengy.UI.Views 
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
     using CatelControl = Catel.Windows.Controls.UserControl;
 
 
@@ -13,6 +16,11 @@ namespace Freengy.UI.Views
         public RegistrationView() 
         {
             this.InitializeComponent();
+        }
+
+        private void FocusBox_Loaded(object sender, RoutedEventArgs e) 
+        {
+            (sender as TextBox)?.Focus();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Freengy.UI.ViewModels
 {
     using System;
     using System.Linq;
+    using System.Windows;
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Security.Cryptography;
@@ -37,8 +38,9 @@ namespace Freengy.UI.ViewModels
         }
 
 
-        protected override void SetupCommands() 
+        protected override void SetupCommands()
         {
+            this.CommandFinish   = new Command<Window>(this.CommandFinishImpl, this.CanFinish);
             this.CommandRegister = new Command(this.CommandRegisterImpl, this.CanCallRegistration);
         }
 
@@ -60,7 +62,13 @@ namespace Freengy.UI.ViewModels
         }
 
 
+        #region commands
+
         public Command CommandRegister { get; private set; }
+
+        public Command<Window> CommandFinish { get; private set; }
+
+        #endregion commands
 
 
         #region properties
@@ -116,6 +124,18 @@ namespace Freengy.UI.ViewModels
             bool canTryRegister = !validationResults.Any();
 
             return canTryRegister;
+        }
+
+        private void CommandFinishImpl(Window registrationWindow)
+        {
+            // send message
+            registrationWindow.Close();
+        }
+        private bool CanFinish(Window registrationWindow) 
+        {
+            if (this.Registered) return true;
+
+            return true;
         }
     }
 }

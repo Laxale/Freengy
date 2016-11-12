@@ -123,6 +123,9 @@
   <data name="EmptyPlaceHolder" xml:space="preserve">
     <value>&lt;Empty&gt;</value>
   </data>
+  <data name="FinishText" xml:space="preserve">
+    <value>Finish</value>
+  </data>
   <data name="HostNameText" xml:space="preserve">
     <value>Hostname</value>
   </data>
