@@ -134,4 +134,33 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="ToolTip" x:Key="CommonToolTipStyle">
+        <Setter Property="Placement"     Value="Top"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Style="{StaticResource CommonBorderStyle}" 
+                                Background="{TemplateBinding Background}">
+                            <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
+                        </Border>
+
+                        <Path Grid.Row="1" Data="M10,170 L10,180 20,170" Stretch="Fill" 
+                              HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="25"
+                              Fill="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ToolTip" x:Key="{x:Type ToolTip}" BasedOn="{StaticResource CommonToolTipStyle}">
+
+    </Style>
 </ResourceDictionary>

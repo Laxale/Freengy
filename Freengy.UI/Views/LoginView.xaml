@@ -60,6 +60,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -103,6 +104,26 @@
 
                 <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
                           Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
+
+                <DockPanel Grid.Row="4" Grid.Column="1">
+                    <DockPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+                            <Setter Property="Foreground" Value="Blue"/>
+                            <Setter Property="DockPanel.Dock" Value="Right"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+
+                        <Style TargetType="ToolTip" BasedOn="{StaticResource CommonToolTipStyle}">
+                            <Setter Property="Background" Value="Orange"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                        </Style>
+                    </DockPanel.Resources>
+                    
+                    <Button Content="Forgot password?" HorizontalAlignment="Right" ToolTip="Recover your password">
+                    </Button>
+
+                    <Button Content="Create account" ToolTip="Create a new user account" />
+                </DockPanel>
             </Grid>
         </basexamlresources:WaitableDecorator>
 

@@ -141,6 +141,7 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
+            // TODO: add this.ReportMessage() for handling login errors
             this.LoginCommand = new Command(() => this.loginController.LogIn(this.loginParameters), this.CanLogIn);
         }
 
