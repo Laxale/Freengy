@@ -97,7 +97,7 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email is used to recover password if forgotten.
+        ///   Looks up a localized string similar to Email is not not required, but you will be unable to recover forgotten password without it.
         /// </summary>
         public static string NewAccountEmailHintText {
             get {

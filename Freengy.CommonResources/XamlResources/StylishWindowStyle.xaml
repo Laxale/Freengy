@@ -82,9 +82,7 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <!--
-                                    Background="{StaticResource TitleBarBackgroundBrush}"
-                                    -->
+                                
                                 <Border x:Name="TitleBar" Grid.Row="0" Background="Transparent" BorderThickness="0" 
                                         MouseLeftButtonDown="TitleBarMouseLeftButtonDown" MouseMove="TitleBarMouseMove">
                                     <Grid Height="32">
@@ -134,13 +132,16 @@
 
                                 <ContentPresenter Grid.Row="1" Margin="0" />
                                 
-                                <StatusBar x:Name="PART_StatusBar" Grid.Row="2" Height="24">
+                                <!--
+                                <StatusBar x:Name="PART_StatusBar" Grid.Row="2" Height="24"
+                                           Visibility="{Binding Path=}">
                                     <TextBlock Text="{Binding Path=StatusText}" Margin="4,0,0,0"/>
 
                                     <StatusBarItem HorizontalAlignment="Right">
                                         <ResizeGrip Opacity="0.75" />
                                     </StatusBarItem>
                                 </StatusBar>
+                                -->
                             </Grid>
                         </Border>
 
@@ -185,11 +186,11 @@
         <Style.Resources>
             <Style TargetType="{x:Type StatusBar}">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                    <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
                         <Setter Property="Foreground" Value="{StaticResource CommonWindowStatusForeground}" />
                         <Setter Property="Background" Value="{StaticResource CommonWindowBorderBrush}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                    <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
                         <Setter Property="Foreground" Value="{StaticResource CommonWindowStatusForegroundInactive}" />
                         <Setter Property="Background" Value="{StaticResource CommonWindowBorderBrushInactive}" />
                     </DataTrigger>

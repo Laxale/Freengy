@@ -7,13 +7,14 @@
         xmlns:local="clr-namespace:Freengy.UI.Views"
         
         mc:Ignorable="d" 
+        KeyUp="Window_KeyUp"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         d:DesignHeight="200" d:DesignWidth="300"
         Style="{StaticResource CommonWindowStyle}"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AccountIcon.png"
-        KeyUp="Window_KeyUp"
-        Width="360" Height="240" MinWidth="300" MinHeight="240" MaxWidth="500" MaxHeight="300" Background="#CCCCFF">
+        
+        Width="360" Height="240" MinWidth="300" MinHeight="240" MaxWidth="500" MaxHeight="300" Background="DarkGray">
     
     <local:RegistrationView/>
 </Window>
