@@ -106,6 +106,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterText {
+            get {
+                return ResourceManager.GetString("RegisterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save password.
         /// </summary>
         public static string SavePasswordText {

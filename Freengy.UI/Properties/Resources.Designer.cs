@@ -61,6 +61,24 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create account.
+        /// </summary>
+        public static string CreateAccountText {
+            get {
+                return ResourceManager.GetString("CreateAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new account.
+        /// </summary>
+        public static string CreateNewAccountText {
+            get {
+                return ResourceManager.GetString("CreateNewAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log in.
         /// </summary>
         public static string LogInText {
@@ -70,11 +88,20 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register new account.
+        ///   Looks up a localized string similar to Log in and kawabanga!.
         /// </summary>
-        public static string RegisterAccountText {
+        public static string LogInWelcomeText {
             get {
-                return ResourceManager.GetString("RegisterAccountText", resourceCulture);
+                return ResourceManager.GetString("LogInWelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is used to recover password if forgotten.
+        /// </summary>
+        public static string NewAccountEmailHintText {
+            get {
+                return ResourceManager.GetString("NewAccountEmailHintText", resourceCulture);
             }
         }
     }

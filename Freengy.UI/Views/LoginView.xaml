@@ -33,28 +33,40 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Caption" FontSize="16" Padding="4" Visibility="Visible"/>
+        <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Foreground" Value="#990022"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard Storyboard.TargetProperty="Margin">
+                                    <ThicknessAnimation From="100, 0, 0, 0" To="4, 0, 0, 0" By="1" BeginTime="0" Duration="0:0:2">
+                                        <ThicknessAnimation.EasingFunction>
+                                            <BounceEase Bounces="3"/>
+                                        </ThicknessAnimation.EasingFunction>
+                                    </ThicknessAnimation>
+
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0" Duration="0:0:2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
         <basexamlresources:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
             <Grid VerticalAlignment="Center">
-                <Grid.Resources>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}" x:Key="LoginTextBoxStyle">
-                        <Setter Property="MaxLength" Value="100"/>
-
-                        <Style.Triggers>
-                            <Trigger Property="Validation.HasError" Value="True">
-                                <Setter Property="ToolTip" 
-                                        Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Resources>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -79,8 +91,9 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0" IsEnabled="{Binding Path=IsDebug}" Style="{StaticResource LoginTextBoxStyle}"
-                             Text="{Binding HostName, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="0" 
+                             Text="{Binding Path=HostName, Mode=TwoWay, ValidatesOnDataErrors=True, 
+                                            NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <TextBlock Grid.Column="1" Text="porttt"/>
 
@@ -88,7 +101,7 @@
                              Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
-                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource LoginTextBoxStyle}"
+                <TextBox Grid.Row="1" Grid.Column="1" 
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <PasswordBox Grid.Row="2" Grid.Column="1" 
@@ -98,7 +111,7 @@
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- TODO какого хера кнопка не в любом месте юзерконтрола работает? -->
-                <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=LoginCommand}"
+                <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=CommandLogin}"
                         MinWidth="{StaticResource MinButtonWidth}" HorizontalAlignment="Right" IsDefault="True" 
                         Content="{x:Static localprops:Resources.LogInText}" DockPanel.Dock="Right" Margin="{StaticResource All4Margin}"/>
 
@@ -122,7 +135,8 @@
                     <Button Content="Forgot password?" HorizontalAlignment="Right" ToolTip="Recover your password">
                     </Button>
 
-                    <Button Content="Create account" ToolTip="Create a new user account" />
+                    <Button Content="{x:Static localprops:Resources.CreateAccountText}" ToolTip="Create a new user account" 
+                            Command="{Binding Path=CommandCreateAccount}"/>
                 </DockPanel>
             </Grid>
         </basexamlresources:WaitableDecorator>

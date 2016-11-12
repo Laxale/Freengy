@@ -24,6 +24,7 @@ namespace Freengy.UI.Module
             var uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
 
             uiVisualizer.Register<SettingsViewModel, SettingsWindow>();
+            uiVisualizer.Register<RegistrationViewModel, RegistrationWindow>();
 
             ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);

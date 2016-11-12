@@ -132,8 +132,10 @@ namespace Freengy.UI.ViewModels
 
         #region Commands
 
-        public Command LoginCommand { get; private set; }
+        public Command CommandLogin { get; private set; }
 
+        public Command CommandCreateAccount { get; private set; }
+        
         #endregion Commands
 
 
@@ -141,8 +143,9 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
+            this.CommandCreateAccount = new Command(this.CreateAccountImpl);
             // TODO: add this.ReportMessage() for handling login errors
-            this.LoginCommand = new Command(() => this.loginController.LogIn(this.loginParameters), this.CanLogIn);
+            this.CommandLogin = new Command(() => this.loginController.LogIn(this.loginParameters), this.CanLogIn);
         }
 
         protected override async Task InitializeAsync() 
@@ -174,7 +177,7 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults) 
         {
             base.ValidateFields(validationResults);
 
@@ -216,6 +219,13 @@ namespace Freengy.UI.ViewModels
 
 
         #region Privates
+
+        private async void CreateAccountImpl() 
+        {
+            var registrationViewModel = base.typeFactory.CreateInstance<RegistrationViewModel>();
+
+            await base.uiVisualizer.ShowDialogAsync(registrationViewModel);
+        }
 
         private bool CanLogIn() 
         {

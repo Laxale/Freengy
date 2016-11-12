@@ -1,0 +1,19 @@
+﻿<Window x:Class="Freengy.UI.Views.RegistrationWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        
+        xmlns:local="clr-namespace:Freengy.UI.Views"
+        
+        mc:Ignorable="d" 
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        d:DesignHeight="200" d:DesignWidth="300"
+        Style="{StaticResource CommonWindowStyle}"
+        Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AccountIcon.png"
+        KeyUp="Window_KeyUp"
+        Width="360" Height="240" MinWidth="300" MinHeight="240" MaxWidth="500" MaxHeight="300" Background="#CCCCFF">
+    
+    <local:RegistrationView/>
+</Window>

@@ -6,7 +6,7 @@
 namespace Freengy.UI.ViewModels 
 {
     using System;
-    using System.Text;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Security.Cryptography;
@@ -28,9 +28,18 @@ namespace Freengy.UI.ViewModels
 
     internal class RegistrationViewModel : WaitableViewModel 
     {
+        private readonly IPleaseWaitService waiter;
+
+
+        public RegistrationViewModel()
+        {
+            this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
+        }
+
+
         protected override void SetupCommands() 
         {
-            
+            this.CommandRegister = new Command(this.CommandRegisterImpl, this.CanCallRegistration);
         }
 
         protected override void ValidateFields(List<IFieldValidationResult> validationResults) 
@@ -51,6 +60,18 @@ namespace Freengy.UI.ViewModels
         }
 
 
+        public Command CommandRegister { get; private set; }
+
+
+        #region properties
+
+        public bool Registered 
+        {
+            get { return (bool)GetValue(RegisteredProperty); }
+
+            private set { SetValue(RegisteredProperty, value); }
+        }
+
         public string UserName 
         {
             get { return (string)GetValue(UserNameProperty); }
@@ -65,9 +86,36 @@ namespace Freengy.UI.ViewModels
             set { SetValue(EmailProperty, value); }
         }
 
+        public static readonly PropertyData RegisteredProperty =
+            ModelBase.RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.Registered, () => false);
         public static readonly PropertyData UserNameProperty =
-            RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
+            ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
         public static readonly PropertyData EmailProperty =
-            RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
+            ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
+        
+        #endregion properties
+
+
+        private void CommandRegisterImpl() 
+        {
+            this.waiter.Show("Checking data");
+
+            System.Threading.Thread.Sleep(500);
+
+            this.waiter.Hide();
+
+            this.Registered = true;
+        }
+        private bool CanCallRegistration() 
+        {
+            if (this.Registered) return false;
+
+            List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
+            this.ValidateFields(validationResults);
+
+            bool canTryRegister = !validationResults.Any();
+
+            return canTryRegister;
+        }
     }
 }

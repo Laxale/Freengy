@@ -88,6 +88,31 @@
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
         <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
         <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="ErrorBorder" Style="{StaticResource CommonBorderStyle}" 
+                            Background="{TemplateBinding Background}" BorderBrush="Red" BorderThickness="0">
+                        <ScrollViewer Name="PART_ContentHost"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="ErrorBorder" Value="Orange"/>
+                        </Trigger>
+                        
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="BorderThickness" TargetName="ErrorBorder" Value="2"/>
+
+                            <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Mode=Self}, 
+                                                    Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style TargetType="TextBox" x:Key="{x:Type TextBox}" BasedOn="{StaticResource CommonTextBoxStyle}">
 
