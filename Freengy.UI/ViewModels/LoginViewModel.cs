@@ -27,7 +27,7 @@ namespace Freengy.UI.ViewModels
     using CommonRes = Freengy.CommonResources.StringResources;
 
     
-    internal class LoginViewModel : WaitableViewModel, INavigationAware 
+    internal class LoginViewModel : CredentialViewModel, INavigationAware 
     {
         #region Variables
 
@@ -87,32 +87,13 @@ namespace Freengy.UI.ViewModels
             set { SetValue(HostNameProperty, value); }
         }
 
-        public string UserName 
-        {
-            get { return (string)GetValue(UserNameProperty); }
-
-            set
-            {
-                value.FilterNewLineSymbols();
-                SetValue(UserNameProperty, value);
-            }
-        }
-
-        public string Password 
-        {
-            get { return (string)GetValue(PasswordProperty); }
-
-            set { SetValue(PasswordProperty, value); }
-        }
-
         public bool SavePassword 
         {
             get { return (bool)GetValue(SavePasswordProperty); }
 
             set { SetValue(SavePasswordProperty, value); }
         }
-
-
+        
         public string Information 
         {
             get { return (string)this.GetValue(InformationProperty); }
@@ -135,6 +116,8 @@ namespace Freengy.UI.ViewModels
         public Command CommandLogin { get; private set; }
 
         public Command CommandCreateAccount { get; private set; }
+
+        public Command CommandRecoverPassword { get; private set; }
         
         #endregion Commands
 
@@ -143,9 +126,9 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.CommandCreateAccount = new Command(this.CreateAccountImpl);
-            // TODO: add this.ReportMessage() for handling login errors
-            this.CommandLogin = new Command(() => this.loginController.LogIn(this.loginParameters), this.CanLogIn);
+            this.CommandCreateAccount   = new Command(this.CreateAccountImpl);
+            this.CommandRecoverPassword = new Command(this.RecoverPasswordImpl);
+            this.CommandLogin = new Command(this.CommandLoginImpl, this.CanLogIn);
         }
 
         protected override async Task InitializeAsync() 
@@ -227,6 +210,13 @@ namespace Freengy.UI.ViewModels
             await base.uiVisualizer.ShowDialogAsync(registrationViewModel);
         }
 
+        private async void RecoverPasswordImpl() 
+        {
+            var recoverViewModel = base.typeFactory.CreateInstance<RecoverPasswordViewModel>();
+
+            await base.uiVisualizer.ShowDialogAsync(recoverViewModel);
+        }
+
         private bool CanLogIn() 
         {
             bool canLogin =
@@ -248,7 +238,7 @@ namespace Freengy.UI.ViewModels
             this.UserName = @"Администратор";
             //            this.HostName = @"w610sstd64en-55";
             //            this.UserName = @"w610sstd64en-55\Debugger";
-            this.Password = "Qwerty123";
+            this.Password = "Qwerty1234";
 //            return;
 
             this.SavePassword = settings.SavePassword;
@@ -269,7 +259,30 @@ namespace Freengy.UI.ViewModels
                 }
             }
         }
-        
+
+        private async void CommandLoginImpl() 
+        {
+            Action loginAction =
+                () =>
+                {
+                    base.IsWaiting = true;
+                    this.loginController.LogIn(this.loginParameters);
+                };
+
+            Action<Task> loginContinuator =
+                parentTask =>
+                {
+                    base.IsWaiting = false;
+
+                    if (parentTask.Exception != null)
+                    {
+                        this.ReportMessage(parentTask.Exception.GetReallyRootException().Message);
+                    }
+                };
+
+            await base.taskWrapper.Wrap(loginAction, loginContinuator);
+        }
+
         #endregion Privates
 
 
@@ -280,12 +293,6 @@ namespace Freengy.UI.ViewModels
 
         public static readonly PropertyData HostNameProperty =
             RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.HostName, () => string.Empty);
-
-        public static readonly PropertyData UserNameProperty =
-            RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.UserName, () => string.Empty);
-
-        public static readonly PropertyData PasswordProperty =
-            RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.Password, () => string.Empty);
 
         public static readonly PropertyData InformationProperty =
             RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.Information, () => string.Empty);

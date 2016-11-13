@@ -5,68 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:Freengy.CommonResources.Converters"
 
-             x:Name="Root"
+             Name="Root"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
             <!-- думал сделать динамическую привязку к переданному полю, обозначающему занятость вьюмодели -->
             <converters:PropertyNameToBindingConverter x:Key="PropertyNameToBindingConverter"/>
-
-            <DataTemplate x:Key="DefaultWaitTemplate">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                    <TextBlock Text="Working" FontSize="18" HorizontalAlignment="Center" Margin="4"/>
-                    <ProgressBar MinHeight="20" IsIndeterminate="True" MinWidth="200"/>
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!-- 
-    <DataTrigger.Binding>
-                        <Binding Path="IsWaiting"/>
-                    </DataTrigger.Binding>
-    Binding="{Binding Path=IsWaitingPropertyName, Converter={StaticResource PropertyNameToBindingConverter}}" 
-    {Binding Path=WaitTemplate}
-    -->
-    <UserControl.Style>
-        <Style TargetType="UserControl">
-            <Style.Triggers>
-                <DataTrigger Value="True">
-                    <DataTrigger.Binding>
-                        <Binding Path="IsWaiting"/>
-                    </DataTrigger.Binding>
-
-                    <Setter Property="ContentTemplate" Value="{Binding ElementName=Root, Path=WaitTemplate, Mode=OneWay}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Style>
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- ContentTemplate="{Binding Path=WaitTemplate}" -->
-        <ContentControl Grid.Row="0" ContentTemplate="{StaticResource DefaultWaitTemplate}">
-            <ContentControl.Style>
-                <Style TargetType="ContentControl">
-                    <Setter Property="Visibility" Value="Visible"/>
-
-                    <Style.Triggers>
-                        <DataTrigger Value="True">
-                            <DataTrigger.Binding>
-                                <Binding Path="IsWaiting"/>
-                            </DataTrigger.Binding>
-
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ContentControl.Style>
-        </ContentControl>
-
-        <ContentPresenter Opacity="0.5"/>
-    </Grid>
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            <Grid>
+                <ContentControl Content="{TemplateBinding Content}" 
+                                IsEnabled="{Binding Path=IsWaiting, Converter={StaticResource ReverseBooleanConverter}}"/>
+                
+                <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}"
+                                Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>

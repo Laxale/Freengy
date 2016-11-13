@@ -73,6 +73,7 @@
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="ViewModels\CredentialViewModel.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

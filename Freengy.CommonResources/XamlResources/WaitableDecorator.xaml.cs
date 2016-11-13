@@ -22,17 +22,17 @@ namespace Freengy.CommonResources.XamlResources
         /// </summary>
         public string IsWaitingPropertyName 
         {
-            get { return (string)this.GetValue(WaitableDecorator.IsWaitingPropertyNameProperty); }
-            set { this.SetValue(WaitableDecorator.IsWaitingPropertyNameProperty, value); }
+            get { return (string)this.GetValue(IsWaitingPropertyNameProperty); }
+            set { this.SetValue(IsWaitingPropertyNameProperty, value); }
         }
 
         /// <summary>
         /// Sets the name of a property that indicates busy state of a viewmodel
         /// </summary>
-        public System.Windows.DataTemplate WaitTemplate 
+        public DataTemplate WaitTemplate 
         {
-            get { return (System.Windows.DataTemplate)this.GetValue(WaitableDecorator.WaitTemplateProperty); }
-            set { this.SetValue(WaitableDecorator.WaitTemplateProperty, value); }
+            get { return (DataTemplate)this.GetValue(WaitTemplateProperty); }
+            set { this.SetValue(WaitTemplateProperty, value); }
         }
 
 
@@ -41,8 +41,7 @@ namespace Freengy.CommonResources.XamlResources
             (
                 "WaitTemplate",
                 typeof(DataTemplate),
-                typeof(WaitableDecorator),
-                new PropertyMetadata(null)
+                typeof(WaitableDecorator)
             );
 
         public static readonly DependencyProperty IsWaitingPropertyNameProperty =

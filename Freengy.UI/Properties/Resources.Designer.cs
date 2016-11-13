@@ -79,15 +79,6 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No spaces, template: good@email.
-        /// </summary>
-        public static string EmailRequirementsText {
-            get {
-                return ResourceManager.GetString("EmailRequirementsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Log in.
         /// </summary>
         public static string LogInText {
@@ -115,11 +106,23 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum length of 10 symbols and no spaces.
+        ///   Looks up a localized string similar to This email has been sent to You because of Freengy password recovery request.
+        ///If You didnt request such operation, just ignore this message.
+        ///
+        ///Freengy recovery code: {0}.
         /// </summary>
-        public static string PasswordRequirementsText {
+        public static string PasswordRecoveryEmailBodyFormat {
             get {
-                return ResourceManager.GetString("PasswordRequirementsText", resourceCulture);
+                return ResourceManager.GetString("PasswordRecoveryEmailBodyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recover your Freengy password.
+        /// </summary>
+        public static string PasswordRecoveryEmailSubjectText {
+            get {
+                return ResourceManager.GetString("PasswordRecoveryEmailSubjectText", resourceCulture);
             }
         }
     }

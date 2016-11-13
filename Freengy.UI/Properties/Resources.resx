@@ -123,9 +123,6 @@
   <data name="CreateNewAccountText" xml:space="preserve">
     <value>Create new account</value>
   </data>
-  <data name="EmailRequirementsText" xml:space="preserve">
-    <value>No spaces, template: good@email</value>
-  </data>
   <data name="LogInText" xml:space="preserve">
     <value>Log in</value>
   </data>
@@ -135,7 +132,13 @@
   <data name="NewAccountEmailHintText" xml:space="preserve">
     <value>Email is not not required, but you will be unable to recover forgotten password without it</value>
   </data>
-  <data name="PasswordRequirementsText" xml:space="preserve">
-    <value>Minimum length of 10 symbols and no spaces</value>
+  <data name="PasswordRecoveryEmailBodyFormat" xml:space="preserve">
+    <value>This email has been sent to You because of Freengy password recovery request.
+If You didnt request such operation, just ignore this message.
+
+Freengy recovery code: {0}</value>
+  </data>
+  <data name="PasswordRecoveryEmailSubjectText" xml:space="preserve">
+    <value>Recover your Freengy password</value>
   </data>
 </root>

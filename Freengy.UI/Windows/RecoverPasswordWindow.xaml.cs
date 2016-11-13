@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Freengy.UI.Views
+namespace Freengy.UI.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для SettingsWindow.xaml
+    /// Interaction logic for RecoverPasswordWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class RecoverPasswordWindow : Window
     {
-        public SettingsWindow()
+        public RecoverPasswordWindow()
         {
             InitializeComponent();
         }

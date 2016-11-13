@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.UI.Views 
+namespace Freengy.UI.Windows 
 {
     using System.Windows;
 

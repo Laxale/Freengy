@@ -7,6 +7,7 @@ namespace Freengy.UI.Module
 {
     using Freengy.UI.Views;
     using Freengy.UI.Helpers;
+    using Freengy.UI.Windows;
     using Freengy.UI.ViewModels;
     using Freengy.Base.Interfaces;
     using Freengy.Base.DefaultImpl;
@@ -25,6 +26,7 @@ namespace Freengy.UI.Module
 
             uiVisualizer.Register<SettingsViewModel, SettingsWindow>();
             uiVisualizer.Register<RegistrationViewModel, RegistrationWindow>();
+            uiVisualizer.Register<RecoverPasswordViewModel, RecoverPasswordWindow>();
 
             ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Freengy.UI.Views.MainWindow"
+﻿<Window x:Class="Freengy.UI.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,6 @@
         
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-        xmlns:xamlResources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
         
         mc:Ignorable="d"
         Style="{StaticResource CommonWindowStyle}"
@@ -17,20 +16,9 @@
         MinHeight="360" MinWidth="630" Width="630" Height="360"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 
-    <Window.Resources>
-        <DataTemplate x:Key="WaitTempl">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="fuuuu"/>
-                <ProgressBar IsIndeterminate="True" Margin="6"/>
-            </StackPanel>
-        </DataTemplate>
-    </Window.Resources>
-
     <Window.Background>
         <ImageBrush ImageSource="/Images/ShellBackground.jpg"/>
     </Window.Background>
 
-    <xamlResources:WaitableDecorator WaitTemplate="{StaticResource WaitTempl}">
-        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
-    </xamlResources:WaitableDecorator>
+    <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
 </Window>

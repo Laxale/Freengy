@@ -7,14 +7,14 @@
                    xmlns:catel="http://catel.codeplex.com"
              
                    xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
-                   xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+                   xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:basexamlresources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
                    
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
-                   d:DataContext="{d:DesignInstance Type=viewModels:LoginViewModel}">
+                   d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
     <Grid>
@@ -108,9 +108,9 @@
                             <Setter Property="BorderBrush" Value="Black"/>
                         </Style>
                     </DockPanel.Resources>
-                    
-                    <Button Content="Forgot password?" HorizontalAlignment="Right" ToolTip="Recover your password">
-                    </Button>
+
+                    <Button Content="{x:Static commonres:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
+                            ToolTip="Recover your password" Command="{Binding Path=CommandRecoverPassword}"/>
 
                     <Button Content="{x:Static localprops:Resources.CreateAccountText}" ToolTip="Create a new user account" 
                             Command="{Binding Path=CommandCreateAccount}"/>

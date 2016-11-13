@@ -10,8 +10,9 @@ namespace Freengy.UI.Helpers
     
     using Freengy.UI.Views;
     using Freengy.UI.Module;
+    using Freengy.UI.Windows;
     using Freengy.UI.Constants;
-
+    
     using Freengy.Base.Module;
     using Freengy.Chatter.Module;
     using Freengy.GameList.Module;

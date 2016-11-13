@@ -70,6 +70,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No spaces, template: good@email.
+        /// </summary>
+        public static string EmailRequirementsText {
+            get {
+                return ResourceManager.GetString("EmailRequirementsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string EmailText {
@@ -106,11 +115,29 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forgot password?.
+        /// </summary>
+        public static string ForgotPasswordQuestionText {
+            get {
+                return ResourceManager.GetString("ForgotPasswordQuestionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hostname.
         /// </summary>
         public static string HostNameText {
             get {
                 return ResourceManager.GetString("HostNameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum length of 10 symbols and no spaces.
+        /// </summary>
+        public static string PasswordRequirementsText {
+            get {
+                return ResourceManager.GetString("PasswordRequirementsText", resourceCulture);
             }
         }
         

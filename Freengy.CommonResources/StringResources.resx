@@ -120,6 +120,9 @@
   <data name="DefaultGameIconUri" xml:space="preserve">
     <value>pack://application:,,,/Freengy.CommonResources;component/Images/DefaultGameIcon.png</value>
   </data>
+  <data name="EmailRequirementsText" xml:space="preserve">
+    <value>No spaces, template: good@email</value>
+  </data>
   <data name="EmailText" xml:space="preserve">
     <value>Email</value>
   </data>
@@ -132,8 +135,14 @@
   <data name="FinishText" xml:space="preserve">
     <value>Finish</value>
   </data>
+  <data name="ForgotPasswordQuestionText" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
   <data name="HostNameText" xml:space="preserve">
     <value>Hostname</value>
+  </data>
+  <data name="PasswordRequirementsText" xml:space="preserve">
+    <value>Minimum length of 10 symbols and no spaces</value>
   </data>
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>

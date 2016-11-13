@@ -34,6 +34,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.SampleGame", "Freen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Chatter", "Freengy.Chatter\Freengy.Chatter.csproj", "{D3D20754-2906-4D1D-99F1-EE39B893F9E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.WebApi", "Freengy.WebApi\Freengy.WebApi.csproj", "{23344629-6671-4B06-82E1-904C2F46DF55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Unsafe", "Freengy.Unsafe\Freengy.Unsafe.csproj", "{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +88,14 @@ Global
 		{D3D20754-2906-4D1D-99F1-EE39B893F9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3D20754-2906-4D1D-99F1-EE39B893F9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3D20754-2906-4D1D-99F1-EE39B893F9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23344629-6671-4B06-82E1-904C2F46DF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23344629-6671-4B06-82E1-904C2F46DF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23344629-6671-4B06-82E1-904C2F46DF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23344629-6671-4B06-82E1-904C2F46DF55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

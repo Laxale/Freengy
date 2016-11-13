@@ -3,11 +3,11 @@
 //
 
 
-namespace Freengy.UI.Views 
+namespace Freengy.UI.Windows 
 {
     using System.Windows;
     using System.Windows.Input;
-    
+
 
     public partial class RegistrationWindow 
     {
