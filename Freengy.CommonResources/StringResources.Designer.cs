@@ -151,6 +151,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to freengy@host.net.
+        /// </summary>
+        public static string ProjectFakeEmail {
+            get {
+                return ResourceManager.GetString("ProjectFakeEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Freengy.
         /// </summary>
         public static string ProjectName {

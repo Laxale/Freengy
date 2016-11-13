@@ -108,10 +108,20 @@ namespace Freengy.UI.ViewModels
             await base.taskWrapper.Wrap(sendAction, sendContinuator);
         }
 
-        private void SendCode()
+        private void SendCode() 
         {
-            var smtpClient = new SmtpClient();
-            // use ActiveUp direct send messag. No smtp servers!
+            string body = string.Format(LocalRes.PasswordRecoveryEmailBodyFormat, this.secureDecorator.GetSecureString());
+
+            var message = new SmtpMessage
+            {
+                BodyText = { Text = body },
+                From = { Email = CommonRes.ProjectFakeEmail },
+                Subject = LocalRes.PasswordRecoveryEmailSubjectText,
+            };
+
+            message.To.Add(this.Email);
+
+            message.DirectSend();
         }
 
         private bool CanSendCode() 

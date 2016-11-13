@@ -147,6 +147,9 @@
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="ProjectFakeEmail" xml:space="preserve">
+    <value>freengy@host.net</value>
+  </data>
   <data name="ProjectName" xml:space="preserve">
     <value>Freengy</value>
   </data>
