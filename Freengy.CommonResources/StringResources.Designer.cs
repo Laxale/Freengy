@@ -70,11 +70,29 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string EmailText {
+            get {
+                return ResourceManager.GetString("EmailText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Empty&gt;.
         /// </summary>
         public static string EmptyPlaceHolder {
             get {
                 return ResourceManager.GetString("EmptyPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; doesnt match requirements &apos;{1}&apos;.
+        /// </summary>
+        public static string EntityDoesntMatchRequirementsFormat {
+            get {
+                return ResourceManager.GetString("EntityDoesntMatchRequirementsFormat", resourceCulture);
             }
         }
         

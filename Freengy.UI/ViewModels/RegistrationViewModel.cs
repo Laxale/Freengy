@@ -24,6 +24,7 @@ namespace Freengy.UI.ViewModels
 
     using Prism.Regions;
 
+    using LocalRes = Freengy.UI.Properties.Resources;
     using CommonRes = Freengy.CommonResources.StringResources;
 
 
@@ -38,7 +39,7 @@ namespace Freengy.UI.ViewModels
         }
 
 
-        protected override void SetupCommands()
+        protected override void SetupCommands() 
         {
             this.CommandFinish   = new Command<Window>(this.CommandFinishImpl, this.CanFinish);
             this.CommandRegister = new Command(this.CommandRegisterImpl, this.CanCallRegistration);
@@ -48,17 +49,9 @@ namespace Freengy.UI.ViewModels
         {
             base.ValidateFields(validationResults);
 
-            if (string.IsNullOrWhiteSpace(this.UserName))
-            {
-                validationResults.Add
-                (
-                    FieldValidationResult.CreateError(UserNameProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.HostNameText)
-                );
-            }
-            else if (Common.HasInvalidSymbols(this.UserName))
-            {
-                FieldValidationResult.CreateError(UserNameProperty, CommonRes.ValuesContainsInvalidSymbols, CommonRes.HostNameText);
-            }
+            this.ValidateEmail(validationResults);
+            this.ValidateUserName(validationResults);
+            this.ValidatePassword(validationResults);
         }
 
 
@@ -87,6 +80,13 @@ namespace Freengy.UI.ViewModels
             set { SetValue(UserNameProperty, value); }
         }
 
+        public string Password 
+        {
+            get { return (string)GetValue(PasswordProperty); }
+
+            set { SetValue(PasswordProperty, value); }
+        }
+
         public string Email 
         {
             get { return (string)GetValue(EmailProperty); }
@@ -99,8 +99,10 @@ namespace Freengy.UI.ViewModels
         public static readonly PropertyData UserNameProperty =
             ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
         public static readonly PropertyData EmailProperty =
-            ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.UserName, () => string.Empty);
-        
+            ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.Email, () => string.Empty);
+        public static readonly PropertyData PasswordProperty =
+            ModelBase.RegisterProperty<RegistrationViewModel, string>(regViewModel => regViewModel.Password, () => string.Empty);
+
         #endregion properties
 
 
@@ -136,6 +138,51 @@ namespace Freengy.UI.ViewModels
             if (this.Registered) return true;
 
             return true;
+        }
+
+        private void ValidateUserName(List<IFieldValidationResult> validationResults) 
+        {
+            if (string.IsNullOrWhiteSpace(this.UserName))
+            {
+                string error = string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText);
+                validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));
+            }
+            else if (Common.HasInvalidSymbols(this.UserName))
+            {
+                string error = string.Format(CommonRes.ValuesContainsInvalidSymbols, CommonRes.UserNameText);
+                validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));
+            }
+        }
+        private void ValidatePassword(List<IFieldValidationResult> validationResults) 
+        {
+            if (Account.IsGoodPassword(this.Password)) return;
+
+            string error = 
+                string.Format
+                (
+                    CommonRes.EntityDoesntMatchRequirementsFormat, 
+                    CommonRes.PasswordText,
+                    LocalRes.PasswordRequirementsText
+                );
+
+            validationResults.Add(FieldValidationResult.CreateError(PasswordProperty, error));
+        }
+        private void ValidateEmail(List<IFieldValidationResult> validationResults) 
+        {
+            // empty email is okay
+            if (string.IsNullOrWhiteSpace(this.Email)) return;
+
+            if (Account.IsValidEmail(this.Email)) return;
+
+            string error = 
+                string.Format
+                (
+                    CommonRes.EntityDoesntMatchRequirementsFormat, 
+                    CommonRes.EmailText,
+                    LocalRes.EmailRequirementsText
+                );
+
+            validationResults.Add(FieldValidationResult.CreateError(EmailProperty, error));
         }
     }
 }

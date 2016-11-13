@@ -120,8 +120,14 @@
   <data name="DefaultGameIconUri" xml:space="preserve">
     <value>pack://application:,,,/Freengy.CommonResources;component/Images/DefaultGameIcon.png</value>
   </data>
+  <data name="EmailText" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="EmptyPlaceHolder" xml:space="preserve">
     <value>&lt;Empty&gt;</value>
+  </data>
+  <data name="EntityDoesntMatchRequirementsFormat" xml:space="preserve">
+    <value>'{0}' doesnt match requirements '{1}'</value>
   </data>
   <data name="FinishText" xml:space="preserve">
     <value>Finish</value>

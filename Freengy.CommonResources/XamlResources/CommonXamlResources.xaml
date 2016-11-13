@@ -9,24 +9,33 @@
     </ResourceDictionary.MergedDictionaries>
     
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
     <converters:StringUriToImageSourceConverter x:Key="StringUriToImageSourceConverter"/>
     <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
-
+    
     <Thickness x:Key="StdMargin" Left="2" Top="2"/>
     <Thickness x:Key="4Left2TopMargin" Left="4" Top="2"/>
     <Thickness x:Key="4Left4TopMargin" Left="4" Top="4"/>
-    <Thickness x:Key="All4Margin" Left="4" Top="4" Bottom="4" Right="4"/>
+    <Thickness x:Key="All4Margin" Left="4" Top="4" Right="4" Bottom="4"/>
 
     <system:Double x:Key="CommonIconSize">32</system:Double>
+    <system:Double x:Key="CommonCornerRadius">4</system:Double>
+    <system:Double x:Key="CommonSmallIconSize">16</system:Double>
     <system:Double x:Key="MinButtonWidth">60</system:Double>
     <system:Double x:Key="MinButtonHeight">20</system:Double>
     <system:Double x:Key="MinTextBoxWidth">30</system:Double>
     <system:Double x:Key="MaxButtonHeight">22</system:Double>
 
+    <CornerRadius x:Key="CommonCorners" 
+                  TopLeft="{StaticResource CommonCornerRadius}" TopRight="{StaticResource CommonCornerRadius}"
+                  BottomRight="{StaticResource CommonCornerRadius}" BottomLeft="{StaticResource CommonCornerRadius}"/>
+    
     <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
 
+    <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
     <SolidColorBrush x:Key="FirstMainBrush" Color="Orange" />
+    <SolidColorBrush x:Key="TextBoxHighlightBrush" Color="Orange" />
     <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
 
@@ -70,8 +79,7 @@
     </Style>
 
     <Style TargetType="Border" x:Key="CommonBorderStyle">
-        <Setter Property="CornerRadius" Value="4"/>
-        <!--                <Setter Property="BorderThickness" Value="1"/>-->
+        <Setter Property="CornerRadius" Value="{StaticResource CommonCorners}"/>
     </Style>
 
     <!-- Central common style switch for TextBlock -->
@@ -101,27 +109,29 @@
 
     <!-- TextBox -->
     <Style TargetType="TextBox" x:Key="CommonTextBoxStyle">
+        <Setter Property="Padding"             Value="2, 2"/>
         <Setter Property="UseLayoutRounding"   Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
         <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
         <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
-
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border x:Name="ErrorBorder" Style="{StaticResource CommonBorderStyle}" 
-                            Background="{TemplateBinding Background}" BorderBrush="Red" BorderThickness="0">
+                    <Border Name="ErrorBorder" Style="{StaticResource CommonBorderStyle}" 
+                            BorderBrush="Transparent" BorderThickness="0, 0, 0, 2" Background="{TemplateBinding Background}">
                         <ScrollViewer Name="PART_ContentHost"/>
                     </Border>
-
+                    
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" TargetName="ErrorBorder" Value="Orange"/>
+                            <Setter Property="Background" TargetName="ErrorBorder" Value="{StaticResource TextBoxHighlightBrush}"/>
                         </Trigger>
                         
                         <Trigger Property="Validation.HasError" Value="True">
-                            <Setter Property="BorderThickness" TargetName="ErrorBorder" Value="2"/>
+                            <Setter Property="BorderBrush" TargetName="ErrorBorder" Value="{StaticResource ErrorBrush}"/>
 
                             <Setter Property="ToolTip" 
                                     Value="{Binding RelativeSource={RelativeSource Mode=Self}, 
@@ -204,6 +214,48 @@
         </Setter>
     </Style>
     <Style TargetType="ToolTip" x:Key="{x:Type ToolTip}" BasedOn="{StaticResource CommonToolTipStyle}">
+
+    </Style>
+
+    <Style TargetType="PasswordBox" x:Key="CommonPasswordBoxStyle">
+        <Setter Property="Padding"             Value="2, 4"/>
+        <Setter Property="UseLayoutRounding"   Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+        <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
+        <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
+        <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <!-- Не удалять CornerRadius="{StaticResource CommonCorners}"! Не наследуется из стиля бордера -->
+                    <Border Name="ErrorBorder" Style="{StaticResource CommonBorderStyle}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{StaticResource CommonCorners}"
+                            BorderBrush="Transparent" BorderThickness="0, 0, 0, 2">
+                        <ScrollViewer Name="PART_ContentHost" Background="Transparent"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="ErrorBorder" Value="{StaticResource TextBoxHighlightBrush}"/>
+                        </Trigger>
+
+                        <Trigger Property="Validation.HasError" Value="True">
+<!--                            <Setter Property="BorderThickness" TargetName="ErrorBorder" Value="0, 0, 0, 2"/>-->
+                            <Setter Property="BorderBrush" TargetName="ErrorBorder" Value="{StaticResource ErrorBrush}"/>
+                            
+                            <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Mode=Self}, 
+                                                    Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource CommonPasswordBoxStyle}">
 
     </Style>
 </ResourceDictionary>
