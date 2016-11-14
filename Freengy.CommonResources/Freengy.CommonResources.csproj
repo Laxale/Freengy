@@ -31,6 +31,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XamlResources\FlipPanel.xaml.cs">
+      <DependentUpon>FlipPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XamlResources\StylishWindowStyle.xaml.cs">
       <DependentUpon>StylishWindowStyle.xaml</DependentUpon>
     </Compile>
@@ -50,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XamlResources\CommonXamlResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\FlipPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
