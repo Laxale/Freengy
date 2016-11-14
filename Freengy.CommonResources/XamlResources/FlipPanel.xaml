@@ -4,11 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             
              xmlns:local="clr-namespace:Freengy.CommonResources.XamlResources"
              
-             mc:Ignorable="d" 
              Name="Root"
+             mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Duration x:Key="AnimationDuration">0:0:1</Duration>
+        <system:TimeSpan x:Key="AnimationBeginTime">0</system:TimeSpan>
+
+        <ParallelTimeline x:Key="ShowFrontTimeLine">
+            <Storyboard Name="FadeInFrontStoryBoard">
+                <DoubleAnimation From="0" To="1" BeginTime="{StaticResource AnimationBeginTime}" 
+                                 Duration="{StaticResource AnimationDuration}"/>
+            </Storyboard>
+            <Storyboard Name="FadeOutBackStoryBoard">
+                <DoubleAnimation From="1" To="0" BeginTime="{StaticResource AnimationBeginTime}" 
+                                 Duration="{StaticResource AnimationDuration}"/>
+            </Storyboard>
+        </ParallelTimeline>
+
+        <ParallelTimeline x:Key="ShowBackTimeLine">
+            <Storyboard Name="FadeInBackStoryBoard">
+                <DoubleAnimation From="0" To="1" BeginTime="{StaticResource AnimationBeginTime}" 
+                                 Duration="{StaticResource AnimationDuration}"/>
+            </Storyboard>
+            <Storyboard Name="FadeOutFrontStoryBoard">
+                <DoubleAnimation From="1" To="0" BeginTime="{StaticResource AnimationBeginTime}" 
+                                 Duration="{StaticResource AnimationDuration}"/>
+            </Storyboard>
+        </ParallelTimeline>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -16,8 +45,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Template="{Binding ElementName=Root, Path=SlideButtonTemplate}"/>
+        <Button Grid.Row="0" Name="FlipButton" Template="{Binding ElementName=Root, Path=SlideButtonTemplate}"
+                Click="FlipButton_Click"/>
+
+        <ContentControl Grid.Row="1" x:Name="FrontPanelHolder" Content="{Binding ElementName=Root, Path=FrontPanel}"
+                        Opacity="1"/>
         
-        <ContentControl Grid.Row="1" Content="{Binding Path=}"
+        <ContentControl Grid.Row="1" x:Name="BackPanelHolder" Content="{Binding ElementName=Root, Path=BackPanel}"
+                        Opacity="0" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

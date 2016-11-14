@@ -7,8 +7,6 @@ namespace Freengy.UI.ViewModels
 {
     using System;
     using System.Linq;
-    using System.Net;
-    //using System.Net.Mail;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -16,11 +14,9 @@ namespace Freengy.UI.ViewModels
     using Freengy.Base.ViewModels;
     using Freengy.Base.Extensions;
     
-    using Catel.IoC;
     using Catel.Data;
     using Catel.MVVM;
-    using Catel.Services;
-
+    
     using ActiveUp.Net.Mail;
     
     using LocalRes = Freengy.UI.Properties.Resources;
@@ -29,9 +25,13 @@ namespace Freengy.UI.ViewModels
 
     public class RecoverPasswordViewModel : CredentialViewModel 
     {
+        #region vars
+
         private const int ValidationCodeMinimum = 10000;
         private const int ValidationCodeMaximum = 90000;
         private readonly SecureStringDecorator secureDecorator = new SecureStringDecorator();
+
+        #endregion vars
 
 
         #region override
@@ -41,6 +41,7 @@ namespace Freengy.UI.ViewModels
         protected override void SetupCommands() 
         {
             this.CommandSendCode = new Command(this.SendCodeImpl, this.CanSendCode);
+            this.CommandChangePassword = new Command(this.ChangePasswordImpl, this.CanChangePassword);
         }
 
         protected override void ValidatePassword(List<IFieldValidationResult> validationResults) { }
@@ -48,7 +49,13 @@ namespace Freengy.UI.ViewModels
         #endregion override
 
 
+        #region commands
+
         public Command CommandSendCode { get; private set; }
+
+        public Command CommandChangePassword{ get; private set; }
+
+        #endregion commands
 
 
         #region properties
@@ -60,18 +67,32 @@ namespace Freengy.UI.ViewModels
         {
             get { return (string)GetValue(ValidationCodeProperty); }
 
-            set { SetValue(ValidationCodeProperty, value); }
+            set
+            {
+                SetValue(ValidationCodeProperty, value);
+
+                this.IsCodeValid = this.secureDecorator.GetSecureString().Equals(this.ValidationCode);
+            }
         }
 
         public bool IsCodeSent 
         {
-            get { return (bool)GetValue(RecoverPasswordViewModel.IsCodeSentProperty); }
+            get { return (bool)GetValue(IsCodeSentProperty); }
 
-            private set { SetValue(RecoverPasswordViewModel.IsCodeSentProperty, value); }
+            private set { SetValue(IsCodeSentProperty, value); }
+        }
+
+        public bool IsCodeValid 
+        {
+            get { return (bool)GetValue(IsCodeValidProperty); }
+
+            private set { SetValue(IsCodeValidProperty, value); }
         }
 
         public static readonly PropertyData IsCodeSentProperty =
             ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeSent, () => false);
+        public static readonly PropertyData IsCodeValidProperty =
+            ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeValid, () => false);
         public static readonly PropertyData ValidationCodeProperty =
             RegisterProperty<RecoverPasswordViewModel, string>(recViewModel => recViewModel.ValidationCode, () => string.Empty);
 
@@ -107,7 +128,6 @@ namespace Freengy.UI.ViewModels
 
             await base.taskWrapper.Wrap(sendAction, sendContinuator);
         }
-
         private void SendCode() 
         {
             string body = string.Format(LocalRes.PasswordRecoveryEmailBodyFormat, this.secureDecorator.GetSecureString());
@@ -123,7 +143,6 @@ namespace Freengy.UI.ViewModels
 
             message.DirectSend();
         }
-
         private bool CanSendCode() 
         {
             List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
@@ -132,6 +151,15 @@ namespace Freengy.UI.ViewModels
             bool canTryRegister = !validationResults.Any();
 
             return canTryRegister;
+        }
+
+        private void ChangePasswordImpl() 
+        {
+            
+        }
+        private bool CanChangePassword() 
+        {
+            return this.IsCodeValid;
         }
 
         private void GenerateNewValidationCode() 
