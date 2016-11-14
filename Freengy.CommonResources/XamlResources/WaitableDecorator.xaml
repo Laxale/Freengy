@@ -23,10 +23,11 @@
     <UserControl.Template>
         <ControlTemplate TargetType="UserControl">
             <Grid>
+                <!-- Content -->
                 <ContentControl Content="{TemplateBinding Content}" 
                                 IsEnabled="{Binding Path=IsWaiting, Converter={StaticResource ReverseBooleanConverter}}"/>
-                
-                <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}"
+                <!-- Decoraion -->
+                <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}" Opacity="0.9"
                                 Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </Grid>
         </ControlTemplate>

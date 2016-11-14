@@ -75,12 +75,22 @@
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="ViewModels\CredentialViewModel.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\WizardPageViewModelBase.cs" />
+    <Compile Include="Wizard\Views\WizardWindow.xaml.cs">
+      <DependentUpon>WizardWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Wizard\Views\WizardWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
