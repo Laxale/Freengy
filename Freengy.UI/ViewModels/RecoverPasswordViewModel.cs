@@ -132,7 +132,7 @@ namespace Freengy.UI.ViewModels
 
                     if (parentTask.Exception != null)
                     {
-                        System.Windows.MessageBox.Show(parentTask.Exception.GetReallyRootException().Message, "Failed to send message");
+                        MessageBox.Show(parentTask.Exception.GetReallyRootException().Message, "Failed to send message");
                         return;
                     }
 

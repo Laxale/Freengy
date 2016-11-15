@@ -54,7 +54,7 @@ namespace Base.Tests.Chat
         [Test]
         public void CreateInstance_TestNamesEquals() 
         {
-            bool areNamesEqual = this.session.Name == this.name && this.session.DisplayedName == this.displayedName;
+            bool areNamesEqual = this.session.Name == this.name;
 
             Assert.IsTrue(areNamesEqual);
         }

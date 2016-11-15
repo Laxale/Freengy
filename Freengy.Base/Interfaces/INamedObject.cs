@@ -11,7 +11,5 @@ namespace Freengy.Base.Interfaces
     public interface INamedObject 
     {
         string Name { get; }
-
-        string DisplayedName { get; }
     }
 }
