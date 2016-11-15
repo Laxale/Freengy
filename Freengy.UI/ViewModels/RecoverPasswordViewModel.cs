@@ -121,7 +121,7 @@ namespace Freengy.UI.ViewModels
                     this.IsCodeSent = false;
 
                     this.GenerateNewValidationCode();
-
+                    
                     this.SendCode();
                 };
 

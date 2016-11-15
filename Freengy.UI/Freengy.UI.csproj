@@ -17,6 +17,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ActiveUp\ActiveUp.Net.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ActiveUp.Net.Dns">
+      <HintPath>..\packages\ActiveUp\ActiveUp.Net.Dns.dll</HintPath>
+    </Reference>
     <Reference Include="ActiveUp.Net.Smtp">
       <HintPath>..\packages\ActiveUp\ActiveUp.Net.Smtp.dll</HintPath>
     </Reference>

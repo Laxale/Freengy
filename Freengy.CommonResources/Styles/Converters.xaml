@@ -1,0 +1,18 @@
+﻿<ResourceDictionary x:Class="Freengy.CommonResources.Styles.Converters" 
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    
+                    xmlns:converters="clr-namespace:Freengy.CommonResources.Converters" 
+                    
+                    mc:Ignorable="d">
+
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
+    <!-- думал сделать динамическую привязку к переданному полю, обозначающему занятость вьюмодели -->
+    <converters:PropertyNameToBindingConverter x:Key="PropertyNameToBindingConverter"/>
+    <converters:ResizeModeToVisibilityConverter x:Key="ResizeModeToVisibilityConverter"/>
+    <converters:StringUriToImageSourceConverter x:Key="StringUriToImageSourceConverter"/>
+    <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
+</ResourceDictionary>

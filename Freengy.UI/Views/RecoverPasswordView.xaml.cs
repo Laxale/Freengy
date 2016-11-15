@@ -15,7 +15,7 @@ namespace Freengy.UI.Views
 
     public partial class RecoverPasswordView : CatelControl
     {
-        private FlipPanel flipPanel;
+        private CommonResources.Controls.FlipPanel flipPanel;
 
 
         public RecoverPasswordView() 
@@ -28,7 +28,7 @@ namespace Freengy.UI.Views
         {
             // this bullshit is needed to 'bind' IsCodeSent property to IsFrontPanelActive
             // because normal binding doesnt work
-            this.flipPanel = (FlipPanel)sender;
+            this.flipPanel = (CommonResources.Controls.FlipPanel)sender;
 
             var dataContext = this.DataContext as ViewModels.RecoverPasswordViewModel;
 

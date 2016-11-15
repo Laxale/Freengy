@@ -11,7 +11,8 @@
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:basexamlresources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
-                   
+                   xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
                    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
@@ -21,8 +22,7 @@
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/Animations.xaml"/>
-                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 
                 <DataTemplate x:Key="LoginWaitTemplate">
@@ -42,7 +42,7 @@
         <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
-        <basexamlresources:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
+        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
             <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -92,8 +92,13 @@
                         MinWidth="{StaticResource MinButtonWidth}" HorizontalAlignment="Right" IsDefault="True" 
                         Content="{x:Static localprops:Resources.LogInText}" DockPanel.Dock="Right" Margin="{StaticResource All4Margin}"/>
 
-                <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Content="{x:Static commonres:StringResources.SavePasswordText}" 
-                          Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}"/>
+                <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" 
+                          Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}">
+
+                    <CheckBox.Content>
+                        <TextBlock Text="{x:Static commonres:StringResources.SavePasswordText}" Style="{x:Null}"/>
+                    </CheckBox.Content>
+                </CheckBox>
 
                 <DockPanel Grid.Row="4" Grid.Column="1">
                     <DockPanel.Resources>
@@ -116,7 +121,7 @@
                             Command="{Binding Path=CommandCreateAccount}"/>
                 </DockPanel>
             </Grid>
-        </basexamlresources:WaitableDecorator>
+        </controls:WaitableDecorator>
 
         <TextBlock Grid.Row="2" VerticalAlignment="Bottom" Foreground="Crimson" Margin="10, 10" TextWrapping="Wrap"
                    Text="{Binding Path=Information, Mode=OneWay}" 

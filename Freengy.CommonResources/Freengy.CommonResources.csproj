@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\PropertyNameToBindingConverter.cs" />
+    <Compile Include="Converters\ResizeModeToVisibilityConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\StringUriToImageSourceConverter.cs" />
@@ -31,13 +32,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="XamlResources\FlipPanel.xaml.cs">
+    <Compile Include="Controls\FlipPanel.xaml.cs">
       <DependentUpon>FlipPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XamlResources\StylishWindowStyle.xaml.cs">
+    <Compile Include="Styles\StylishWindowStyle.xaml.cs">
       <DependentUpon>StylishWindowStyle.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XamlResources\WaitableDecorator.xaml.cs">
+    <Compile Include="Controls\WaitableDecorator.xaml.cs">
       <DependentUpon>WaitableDecorator.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -48,23 +49,51 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="XamlResources\Animations.xaml">
+    <Page Include="Styles\Animations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XamlResources\CommonXamlResources.xaml">
+    <Page Include="Styles\BorderStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XamlResources\FlipPanel.xaml">
+    <Page Include="Styles\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XamlResources\StylishWindowStyle.xaml">
+    <Page Include="Styles\CommonResourcesHub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XamlResources\WaitableDecorator.xaml">
+    <Page Include="Styles\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FlipPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\PasswordBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\StylishWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextBlockStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Variables.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WaitableDecorator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

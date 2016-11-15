@@ -22,7 +22,7 @@
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary 
-                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                        Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
@@ -76,7 +76,7 @@
             <Image DockPanel.Dock="Left" MaxWidth="{StaticResource CommonIconSize}" Margin="{StaticResource All4Margin}"
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/EmailIcon.png"/>
             <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" 
-                       Foreground="#555555" FontWeight="Heavy" TextAlignment="Justify"/>
+                       Foreground="#555555" FontWeight="Heavy" TextAlignment="Left"/>
         </DockPanel>
         
         <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 

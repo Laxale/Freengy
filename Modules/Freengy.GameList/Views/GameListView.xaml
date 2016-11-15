@@ -8,6 +8,7 @@
                    
                    xmlns:catel="http://catel.codeplex.com" 
                    
+                   xmlns:gamelist="clr-namespace:Freengy.GameList"
                    xmlns:local="clr-namespace:Freengy.GameList.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
                    xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
@@ -22,7 +23,7 @@
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary 
-                        Source="pack://application:,,,/Freengy.CommonResources;component/XamlResources/CommonXamlResources.xaml"/>
+                        Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
 
                     <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.GamePlugin;component/XamlResources/CommonGameResources.xaml"/>
@@ -38,8 +39,8 @@
         <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
 
         <Button Grid.Row="1" Content="Discover loading problems" VerticalAlignment="Top" FontSize="18"
-                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="DarkGray" 
-                ToolTip="Games not found. Look for issue resolving" Command="{Binding Path=CommandResolveProblems}"
+                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="{StaticResource DarkGrayBrush}" 
+                ToolTip="{x:Static gamelist:Resources.GamesNotFoundHintText}" Command="{Binding Path=CommandResolveProblems}"
                 Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <ListBox Grid.Row="1" Name="GameListBox" Background="Transparent" 
