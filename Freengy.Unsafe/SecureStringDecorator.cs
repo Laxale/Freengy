@@ -24,18 +24,15 @@ namespace Freengy.Unsafe
             {
                 string result;
 
-                using (SecureString secureString = this.SecureString)
-                {
-                    IntPtr intPtr = Marshal.SecureStringToBSTR(secureString);
+                IntPtr intPtr = Marshal.SecureStringToBSTR(this.SecureString);
 
-                    try
-                    {
-                        result = new string((char*)((void*)intPtr));
-                    }
-                    finally
-                    {
-                        Marshal.ZeroFreeBSTR(intPtr);
-                    }
+                try
+                {
+                    result = new string((char*)((void*)intPtr));
+                }
+                finally
+                {
+                    Marshal.ZeroFreeBSTR(intPtr);
                 }
 
                 return result;

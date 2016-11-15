@@ -52,7 +52,7 @@
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
 
                 <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right"
-                       Foreground="#60EE70" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+                       Foreground="{StaticResource SuccessBrush}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
             </DockPanel>
         </DockPanel>
         
@@ -79,8 +79,8 @@
                        Foreground="#555555" FontWeight="Heavy" TextAlignment="Justify"/>
         </DockPanel>
         
-        <GridSplitter Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 
-                      HorizontalAlignment="Stretch" Background="Gray" Margin="4" />
+        <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 
+                      HorizontalAlignment="Stretch" Fill="Gray" Margin="4" />
 
         <DockPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4, 8">
             <Button DockPanel.Dock="Right" IsEnabled="{Binding Path=Registered}"

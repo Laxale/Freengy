@@ -97,9 +97,7 @@ namespace Freengy.UI.ViewModels
         }
         private bool CanFinish(Window registrationWindow) 
         {
-            if (this.Registered) return true;
-
-            return true;
+            return this.Registered;
         }
 
         #endregion privates

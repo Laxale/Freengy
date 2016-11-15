@@ -34,6 +34,7 @@
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
 
     <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70" />
     <SolidColorBrush x:Key="FirstMainBrush" Color="Orange" />
     <SolidColorBrush x:Key="TextBoxHighlightBrush" Color="Orange" />
     <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />

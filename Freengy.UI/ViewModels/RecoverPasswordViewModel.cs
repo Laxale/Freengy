@@ -7,6 +7,7 @@ namespace Freengy.UI.ViewModels
 {
     using System;
     using System.Linq;
+    using System.Windows;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -42,6 +43,7 @@ namespace Freengy.UI.ViewModels
         {
             this.CommandSendCode = new Command(this.SendCodeImpl, this.CanSendCode);
             this.CommandChangePassword = new Command(this.ChangePasswordImpl, this.CanChangePassword);
+            this.CommandFinish = new Command<Window>(this.CommandFinishImpl, this.CanFinish);
         }
 
         protected override void ValidatePassword(List<IFieldValidationResult> validationResults) { }
@@ -54,6 +56,8 @@ namespace Freengy.UI.ViewModels
         public Command CommandSendCode { get; private set; }
 
         public Command CommandChangePassword{ get; private set; }
+
+        public Command<Window> CommandFinish { get; private set; }
 
         #endregion commands
 
@@ -89,8 +93,17 @@ namespace Freengy.UI.ViewModels
             private set { SetValue(IsCodeValidProperty, value); }
         }
 
+        public bool IsPasswordChanged 
+        {
+            get { return (bool)GetValue(IsPasswordChangedProperty); }
+
+            private set { SetValue(IsPasswordChangedProperty, value); }
+        }
+
         public static readonly PropertyData IsCodeSentProperty =
             ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeSent, () => false);
+        public static readonly PropertyData IsPasswordChangedProperty =
+            ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsPasswordChanged, () => false);
         public static readonly PropertyData IsCodeValidProperty =
             ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeValid, () => false);
         public static readonly PropertyData ValidationCodeProperty =
@@ -155,18 +168,34 @@ namespace Freengy.UI.ViewModels
 
         private void ChangePasswordImpl() 
         {
-            
+            this.IsPasswordChanged = true;
         }
         private bool CanChangePassword() 
         {
-            return this.IsCodeValid;
+            return this.IsCodeValid && !this.IsPasswordChanged;
+        }
+
+        private void CommandFinishImpl(Window registrationWindow)
+        {
+            // send message
+            registrationWindow.Close();
+        }
+        private bool CanFinish(Window registrationWindow) 
+        {
+            return this.IsPasswordChanged;
         }
 
         private void GenerateNewValidationCode() 
         {
-            int randomCode = new Random(new Random().Next()).Next(ValidationCodeMinimum, ValidationCodeMaximum);
+            Helpers.UiDispatcher.Invoke
+            (
+               () =>
+               {
+                   int randomCode = new Random(new Random().Next()).Next(ValidationCodeMinimum, ValidationCodeMaximum);
 
-            this.secureDecorator.SetSecureString(randomCode.ToString());
+                   this.secureDecorator.SetSecureString(randomCode.ToString());
+               }
+            );
         }
     }
 }
