@@ -12,9 +12,14 @@ namespace Freengy.Diagnostics.DefaultImpl
 
     using Freengy.Diagnostics.Interfaces;
 
+    using Catel.IoC;
+    using Catel.Services;
+
 
     internal class DiagnosticsController : IDiagnosticsController 
     {
+        private readonly IUIVisualizerService uiVisualizer;
+
         private static readonly object Locker = new object();
 
         private readonly IDictionary<string, IDiagnosticsCategory> diagnosticUnits = new Dictionary<string, IDiagnosticsCategory>();
@@ -24,9 +29,9 @@ namespace Freengy.Diagnostics.DefaultImpl
 
         private static IDiagnosticsController instance;
 
-        private DiagnosticsController()
+        private DiagnosticsController() 
         {
-
+            this.uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
         }
 
         public static IDiagnosticsController Instance =>
