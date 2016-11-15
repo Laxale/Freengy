@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="..\CommonTargets.targets" />
+  <Import Project="..\..\CommonTargets.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,19 +10,20 @@
     <RootNamespace>Freengy.Chatter</RootNamespace>
     <AssemblyName>Freengy.Chatter</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\output\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Catel.Core, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
+    <Reference Include="Catel.Core">
+      <HintPath>..\..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Catel.MVVM, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
+    <Reference Include="Catel.MVVM">
+      <HintPath>..\..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism.Wpf">
-      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
+      <HintPath>..\..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,11 +47,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
+    <ProjectReference Include="..\..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
+    <ProjectReference Include="..\..\Freengy.CommonResources\Freengy.CommonResources.csproj">
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
     </ProjectReference>
