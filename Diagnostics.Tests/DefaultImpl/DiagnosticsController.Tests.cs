@@ -29,7 +29,7 @@ namespace Diagnostics.Tests.DefaultImpl
             Action registerNullAction =
                 () =>
                 {
-                    this.diagnosticsController.RegisterUnit(null);
+                    this.diagnosticsController.RegisterCategory(null);
                 };
 
             Assert.Throws<ArgumentNullException>(() => registerNullAction());
@@ -39,13 +39,13 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase("",   Description = "Register empty-named unit. Get exception")]
         public void RegisterUnit_BadNameCase(string badName) 
         {
-            var badNamedUnit = new Mock<IDiagnosticsUnit>();
+            var badNamedUnit = new Mock<IDiagnosticsCategory>();
             badNamedUnit.Setup(unit => unit.Name).Returns(badName);
 
             Action registerNullAction =
                 () =>
                 {
-                    this.diagnosticsController.RegisterUnit(badNamedUnit.Object);
+                    this.diagnosticsController.RegisterCategory(badNamedUnit.Object);
                 };
 
             Assert.Throws<ArgumentNullException>(() => registerNullAction());
@@ -54,14 +54,14 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void RegisterUnit_NullTestCasesCase() 
         {
-            var badCasesUnit = new Mock<IDiagnosticsUnit>();
+            var badCasesUnit = new Mock<IDiagnosticsCategory>();
             badCasesUnit.Setup(unit => unit.Name).Returns("Good name");
-            badCasesUnit.Setup(unit => unit.TestCases).Returns((IEnumerable<Func<bool>>)null);
+            badCasesUnit.Setup(unit => unit.TestUnits).Returns((IEnumerable<IDiagnosticsUnit>)null);
 
             Action registerNullAction =
                 () =>
                 {
-                    this.diagnosticsController.RegisterUnit(badCasesUnit.Object);
+                    this.diagnosticsController.RegisterCategory(badCasesUnit.Object);
                 };
 
             Assert.Throws<ArgumentNullException>(() => registerNullAction());
@@ -70,14 +70,14 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void RegisterUnit_EmptyTestCasesCase() 
         {
-            var badCasesUnit = new Mock<IDiagnosticsUnit>();
+            var badCasesUnit = new Mock<IDiagnosticsCategory>();
             badCasesUnit.Setup(unit => unit.Name).Returns("Good name");
-            badCasesUnit.Setup(unit => unit.TestCases).Returns(Enumerable.Empty<Func<bool>>);
+            badCasesUnit.Setup(unit => unit.TestUnits).Returns(Enumerable.Empty<IDiagnosticsUnit>);
 
             Action registerNullAction =
                 () =>
                 {
-                    this.diagnosticsController.RegisterUnit(badCasesUnit.Object);
+                    this.diagnosticsController.RegisterCategory(badCasesUnit.Object);
                 };
 
             Assert.Throws<InvalidOperationException>(() => registerNullAction());
@@ -87,18 +87,18 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase(false, Description = "Register throwing unit. Okay")]
         public void RegisterUnit_RegisterNormalCase(bool throwing) 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.RegisterUnit(goodUnit);
+            this.diagnosticsController.RegisterCategory(goodCategory);
 
-            Assert.IsTrue(this.diagnosticsController.IsUnitRegistered(goodUnit));
+            Assert.IsTrue(this.diagnosticsController.IsCategoryRegistered(goodCategory));
         }
 
         [TestCase(null, Description = "Pass null, get exception")]
         [TestCase("",   Description = "Pass empty, get exception")]
         public void IsUnitRegistered_BadStringCase(string badName) 
         {
-            Action testAction = () => this.diagnosticsController.IsUnitRegistered(badName);
+            Action testAction = () => this.diagnosticsController.IsCategoryRegistered(badName);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -106,7 +106,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_GoodStringNotRegisteredCase() 
         {
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(Guid.NewGuid().ToString());
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(Guid.NewGuid().ToString());
 
             Assert.IsFalse(isRegistered);
         }
@@ -114,11 +114,11 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_GoodStringIsRegisteredCase() 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.RegisterUnit(goodUnit);
+            this.diagnosticsController.RegisterCategory(goodCategory);
 
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(goodUnit.Name);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(goodCategory.Name);
 
             Assert.IsTrue(isRegistered);
         }
@@ -126,7 +126,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_NullUnitCase() 
         {
-            Action testAction = () => this.diagnosticsController.IsUnitRegistered((IDiagnosticsUnit)null);
+            Action testAction = () => this.diagnosticsController.IsCategoryRegistered((IDiagnosticsCategory)null);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -135,10 +135,10 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase("",   Description = "Pass in empty unit name - get exception")]
         public void IsUnitRegistered_BadUnitNameCase(string badName) 
         {
-            var mockUnit = new Mock<IDiagnosticsUnit>();
+            var mockUnit = new Mock<IDiagnosticsCategory>();
             mockUnit.Setup(unit => unit.Name).Returns(badName);
 
-            Action testAction = () => this.diagnosticsController.IsUnitRegistered(mockUnit.Object);
+            Action testAction = () => this.diagnosticsController.IsCategoryRegistered(mockUnit.Object);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -146,11 +146,11 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_GoodUnitIsRegisteredCase() 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.RegisterUnit(goodUnit);
+            this.diagnosticsController.RegisterCategory(goodCategory);
 
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(goodUnit);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(goodCategory);
 
             Assert.IsTrue(isRegistered);
         }
@@ -159,7 +159,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase("",   Description = "Pass in empty unit name - get exception")]
         public void UnregisterUnit_BadStringCase(string badName) 
         {
-            Action testAction = () => this.diagnosticsController.UnregisterUnit(badName);
+            Action testAction = () => this.diagnosticsController.UnregisterCategory(badName);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -169,8 +169,8 @@ namespace Diagnostics.Tests.DefaultImpl
         {
             string randomName = Guid.NewGuid().ToString();
 
-            this.diagnosticsController.UnregisterUnit(randomName);
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(randomName);
+            this.diagnosticsController.UnregisterCategory(randomName);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(randomName);
 
             Assert.IsFalse(isRegistered);
         }
@@ -178,15 +178,15 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister registered name - get nothing. Okay")]
         public void UnregisterUnit_GoodStringIsRegisteredCase() 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.RegisterUnit(goodUnit);
+            this.diagnosticsController.RegisterCategory(goodCategory);
 
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(goodUnit.Name);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(goodCategory.Name);
 
-            this.diagnosticsController.UnregisterUnit(goodUnit.Name);
+            this.diagnosticsController.UnregisterCategory(goodCategory.Name);
 
-            bool isUnregistered = !this.diagnosticsController.IsUnitRegistered(goodUnit.Name);
+            bool isUnregistered = !this.diagnosticsController.IsCategoryRegistered(goodCategory.Name);
 
             Assert.AreEqual(isRegistered, isUnregistered);
         }
@@ -194,7 +194,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void UnregisterUnit_NullUnitCase() 
         {
-            Action testAction = () => this.diagnosticsController.UnregisterUnit((IDiagnosticsUnit)null);
+            Action testAction = () => this.diagnosticsController.UnregisterCategory((IDiagnosticsCategory)null);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -203,10 +203,10 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase("",   Description = "Pass in empty unit name - get exception")]
         public void UnregisterUnit_BadUnitNameCase(string badName) 
         {
-            var mockUnit = new Mock<IDiagnosticsUnit>();
+            var mockUnit = new Mock<IDiagnosticsCategory>();
             mockUnit.Setup(unit => unit.Name).Returns(badName);
 
-            Action testAction = () => this.diagnosticsController.UnregisterUnit(mockUnit.Object);
+            Action testAction = () => this.diagnosticsController.UnregisterCategory(mockUnit.Object);
 
             Assert.Throws<ArgumentNullException>(() => testAction());
         }
@@ -214,11 +214,11 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister not registered unit - get nothing. Okay")]
         public void UnregisterUnit_UnitNotRegisteredCase() 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.UnregisterUnit(goodUnit);
+            this.diagnosticsController.UnregisterCategory(goodCategory);
 
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(goodUnit);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(goodCategory);
 
             Assert.IsFalse(isRegistered);
         }
@@ -226,34 +226,40 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister registered unit - get nothing. Okay")]
         public void UnregisterUnit_UnitIsRegisteredCase() 
         {
-            IDiagnosticsUnit goodUnit = DiagnosticsControllerTests.GetGoodUnit();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
 
-            this.diagnosticsController.RegisterUnit(goodUnit);
+            this.diagnosticsController.RegisterCategory(goodCategory);
 
-            bool isRegistered = this.diagnosticsController.IsUnitRegistered(goodUnit);
+            bool isRegistered = this.diagnosticsController.IsCategoryRegistered(goodCategory);
 
-            this.diagnosticsController.UnregisterUnit(goodUnit);
+            this.diagnosticsController.UnregisterCategory(goodCategory);
 
-            bool isUnregistered = !this.diagnosticsController.IsUnitRegistered(goodUnit);
+            bool isUnregistered = !this.diagnosticsController.IsCategoryRegistered(goodCategory);
 
             Assert.AreEqual(isRegistered, isUnregistered);
         }
 
 
-        private static IDiagnosticsUnit GetGoodUnit() 
+        private static IDiagnosticsCategory GetGoodCategory() 
         {
-            string name = "GoodName";
-            IEnumerable<Func<bool>> testCases = new List<Func<bool>>
+            string unitName = "Unit Name";
+            string categoryName = "Category Name";
+            
+            var mockUnit = new Mock<IDiagnosticsUnit>();
+            mockUnit.Setup(unit => unit.Name).Returns(unitName);
+            mockUnit.Setup(unit => unit.UnitTest).Returns(() => true);
+
+            IEnumerable<IDiagnosticsUnit> testUnits = new List<IDiagnosticsUnit>
             {
-                () => true,
-                () => false
+                mockUnit.Object,
+                mockUnit.Object
             };
 
-            var mockUnit = new Mock<IDiagnosticsUnit>();
-            mockUnit.Setup(unit => unit.Name).Returns(name);
-            mockUnit.Setup(unit => unit.TestCases).Returns(testCases);
+            var mockCategory = new Mock<IDiagnosticsCategory>();
+            mockCategory.Setup(category => category.Name).Returns(categoryName);
+            mockCategory.Setup(category => category.TestUnits).Returns(testUnits);
 
-            return mockUnit.Object;
+            return mockCategory.Object;
         }
     }
 }

@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultImpl\DiagnosticsController.Tests.cs" />
+    <Compile Include="DefaultImpl\DiagnosticsUnitFactory.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

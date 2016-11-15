@@ -17,6 +17,7 @@ namespace Freengy.GameList.ViewModels
     using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Interfaces;
     using Freengy.GamePlugin.DefaultImpl;
+    using Freengy.Diagnostics.Interfaces;
     
     using Catel.IoC;
     using Catel.MVVM;
@@ -26,6 +27,7 @@ namespace Freengy.GameList.ViewModels
     public class GameListViewModel : WaitableViewModel 
     {
         private readonly IGameListProvider gameListProvider;
+        private readonly IDiagnosticsController diagnosticsController;
         private readonly ObservableCollection<IGamePlugin> gameList = new ObservableCollection<IGamePlugin>();
 
 
@@ -33,6 +35,7 @@ namespace Freengy.GameList.ViewModels
         {
             this.gameListProvider = base.serviceLocator.ResolveType<IGameListProvider>();
             base.messageMediator.Register<MessageGamesAdded>(this, this.MessageListener);
+            this.diagnosticsController = base.serviceLocator.ResolveType<IDiagnosticsController>();
         }
 
 
@@ -80,9 +83,9 @@ namespace Freengy.GameList.ViewModels
             return canRequestLoad;
         }
 
-        private void CommandResolveProblemsImpl() 
+        private async void CommandResolveProblemsImpl() 
         {
-            
+            await this.diagnosticsController.ShowDialogAsync();
         }
         private bool CanResolveProblems() 
         {

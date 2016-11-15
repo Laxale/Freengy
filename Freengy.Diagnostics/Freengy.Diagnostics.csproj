@@ -35,8 +35,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultImpl\DiagnosticsController.cs" />
+    <Compile Include="DefaultImpl\DiagnosticsUnit.cs" />
+    <Compile Include="DefaultImpl\DiagnosticsUnitFactory.cs" />
     <Compile Include="Interfaces\IDiagnosticsController.cs" />
+    <Compile Include="Interfaces\IDiagnosticsCategory.cs" />
     <Compile Include="Interfaces\IDiagnosticsUnit.cs" />
+    <Compile Include="Interfaces\IDiagnosticsUnitFactory.cs" />
     <Compile Include="InternalsExposer.cs" />
     <Compile Include="Module\DiagnosticsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

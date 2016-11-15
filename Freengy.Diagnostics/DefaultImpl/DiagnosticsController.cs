@@ -3,21 +3,21 @@
 //
 
 
-namespace Freengy.Diagnostics.DefaultImpl
+namespace Freengy.Diagnostics.DefaultImpl 
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
 
     using Freengy.Diagnostics.Interfaces;
 
 
-    internal class DiagnosticsController : IDiagnosticsController
+    internal class DiagnosticsController : IDiagnosticsController 
     {
         private static readonly object Locker = new object();
 
-        private readonly IDictionary<string, IDiagnosticsUnit> diagnosticUnits =
-            new Dictionary<string, IDiagnosticsUnit>();
+        private readonly IDictionary<string, IDiagnosticsCategory> diagnosticUnits = new Dictionary<string, IDiagnosticsCategory>();
 
 
         #region Singleton
@@ -35,61 +35,66 @@ namespace Freengy.Diagnostics.DefaultImpl
         #endregion Singleton
 
 
-        public void ShowDialogAsync(IDiagnosticsUnit diagnosticsUnit)
+        public Task ShowDialogAsync() 
         {
             throw new NotImplementedException();
         }
 
-        public void RegisterUnit(IDiagnosticsUnit diagnosticsUnit) 
+        public Task ShowDialogAsync(IDiagnosticsCategory diagnosticsCategory) 
         {
-            this.ThrowIfInvalidUnit(diagnosticsUnit);
+            throw new NotImplementedException();
+        }
+
+        public void RegisterCategory(IDiagnosticsCategory diagnosticsCategory) 
+        {
+            this.ThrowIfInvalidCategory(diagnosticsCategory);
 
             lock (Locker)
             {
-                if (this.diagnosticUnits.Keys.Contains(diagnosticsUnit.Name)) return;
+                if (this.diagnosticUnits.Keys.Contains(diagnosticsCategory.Name)) return;
 
-                this.diagnosticUnits.Add(diagnosticsUnit.Name, diagnosticsUnit);
+                this.diagnosticUnits.Add(diagnosticsCategory.Name, diagnosticsCategory);
             }
         }
 
-        public bool IsUnitRegistered(string diagnosticsUnitName) 
+        public bool IsCategoryRegistered(string diagnosticsCategoryName) 
         {
-            if (string.IsNullOrWhiteSpace(diagnosticsUnitName)) throw new ArgumentNullException(nameof(diagnosticsUnitName));
+            if (string.IsNullOrWhiteSpace(diagnosticsCategoryName)) throw new ArgumentNullException(nameof(diagnosticsCategoryName));
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsUnitName);
+                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsCategoryName);
 
                 return isRegistered;
             }
         }
 
-        public bool IsUnitRegistered(IDiagnosticsUnit diagnosticsUnit) 
+        public bool IsCategoryRegistered(IDiagnosticsCategory diagnosticsCategory) 
         {
-            if (diagnosticsUnit == null) throw new ArgumentNullException(nameof(diagnosticsUnit));
-            if (string.IsNullOrWhiteSpace(diagnosticsUnit.Name)) throw new ArgumentNullException(nameof(diagnosticsUnit.Name));
+            if (diagnosticsCategory == null) throw new ArgumentNullException(nameof(diagnosticsCategory));
+            if (string.IsNullOrWhiteSpace(diagnosticsCategory.Name)) throw new ArgumentNullException(nameof(diagnosticsCategory.Name));
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsUnit.Name);
+                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsCategory.Name);
 
                 return isRegistered;
             }
         }
 
-        public void UnregisterUnit(string diagnosticsUnitName) 
+        public void UnregisterCategory(string diagnosticsCategoryName) 
         {
-            if (string.IsNullOrWhiteSpace(diagnosticsUnitName)) throw new ArgumentNullException(nameof(diagnosticsUnitName));
+            if (string.IsNullOrWhiteSpace(diagnosticsCategoryName)) throw new ArgumentNullException(nameof(diagnosticsCategoryName));
 
-            this.TryRemoveUnitByName(diagnosticsUnitName);
+            this.TryRemoveUnitByName(diagnosticsCategoryName);
         }
 
-        public void UnregisterUnit(IDiagnosticsUnit diagnosticsUnit) 
+        public void UnregisterCategory(IDiagnosticsCategory diagnosticsCategory) 
         {
-            if (diagnosticsUnit == null) throw new ArgumentNullException(nameof(diagnosticsUnit));
-            if (string.IsNullOrWhiteSpace(diagnosticsUnit.Name)) throw new ArgumentNullException(nameof(diagnosticsUnit.Name));
+            if (diagnosticsCategory == null) throw new ArgumentNullException(nameof(diagnosticsCategory));
+            if (string.IsNullOrWhiteSpace(diagnosticsCategory.Name)) throw new ArgumentNullException(nameof(diagnosticsCategory.Name));
 
-            this.TryRemoveUnitByName(diagnosticsUnit.Name);
+            this.TryRemoveUnitByName(diagnosticsCategory.Name);
         }
 
 
@@ -109,12 +114,12 @@ namespace Freengy.Diagnostics.DefaultImpl
             }
         }
 
-        private void ThrowIfInvalidUnit(IDiagnosticsUnit diagnosticsUnit) 
+        private void ThrowIfInvalidCategory(IDiagnosticsCategory diagnosticsCategory) 
         {
-            if (diagnosticsUnit == null) throw new ArgumentNullException(nameof(diagnosticsUnit));
-            if (string.IsNullOrWhiteSpace(diagnosticsUnit.Name)) throw new ArgumentNullException(nameof(diagnosticsUnit.Name));
-            if (diagnosticsUnit.TestCases == null) throw new ArgumentNullException(nameof(diagnosticsUnit.TestCases));
-            if (!diagnosticsUnit.TestCases.Any()) throw new InvalidOperationException("TestCases are empty!");
+            if (diagnosticsCategory == null) throw new ArgumentNullException(nameof(diagnosticsCategory));
+            if (string.IsNullOrWhiteSpace(diagnosticsCategory.Name)) throw new ArgumentNullException(nameof(diagnosticsCategory.Name));
+            if (diagnosticsCategory.TestUnits == null) throw new ArgumentNullException(nameof(diagnosticsCategory.TestUnits));
+            if (!diagnosticsCategory.TestUnits.Any()) throw new InvalidOperationException("TestUnits are empty!");
         }
     }
 }

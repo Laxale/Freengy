@@ -9,11 +9,15 @@ namespace Freengy.GameList.Module
 
     using Freengy.GameList.Views;
     using Freengy.Base.Interfaces;
+    using Freengy.GameList.Diagnostics;
+    using Freengy.Diagnostics.Interfaces;
     
+    using Prism.Modularity;
 
-    public class GameListModule : IUiModule 
-//        , IModule 
-// remove this if no any types to register
+    using Catel.IoC;
+
+
+    public class GameListModule : IUiModule, IModule 
     {
         #region Singleton
 
@@ -31,10 +35,9 @@ namespace Freengy.GameList.Module
 
         public Type ExportedViewType { get; } = typeof (GameListView);
 
-
-//        public void Initialize() 
-//        {
-//            ServiceLocator.Default.RegisterType<i>
-//        }
+        public void Initialize() 
+        {
+            ServiceLocator.Default.ResolveType<IDiagnosticsController>().RegisterCategory(new GameListDiagnosticsCategory());
+        }
     }
 }

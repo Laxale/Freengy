@@ -190,6 +190,10 @@
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Diagnostics\Freengy.Diagnostics.csproj">
+      <Project>{4791acee-adfd-49cc-b95f-abc6edb06162}</Project>
+      <Name>Freengy.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
       <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
       <Name>Freengy.GamePlugin</Name>

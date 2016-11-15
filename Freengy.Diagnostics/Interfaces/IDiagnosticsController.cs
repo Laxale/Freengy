@@ -5,20 +5,25 @@
 
 namespace Freengy.Diagnostics.Interfaces 
 {
+    using System.Threading.Tasks;
+
+
     public interface IDiagnosticsController 
     {
+        Task ShowDialogAsync();
+
         /// <summary>
         /// Show controller dialog with selected unit in it
         /// </summary>
-        /// <param name="diagnosticsUnit"><see cref="IDiagnosticsUnit"/> object to be selected on dialog start</param>
-        void ShowDialogAsync(IDiagnosticsUnit diagnosticsUnit);
+        /// <param name="diagnosticsCategory"><see cref="IDiagnosticsCategory"/> object to be selected on dialog start</param>
+        Task ShowDialogAsync(IDiagnosticsCategory diagnosticsCategory);
 
-        void RegisterUnit(IDiagnosticsUnit diagnosticsUnit);
+        void RegisterCategory(IDiagnosticsCategory diagnosticsCategory);
 
-        bool IsUnitRegistered(string diagnosticsUnitName);
-        bool IsUnitRegistered(IDiagnosticsUnit diagnosticsUnit);
+        bool IsCategoryRegistered(string diagnosticsCategoryName);
+        bool IsCategoryRegistered(IDiagnosticsCategory diagnosticsCategory);
 
-        void UnregisterUnit(string diagnosticsUnitName);
-        void UnregisterUnit(IDiagnosticsUnit diagnosticsUnit);
+        void UnregisterCategory(string diagnosticsCategoryName);
+        void UnregisterCategory(IDiagnosticsCategory diagnosticsCategory);
     }
 }
