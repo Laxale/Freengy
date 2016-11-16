@@ -7,10 +7,12 @@
                   xmlns:cate="http://catel.codeplex.com" 
                   
                   xmlns:local="clr-namespace:Freengy.Diagnostics.Views" 
-                  xmlns:diagnostics="clr-namespace:Freengy.Diagnostics" 
-                  
+                  xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
+                  xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
+
                   mc:Ignorable="d" 
-                  d:DesignHeight="300" d:DesignWidth="300">
+                  d:DesignHeight="300" d:DesignWidth="300"
+                  d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsViewModel}">
 
     <Grid>
         <Grid.Resources>
@@ -33,5 +35,11 @@
         
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static diagnostics:Resources.DiagnosticsViewTitle}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+
+        <DockPanel Grid.Row="1" Grid.Column="0">
+            <TextBox DockPanel.Dock="Top" Text="Search category"/>
+            <ListBox DockPanel.Dock="Top" ItemsSource=""/>
+            <ListBox DockPanel.Dock="Top" ItemsSource=""/>
+        </DockPanel>
     </Grid>
 </cate:UserControl>
