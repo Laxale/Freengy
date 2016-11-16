@@ -10,14 +10,17 @@ namespace Freengy.Diagnostics.DefaultImpl
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using Freengy.Base.Interfaces;
     using Freengy.Diagnostics.Interfaces;
+    using Freengy.Diagnostics.ViewModels;
 
     using Catel.IoC;
     using Catel.Services;
 
 
-    internal class DiagnosticsController : IDiagnosticsController 
+    internal class DiagnosticsController : IDiagnosticsController
     {
+        private readonly IGuiDispatcher guiDispatcher;
         private readonly IUIVisualizerService uiVisualizer;
 
         private static readonly object Locker = new object();
@@ -31,6 +34,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
         private DiagnosticsController() 
         {
+            this.guiDispatcher = ServiceLocator.Default.ResolveType<IGuiDispatcher>();
             this.uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
         }
 
@@ -40,9 +44,21 @@ namespace Freengy.Diagnostics.DefaultImpl
         #endregion Singleton
 
 
-        public Task ShowDialogAsync() 
+        public async Task ShowDialogAsync()
         {
-            throw new NotImplementedException();
+            await 
+                Task
+                .Factory
+                .StartNew
+                (
+                    () =>
+                    {
+                        this.guiDispatcher.InvokeOnGuiThread
+                        (
+                            () => this.uiVisualizer.ShowAsync<DiagnosticsViewModel>()
+                        );
+                    }
+                );
         }
 
         public Task ShowDialogAsync(IDiagnosticsCategory diagnosticsCategory) 

@@ -8,12 +8,15 @@ namespace Freengy.Diagnostics.Module
     using System;
 
     using Catel.IoC;
+    using Catel.Services;
 
     using Prism.Modularity;
 
+    using Freengy.Diagnostics.Views;
     using Freengy.Diagnostics.Interfaces;
+    using Freengy.Diagnostics.ViewModels;
     using Freengy.Diagnostics.DefaultImpl;
-
+    
 
     public sealed class DiagnosticsModule : IModule 
     {
@@ -35,8 +38,9 @@ namespace Freengy.Diagnostics.Module
         public void Initialize() 
         {
             ServiceLocator.Default.RegisterInstance(DiagnosticsController.Instance);
-
             ServiceLocator.Default.RegisterType<IDiagnosticsUnitFactory, DiagnosticsUnitFactory>(RegistrationType.Transient);
+
+            ServiceLocator.Default.ResolveType<IUIVisualizerService>().Register<DiagnosticsViewModel, DiagnosticsWindow>();
         }
     }
 }
