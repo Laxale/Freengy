@@ -9,6 +9,7 @@ namespace Diagnostics.Tests.DefaultImpl
     using System.Linq;
     using System.Collections.Generic;
 
+    using Freengy.Base.Interfaces;
     using Freengy.Diagnostics.Interfaces;
     using Freengy.Diagnostics.DefaultImpl;
 
@@ -16,12 +17,28 @@ namespace Diagnostics.Tests.DefaultImpl
 
     using NUnit.Framework;
 
+    using Catel.IoC;
+
 
     [TestFixture]
     public class DiagnosticsControllerTests 
     {
-        private readonly IDiagnosticsController diagnosticsController = DiagnosticsController.Instance;
+        private IDiagnosticsController diagnosticsController;
 
+
+
+
+        [SetUp]
+        public void Setup()
+        {
+            Action emptyAction = () => { };
+            var fakeDispatcher = new Mock<IGuiDispatcher>();
+            fakeDispatcher.Setup(dispatcher => dispatcher.InvokeOnGuiThread(emptyAction));
+
+            ServiceLocator.Default.RegisterInstance(fakeDispatcher.Object);
+
+            this.diagnosticsController = DiagnosticsController.Instance;
+        }
 
         [Test]
         public void RegisterUnit_NullCase() 
@@ -87,7 +104,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [TestCase(false, Description = "Register throwing unit. Okay")]
         public void RegisterUnit_RegisterNormalCase(bool throwing) 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("wow not bad");
 
             this.diagnosticsController.RegisterCategory(goodCategory);
 
@@ -114,7 +131,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_GoodStringIsRegisteredCase() 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("good");
 
             this.diagnosticsController.RegisterCategory(goodCategory);
 
@@ -146,7 +163,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test]
         public void IsUnitRegistered_GoodUnitIsRegisteredCase() 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("yep");
 
             this.diagnosticsController.RegisterCategory(goodCategory);
 
@@ -178,7 +195,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister registered name - get nothing. Okay")]
         public void UnregisterUnit_GoodStringIsRegisteredCase() 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("hehe");
 
             this.diagnosticsController.RegisterCategory(goodCategory);
 
@@ -214,7 +231,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister not registered unit - get nothing. Okay")]
         public void UnregisterUnit_UnitNotRegisteredCase() 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("such");
 
             this.diagnosticsController.UnregisterCategory(goodCategory);
 
@@ -226,7 +243,7 @@ namespace Diagnostics.Tests.DefaultImpl
         [Test(Description = "Unregister registered unit - get nothing. Okay")]
         public void UnregisterUnit_UnitIsRegisteredCase() 
         {
-            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory();
+            IDiagnosticsCategory goodCategory = DiagnosticsControllerTests.GetGoodCategory("much category");
 
             this.diagnosticsController.RegisterCategory(goodCategory);
 
@@ -239,11 +256,29 @@ namespace Diagnostics.Tests.DefaultImpl
             Assert.AreEqual(isRegistered, isUnregistered);
         }
 
+        [Test]
+        public void GetAllCategories_Test() 
+        {
+            IDiagnosticsCategory firstCategory = DiagnosticsControllerTests.GetGoodCategory("nice category one");
+            IDiagnosticsCategory secondCategory = DiagnosticsControllerTests.GetGoodCategory("nice category two");
 
-        private static IDiagnosticsCategory GetGoodCategory() 
+            this.diagnosticsController.RegisterCategory(firstCategory);
+            this.diagnosticsController.RegisterCategory(secondCategory);
+
+            IEnumerable<IDiagnosticsCategory> gotCategories = this.diagnosticsController.GetAllCategories().ToArray();
+
+            bool isTestPassed =
+                gotCategories.Count() == 2 &&
+                gotCategories.Contains(firstCategory) &&
+                gotCategories.Contains(secondCategory);
+
+            Assert.IsTrue(isTestPassed);
+        }
+
+
+        private static IDiagnosticsCategory GetGoodCategory(string categoryName) 
         {
             string unitName = "Unit Name";
-            string categoryName = "Category Name";
             
             var mockUnit = new Mock<IDiagnosticsUnit>();
             mockUnit.Setup(unit => unit.Name).Returns(unitName);

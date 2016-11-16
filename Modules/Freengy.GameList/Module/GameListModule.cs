@@ -19,25 +19,12 @@ namespace Freengy.GameList.Module
 
     public class GameListModule : IUiModule, IModule 
     {
-        #region Singleton
-
-        private static GameListModule instance;
-
-        private GameListModule() 
-        {
-
-        }
-
-        public static GameListModule Instance => GameListModule.instance ?? (GameListModule.instance = new GameListModule());
-
-        #endregion Singleton
-
-
         public Type ExportedViewType { get; } = typeof (GameListView);
 
         public void Initialize() 
         {
-            ServiceLocator.Default.ResolveType<IDiagnosticsController>().RegisterCategory(new GameListDiagnosticsCategory());
+            var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
+            controller.RegisterCategory(new GameListDiagnosticsCategory());
         }
     }
 }

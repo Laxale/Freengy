@@ -9,6 +9,8 @@
                   xmlns:local="clr-namespace:Freengy.Diagnostics.Views" 
                   xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
                   xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
+                  xmlns:diaginterfaces="clr-namespace:Freengy.Diagnostics.Interfaces"
+                  xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
                   mc:Ignorable="d" 
                   d:DesignHeight="300" d:DesignWidth="300"
@@ -37,9 +39,16 @@
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
         <DockPanel Grid.Row="1" Grid.Column="0">
-            <TextBox DockPanel.Dock="Top" Text="Search category"/>
-            <ListBox DockPanel.Dock="Top" ItemsSource=""/>
-            <ListBox DockPanel.Dock="Top" ItemsSource=""/>
+            <controls:WatermarkTextBox DockPanel.Dock="Top" WatermarkForeground="{StaticResource DarkGrayBrush}" Style="{StaticResource CommonTextBoxStyle}"
+                                       WatermarkText="Search category" Text="{Binding Path=CategoryFilter}" MaxLength="10"/>
+
+            <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Path=DiagnosticsCategories}" Background="#50505050">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsCategory}">
+                        <TextBlock Text="{Binding Path=DisplayedName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
     </Grid>
 </cate:UserControl>

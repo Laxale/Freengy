@@ -27,9 +27,7 @@
             <RowDefinition Height="Auto" MinHeight="40" MaxHeight="80" Name="TextBoxRow"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" VerticalAlignment="Stretch" Margin="{StaticResource All4Margin}" 
-                 Background="Transparent" ItemsSource="{Binding Path=SessionMessages}" BorderThickness="0"
-                 ItemContainerStyle="{StaticResource CoolListBoxItemStyle}">
+        <ListBox Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="interfaces:IChatMessageDecorator">

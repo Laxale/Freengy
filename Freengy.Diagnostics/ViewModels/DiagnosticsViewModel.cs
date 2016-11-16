@@ -7,13 +7,15 @@ namespace Freengy.Diagnostics.ViewModels
 {
     using System.Windows.Data;
     using System.ComponentModel;
+    using System.Threading.Tasks;
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
     using Freengy.Diagnostics.Interfaces;
 
     using Catel.IoC;
-    using System.Threading.Tasks;
+    using Catel.Data;
+    
 
     internal class DiagnosticsViewModel : WaitableViewModel
     {
@@ -42,10 +44,26 @@ namespace Freengy.Diagnostics.ViewModels
 
         public ICollectionView DiagnosticsCategories { get; }
 
+        public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(this.CategoryFilter);
 
-        private void FillCategories()
+        public string CategoryFilter 
         {
-            var registeredCategories = this.diagnosticsController.GetCategories();
+            get { return (string)GetValue(CategoryFilterProperty); }
+
+            set
+            {
+                SetValue(CategoryFilterProperty, value);
+
+                RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
+            }
+        }
+
+        public static readonly PropertyData CategoryFilterProperty =
+            ModelBase.RegisterProperty<DiagnosticsViewModel, string>(diagViewModel => diagViewModel.CategoryFilter, () => string.Empty);
+
+        private void FillCategories() 
+        {
+            var registeredCategories = this.diagnosticsController.GetAllCategories();
 
             base
                 .guiDispatcher
@@ -53,7 +71,7 @@ namespace Freengy.Diagnostics.ViewModels
                 (
                     () =>
                     {
-                        foreach (var vategory in registeredCategories)
+                        foreach (var category in registeredCategories)
                         {
                             this.diagnosticsCategories.Add(category);
                         }

@@ -70,9 +70,10 @@ namespace Freengy.UI.Helpers
 
             catalog.AddModule(typeof(BaseModule))
                    .AddModule(typeof(MainModule))
+                   .AddModule(typeof(DiagnosticsModule))
+                   .AddModule(typeof(GameListModule))
                    .AddModule(typeof(NetworkingModule))
-                   .AddModule(typeof(GamePluginModule))
-                   .AddModule(typeof(DiagnosticsModule));
+                   .AddModule(typeof(GamePluginModule));
 
             return catalog;
         }
@@ -99,12 +100,14 @@ namespace Freengy.UI.Helpers
         //        }
 
 
-        private void Register() 
+        private void Register()
         {
+            var gameListModule = new GameListModule();
+
             this
                 .regionManager
+                .RegisterViewWithRegion(RegionNames.GameListRegion, gameListModule.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.ChatRegion, ChatterModule.Instance.ExportedViewType)
-                .RegisterViewWithRegion(RegionNames.GameListRegion, GameListModule.Instance.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
         }
     }

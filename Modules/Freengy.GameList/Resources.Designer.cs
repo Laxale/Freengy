@@ -61,6 +61,15 @@ namespace Freengy.GameList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gamelist.
+        /// </summary>
+        public static string DiagnosticsCategoryName {
+            get {
+                return ResourceManager.GetString("DiagnosticsCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Games not found. Look for issue resolving.
         /// </summary>
         public static string GamesNotFoundHintText {

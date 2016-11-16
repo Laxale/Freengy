@@ -46,8 +46,7 @@
                 </Border.Effect>
             </Border>
 
-            <ListBox Background="Transparent" Name="FriendList" BorderThickness="0" ItemsSource="{Binding Path=FriendList}"
-                     ItemContainerStyle="{StaticResource CoolListBoxItemStyle}" SelectionChanged="FriendList_SelectionChanged">
+            <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" SelectionChanged="FriendList_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type baseinterfaces:IUserAccount}">
                         <Grid>

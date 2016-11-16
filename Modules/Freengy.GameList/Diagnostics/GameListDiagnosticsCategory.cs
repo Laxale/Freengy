@@ -12,6 +12,8 @@ namespace Freengy.GameList.Diagnostics
 
     using Catel.IoC;
 
+    using LocalRes = Freengy.GameList.Resources;
+
 
     internal class GameListDiagnosticsCategory : IDiagnosticsCategory
     {
@@ -27,6 +29,8 @@ namespace Freengy.GameList.Diagnostics
             this.FillUnits();
         }
 
+
+        public string DisplayedName { get; } = LocalRes.DiagnosticsCategoryName;
 
         public IEnumerable<IDiagnosticsUnit> TestUnits => this.diagnosticUnits;
 

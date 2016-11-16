@@ -9,6 +9,7 @@
                     mc:Ignorable="d">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:StringToBoolConverter x:Key="StringToBoolConverter"/>
     <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
     <!-- думал сделать динамическую привязку к переданному полю, обозначающему занятость вьюмодели -->
     <converters:PropertyNameToBindingConverter x:Key="PropertyNameToBindingConverter"/>

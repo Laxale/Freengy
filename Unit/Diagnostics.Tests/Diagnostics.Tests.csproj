@@ -14,6 +14,9 @@
     <OutputPath>..\..\output\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Catel.Core">
       <HintPath>..\..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
     </Reference>

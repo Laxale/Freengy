@@ -43,8 +43,7 @@
                 ToolTip="{x:Static gamelist:Resources.GamesNotFoundHintText}" Command="{Binding Path=CommandResolveProblems}"
                 Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <ListBox Grid.Row="1" Name="GameListBox" Background="Transparent" 
-                 ItemContainerStyle="{StaticResource CoolListBoxItemStyle}"
+        <ListBox Grid.Row="1" Name="GameListBox" 
                  ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}" BorderThickness="0"
                  Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
 

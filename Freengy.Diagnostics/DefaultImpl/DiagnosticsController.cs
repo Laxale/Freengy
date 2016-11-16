@@ -25,7 +25,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
         private static readonly object Locker = new object();
 
-        private readonly IDictionary<string, IDiagnosticsCategory> diagnosticUnits = new Dictionary<string, IDiagnosticsCategory>();
+        private readonly IDictionary<string, IDiagnosticsCategory> diagnosticsCategories = new Dictionary<string, IDiagnosticsCategory>();
 
 
         #region Singleton
@@ -44,7 +44,7 @@ namespace Freengy.Diagnostics.DefaultImpl
         #endregion Singleton
 
 
-        public async Task ShowDialogAsync()
+        public async Task ShowDialogAsync() 
         {
             await 
                 Task
@@ -72,9 +72,9 @@ namespace Freengy.Diagnostics.DefaultImpl
 
             lock (Locker)
             {
-                if (this.diagnosticUnits.Keys.Contains(diagnosticsCategory.Name)) return;
+                if (this.diagnosticsCategories.Keys.Contains(diagnosticsCategory.Name)) return;
 
-                this.diagnosticUnits.Add(diagnosticsCategory.Name, diagnosticsCategory);
+                this.diagnosticsCategories.Add(diagnosticsCategory.Name, diagnosticsCategory);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsCategoryName);
+                bool isRegistered = this.diagnosticsCategories.ContainsKey(diagnosticsCategoryName);
 
                 return isRegistered;
             }
@@ -97,7 +97,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticUnits.ContainsKey(diagnosticsCategory.Name);
+                bool isRegistered = this.diagnosticsCategories.ContainsKey(diagnosticsCategory.Name);
 
                 return isRegistered;
             }
@@ -118,6 +118,14 @@ namespace Freengy.Diagnostics.DefaultImpl
             this.TryRemoveUnitByName(diagnosticsCategory.Name);
         }
 
+        public IEnumerable<IDiagnosticsCategory> GetAllCategories() 
+        {
+            lock (Locker)
+            {
+                return this.diagnosticsCategories.Values.ToArray();
+            }
+        }
+
 
         private void TryRemoveUnitByName(string diagnosticsUnitName) 
         {
@@ -125,7 +133,7 @@ namespace Freengy.Diagnostics.DefaultImpl
             {
                 try
                 {
-                    this.diagnosticUnits.Remove(diagnosticsUnitName);
+                    this.diagnosticsCategories.Remove(diagnosticsUnitName);
                 }
                 catch (Exception)
                 {

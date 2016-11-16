@@ -6,6 +6,7 @@
 namespace Freengy.Diagnostics.Interfaces 
 {
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
 
     public interface IDiagnosticsController 
@@ -25,5 +26,7 @@ namespace Freengy.Diagnostics.Interfaces
 
         void UnregisterCategory(string diagnosticsCategoryName);
         void UnregisterCategory(IDiagnosticsCategory diagnosticsCategory);
+
+        IEnumerable<IDiagnosticsCategory> GetAllCategories();
     }
 }
