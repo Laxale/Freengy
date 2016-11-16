@@ -18,7 +18,9 @@ namespace Freengy.CommonResources.Converters
         {
             string castedValue = (string)value;
 
-            return string.IsNullOrWhiteSpace(castedValue);
+            bool stringHasText = !string.IsNullOrWhiteSpace(castedValue);
+
+            return stringHasText;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) 

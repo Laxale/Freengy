@@ -19,25 +19,36 @@
     <TextBox.Template>
         <ControlTemplate TargetType="TextBox">
             <Grid>
-                <TextBox Text="{TemplateBinding Text}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}"
-                         Style="{TemplateBinding Style}"/>
+                <TextBox Text="{Binding ElementName=Root, Path=WatermarkText}" Name="WaterMark"
+                         Foreground="{Binding ElementName=Root, Path=WatermarkForeground}"
+                         Background="{TemplateBinding Background}" IsReadOnly="True"/>
 
-                <TextBlock Text="{Binding ElementName=Root, Path=WatermarkText}" Name="WaterMark"
-                           Foreground="{Binding ElementName=Root, Path=WatermarkForeground}">
-                    
-                </TextBlock>
+                <TextBox Text="{TemplateBinding Text}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
+                            <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="Orange"/>
+                            
+                            <Style.Triggers>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <Binding ElementName="FilterBox" Path="Text" Converter="{StaticResource StringToBoolConverter}"/>
+                                    </DataTrigger.Binding>
+
+                                    <Setter Property="Background" Value="Pink"/>
+                                </DataTrigger>
+
+                                <DataTrigger Value="False">
+                                    <DataTrigger.Binding>
+                                        <Binding ElementName="FilterBox" Path="Text" Converter="{StaticResource StringToBoolConverter}"/>
+                                    </DataTrigger.Binding>
+
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </Grid>
-
-            <ControlTemplate.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding ElementName=Root, Path=IsMouseOver}" Value="True"/>
-                        <Condition Binding="{Binding ElementName=Root, Path=Text, Converter={StaticResource StringToBoolConverter}}" Value="True"/>
-                    </MultiDataTrigger.Conditions>
-
-                    <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
-                </MultiDataTrigger>
-            </ControlTemplate.Triggers>
         </ControlTemplate>
     </TextBox.Template>
 </TextBox>

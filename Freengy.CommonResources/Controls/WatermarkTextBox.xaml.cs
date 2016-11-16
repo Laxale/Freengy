@@ -30,11 +30,20 @@ namespace Freengy.CommonResources.Controls
             set { SetValue(WatermarkForegroundProperty, value); }
         }
 
+        public SolidColorBrush MouseOverBrush 
+        {
+            get { return (SolidColorBrush)GetValue(WatermarkForegroundProperty); }
+            set { SetValue(WatermarkForegroundProperty, value); }
+        }
+
 
         public static readonly DependencyProperty WatermarkTextProperty =
             DependencyProperty.Register(nameof(WatermarkText), typeof(string), typeof(WatermarkTextBox));
 
         public static readonly DependencyProperty WatermarkForegroundProperty =
             DependencyProperty.Register(nameof(WatermarkForeground), typeof(SolidColorBrush), typeof(WatermarkTextBox));
+
+        public static readonly DependencyProperty MouseOverBrushProperty =
+            DependencyProperty.RegisterAttached(nameof(MouseOverBrush), typeof(SolidColorBrush), typeof(WatermarkTextBox));
     }
 }
