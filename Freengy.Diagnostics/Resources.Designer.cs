@@ -68,5 +68,23 @@ namespace Freengy.Diagnostics {
                 return ResourceManager.GetString("DiagnosticsViewTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run units.
+        /// </summary>
+        public static string RunUnitsText {
+            get {
+                return ResourceManager.GetString("RunUnitsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search category.
+        /// </summary>
+        public static string SearchCategoryText {
+            get {
+                return ResourceManager.GetString("SearchCategoryText", resourceCulture);
+            }
+        }
     }
 }

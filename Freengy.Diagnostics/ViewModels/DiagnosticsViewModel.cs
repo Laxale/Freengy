@@ -15,6 +15,7 @@ namespace Freengy.Diagnostics.ViewModels
 
     using Catel.IoC;
     using Catel.Data;
+    using Catel.MVVM;
     
 
     internal class DiagnosticsViewModel : WaitableViewModel
@@ -29,9 +30,9 @@ namespace Freengy.Diagnostics.ViewModels
             this.DiagnosticsCategories = CollectionViewSource.GetDefaultView(this.diagnosticsCategories);
         }
 
-        protected override void SetupCommands() 
+        protected override void SetupCommands()
         {
-            
+            this.CommandRunUnits = new Command<IDiagnosticsCategory>(this.RunUnitsImpl);
         }
 
         protected override async Task InitializeAsync() 
@@ -40,6 +41,9 @@ namespace Freengy.Diagnostics.ViewModels
 
             this.FillCategories();
         }
+
+
+        public Command<IDiagnosticsCategory> CommandRunUnits { get; private set; }
 
 
         public ICollectionView DiagnosticsCategories { get; }
@@ -61,6 +65,7 @@ namespace Freengy.Diagnostics.ViewModels
         public static readonly PropertyData CategoryFilterProperty =
             ModelBase.RegisterProperty<DiagnosticsViewModel, string>(diagViewModel => diagViewModel.CategoryFilter, () => string.Empty);
 
+
         private void FillCategories() 
         {
             var registeredCategories = this.diagnosticsController.GetAllCategories();
@@ -77,6 +82,19 @@ namespace Freengy.Diagnostics.ViewModels
                         }
                     }
                 );
+        }
+
+        private void RunUnitsImpl(IDiagnosticsCategory category) 
+        {
+            foreach (IDiagnosticsUnit testUnit in category.TestUnits)
+            {
+                
+                bool unitPassed = testUnit.UnitTest();
+            }
+        }
+        private bool CanRunUnits(IDiagnosticsCategory category) 
+        {
+            return category != null;
         }
     }
 }

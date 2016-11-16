@@ -120,4 +120,10 @@
   <data name="DiagnosticsViewTitle" xml:space="preserve">
     <value>Diagnostics tool</value>
   </data>
+  <data name="RunUnitsText" xml:space="preserve">
+    <value>Run units</value>
+  </data>
+  <data name="SearchCategoryText" xml:space="preserve">
+    <value>Search category</value>
+  </data>
 </root>

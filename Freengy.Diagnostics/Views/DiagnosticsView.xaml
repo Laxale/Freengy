@@ -31,7 +31,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="169" MinWidth="160"/>
+            <ColumnDefinition Width="160" MinWidth="160"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
@@ -39,13 +39,29 @@
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
         <DockPanel Grid.Row="1" Grid.Column="0">
-            <controls:WatermarkTextBox DockPanel.Dock="Top" WatermarkForeground="{StaticResource DarkGrayBrush}" Style="{StaticResource CommonTextBoxStyle}"
-                                       WatermarkText="Search category" Text="{Binding Path=CategoryFilter}" MaxLength="10"/>
+            <controls:WatermarkTextBox DockPanel.Dock="Top" Style="{StaticResource CommonTextBoxStyle}"
+                                       WatermarkForeground="{StaticResource DarkGrayBrush}" MaxLength="10"
+                                       WatermarkText="{x:Static diagnostics:Resources.SearchCategoryText}" 
+                                       Text="{Binding Path=CategoryFilter}"/>
 
-            <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Path=DiagnosticsCategories}" Background="#50505050">
+            <ListBox DockPanel.Dock="Top" Name="CategoriesList" Background="#50505050"
+                     ItemsSource="{Binding Path=DiagnosticsCategories}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsCategory}">
                         <TextBlock Text="{Binding Path=DisplayedName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <DockPanel Grid.Row="1"  Grid.Column="1">
+            <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
+                    HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}"/>
+
+            <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.TestUnits}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsUnit}">
+                        <TextBlock Text="{Binding Path=Name}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
