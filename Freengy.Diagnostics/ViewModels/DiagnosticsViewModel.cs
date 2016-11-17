@@ -31,9 +31,9 @@ namespace Freengy.Diagnostics.ViewModels
             this.DiagnosticsCategories = CollectionViewSource.GetDefaultView(this.diagnosticsCategories);
         }
 
-        protected override void SetupCommands()
+        protected override void SetupCommands() 
         {
-            this.CommandRunUnits = new Command<IDiagnosticsCategory>(this.RunUnitsImpl);
+            this.CommandRunUnits = new Command<DiagnosticsCategoryDecorator>(this.RunUnitsImpl);
         }
 
         protected override async Task InitializeAsync() 
@@ -44,7 +44,7 @@ namespace Freengy.Diagnostics.ViewModels
         }
 
 
-        public Command<IDiagnosticsCategory> CommandRunUnits { get; private set; }
+        public Command<DiagnosticsCategoryDecorator> CommandRunUnits { get; private set; }
 
 
         public ICollectionView DiagnosticsCategories { get; }
@@ -58,6 +58,18 @@ namespace Freengy.Diagnostics.ViewModels
             set
             {
                 SetValue(CategoryFilterProperty, value);
+
+                this.DiagnosticsCategories.Filter =
+                    category =>
+                    {
+                        var decorator = category as DiagnosticsCategoryDecorator;
+
+                        if (decorator == null) return false;
+
+                        if (string.IsNullOrWhiteSpace(value)) return true;
+
+                        return decorator.DisplayedName.Contains(value);
+                    };
 
                 RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
             }
@@ -85,12 +97,11 @@ namespace Freengy.Diagnostics.ViewModels
                 );
         }
 
-        private void RunUnitsImpl(IDiagnosticsCategory category) 
+        private void RunUnitsImpl(DiagnosticsCategoryDecorator categoryDecorator) 
         {
-            foreach (IDiagnosticsUnit testUnit in category.TestUnits)
+            foreach (DiagnosticsUnitViewModel testUnitViewModel in categoryDecorator.UnitViewModels)
             {
-                
-                bool unitPassed = testUnit.UnitTest();
+                testUnitViewModel.Run();
             }
         }
         private bool CanRunUnits(IDiagnosticsCategory category) 

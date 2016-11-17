@@ -43,10 +43,9 @@
             <controls:WatermarkTextBox DockPanel.Dock="Top" Style="{StaticResource CommonTextBoxStyle}"
                                        WatermarkForeground="{StaticResource DarkGrayBrush}" MaxLength="10"
                                        WatermarkText="{x:Static diagnostics:Resources.SearchCategoryText}" 
-                                       Text="{Binding Path=CategoryFilter}"/>
+                                       Text="{Binding Path=CategoryFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <ListBox DockPanel.Dock="Top" Name="CategoriesList" Background="#50505050"
-                     ItemsSource="{Binding Path=DiagnosticsCategories}" >
+            <ListBox DockPanel.Dock="Top" Name="CategoriesList" Background="#50505050" ItemsSource="{Binding Path=DiagnosticsCategories}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type helpers:DiagnosticsCategoryDecorator}">
                         <TextBlock Text="{Binding Path=DisplayedName}"/>
@@ -57,12 +56,13 @@
 
         <DockPanel Grid.Row="1"  Grid.Column="1">
             <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
-                    HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}"/>
+                    HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}"
+                    Command="{Binding Path=CommandRunUnits}" CommandParameter="{Binding ElementName=CategoriesList, Path=SelectedItem}"/>
 
             <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsUnit}">
-                        <local:DiagnosticsUnitView/>
+                    <DataTemplate DataType="{x:Type viewModels:DiagnosticsUnitViewModel}">
+                        <local:DiagnosticsUnitView DataContext="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

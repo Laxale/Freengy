@@ -23,7 +23,8 @@
                          Foreground="{Binding ElementName=Root, Path=WatermarkForeground}"
                          Background="{TemplateBinding Background}" IsReadOnly="True"/>
 
-                <TextBox Text="{TemplateBinding Text}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">
+                <!--<TextBox Text="{Binding ElementName=Root, Path=Text, Mode=TwoWay}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">-->
+                    <TextBox Text="{TemplateBinding Text}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
                             <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="Orange"/>

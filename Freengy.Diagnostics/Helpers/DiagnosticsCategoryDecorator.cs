@@ -15,7 +15,7 @@ namespace Freengy.Diagnostics.Helpers
 
     internal class DiagnosticsCategoryDecorator 
     {
-        private IDiagnosticsCategory category;
+        private readonly IDiagnosticsCategory category;
 
 
         public DiagnosticsCategoryDecorator(IDiagnosticsCategory category) 
@@ -24,7 +24,7 @@ namespace Freengy.Diagnostics.Helpers
 
             this.category = category;
 
-            this.UnitViewModels = category.TestUnits.Select(unit => new DiagnosticsUnitViewModel(unit));
+            this.UnitViewModels = category.TestUnits.Select(unit => new DiagnosticsUnitViewModel(unit)).ToArray();
         }
 
 

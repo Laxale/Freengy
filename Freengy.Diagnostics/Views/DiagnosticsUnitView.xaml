@@ -24,12 +24,17 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
         <TextBlock Grid.Column="0" Text="{Binding Path=UnitName}"/>
         
         <TextBlock Grid.Column="1" Text="Running" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <TextBlock Grid.Column="2" Text="Ok" Visibility="{Binding Path=Succeeded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Column="2" Text="Fail" Foreground="Red" Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Column="2" Text="Ok" Foreground="Green" Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        
+        <TextBlock Grid.Column="3" Text="Finished" Foreground="Blue" 
+                   Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
     </Grid>
 </UserControl>
