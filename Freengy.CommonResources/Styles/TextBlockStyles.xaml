@@ -10,8 +10,10 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Variables.xaml"/>
+        <ResourceDictionary Source="Animations.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    
     <!-- Central common style switch for TextBlock -->
     <Style TargetType="TextBlock" x:Key="CommonTextBlockStyle">
         <Setter Property="UseLayoutRounding"   Value="True"/>
@@ -19,16 +21,47 @@
         <Setter Property="VerticalAlignment"   Value="Center"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
     </Style>
+    
     <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}" x:Key="SlidingTitleTextBlockStyle">
-        <Setter Property="Opacity" Value="0"/>
+        <Style.Resources>
+            <Duration x:Key="ColorDuration">0:0:0.8</Duration>
+        </Style.Resources>
+        
+        <Setter Property="Opacity" Value="1"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="Heavy"/>
-        <Setter Property="Foreground" Value="#990022"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Color="#A00000" Offset="0"/>
+<!--                    <GradientStop Color="Red" Offset="0.4"/>-->
+                    <GradientStop Color="Transparent" Offset="0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
 
         <Style.Triggers>
             <EventTrigger RoutedEvent="Loaded">
-                <BeginStoryboard Storyboard="{StaticResource SideSlidingAnimation}"/>
+<!--                <BeginStoryboard Storyboard="{StaticResource SideSlidingAnimation}"/>-->
+
+                <BeginStoryboard>
+                    <Storyboard Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[0].Offset">
+                        <DoubleAnimation To="1" BeginTime="0:0:1" Duration="{StaticResource ColorDuration}" AutoReverse="False"/>
+                    </Storyboard>
+                </BeginStoryboard>
+
+                <BeginStoryboard>
+                    <Storyboard Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[1].Offset">
+                        <DoubleAnimation To="1" BeginTime="0" Duration="{StaticResource ColorDuration}"/>
+                    </Storyboard>
+                </BeginStoryboard>
+
+                <BeginStoryboard>
+                    <Storyboard Storyboard.TargetProperty="(TextBlock.Foreground).(LinearGradientBrush.GradientStops)[1].Color">
+                        <ColorAnimation To="Transparent" BeginTime="0" Duration="{StaticResource ColorDuration}" AutoReverse="False"/>
+                    </Storyboard>
+                </BeginStoryboard>
             </EventTrigger>
         </Style.Triggers>
     </Style>

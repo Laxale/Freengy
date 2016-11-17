@@ -93,6 +93,7 @@
                                             <Style TargetType="Path">
                                                 <Setter Property="Stretch" Value="None"/>
                                                 <Setter Property="StrokeThickness" Value="1"/>
+                                                <Setter Property="IsHitTestVisible" Value="False"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
@@ -113,9 +114,10 @@
                                                 HorizontalAlignment="Right" Margin="4,-7,0,7"
                                                 Width="32" Height="32" MouseLeftButtonDown="IconMouseLeftButtonDown"/>
 
-                                        <TextBlock x:Name="Caption" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                   Margin="4,0,0,0" FontFamily="Segoe UI" FontSize="12" Opacity="0.6"
-                                                   Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                   Name="Caption" Margin="4,0,0,0" FontFamily="Segoe UI" FontSize="12" 
+                                                   Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                   Visibility="{Binding Path=ShowWindowTitle, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                         <Button x:Name="MinButton" Grid.Column="2" Click="MinButtonClick" Style="{StaticResource TitleBarButtonStyle}"
                                                 Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},

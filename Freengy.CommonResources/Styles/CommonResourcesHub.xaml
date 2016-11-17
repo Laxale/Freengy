@@ -68,8 +68,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" Style="{StaticResource CommonBorderStyle}" 
-                                Background="{TemplateBinding Background}">
+                        <Border Grid.Row="0" Background="{TemplateBinding Background}">
                             <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
                         </Border>
 

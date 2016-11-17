@@ -21,8 +21,14 @@ namespace Freengy.Diagnostics.ViewModels
 
     internal class DiagnosticsViewModel : WaitableViewModel
     {
+        #region vars
+
         private readonly IDiagnosticsController diagnosticsController;
-        private readonly ObservableCollection<DiagnosticsCategoryDecorator> diagnosticsCategories = new ObservableCollection<DiagnosticsCategoryDecorator>();
+
+        private readonly ObservableCollection<DiagnosticsCategoryDecorator> diagnosticsCategories = 
+            new ObservableCollection<DiagnosticsCategoryDecorator>();
+
+        #endregion vars
 
 
         public DiagnosticsViewModel() 
@@ -30,6 +36,9 @@ namespace Freengy.Diagnostics.ViewModels
             this.diagnosticsController = base.serviceLocator.ResolveType<IDiagnosticsController>();
             this.DiagnosticsCategories = CollectionViewSource.GetDefaultView(this.diagnosticsCategories);
         }
+
+
+        #region override
 
         protected override void SetupCommands() 
         {
@@ -43,13 +52,22 @@ namespace Freengy.Diagnostics.ViewModels
             this.FillCategories();
         }
 
+        #endregion override
+
+
+        #region commands
 
         public Command<DiagnosticsCategoryDecorator> CommandRunUnits { get; private set; }
 
+        #endregion commands
 
+
+        public bool ShowWindowTitle => false;
+        
         public ICollectionView DiagnosticsCategories { get; }
 
         public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(this.CategoryFilter);
+        
 
         public string CategoryFilter 
         {
@@ -59,17 +77,7 @@ namespace Freengy.Diagnostics.ViewModels
             {
                 SetValue(CategoryFilterProperty, value);
 
-                this.DiagnosticsCategories.Filter =
-                    category =>
-                    {
-                        var decorator = category as DiagnosticsCategoryDecorator;
-
-                        if (decorator == null) return false;
-
-                        if (string.IsNullOrWhiteSpace(value)) return true;
-
-                        return decorator.DisplayedName.Contains(value);
-                    };
+                this.SetCategoryFilter(value);
 
                 RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
             }
@@ -78,6 +86,21 @@ namespace Freengy.Diagnostics.ViewModels
         public static readonly PropertyData CategoryFilterProperty =
             ModelBase.RegisterProperty<DiagnosticsViewModel, string>(diagViewModel => diagViewModel.CategoryFilter, () => string.Empty);
 
+
+        private void SetCategoryFilter(string value) 
+        {
+            this.DiagnosticsCategories.Filter =
+                category =>
+                {
+                    var decorator = category as DiagnosticsCategoryDecorator;
+
+                    if (decorator == null) return false;
+
+                    return 
+                        string.IsNullOrWhiteSpace(value) ||
+                        decorator.DisplayedName.ToLower().Contains(value.ToLower());
+                };
+        }
 
         private void FillCategories() 
         {

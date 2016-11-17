@@ -27,9 +27,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Name="ErrorBorder" Style="{StaticResource CommonBorderStyle}" 
-                            BorderBrush="Transparent" BorderThickness="0, 0, 0, 2" Background="{TemplateBinding Background}">
-                        <Border Name="HighlightBorder" BorderBrush="Transparent" Style="{StaticResource CommonBorderStyle}"
+                    <Border Name="ErrorBorder" BorderBrush="Transparent" BorderThickness="0, 0, 0, 2" 
+                            Background="{TemplateBinding Background}">
+                        <Border Name="HighlightBorder" BorderBrush="Transparent" 
                                 Background="{TemplateBinding controls:WatermarkTextBox.MouseOverBrush}">
                             <ScrollViewer Name="PART_ContentHost"/>
                         </Border>

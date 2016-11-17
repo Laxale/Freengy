@@ -16,10 +16,6 @@
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
 
     <Grid>
-        <Grid.Resources>
-            <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}"/>
-        </Grid.Resources>
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="180" />
             <ColumnDefinition Width="Auto"/>

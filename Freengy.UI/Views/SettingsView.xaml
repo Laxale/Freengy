@@ -35,8 +35,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Games folder" />
 
         <DockPanel Grid.Row="0" Grid.Column="1">
-            <Border BorderBrush="Black" BorderThickness="1" Margin="{StaticResource All4Margin}" 
-                    Style="{StaticResource CommonBorderStyle}">
+            <Border BorderBrush="Black" BorderThickness="1" Margin="{StaticResource All4Margin}">
                 <TextBlock DockPanel.Dock="Left"/>
             </Border>
             

@@ -41,7 +41,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <TextBlock DockPanel.Dock="Left" 
                        Text="{x:Static localprops:Resources.CreateNewAccountText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>

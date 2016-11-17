@@ -16,8 +16,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}"
-                            Style="{StaticResource CommonBorderStyle}">
+                            BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}">
 
                         <ContentPresenter/>
                     </Border>

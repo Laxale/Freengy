@@ -21,8 +21,6 @@
                     <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
-                
-                <Style TargetType="Border" BasedOn="{StaticResource CommonBorderStyle}"/>
             </ResourceDictionary>
         </Grid.Resources>
         

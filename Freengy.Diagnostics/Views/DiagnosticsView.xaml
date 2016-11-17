@@ -55,9 +55,23 @@
         </DockPanel>
 
         <DockPanel Grid.Row="1"  Grid.Column="1">
-            <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
-                    HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}"
-                    Command="{Binding Path=CommandRunUnits}" CommandParameter="{Binding ElementName=CategoriesList, Path=SelectedItem}"/>
+            <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" HorizontalAlignment="Left" 
+                    Command="{Binding Path=CommandRunUnits}" CommandParameter="{Binding ElementName=CategoriesList, Path=SelectedItem}">
+
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Value="{x:Null}">
+                                <DataTrigger.Binding>
+                                    <Binding ElementName="CategoriesList" Path="SelectedItem"/>
+                                </DataTrigger.Binding>
+                                
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
             <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}">
                 <ListBox.ItemTemplate>

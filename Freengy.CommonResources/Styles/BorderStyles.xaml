@@ -10,7 +10,7 @@
         <ResourceDictionary Source="Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="Border" x:Key="CommonBorderStyle">
+    <Style TargetType="Border" >
         <Setter Property="CornerRadius" Value="{StaticResource CommonCorners}"/>
     </Style>
 </ResourceDictionary>

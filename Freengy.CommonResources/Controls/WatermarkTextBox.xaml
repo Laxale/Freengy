@@ -16,40 +16,64 @@
         </ResourceDictionary>
     </TextBox.Resources>
 
+    <TextBox.Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
+            <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="Orange"/>
+        </Style>
+    </TextBox.Style>
+
     <TextBox.Template>
         <ControlTemplate TargetType="TextBox">
-            <Grid>
-                <TextBox Text="{Binding ElementName=Root, Path=WatermarkText}" Name="WaterMark"
-                         Foreground="{Binding ElementName=Root, Path=WatermarkForeground}"
-                         Background="{TemplateBinding Background}" IsReadOnly="True"/>
+            <Grid MaxHeight="{StaticResource MaxButtonHeight}" MinHeight="{StaticResource MaxButtonHeight}">
+                <Border BorderBrush="Transparent" Background="{TemplateBinding local:WatermarkTextBox.MouseOverBrush}">
+                    <ScrollViewer Name="PART_ContentHost"/>
+                </Border>
 
-                <!--<TextBox Text="{Binding ElementName=Root, Path=Text, Mode=TwoWay}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">-->
-                    <TextBox Text="{TemplateBinding Text}" Name="FilterBox" MaxLength="{TemplateBinding MaxLength}">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
-                            <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="Orange"/>
-                            
-                            <Style.Triggers>
-                                <DataTrigger Value="True">
-                                    <DataTrigger.Binding>
-                                        <Binding ElementName="FilterBox" Path="Text" Converter="{StaticResource StringToBoolConverter}"/>
-                                    </DataTrigger.Binding>
-
-                                    <Setter Property="Background" Value="Pink"/>
-                                </DataTrigger>
-
-                                <DataTrigger Value="False">
-                                    <DataTrigger.Binding>
-                                        <Binding ElementName="FilterBox" Path="Text" Converter="{StaticResource StringToBoolConverter}"/>
-                                    </DataTrigger.Binding>
-
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
+                <Border Background="{TemplateBinding Background}" Name="WaterMark" IsHitTestVisible="False">
+                    <TextBlock Text="{Binding ElementName=Root, Path=WatermarkText}" 
+                               Foreground="{Binding ElementName=Root, Path=WatermarkForeground}"/>
+                </Border>
             </Grid>
+
+            <ControlTemplate.Triggers>
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <Binding Path="IsMouseOver">
+                            <Binding.RelativeSource>
+                                <RelativeSource Mode="Self"/>
+                            </Binding.RelativeSource>
+                        </Binding>
+                    </DataTrigger.Binding>
+                    
+                    <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="PART_ContentHost" Property="Background" Value="Transparent"/>
+                </DataTrigger>
+
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <Binding Path="Text" Converter="{StaticResource StringToBoolConverter}">
+                            <Binding.RelativeSource>
+                                <RelativeSource Mode="Self"/>
+                            </Binding.RelativeSource>
+                        </Binding>
+                    </DataTrigger.Binding>
+
+                    <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="PART_ContentHost" Property="Background" Value="Pink"/>
+                </DataTrigger>
+
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <Binding Path="IsKeyboardFocused">
+                            <Binding.RelativeSource>
+                                <RelativeSource Mode="Self"/>
+                            </Binding.RelativeSource>
+                        </Binding>
+                    </DataTrigger.Binding>
+
+                    <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </ControlTemplate.Triggers>
         </ControlTemplate>
     </TextBox.Template>
 </TextBox>

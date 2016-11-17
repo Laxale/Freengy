@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              
         xmlns:local="clr-namespace:Freengy.Diagnostics.Views"
-        
+        xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
+
         mc:Ignorable="d" 
         ShowInTaskbar="True"
         ResizeMode="CanResizeWithGrip"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"
-        MinHeight="400" MinWidth="500" Height="400" Width="500">
+        MinHeight="400" MinWidth="500" Height="400" Width="500"
+        Title="{x:Static diagnostics:Resources.DiagnosticsViewTitle}"
+        Icon="pack://application:,,,/Freengy.CommonResources;component/Images/DiagnosticsIcon.png">
 
     <Window.Resources>
         <ResourceDictionary>
