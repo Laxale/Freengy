@@ -11,6 +11,7 @@ namespace Freengy.Diagnostics.ViewModels
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
+    using Freengy.Diagnostics.Helpers;
     using Freengy.Diagnostics.Interfaces;
 
     using Catel.IoC;
@@ -21,7 +22,7 @@ namespace Freengy.Diagnostics.ViewModels
     internal class DiagnosticsViewModel : WaitableViewModel
     {
         private readonly IDiagnosticsController diagnosticsController;
-        private readonly ObservableCollection<IDiagnosticsCategory> diagnosticsCategories = new ObservableCollection<IDiagnosticsCategory>();
+        private readonly ObservableCollection<DiagnosticsCategoryDecorator> diagnosticsCategories = new ObservableCollection<DiagnosticsCategoryDecorator>();
 
 
         public DiagnosticsViewModel() 
@@ -78,7 +79,7 @@ namespace Freengy.Diagnostics.ViewModels
                     {
                         foreach (var category in registeredCategories)
                         {
-                            this.diagnosticsCategories.Add(category);
+                            this.diagnosticsCategories.Add(new DiagnosticsCategoryDecorator(category));
                         }
                     }
                 );

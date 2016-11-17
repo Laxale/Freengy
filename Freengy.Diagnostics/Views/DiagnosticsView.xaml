@@ -11,6 +11,7 @@
                   xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
                   xmlns:diaginterfaces="clr-namespace:Freengy.Diagnostics.Interfaces"
                   xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+                  xmlns:helpers="clr-namespace:Freengy.Diagnostics.Helpers"
 
                   mc:Ignorable="d" 
                   d:DesignHeight="300" d:DesignWidth="300"
@@ -47,7 +48,7 @@
             <ListBox DockPanel.Dock="Top" Name="CategoriesList" Background="#50505050"
                      ItemsSource="{Binding Path=DiagnosticsCategories}" >
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsCategory}">
+                    <DataTemplate DataType="{x:Type helpers:DiagnosticsCategoryDecorator}">
                         <TextBlock Text="{Binding Path=DisplayedName}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -58,10 +59,10 @@
             <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
                     HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}"/>
 
-            <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.TestUnits}">
+            <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type diaginterfaces:IDiagnosticsUnit}">
-                        <TextBlock Text="{Binding Path=Name}"/>
+                        <local:DiagnosticsUnitView/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

@@ -278,7 +278,7 @@ namespace Diagnostics.Tests.DefaultImpl
 
         private static IDiagnosticsCategory GetGoodCategory(string categoryName) 
         {
-            string unitName = "Unit Name";
+            string unitName = "Unit UnitName";
             
             var mockUnit = new Mock<IDiagnosticsUnit>();
             mockUnit.Setup(unit => unit.Name).Returns(unitName);

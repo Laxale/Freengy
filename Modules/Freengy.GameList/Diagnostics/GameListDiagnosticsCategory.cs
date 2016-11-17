@@ -44,8 +44,10 @@ namespace Freengy.GameList.Diagnostics
             this.diagnosticUnits.Add(testGameDllsUnit);
         }
 
-        private bool GameDllsAtomicTest() 
+        private bool GameDllsAtomicTest()
         {
+            System.Threading.Thread.Sleep(500);
+
             return true;
         }
     }

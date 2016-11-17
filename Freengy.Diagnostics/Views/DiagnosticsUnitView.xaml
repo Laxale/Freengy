@@ -26,7 +26,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.Column="0" Text="{Binding Path=Name}"/>
+        <TextBlock Grid.Column="0" Text="{Binding Path=UnitName}"/>
         
         <TextBlock Grid.Column="1" Text="Running" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 

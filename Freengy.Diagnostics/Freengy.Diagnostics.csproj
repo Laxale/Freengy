@@ -37,6 +37,7 @@
     <Compile Include="DefaultImpl\DiagnosticsController.cs" />
     <Compile Include="DefaultImpl\DiagnosticsUnit.cs" />
     <Compile Include="DefaultImpl\DiagnosticsUnitFactory.cs" />
+    <Compile Include="Helpers\DiagnosticsCategoryDecorator.cs" />
     <Compile Include="Interfaces\IDiagnosticsController.cs" />
     <Compile Include="Interfaces\IDiagnosticsCategory.cs" />
     <Compile Include="Interfaces\IDiagnosticsUnit.cs" />
