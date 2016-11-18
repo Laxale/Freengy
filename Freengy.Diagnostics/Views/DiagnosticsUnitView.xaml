@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              
-             xmlns:prism="http://prismlibrary.com/"
              xmlns:catel="http://catel.codeplex.com" 
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
                           
@@ -17,8 +16,8 @@
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsUnitViewModel}">
 
-    <Grid>
-        <Grid.Resources>
+    <DockPanel>
+        <DockPanel.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
@@ -34,46 +33,49 @@
                     <Setter Property="ToolTip" Value="{x:Static commonres:StringResources.ShowInfoText}"/>
                 </Style>
             </ResourceDictionary>
-        </Grid.Resources>
+        </DockPanel.Resources>
         
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-       
-        <TextBlock Grid.Column="0" Text="{Binding Path=UnitName}"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Image Grid.Column="1"
-               gif:ImageBehavior.AutoStart="True" ToolTip="{x:Static commonres:StringResources.InProgressText}"
-               gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"
-               Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=UnitName}" TextWrapping="Wrap" MaxHeight="1000"/>
 
-        <Image Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
-               Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon.png"
-               Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Image>
+            <Image Grid.Row="0" Grid.Column="1" 
+                   gif:ImageBehavior.AutoStart="True" ToolTip="{x:Static commonres:StringResources.InProgressText}" 
+                   gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif" 
+                   Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <Image Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
-               Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"
-               Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Image>
+            <Image Grid.Row="0" Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
+                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon2.png" 
+                   Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+            <Image Grid.Row="0" Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
+                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png" 
+                   Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
 
+            <Image Grid.Row="0" Grid.Column="3" 
+                   ToolTip="{x:Static commonres:StringResources.FinishedText}" 
+                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/FinishIcon.png" 
+                   Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </Grid>
 
-        <Image Grid.Column="3" 
-               ToolTip="{x:Static commonres:StringResources.FinishedText}" 
-               Source="pack://application:,,,/Freengy.CommonResources;component/Images/FinishIcon.png"
-               Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
-    </Grid>
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeavyTextBlockStyle}" Text="{Binding Path=UnitResult}"
+                   Visibility="{Binding Path=IsShowingDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
+    </DockPanel>
 </UserControl>

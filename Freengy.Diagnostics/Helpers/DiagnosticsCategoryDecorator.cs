@@ -7,8 +7,10 @@ namespace Freengy.Diagnostics.Helpers
 {
     using System;
     using System.Linq;
+    using System.Windows.Data;
     using System.ComponentModel;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Freengy.Diagnostics.Interfaces;
     using Freengy.Diagnostics.ViewModels;
@@ -67,7 +69,7 @@ namespace Freengy.Diagnostics.Helpers
             var senderUnit = (DiagnosticsUnitViewModel)sender;
 
             if(args.PropertyName != nameof(senderUnit.IsFinished)) return;
-
+            
             base.RaisePropertyChanged(() => this.IsRunningUnits);
         }
     }

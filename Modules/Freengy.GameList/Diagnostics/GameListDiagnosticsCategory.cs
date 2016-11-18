@@ -6,6 +6,7 @@
 namespace Freengy.GameList.Diagnostics 
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     using Freengy.Diagnostics.Interfaces;
@@ -15,8 +16,12 @@ namespace Freengy.GameList.Diagnostics
     using LocalRes = Freengy.GameList.Resources;
 
 
-    internal class GameListDiagnosticsCategory : IDiagnosticsCategory 
+    internal class GameListDiagnosticsCategory : IDiagnosticsCategory
     {
+        private const string GameFolderUnitName = "What is your game folder?";
+        private const string TestAssembliesUnitName = "Are there assemblies in game folder?";
+        private const string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
+
         private readonly IDiagnosticsUnitFactory unitFactory;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
@@ -45,25 +50,29 @@ namespace Freengy.GameList.Diagnostics
 
         private void FillUnits() 
         {
-            var gameFolderUnit = this.unitFactory.CreateInstance("What is your game folder?", this.AnyAssembliesAtomicTest);
-            var testAssembliesUnit = this.unitFactory.CreateInstance("Are there assemblies in game folder?", this.AnyAssembliesAtomicTest);
-            var testGameDllsUnit = this.unitFactory.CreateInstance("Are there game dlls in game folder?", this.AnyGameDllsAtomicTest);
-            var testGameConfigsUnit = this.unitFactory.CreateInstance("Are there game configs in game folder?", this.ANyGameConfigsAtomicTest);
+            var gameFolderUnit = this.unitFactory.CreateInstance(GameFolderUnitName, this.GameFolderAtomicUnit);
+            var testAssembliesUnit = this.unitFactory.CreateInstance(TestAssembliesUnitName, this.AnyAssembliesAtomicTest);
+            var testGameConfigPairsUnit = this.unitFactory.CreateInstance(TestGameConfigPairsUnitName, this.AnyGameDllsAtomicTest);
             
             this.diagnosticUnits.Add(gameFolderUnit);
             this.diagnosticUnits.Add(testAssembliesUnit);
-            this.diagnosticUnits.Add(testGameDllsUnit);
-            this.diagnosticUnits.Add(testGameConfigsUnit);
+            this.diagnosticUnits.Add(testGameConfigPairsUnit);
         }
 
 
-        private bool GameFolderAtomicUnit() 
+        private bool GameFolderAtomicUnit()
         {
+            this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo =
+                "Your game folder is: blabla";
+
             return true;
         }
         private bool AnyAssembliesAtomicTest() 
         {
             System.Threading.Thread.Sleep(1000);
+
+            this.diagnosticUnits.First(unit => unit.Name == TestAssembliesUnitName).ResultInfo =
+                "Found assemblies ig game folder : blabla";
 
             return false;
         }
@@ -72,14 +81,10 @@ namespace Freengy.GameList.Diagnostics
         {
             System.Threading.Thread.Sleep(2000);
 
+            this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo =
+                "Found '{0}' assemblies with game configs";
+
             return true;
-        }
-
-        private bool ANyGameConfigsAtomicTest() 
-        {
-            System.Threading.Thread.Sleep(3000);
-
-            return false;
         }
     }
 }

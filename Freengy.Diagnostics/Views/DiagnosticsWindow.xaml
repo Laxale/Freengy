@@ -12,7 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"
-        MinHeight="400" MinWidth="500" Height="400" Width="500"
+        MinHeight="400" MinWidth="600" Height="400" Width="600"
         Title="{x:Static diagnostics:Resources.DiagnosticsViewTitle}"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/DiagnosticsIcon.png">
 
@@ -24,5 +24,5 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <local:DiagnosticsView/>
+    <local:DiagnosticsView HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
 </Window>

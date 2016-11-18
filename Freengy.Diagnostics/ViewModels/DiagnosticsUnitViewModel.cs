@@ -27,7 +27,7 @@ namespace Freengy.Diagnostics.ViewModels
             this.diagnosticsUnit = diagnosticsUnit;
 
             // viewmodel is not created by Catel, so init in ctor. I stuck here wondering why command is not working
-            this.CommandShowDetails = new Command(() => this.IsShowingDetails = true);
+            this.CommandShowDetails = new Command(() => this.IsShowingDetails = !this.IsShowingDetails);
         }
 
 
@@ -39,6 +39,8 @@ namespace Freengy.Diagnostics.ViewModels
                     this.SetTestStartedFlags();
 
                     this.IsSucceeded = this.diagnosticsUnit.UnitTest();
+
+                    this.UnitResult = this.diagnosticsUnit.ResultInfo;
                 };
             
             Action<Task> runContinuator =
@@ -85,8 +87,14 @@ namespace Freengy.Diagnostics.ViewModels
             get { return (bool)GetValue(IsShowingDetailsProperty); }
             set { SetValue(IsShowingDetailsProperty, value); }
         }
+        public string UnitResult 
+        {
+            get { return (string)GetValue(UnitResultProperty); }
+            private set { SetValue(UnitResultProperty, value); }
+        }
+
         public string UnitName => this.diagnosticsUnit.Name;
-        
+
 
         public static readonly PropertyData IsFailedProperty =
             ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsFailed, () => false);
@@ -102,7 +110,10 @@ namespace Freengy.Diagnostics.ViewModels
 
         public static readonly PropertyData IsRunningProperty =
             ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(diagViewModel => diagViewModel.IsRunning, () => false);
-        
+
+        public static readonly PropertyData UnitResultProperty =
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, string>(viewModel => viewModel.UnitResult, () => string.Empty);
+
         #endregion properties
 
 
@@ -117,7 +128,12 @@ namespace Freengy.Diagnostics.ViewModels
         {
             this.IsRunning = false;
             this.IsFinished = true;
-            this.IsSucceeded = testException == null;
+
+            if (testException != null)
+            {
+                this.IsSucceeded = false;
+            }
+
             this.IsFailed = !this.IsSucceeded;
         }
     }

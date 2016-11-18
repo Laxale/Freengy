@@ -13,5 +13,7 @@ namespace Freengy.Diagnostics.Interfaces
     public interface IDiagnosticsUnit : INamedObject 
     {
         Func<bool> UnitTest { get; }
+
+        string ResultInfo { get; set; }
     }
 }

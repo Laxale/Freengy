@@ -9,13 +9,12 @@
                   
                   xmlns:local="clr-namespace:Freengy.Diagnostics.Views" 
                   xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
+                   xmlns:helpers="clr-namespace:Freengy.Diagnostics.Helpers"
                   xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
-                  xmlns:diaginterfaces="clr-namespace:Freengy.Diagnostics.Interfaces"
                   xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-                  xmlns:helpers="clr-namespace:Freengy.Diagnostics.Helpers"
-
+                  
                   mc:Ignorable="d" 
-                  d:DesignHeight="300" d:DesignWidth="300"
+                  d:DesignHeight="300" d:DesignWidth="500"
                   d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsViewModel}">
 
     <Grid>
@@ -61,7 +60,7 @@
             </ListBox>
         </DockPanel>
 
-        <DockPanel Grid.Row="1"  Grid.Column="1">
+        <DockPanel Grid.Row="1" Grid.Column="1">
             <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
                     Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Left" 
                     Command="{Binding Path=CommandRunUnits}" CommandParameter="{Binding ElementName=CategoriesList, Path=SelectedItem}"/>
@@ -69,25 +68,14 @@
             <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeavyTextBlockStyle}" Foreground="{StaticResource FirstMainBrush}"
                        Text="{Binding ElementName=CategoriesList, Path=SelectedItem.Description}"/>
 
-            <controls:FlipPanel IsFrontPanelActive="{Binding ElementName=UnitsList, Path=SelectedItem.IsShowingDetails}">
-                <controls:FlipPanel.FrontPanel>
-                    <UserControl>
-                        <ListBox Name="UnitsList" ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type viewModels:DiagnosticsUnitViewModel}">
-                                    <local:DiagnosticsUnitView DataContext="{Binding}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </UserControl>
-                </controls:FlipPanel.FrontPanel>
-
-                <controls:FlipPanel.BackPanel>
-                    <UserControl>
-                        
-                    </UserControl>
-                </controls:FlipPanel.BackPanel>
-            </controls:FlipPanel>
+            <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:DiagnosticsUnitViewModel}">
+                        <local:DiagnosticsUnitView DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
     </Grid>
 </catel:UserControl>
