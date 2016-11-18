@@ -57,6 +57,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\ButtonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\ImageStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,6 +153,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\WaitingIcon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LoadingIcon.gif" />
+    <Resource Include="Images\LoadingIcon2.gif" />
+    <Resource Include="Images\LoadingIcon3.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FailedIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

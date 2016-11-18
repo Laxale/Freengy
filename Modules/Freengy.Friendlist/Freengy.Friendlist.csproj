@@ -36,8 +36,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics\FriendListDiagnosticsCategory.cs" />
     <Compile Include="Module\FriendListModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ViewModels\FriendlistViewModel.cs" />
     <Compile Include="Views\FriendListView.xaml.cs">
       <DependentUpon>FriendListView.xaml</DependentUpon>
@@ -52,6 +58,10 @@
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Freengy.Diagnostics\Freengy.Diagnostics.csproj">
+      <Project>{4791acee-adfd-49cc-b95f-abc6edb06162}</Project>
+      <Name>Freengy.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Freengy.Networking\Freengy.Networking.csproj">
       <Project>{b69f33cc-f8a9-42fa-b21b-764ede838179}</Project>
       <Name>Freengy.Networking</Name>
@@ -63,7 +73,13 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

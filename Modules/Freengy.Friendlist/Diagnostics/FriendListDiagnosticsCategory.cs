@@ -1,28 +1,27 @@
-﻿// Created by Laxale 15.11.2016
+﻿// Created by Laxale 18.11.2016
 //
 //
 
 
-namespace Freengy.GameList.Diagnostics 
+namespace Freengy.FriendList.Diagnostics 
 {
-    using System;
     using System.Collections.Generic;
 
     using Freengy.Diagnostics.Interfaces;
 
     using Catel.IoC;
 
-    using LocalRes = Freengy.GameList.Resources;
+    using LocalRes = FriendList.Resources;
 
 
-    internal class GameListDiagnosticsCategory : IDiagnosticsCategory 
+    internal class FriendListDiagnosticsCategory : IDiagnosticsCategory 
     {
         private readonly IDiagnosticsUnitFactory unitFactory;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
 
 
-        internal GameListDiagnosticsCategory() 
+        internal FriendListDiagnosticsCategory() 
         {
             this.unitFactory = this.serviceLocator.ResolveType<IDiagnosticsUnitFactory>();
 
@@ -34,7 +33,7 @@ namespace Freengy.GameList.Diagnostics
 
         public string DisplayedName { get; } = LocalRes.DiagnosticsCategoryName;
 
-        public string Name { get; } = typeof(GameListDiagnosticsCategory).FullName;
+        public string Name { get; } = typeof(FriendListDiagnosticsCategory).FullName;
 
         public string Description { get; } = LocalRes.DiagnosticsCategoryDescription;
 
@@ -45,22 +44,15 @@ namespace Freengy.GameList.Diagnostics
 
         private void FillUnits() 
         {
-            var gameFolderUnit = this.unitFactory.CreateInstance("What is your game folder?", this.AnyAssembliesAtomicTest);
-            var testAssembliesUnit = this.unitFactory.CreateInstance("Are there assemblies in game folder?", this.AnyAssembliesAtomicTest);
-            var testGameDllsUnit = this.unitFactory.CreateInstance("Are there game dlls in game folder?", this.AnyGameDllsAtomicTest);
-            var testGameConfigsUnit = this.unitFactory.CreateInstance("Are there game configs in game folder?", this.ANyGameConfigsAtomicTest);
+            var testAssembliesUnit = this.unitFactory.CreateInstance("Wut?", this.AnyAssembliesAtomicTest);
+            var testGameDllsUnit = this.unitFactory.CreateInstance("Are there any wut?", this.AnyGameDllsAtomicTest);
+            var testGameConfigsUnit = this.unitFactory.CreateInstance("Are there wut wut?", this.ANyGameConfigsAtomicTest);
             
-            this.diagnosticUnits.Add(gameFolderUnit);
             this.diagnosticUnits.Add(testAssembliesUnit);
             this.diagnosticUnits.Add(testGameDllsUnit);
             this.diagnosticUnits.Add(testGameConfigsUnit);
         }
-
-
-        private bool GameFolderAtomicUnit() 
-        {
-            return true;
-        }
+        
         private bool AnyAssembliesAtomicTest() 
         {
             System.Threading.Thread.Sleep(1000);

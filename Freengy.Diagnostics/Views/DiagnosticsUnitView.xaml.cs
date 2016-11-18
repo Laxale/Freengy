@@ -5,8 +5,11 @@
 
 namespace Freengy.Diagnostics.Views 
 {
+    using System.Windows.Input;
     using System.Windows.Controls;
-    
+
+    using Freengy.Diagnostics.ViewModels;
+
 
     public partial class DiagnosticsUnitView : UserControl 
     {

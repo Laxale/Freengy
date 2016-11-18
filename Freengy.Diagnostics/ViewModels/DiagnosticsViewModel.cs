@@ -42,7 +42,8 @@ namespace Freengy.Diagnostics.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.CommandRunUnits = new Command<DiagnosticsCategoryDecorator>(this.RunUnitsImpl);
+            this.CommandRaiseCanRunUnits = new Command(() => this.CommandRunUnits.RaiseCanExecuteChanged());
+            this.CommandRunUnits = new Command<DiagnosticsCategoryDecorator>(this.RunUnitsImpl, this.CanRunUnits);
         }
 
         protected override async Task InitializeAsync() 
@@ -57,31 +58,33 @@ namespace Freengy.Diagnostics.ViewModels
 
         #region commands
 
+        public Command CommandRaiseCanRunUnits { get; private set; }
+
         public Command<DiagnosticsCategoryDecorator> CommandRunUnits { get; private set; }
 
         #endregion commands
 
 
-        public bool ShowWindowTitle => false;
-        
-        public ICollectionView DiagnosticsCategories { get; }
-
-        public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(this.CategoryFilter);
-        
-
         public string CategoryFilter 
         {
-            get { return (string)GetValue(CategoryFilterProperty); }
+            get { return (string)this.GetValue(DiagnosticsViewModel.CategoryFilterProperty); }
 
             set
             {
-                SetValue(CategoryFilterProperty, value);
+                this.SetValue(DiagnosticsViewModel.CategoryFilterProperty, value);
 
                 this.SetCategoryFilter(value);
 
-                RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
+                this.RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
             }
         }
+
+        public bool ShowWindowTitle => false;
+
+        public ICollectionView DiagnosticsCategories { get; }
+
+        public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(this.CategoryFilter);
+
 
         public static readonly PropertyData CategoryFilterProperty =
             ModelBase.RegisterProperty<DiagnosticsViewModel, string>(diagViewModel => diagViewModel.CategoryFilter, () => string.Empty);
@@ -114,10 +117,20 @@ namespace Freengy.Diagnostics.ViewModels
                     {
                         foreach (var category in registeredCategories)
                         {
-                            this.diagnosticsCategories.Add(new DiagnosticsCategoryDecorator(category));
+                            var categoryDecorator = new DiagnosticsCategoryDecorator(category);
+                            categoryDecorator.PropertyChanged += this.CategoryPropertyListener;
+                            this.diagnosticsCategories.Add(categoryDecorator);
                         }
                     }
                 );
+        }
+        private void CategoryPropertyListener(object sender, PropertyChangedEventArgs args) 
+        {
+            var senderDecorator = (DiagnosticsCategoryDecorator)sender;
+
+            if (args.PropertyName != nameof(senderDecorator.IsRunningUnits)) return;
+
+            this.CommandRunUnits.RaiseCanExecuteChanged();
         }
 
         private void RunUnitsImpl(DiagnosticsCategoryDecorator categoryDecorator) 
@@ -127,9 +140,9 @@ namespace Freengy.Diagnostics.ViewModels
                 testUnitViewModel.Run();
             }
         }
-        private bool CanRunUnits(IDiagnosticsCategory category) 
+        private bool CanRunUnits(DiagnosticsCategoryDecorator category) 
         {
-            return category != null;
+            return category != null && !category.IsRunningUnits;
         }
     }
 }

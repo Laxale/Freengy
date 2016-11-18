@@ -14,18 +14,20 @@ namespace Freengy.Diagnostics.ViewModels
     
     using Catel.IoC;
     using Catel.Data;
+    using Catel.MVVM;
 
 
     public class DiagnosticsUnitViewModel : WaitableViewModel 
     {
-        private readonly IGuiDispatcher dispatcher;
         private readonly IDiagnosticsUnit diagnosticsUnit;
         
 
         public DiagnosticsUnitViewModel(IDiagnosticsUnit diagnosticsUnit) 
         {
             this.diagnosticsUnit = diagnosticsUnit;
-            this.dispatcher = base.serviceLocator.ResolveType<IGuiDispatcher>();
+
+            // viewmodel is not created by Catel, so init in ctor. I stuck here wondering why command is not working
+            this.CommandShowDetails = new Command(() => this.IsShowingDetails = true);
         }
 
 
@@ -34,7 +36,7 @@ namespace Freengy.Diagnostics.ViewModels
             Action runAction =
                 () =>
                 {
-                    this.IsRunning = true;
+                    this.SetTestStartedFlags();
 
                     this.IsSucceeded = this.diagnosticsUnit.UnitTest();
                 };
@@ -42,20 +44,7 @@ namespace Freengy.Diagnostics.ViewModels
             Action<Task> runContinuator =
                 parentTask =>
                 {
-                    
-                    this.IsRunning = false;
-                    this.IsFinished = true;
-
-                    if (parentTask.Exception != null)
-                    {
-                        this.IsFailed = true;
-                        this.IsSucceeded = false;
-                    }
-                    else
-                    {
-                        this.IsFailed = false;
-                        this.IsSucceeded = true;
-                    }
+                    this.SetTestFinishedFlags(parentTask.Exception);
                 };
 
             await base.taskWrapper.Wrap(runAction, runContinuator);
@@ -66,45 +55,70 @@ namespace Freengy.Diagnostics.ViewModels
             
         }
 
-        
 
+        public Command CommandShowDetails { get; private set; }
+
+
+        #region properties
         public bool IsRunning 
         {
             get { return (bool)GetValue(IsRunningProperty); }
             private set { SetValue(IsRunningProperty, value); }
         }
-
         public bool IsSucceeded 
         {
             get { return (bool)GetValue(IsSucceededProperty); }
             private set { SetValue(IsSucceededProperty, value); }
         }
-
         public bool IsFailed 
         {
             get { return (bool)GetValue(IsFailedProperty); }
             private set { SetValue(IsFailedProperty, value); }
         }
-
-        public bool IsFinished
+        public bool IsFinished 
         {
             get { return (bool)GetValue(IsFinishedProperty); }
             private set { SetValue(IsFinishedProperty, value); }
         }
-
+        public bool IsShowingDetails 
+        {
+            get { return (bool)GetValue(IsShowingDetailsProperty); }
+            set { SetValue(IsShowingDetailsProperty, value); }
+        }
         public string UnitName => this.diagnosticsUnit.Name;
         
 
         public static readonly PropertyData IsFailedProperty =
-            RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsFailed, () => false);
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsFailed, () => false);
 
         public static readonly PropertyData IsFinishedProperty =
-            RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsFinished, () => false);
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsFinished, () => false);
 
         public static readonly PropertyData IsSucceededProperty =
-            RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsSucceeded, () => false);
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsSucceeded, () => false);
+
+        public static readonly PropertyData IsShowingDetailsProperty =
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(viewModel => viewModel.IsShowingDetails, () => false);
 
         public static readonly PropertyData IsRunningProperty =
-            RegisterProperty<DiagnosticsUnitViewModel, bool>(diagViewModel => diagViewModel.IsRunning, () => false);
+            ModelBase.RegisterProperty<DiagnosticsUnitViewModel, bool>(diagViewModel => diagViewModel.IsRunning, () => false);
+        
+        #endregion properties
+
+
+        private void SetTestStartedFlags() 
+        {
+            this.IsFailed = false;
+            this.IsRunning = true;
+            this.IsSucceeded = false;
+            this.IsFinished = false;
+        }
+        private void SetTestFinishedFlags(Exception testException) 
+        {
+            this.IsRunning = false;
+            this.IsFinished = true;
+            this.IsSucceeded = testException == null;
+            this.IsFailed = !this.IsSucceeded;
+        }
     }
 }

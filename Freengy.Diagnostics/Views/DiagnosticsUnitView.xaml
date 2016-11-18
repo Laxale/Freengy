@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:catel="http://catel.codeplex.com" 
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+                          
              xmlns:local="clr-namespace:Freengy.Diagnostics.Views"
              xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
              xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
@@ -18,6 +23,16 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
+
+                <Style TargetType="Image" BasedOn="{StaticResource CommonImageStyle}">
+                    <Setter Property="MaxHeight" Value="{StaticResource CommonSmallIconSize}"/>
+                </Style>
+
+                <Style TargetType="Image" BasedOn="{StaticResource CommonImageStyle}" x:Key="InformativeButtonStyle">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="MaxHeight" Value="{StaticResource CommonSmallIconSize}"/>
+                    <Setter Property="ToolTip" Value="{x:Static commonres:StringResources.ShowInfoText}"/>
+                </Style>
             </ResourceDictionary>
         </Grid.Resources>
         
@@ -26,28 +41,37 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
+       
         <TextBlock Grid.Column="0" Text="{Binding Path=UnitName}"/>
-        
-        <TextBlock Grid.Column="1" Text="Running" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <Image Grid.Column="2" Cursor="Hand"
-               MaxHeight="{StaticResource CommonSmallIconSize}" 
-               ToolTip="{x:Static commonres:StringResources.ShowInfoText}" 
-               Source="pack://application:,,,/Freengy.CommonResources;component/Images/InfoIcon.png"
-               Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        
-        <TextBlock Grid.Column="3" Text="Fail" Foreground="Red" Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <Image Grid.Column="3" 
-               MaxHeight="{StaticResource CommonSmallIconSize}" 
-               ToolTip="{x:Static commonres:StringResources.SuccessText}" 
+        <Image Grid.Column="1"
+               gif:ImageBehavior.AutoStart="True" ToolTip="{x:Static commonres:StringResources.InProgressText}"
+               gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"
+               Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <Image Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
+               Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon.png"
+               Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Image>
+
+        <Image Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
                Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"
-               Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+               Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Image>
 
-        <Image Grid.Column="4" 
-               MaxHeight="{StaticResource CommonSmallIconSize}" 
+
+        <Image Grid.Column="3" 
                ToolTip="{x:Static commonres:StringResources.FinishedText}" 
                Source="pack://application:,,,/Freengy.CommonResources;component/Images/FinishIcon.png"
                Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>

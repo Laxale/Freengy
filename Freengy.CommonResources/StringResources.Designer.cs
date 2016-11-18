@@ -142,6 +142,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In progress.
+        /// </summary>
+        public static string InProgressText {
+            get {
+                return ResourceManager.GetString("InProgressText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimum length of 10 symbols and no spaces.
         /// </summary>
         public static string PasswordRequirementsText {

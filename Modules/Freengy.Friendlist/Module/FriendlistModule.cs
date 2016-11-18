@@ -3,42 +3,29 @@
 //
 
 
-namespace Freengy.Friendlist.Module 
+namespace Freengy.FriendList.Module 
 {
     using System;
 
     using Freengy.Base.Interfaces;
     using Freengy.FriendList.Views;
+    using Freengy.Diagnostics.Interfaces;
+    using Freengy.FriendList.Diagnostics;
 
     using Prism.Modularity;
 
     using Catel.IoC;
 
 
-    public class FriendListModule : IUiModule
-//        , IModule 
-// remove this if no any types to register
+    public class FriendListModule : IUiModule, IModule 
     {
-        #region Singleton
-
-        private static FriendListModule instance;
-
-        private FriendListModule() 
-        {
-
-        }
-
-        public static FriendListModule Instance => FriendListModule.instance ?? (FriendListModule.instance = new FriendListModule());
-
-        #endregion Singleton
-
-
         public Type ExportedViewType { get; } = typeof (FriendListView);
 
 
-//        public void Initialize() 
-//        {
-//            ServiceLocator.Default.RegisterType<i>
-//        }
+        public void Initialize() 
+        {
+            var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
+            controller.RegisterCategory(new FriendListDiagnosticsCategory());
+        }
     }
 }

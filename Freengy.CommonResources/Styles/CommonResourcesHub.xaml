@@ -6,6 +6,7 @@
         <ResourceDictionary Source="Animations.xaml"/>
         <ResourceDictionary Source="BorderStyles.xaml"/>
         <ResourceDictionary Source="Brushes.xaml"/>
+        <ResourceDictionary Source="ButtonStyles.xaml"/>
         <ResourceDictionary Source="Converters.xaml"/>
         <ResourceDictionary Source="Converters.xaml"/>
         <ResourceDictionary Source="ImageStyles.xaml"/>
@@ -15,48 +16,7 @@
         <ResourceDictionary Source="TextBoxStyles.xaml"/>
         <ResourceDictionary Source="Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-   
-
-    <!-- Button -->
-    <Style TargetType="Button" x:Key="CommonButtonStyle">
-        <Setter Property="UseLayoutRounding"   Value="True"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Padding"             Value="-2"/>
-        <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
-        <Setter Property="MinWidth"            Value="{StaticResource MinButtonWidth}"/>
-        <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
-        <!--<Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>-->
-    </Style>
-    <Style TargetType="Button" x:Key="{x:Type Button}" BasedOn="{StaticResource CommonButtonStyle}">
-
-    </Style>
-    <Style TargetType="Button" x:Key="HyperlinkButtonStyle" BasedOn="{StaticResource CommonButtonStyle}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <TextBlock Text="{TemplateBinding Button.Content}" Width="{TemplateBinding Width}"
-                               Height="{TemplateBinding Height}" Foreground="{TemplateBinding Button.Foreground}"
-                               FontSize="{TemplateBinding Button.FontSize}" Visibility="{TemplateBinding Visibility}"
-                               Margin="{TemplateBinding Margin}" Cursor="Hand" ToolTip="{TemplateBinding ToolTip}">
-
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.Setters>
-                                            <Setter Property="TextDecorations" Value="Underline"/>
-                                        </Trigger.Setters>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    
+       
 
     <Style TargetType="ToolTip" x:Key="CommonToolTipStyle">
         <Setter Property="Placement"     Value="Top"/>

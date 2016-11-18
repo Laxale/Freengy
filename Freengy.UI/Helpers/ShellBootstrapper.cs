@@ -18,7 +18,7 @@ namespace Freengy.UI.Helpers
     using Freengy.GameList.Module;
     using Freengy.Networking.Module;
     using Freengy.GamePlugin.Module;
-    using Freengy.Friendlist.Module;
+    using Freengy.FriendList.Module;
     using Freengy.Diagnostics.Module;
 
     using Catel.IoC;
@@ -72,8 +72,9 @@ namespace Freengy.UI.Helpers
                    .AddModule(typeof(MainModule))
                    .AddModule(typeof(DiagnosticsModule))
                    .AddModule(typeof(GameListModule))
-                   .AddModule(typeof(NetworkingModule))
-                   .AddModule(typeof(GamePluginModule));
+                   .AddModule(typeof(GamePluginModule))
+                   .AddModule(typeof(FriendListModule))
+                   .AddModule(typeof(NetworkingModule));
 
             return catalog;
         }
@@ -100,15 +101,16 @@ namespace Freengy.UI.Helpers
         //        }
 
 
-        private void Register()
+        private void Register() 
         {
             var gameListModule = new GameListModule();
+            var friendListModule = new FriendListModule();
 
             this
                 .regionManager
                 .RegisterViewWithRegion(RegionNames.GameListRegion, gameListModule.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.ChatRegion, ChatterModule.Instance.ExportedViewType)
-                .RegisterViewWithRegion(RegionNames.FriendListRegion, FriendListModule.Instance.ExportedViewType);
+                .RegisterViewWithRegion(RegionNames.FriendListRegion, friendListModule.ExportedViewType);
         }
     }
 }

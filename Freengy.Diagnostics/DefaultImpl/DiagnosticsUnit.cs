@@ -24,7 +24,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
 
         public string Name { get; }
-
+        
         public Func<bool> UnitTest { get; }
     }
 }
