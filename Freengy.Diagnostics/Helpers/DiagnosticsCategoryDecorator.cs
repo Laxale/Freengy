@@ -28,6 +28,8 @@ namespace Freengy.Diagnostics.Helpers
         }
 
 
+        public string Description => this.category.Description;
+
         public string DisplayedName => this.category.DisplayedName;
 
         public IEnumerable<DiagnosticsUnitViewModel> UnitViewModels { get; }

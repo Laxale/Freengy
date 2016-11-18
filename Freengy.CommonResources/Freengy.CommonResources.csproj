@@ -57,6 +57,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\ImageStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\ListBoxStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,6 +137,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\DiagnosticsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RecoverIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FinishIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\InfoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WaitingIcon.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

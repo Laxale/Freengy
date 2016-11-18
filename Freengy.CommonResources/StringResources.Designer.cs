@@ -106,6 +106,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finished.
+        /// </summary>
+        public static string FinishedText {
+            get {
+                return ResourceManager.GetString("FinishedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finish.
         /// </summary>
         public static string FinishText {
@@ -192,6 +201,24 @@ namespace Freengy.CommonResources {
         public static string SettingsText {
             get {
                 return ResourceManager.GetString("SettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show info.
+        /// </summary>
+        public static string ShowInfoText {
+            get {
+                return ResourceManager.GetString("ShowInfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string SuccessText {
+            get {
+                return ResourceManager.GetString("SuccessText", resourceCulture);
             }
         }
         

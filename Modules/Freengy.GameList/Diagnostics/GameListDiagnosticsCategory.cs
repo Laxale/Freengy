@@ -32,11 +32,13 @@ namespace Freengy.GameList.Diagnostics
 
         public string DisplayedName { get; } = LocalRes.DiagnosticsCategoryName;
 
-        public IEnumerable<IDiagnosticsUnit> TestUnits => this.diagnosticUnits;
-
         public string Name { get; } = typeof(GameListDiagnosticsCategory).FullName;
 
+        public string Description { get; } = LocalRes.DiagnosticsCategoryDescription;
 
+        public IEnumerable<IDiagnosticsUnit> TestUnits => this.diagnosticUnits;
+
+        
         private void FillUnits() 
         {
             var testGameDllsUnit = this.unitFactory.CreateInstance("Are there game dlls in game folder?", this.GameDllsAtomicTest);
@@ -44,7 +46,7 @@ namespace Freengy.GameList.Diagnostics
             this.diagnosticUnits.Add(testGameDllsUnit);
         }
 
-        private bool GameDllsAtomicTest()
+        private bool GameDllsAtomicTest() 
         {
             System.Threading.Thread.Sleep(500);
 

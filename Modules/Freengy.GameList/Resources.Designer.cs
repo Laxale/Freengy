@@ -61,6 +61,15 @@ namespace Freengy.GameList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows to check for issues with games loading.
+        /// </summary>
+        public static string DiagnosticsCategoryDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticsCategoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gamelist.
         /// </summary>
         public static string DiagnosticsCategoryName {

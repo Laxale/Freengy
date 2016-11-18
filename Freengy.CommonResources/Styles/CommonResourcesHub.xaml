@@ -7,6 +7,8 @@
         <ResourceDictionary Source="BorderStyles.xaml"/>
         <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Converters.xaml"/>
+        <ResourceDictionary Source="Converters.xaml"/>
+        <ResourceDictionary Source="ImageStyles.xaml"/>
         <ResourceDictionary Source="ListBoxStyles.xaml"/>
         <ResourceDictionary Source="PasswordBoxStyles.xaml"/>
         <ResourceDictionary Source="TextBlockStyles.xaml"/>

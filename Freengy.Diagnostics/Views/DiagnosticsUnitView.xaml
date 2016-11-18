@@ -6,9 +6,10 @@
              
              xmlns:local="clr-namespace:Freengy.Diagnostics.Views"
              xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
+             xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="300"
+             d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsUnitViewModel}">
 
     <Grid>
@@ -25,16 +26,30 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
         <TextBlock Grid.Column="0" Text="{Binding Path=UnitName}"/>
         
         <TextBlock Grid.Column="1" Text="Running" Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <TextBlock Grid.Column="2" Text="Fail" Foreground="Red" Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Column="2" Text="Ok" Foreground="Green" Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Image Grid.Column="2" Cursor="Hand"
+               MaxHeight="{StaticResource CommonSmallIconSize}" 
+               ToolTip="{x:Static commonres:StringResources.ShowInfoText}" 
+               Source="pack://application:,,,/Freengy.CommonResources;component/Images/InfoIcon.png"
+               Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
         
-        <TextBlock Grid.Column="3" Text="Finished" Foreground="Blue" 
-                   Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        <TextBlock Grid.Column="3" Text="Fail" Foreground="Red" Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Image Grid.Column="3" 
+               MaxHeight="{StaticResource CommonSmallIconSize}" 
+               ToolTip="{x:Static commonres:StringResources.SuccessText}" 
+               Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"
+               Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <Image Grid.Column="4" 
+               MaxHeight="{StaticResource CommonSmallIconSize}" 
+               ToolTip="{x:Static commonres:StringResources.FinishedText}" 
+               Source="pack://application:,,,/Freengy.CommonResources;component/Images/FinishIcon.png"
+               Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

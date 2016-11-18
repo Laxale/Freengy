@@ -73,6 +73,9 @@
                 </Button.Style>
             </Button>
 
+            <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeavyTextBlockStyle}" 
+                       Text="{Binding ElementName=CategoriesList, Path=SelectedItem.Description}"/>
+            
             <ListBox ItemsSource="{Binding ElementName=CategoriesList, Path=SelectedItem.UnitViewModels}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:DiagnosticsUnitViewModel}">

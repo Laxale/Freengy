@@ -17,8 +17,10 @@ namespace Freengy.Diagnostics.Interfaces
     /// </summary>
     public interface IDiagnosticsCategory : INamedObject 
     {
-        string DisplayedName { get; }
+        string Description { get; }
 
+        string DisplayedName { get; }
+        
         /// <summary>
         /// Atomic 'unit' tests to be processed by <see cref="IDiagnosticsController"/>
         /// </summary>
