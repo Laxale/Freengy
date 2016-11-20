@@ -39,7 +39,7 @@ namespace Freengy.GamePlugin.DefaultImpl
         /// </summary>
         private readonly IDictionary<string, IGamePlugin> loadedPlugins = new Dictionary<string, IGamePlugin>();
         /// <summary>
-        /// Contains loaded assembly paths and their main view types (marked with <see cref="MainGameViewAttribute"/>)
+        /// Contains loaded assembly paths and their main view types
         /// </summary>
         private readonly IDictionary<string, string> loadedMainViewTypes = new Dictionary<string, string>();
 
