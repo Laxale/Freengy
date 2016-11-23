@@ -16,11 +16,12 @@ namespace Freengy.UI.Helpers
     using Freengy.Base.Module;
     using Freengy.Chatter.Module;
     using Freengy.GameList.Module;
+    using Freengy.Settings.Module;
     using Freengy.Networking.Module;
     using Freengy.GamePlugin.Module;
     using Freengy.FriendList.Module;
     using Freengy.Diagnostics.Module;
-
+    
     using Catel.IoC;
     using Catel.Messaging;
 
@@ -69,6 +70,7 @@ namespace Freengy.UI.Helpers
             var catalog = new ModuleCatalog();
 
             catalog.AddModule(typeof(BaseModule))
+                   .AddModule(typeof(SettingsFacadeModule))
                    .AddModule(typeof(MainModule))
                    .AddModule(typeof(DiagnosticsModule))
                    .AddModule(typeof(GameListModule))

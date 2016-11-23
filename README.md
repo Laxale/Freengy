@@ -19,3 +19,5 @@
 5. I do not use explicit dependency injection, though it may be considered not a good practice. But all resolved services and types
    are guaranteed to be pre-registered by their assemblies at startup. Yes, unit-testing may become some more implicit and cofusing - 
    not injecting mocks directly, but registering them in service locator.
+
+6. Modules can register their settings model classes to a Settings module through ISettingsFacade.RegisterUnit()

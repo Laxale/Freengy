@@ -47,6 +47,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\GameListSettingsUnit.cs" />
+    <Compile Include="Settings\IGameListSettingsUnit.cs" />
     <Compile Include="ViewModels\GameListViewModel.cs" />
     <Compile Include="Views\GameListView.xaml.cs">
       <DependentUpon>GameListView.xaml</DependentUpon>
@@ -88,6 +90,10 @@
     <ProjectReference Include="..\..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
       <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
       <Name>Freengy.GamePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Freengy.Settings\Freengy.Settings.csproj">
+      <Project>{deaa296b-5e75-4940-b0be-f68ab321589f}</Project>
+      <Name>Freengy.Settings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
