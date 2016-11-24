@@ -6,7 +6,7 @@
 namespace Freengy.Settings.Module 
 {
     using Freengy.Settings.DefaultImpl;
-
+    
     using Catel.IoC;
 
     using Prism.Modularity;

@@ -29,6 +29,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="SQLite.CodeFirst, Version=1.2.4.16, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLite.CodeFirst.1.2.4.16\lib\net45\SQLite.CodeFirst.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -44,19 +48,24 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.103\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\SettingsContextInitializer.cs" />
+    <Compile Include="Constants\Container.cs" />
+    <Compile Include="DefaultImpl\SqliteConnectionFactory.cs" />
+    <Compile Include="ModuleSettings\GameListSettingsUnit.cs" />
+    <Compile Include="ModuleSettings\SettingsUnitBase.cs" />
     <Compile Include="Configuration\SqliteConfiguration.cs" />
-    <Compile Include="DefaultImpl\SettingsUnitDbContext.cs" />
+    <Compile Include="DefaultImpl\SettingsContext.cs" />
     <Compile Include="DefaultImpl\SettingsFacade.cs" />
-    <Compile Include="Interfaces\IBaseSettingsUnit.cs" />
     <Compile Include="Interfaces\ISettingsFacade.cs" />
     <Compile Include="InternalsExposer.cs" />
+    <Compile Include="Migrations\201611241110332_InitialCreate.cs" />
+    <Compile Include="Migrations\201611241110332_InitialCreate.Designer.cs">
+      <DependentUpon>201611241110332_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\SettingsMigrationConfiguration.cs" />
     <Compile Include="Module\SettingsFacadeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,8 +76,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201611241110332_InitialCreate.resx">
+      <DependentUpon>201611241110332_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets')" />

@@ -20,4 +20,7 @@
    are guaranteed to be pre-registered by their assemblies at startup. Yes, unit-testing may become some more implicit and cofusing - 
    not injecting mocks directly, but registering them in service locator.
 
-6. Modules can register their settings model classes to a Settings module through ISettingsFacade.RegisterUnit()
+6. It was pain. Finally I figured out that Entity Framework doesnt create tables when combined with SQLite. 
+   So need to use SQLite.CodeFirst wrapper for instance.
+   Modules can register their settings model classes into a SettingsFacade with facade.RegisterEntityType(typeof(ModuleSettingsType));
+   Tables would be created if doesnt exist.

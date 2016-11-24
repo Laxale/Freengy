@@ -6,6 +6,9 @@
 namespace Freengy.Settings.Interfaces 
 {
     using System;
+    using System.Collections.Generic;
+
+    using Freengy.Settings.ModuleSettings;
 
 
     /// <summary>
@@ -13,15 +16,12 @@ namespace Freengy.Settings.Interfaces
     /// </summary>
     public interface ISettingsFacade 
     {
-        IBaseSettingsUnit GetUnit(string unitName);
-        IBaseSettingsUnit GetUnit(Type settingsUnitType);
+        SettingsUnitBase GetUnit(string unitName);
+        SettingsUnitBase GetUnit(Type settingsUnitType);
         TUnitType GetUnit<TUnitType>() where TUnitType : class;
 
-        /// <summary>
-        /// Return value can be used to chain calls: facade.RegisterUnit().RegisterUnit()
-        /// </summary>
-        /// <param name="settingsUnit">Settings unit implementation to register</param>
-        /// <returns>Meant to be facade itself</returns>
-        ISettingsFacade RegisterUnit(IBaseSettingsUnit settingsUnit);
+        void RegisterEntityType(Type entityType);
+
+        ICollection<Type> GetRegisteredEntityTypes();
     }
 }

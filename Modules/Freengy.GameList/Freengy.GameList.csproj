@@ -29,6 +29,7 @@
       <HintPath>..\..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -48,7 +49,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings\GameListSettingsUnit.cs" />
-    <Compile Include="Settings\IGameListSettingsUnit.cs" />
     <Compile Include="ViewModels\GameListViewModel.cs" />
     <Compile Include="Views\GameListView.xaml.cs">
       <DependentUpon>GameListView.xaml</DependentUpon>
@@ -96,6 +96,7 @@
       <Name>Freengy.Settings</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -11,13 +11,14 @@ namespace Freengy.Settings.Configuration
     using System.Data.Entity.Core.Common;
 
 
-    internal class SqliteConfiguration : DbConfiguration 
+    public class SqliteConfiguration : DbConfiguration 
     {
-        public SqliteConfiguration() 
+        public SqliteConfiguration()
         {
-            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-            SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
-            SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
+            base.SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+            base.SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
+
+            base.SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
         }
     }
 }
