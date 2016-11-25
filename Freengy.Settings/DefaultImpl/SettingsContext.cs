@@ -10,12 +10,13 @@ namespace Freengy.Settings.DefaultImpl
     using System.Data.SQLite;
     using System.Data.Entity;
 
+    using Freengy.Settings.Constants;
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.Configuration;
     using Freengy.Settings.ModuleSettings;
 
     using Catel.IoC;
-
+    
 
     /// <summary>
     /// Database representaion. Contains table representations
@@ -23,7 +24,7 @@ namespace Freengy.Settings.DefaultImpl
     public class SettingsContext : DbContext 
     {
         public SettingsContext() : 
-            base(new SQLiteConnection { ConnectionString = @"data source=db\Settings.sqlite;Foreign Keys=True" }, true)
+            base(new SqliteConnectionFactory().CreateConnection(SettingsConstants.ConnectionString), true)
         {
             
         }
@@ -43,7 +44,5 @@ namespace Freengy.Settings.DefaultImpl
                 modelBuilder.RegisterEntityType(type);
             }
         }
-        
-        public DbSet<GameListSettingsUnit> GameListUnit { get; set; }
     }
 }

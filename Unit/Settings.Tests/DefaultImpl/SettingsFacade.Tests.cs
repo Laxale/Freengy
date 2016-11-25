@@ -19,7 +19,7 @@ namespace Settings.Tests.DefaultImpl
     {
         public long Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = Guid.NewGuid().ToString().Substring(0, 6);
     }
 
 
@@ -29,7 +29,6 @@ namespace Settings.Tests.DefaultImpl
         [SetUp]
         public void Setup()
         {
-            SettingsFacade.Instance.RegisterEntityType(typeof(TestSettingsUnit));
             ServiceLocator.Default.RegisterInstance(SettingsFacade.Instance);
         }
 
@@ -41,6 +40,18 @@ namespace Settings.Tests.DefaultImpl
             var result = facade.GetUnit<TestSettingsUnit>();
 
             Assert.IsNull(result);
+        }
+
+        [Test(Description = "Try to get not registered unit - receive null")]
+        public void GetUnit_GenericRegistered() 
+        {
+            SettingsFacade.Instance.RegisterEntityType(typeof(TestSettingsUnit));
+
+            var facade = SettingsFacade.Instance;
+
+            var result = facade.GetUnit<TestSettingsUnit>();
+
+            Assert.IsNotNull(result);
         }
     }
 }

@@ -52,9 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\SettingsContextInitializer.cs" />
-    <Compile Include="Constants\Container.cs" />
+    <Compile Include="Constants\SettingsConstants.cs" />
     <Compile Include="DefaultImpl\SqliteConnectionFactory.cs" />
-    <Compile Include="ModuleSettings\GameListSettingsUnit.cs" />
+    <Compile Include="Extensions\ContextExtensions.cs" />
     <Compile Include="ModuleSettings\SettingsUnitBase.cs" />
     <Compile Include="Configuration\SqliteConfiguration.cs" />
     <Compile Include="DefaultImpl\SettingsContext.cs" />

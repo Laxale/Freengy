@@ -3,22 +3,21 @@
 //
 
 
-namespace Freengy.Settings.ModuleSettings 
+namespace Freengy.GameList.Settings 
 {
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using Freengy.Settings.Constants;
+    using Freengy.Settings.ModuleSettings;
     
 
-    [Table(nameof(GameListSettingsUnit))]
     public sealed class GameListSettingsUnit : SettingsUnitBase 
     {
         #region Singleton
 
         private static GameListSettingsUnit instance;
 
-        private GameListSettingsUnit()
+        private GameListSettingsUnit() 
         {
 
         }
@@ -38,7 +37,7 @@ namespace Freengy.Settings.ModuleSettings
         public string GamesFolderPath { get; set; }
 
         [Required]
-        [StringLength(Container.SettingsUnitNameMaxLength, MinimumLength = Container.SettingsUnitNameMinLength)]
+        [StringLength(SettingsConstants.SettingsUnitNameMaxLength, MinimumLength = SettingsConstants.SettingsUnitNameMinLength)]
         public string Name { get; set; } = "GameList Settings";
     }
 }

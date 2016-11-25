@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Settings.DefaultImpl
+namespace Freengy.Settings.DefaultImpl 
 {
     using System;
     using System.IO;
@@ -24,8 +24,7 @@ namespace Freengy.Settings.DefaultImpl
     {
         private readonly IDictionary<string, Type> registeredEntityTypes = new Dictionary<string, Type>();
 
-        private readonly IDictionary<string, SettingsUnitBase> registeredUnits =
-            new Dictionary<string, SettingsUnitBase>();
+        private readonly IDictionary<string, SettingsUnitBase> registeredUnits = new Dictionary<string, SettingsUnitBase>();
 
 
         #region Singleton
@@ -45,11 +44,19 @@ namespace Freengy.Settings.DefaultImpl
 
         public TUnitType GetUnit<TUnitType>() where TUnitType : class
         {
-            using (var unitContext = new SettingsContext())
+            try
             {
-                var unit = unitContext.Set<TUnitType>().FirstOrDefault();
+                using (var unitContext = new SettingsContext())
+                {
+                    var unit = unitContext.Set<TUnitType>().FirstOrDefault();
 
-                return unit;
+                    return unit;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // not registered entity type will throw "Not part of a model"
+                return null;
             }
         }
 
@@ -100,8 +107,8 @@ namespace Freengy.Settings.DefaultImpl
 
         private void CreateEmptyDatabase() 
         {
-            var dbFolderFullPath = Path.Combine(Environment.CurrentDirectory, Container.DatabaseFolderName);
-            var dbFileFullPath = Path.Combine(dbFolderFullPath, Container.SettingsDbFileName);
+            var dbFolderFullPath = Path.Combine(Environment.CurrentDirectory, SettingsConstants.DatabaseFolderName);
+            var dbFileFullPath = Path.Combine(dbFolderFullPath, SettingsConstants.SettingsDbFileName);
 
             if (!Directory.Exists(dbFolderFullPath))
             {
