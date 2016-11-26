@@ -5,13 +5,15 @@
 
 namespace Freengy.GameList.Settings 
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Freengy.Settings.Constants;
     using Freengy.Settings.ModuleSettings;
     
 
-    public sealed class GameListSettingsUnit : SettingsUnitBase 
+    public class GameListSettingsUnit : SettingsUnitBase 
     {
         #region Singleton
 
@@ -28,16 +30,22 @@ namespace Freengy.GameList.Settings
         #endregion Singleton
 
 
-        /// <summary>
-        /// This is not meant to be used rigth now. Settings row is alone in a table
-        /// </summary>
-        public long Id { get; set; }
+        public virtual string GamesFolderPath { get; set; }
+        
+        public virtual string Name { get; set; } = "GameList Settings";
 
-        [StringLength(1000, MinimumLength = 3)]
-        public string GamesFolderPath { get; set; }
 
-        [Required]
-        [StringLength(SettingsConstants.SettingsUnitNameMaxLength, MinimumLength = SettingsConstants.SettingsUnitNameMinLength)]
-        public string Name { get; set; } = "GameList Settings";
+        public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
+            new Dictionary<string, ICollection<Attribute>>
+            {
+                { nameof(GameListSettingsUnit.Name), new [] { new RequiredAttribute() } },
+                {
+                    nameof(GameListSettingsUnit.GamesFolderPath),
+                    new Attribute[]
+                    {
+                        new RequiredAttribute(), new StringLengthAttribute(SettingsConstants.PathMinLength)
+                    }
+                }
+            };
     }
 }

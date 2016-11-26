@@ -15,6 +15,7 @@ namespace Freengy.Settings.Constants
         public static readonly string ConnectionString = 
             $"data source={ Path.Combine(DatabaseFolderName, SettingsDbFileName) };Foreign Keys=True";
 
+        public const int PathMinLength = 3;
         public const int SettingsUnitNameMinLength = 2;
         public const int SettingsUnitNameMaxLength = 40;
     }

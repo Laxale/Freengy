@@ -3,105 +3,124 @@
 //
 
 
-namespace Freengy.Settings.DefaultImpl 
+namespace Freengy.Settings.DefaultImpl
 {
     using System;
     using System.IO;
     using System.Linq;
-    using System.Data.Entity;
     using System.Data.SQLite;
     using System.Collections.Generic;
-    
-    using Freengy.Settings.DefaultImpl;
+
     using Freengy.Settings.Configuration;
 
     using Freengy.Settings.Constants;
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.ModuleSettings;
 
+    using NHibernate.Mapping.ByCode;
 
-    internal class SettingsFacade : ISettingsFacade
+    
+    internal class SettingsFacade : ISettingsFacade 
     {
+        #region vars
+
+        private static readonly object Locker = new object();
+
         private readonly IDictionary<string, Type> registeredEntityTypes = new Dictionary<string, Type>();
 
-        private readonly IDictionary<string, SettingsUnitBase> registeredUnits = new Dictionary<string, SettingsUnitBase>();
+        private readonly IDictionary<string, IConformistHoldersProvider> registeredMappngs =
+            new Dictionary<string, IConformistHoldersProvider>();
+
+        private readonly IDictionary<string, SettingsUnitBase> registeredUnits =
+            new Dictionary<string, SettingsUnitBase>();
+
+        #endregion vars
 
 
         #region Singleton
 
-        private static ISettingsFacade instance;
-
-        private SettingsFacade()
+        private static SettingsFacade instance;
+        
+        private SettingsFacade() 
         {
             //this.CreateEmptyDatabase();
+
         }
 
-        public static ISettingsFacade Instance
-            => SettingsFacade.instance ?? (SettingsFacade.instance = new SettingsFacade());
+        internal SettingsFacade(string connectionString) 
+        {
+            
+        }
 
+        public static ISettingsFacade Instance 
+        {
+            get
+            {
+                lock (Locker)
+                {
+                    return SettingsFacade.instance ?? (SettingsFacade.instance = new SettingsFacade());
+                }
+            }
+        }
+
+        internal static SettingsFacade FullInstance 
+        {
+            get
+            {
+                lock (Locker)
+                {
+                    return SettingsFacade.instance ?? (SettingsFacade.instance = new SettingsFacade());
+                }
+            }
+        }
+        
         #endregion Singleton
 
 
-        public TUnitType GetUnit<TUnitType>() where TUnitType : class
+        public SettingsUnitBase GetUnit(string unitName)
         {
-            try
-            {
-                using (var unitContext = new SettingsContext())
-                {
-                    var unit = unitContext.Set<TUnitType>().FirstOrDefault();
-
-                    return unit;
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                // not registered entity type will throw "Not part of a model"
-                return null;
-            }
+            throw new NotImplementedException();
         }
 
-        public void RegisterEntityType(Type entityType) 
+        public SettingsUnitBase GetUnit(Type settingsUnitType)
         {
-            if (entityType == null) throw new ArgumentNullException(nameof(entityType));
+            throw new NotImplementedException();
+        }
+
+        public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISettingsFacade RegisterUnitType<TEntityType>() where TEntityType : SettingsUnitBase, new()
+        {
+            var mapping = new GenericMapping<TEntityType>();
 
             try
             {
-                this.registeredEntityTypes.Add(entityType.FullName, entityType);
+                lock (Locker)
+                {
+                    this.registeredMappngs.Add(mapping.GetType().FullName, mapping);
+                }
             }
             catch (Exception)
             {
-                
+                // ignore if already registered
                 throw;
             }
-        }
 
-        public ICollection<Type> GetRegisteredEntityTypes() 
-        {
-            return this.registeredEntityTypes.Values;
-        }
+            
 
-        public SettingsUnitBase GetUnit(string unitName) 
-        {
             throw new NotImplementedException();
         }
 
-        public SettingsUnitBase GetUnit(Type settingsUnitType) 
-        {
-            throw new NotImplementedException();
-        }
 
-        public ISettingsFacade RegisterUnit<TUnitType>(TUnitType settingsUnit) where TUnitType : class
+        internal ICollection<IConformistHoldersProvider> GetRegisteredMappings() 
         {
-            if (settingsUnit == null) throw new ArgumentNullException(nameof(settingsUnit));
-
-            using (var unitContext = new SettingsContext()) 
+            lock (Locker)
             {
-                var unit = unitContext.Set<TUnitType>();
-                unit.Add(settingsUnit);
-                unitContext.SaveChanges();
+                return this.registeredMappngs.Values;
             }
-
-            return this;
         }
 
 

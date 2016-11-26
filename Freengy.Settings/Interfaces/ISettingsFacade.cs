@@ -12,16 +12,23 @@ namespace Freengy.Settings.Interfaces
 
 
     /// <summary>
-    /// Exposes all registered settings units
+    /// Exposes facade to interact with registered settings units
     /// </summary>
     public interface ISettingsFacade 
     {
         SettingsUnitBase GetUnit(string unitName);
         SettingsUnitBase GetUnit(Type settingsUnitType);
-        TUnitType GetUnit<TUnitType>() where TUnitType : class;
+        TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase;
 
-        void RegisterEntityType(Type entityType);
+        //ISettingsFacade RegisterUnit(SettingsUnitBase settningsUnit);
+        
+        /// <summary>
+        /// Register settings unit by type
+        /// </summary>
+        /// <typeparam name="TEntityType"><see cref="SettingsUnitBase"/> child type</typeparam>
+        /// <returns>Self. Just for lulz (well, fluent chaining)</returns>
+        ISettingsFacade RegisterUnitType<TEntityType>() where TEntityType : SettingsUnitBase, new();
 
-        ICollection<Type> GetRegisteredEntityTypes();
+        //ICollection<SettingsUnitBase> GetRegisteredEntityTypes();
     }
 }

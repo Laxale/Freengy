@@ -30,7 +30,7 @@ namespace Freengy.GameList.Module
             controller.RegisterCategory(new GameListDiagnosticsCategory());
 
             var facade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
-            facade.RegisterEntityType(typeof(GameListSettingsUnit));
+            facade.RegisterUnit(typeof(GameListSettingsUnit));
         }
     }
 }

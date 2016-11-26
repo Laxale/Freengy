@@ -6,18 +6,22 @@
 namespace Settings.Tests.DefaultImpl
 {
     using System;
+    using System.Collections.Generic;
 
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.DefaultImpl;
+    using Freengy.Settings.ModuleSettings;
 
     using NUnit.Framework;
 
     using Catel.IoC;
 
 
-    internal class TestSettingsUnit 
+    internal class TestSettingsUnit : SettingsUnitBase 
     {
         public long Id { get; set; }
+
+        public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; }
 
         public string Name { get; set; } = Guid.NewGuid().ToString().Substring(0, 6);
     }
@@ -45,7 +49,7 @@ namespace Settings.Tests.DefaultImpl
         [Test(Description = "Try to get not registered unit - receive null")]
         public void GetUnit_GenericRegistered() 
         {
-            SettingsFacade.Instance.RegisterEntityType(typeof(TestSettingsUnit));
+            SettingsFacade.FullInstance.RegisterUnitType<TestSettingsUnit>();
 
             var facade = SettingsFacade.Instance;
 
