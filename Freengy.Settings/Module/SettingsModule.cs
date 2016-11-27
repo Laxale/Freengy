@@ -5,18 +5,24 @@
 
 namespace Freengy.Settings.Module 
 {
+    using Freengy.Settings.Views;
+    using Freengy.Settings.ViewModels;
     using Freengy.Settings.DefaultImpl;
-    
+
     using Catel.IoC;
+    using Catel.Services;
 
     using Prism.Modularity;
 
 
-    public sealed class SettingsFacadeModule : IModule 
+    public sealed class SettingsModule : IModule 
     {
         public void Initialize() 
         {
             ServiceLocator.Default.RegisterInstance(SettingsFacade.Instance);
+
+            var vizualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
+            vizualizer.Register<SettingsViewModel, SettingsWindow>();
         }
     }
 }

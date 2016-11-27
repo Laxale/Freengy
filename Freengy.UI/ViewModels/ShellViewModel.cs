@@ -10,7 +10,8 @@ namespace Freengy.UI.ViewModels
     using Catel.IoC;
     using Catel.MVVM;
     
-    using Base.ViewModels;
+    using Freengy.Base.ViewModels;
+    using Freengy.Settings.ViewModels;
 
 
     public class ShellViewModel : WaitableViewModel 

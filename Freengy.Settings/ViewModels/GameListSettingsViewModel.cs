@@ -1,19 +1,19 @@
-﻿// Created by Laxale 24.10.2016
+﻿// Created by Laxale 27.11.2016
 //
 //
 
 
-namespace Freengy.UI.ViewModels 
+namespace Freengy.Settings.ViewModels 
 {
     using System;
-
-    using Catel.MVVM;
 
     using Freengy.Base.ViewModels;
 
 
-    public class SettingsViewModel : WaitableViewModel 
+    public sealed class GameListSettingsViewModel : WaitableViewModel 
     {
+
+
         protected override void SetupCommands() 
         {
             

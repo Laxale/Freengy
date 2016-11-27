@@ -1,9 +1,9 @@
-﻿// Created by Laxale 24.10.2016
+﻿// Created by Laxale 27.11.2016
 //
 //
 
 
-namespace Freengy.UI.Views 
+namespace Freengy.Settings.Views 
 {
     using CatelControl = Catel.Windows.Controls.UserControl;
 

@@ -70,7 +70,7 @@ namespace Freengy.UI.Helpers
             var catalog = new ModuleCatalog();
 
             catalog.AddModule(typeof(BaseModule))
-                   .AddModule(typeof(SettingsFacadeModule))
+                   .AddModule(typeof(SettingsModule))
                    .AddModule(typeof(MainModule))
                    .AddModule(typeof(DiagnosticsModule))
                    .AddModule(typeof(GameListModule))
