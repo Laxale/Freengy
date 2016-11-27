@@ -6,11 +6,38 @@
                    
                    xmlns:catel="http://catel.codeplex.com" 
                    
-                   xmlns:local="clr-namespace:Freengy.Settings.Views" 
+                   xmlns:local="clr-namespace:Freengy.Settings" 
+                   xmlns:views="clr-namespace:Freengy.Settings.Views" 
                    
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
 
+    <catel:UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </catel:UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.SettingsViewTitle}"
+                   Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+
+        <TabControl Grid.Row="1" TabStripPlacement="Left" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                Margin="{StaticResource All4Margin}">
+            <TabItem Header="{x:Static local:Resources.GameListSettingsTitle}">
+                <views:GameListSettingsView/>
+            </TabItem>
+
+            <TabItem Header="{x:Static local:Resources.FriendListSettingsTitle}">
+                <views:FriendListSettingsView/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </catel:UserControl>

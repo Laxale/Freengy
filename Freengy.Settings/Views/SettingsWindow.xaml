@@ -7,10 +7,12 @@
         xmlns:local="clr-namespace:Freengy.Settings"
         xmlns:vies="clr-namespace:Freengy.Settings.Views"
         xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
+        xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
 
         mc:Ignorable="d"
         ShowInTaskbar="False"
         ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterOwner"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"
         Title="{x:Static local:Resources.SettingsViewTitle}"
@@ -26,5 +28,23 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <vies:SettingsView/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <vies:SettingsView Grid.Row="0"/>
+
+        <DockPanel Grid.Row="1">
+            <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.CloseText}" 
+                    Command="{Binding Path=CommandClose}" HorizontalAlignment="Right"
+                    IsDefault="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    IsEnabled="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"/>
+
+            <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.SaveText}" HorizontalAlignment="Right"
+                    IsDefault="True" Command="{Binding Path=CommandSave}" Name="SaveButton"/>
+        </DockPanel>
+    </Grid>
 </Window>

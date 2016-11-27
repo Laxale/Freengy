@@ -61,6 +61,33 @@ namespace Freengy.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friendlist.
+        /// </summary>
+        public static string FriendListSettingsTitle {
+            get {
+                return ResourceManager.GetString("FriendListSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gamelist.
+        /// </summary>
+        public static string GameListSettingsTitle {
+            get {
+                return ResourceManager.GetString("GameListSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \Games\ folder path.
+        /// </summary>
+        public static string GamesFolderPathText {
+            get {
+                return ResourceManager.GetString("GamesFolderPathText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsViewTitle {

@@ -61,6 +61,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string CloseText {
+            get {
+                return ResourceManager.GetString("CloseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Freengy.CommonResources;component/Images/DefaultGameIcon.png.
         /// </summary>
         public static string DefaultGameIconUri {
@@ -201,6 +210,15 @@ namespace Freengy.CommonResources {
         public static string SavePasswordText {
             get {
                 return ResourceManager.GetString("SavePasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string SaveText {
+            get {
+                return ResourceManager.GetString("SaveText", resourceCulture);
             }
         }
         

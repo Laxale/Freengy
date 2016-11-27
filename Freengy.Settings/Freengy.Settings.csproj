@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -58,14 +59,19 @@
     <Compile Include="Configuration\Initializer.cs" />
     <Compile Include="Configuration\GenericMapping.cs" />
     <Compile Include="Constants\SettingsConstants.cs" />
+    <Compile Include="Messages\MessageSaveRequest.cs" />
     <Compile Include="Migrations\MigrationAttributeHandler.cs" />
     <Compile Include="Migrations\SettingsMigration.cs" />
     <Compile Include="ModuleSettings\FriendListSettingsUnit.cs" />
     <Compile Include="ModuleSettings\GameListSettingsUnit.cs" />
+    <Compile Include="ViewModels\FriendListSettingsViewModel.cs" />
     <Compile Include="ModuleSettings\SettingsUnitBase.cs" />
     <Compile Include="DefaultImpl\SettingsFacade.cs" />
     <Compile Include="Interfaces\ISettingsFacade.cs" />
     <Compile Include="InternalsExposer.cs" />
+    <Compile Include="Views\FriendListSettingsView.xaml.cs">
+      <DependentUpon>FriendListSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\GameListSettingsViewModel.cs" />
     <Compile Include="Module\SettingsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +108,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\FriendListSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\GameListSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

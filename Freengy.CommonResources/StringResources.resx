@@ -183,4 +183,10 @@
   <data name="InProgressText" xml:space="preserve">
     <value>In progress</value>
   </data>
+  <data name="CloseText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="SaveText" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>
