@@ -11,11 +11,11 @@ namespace Freengy.Chatter.Module
     using Freengy.Base.Interfaces;
     
     using Prism.Modularity;
+
+    using Catel.IoC;
     
 
-    public class ChatterModule : IUiModule 
-    //        , IModule 
-    // remove this if no any types to register
+    public class ChatterModule : IUiModule, IModule 
     {
         #region Singleton
 
@@ -34,9 +34,9 @@ namespace Freengy.Chatter.Module
         public Type ExportedViewType { get; } = typeof(ChatterView);
 
 
-        //        public void Initialize() 
-        //        {
-        //            ServiceLocator.Default.RegisterType<i>
-        //        }
+        public void Initialize() 
+        {
+            //ServiceLocator.Default.RegisterType<i>
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace Freengy.Settings.Configuration
         public GenericMapping() 
         {
             base.Table(nameof(T));
-
+            
             this.MapKey();
             this.MapProperties();
         }
@@ -40,7 +40,11 @@ namespace Freengy.Settings.Configuration
 
         private void MapProperties() 
         {
-            foreach (KeyValuePair<string, ICollection<Attribute>> propertyPair in new T().ColumnsProperties)
+            var properties = new T().ColumnsProperties;
+
+            if (properties == null) throw new InvalidOperationException($"{ nameof(T) } must expose not-null ColumnsProperties");
+
+            foreach (KeyValuePair<string, ICollection<Attribute>> propertyPair in properties)
             {
                 Action<IPropertyMapper> mapperAction =
                     mapper =>

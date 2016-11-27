@@ -3,36 +3,20 @@
 //
 
 
-namespace Freengy.GameList.Settings 
+namespace Freengy.Settings.ModuleSettings 
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Freengy.Settings.Constants;
-    using Freengy.Settings.ModuleSettings;
     
 
-    public class GameListSettingsUnit : SettingsUnitBase 
+    internal class GameListSettingsUnit : SettingsUnitBase 
     {
-        #region Singleton
-
-        private static GameListSettingsUnit instance;
-
-        private GameListSettingsUnit() 
-        {
-
-        }
-
-        public static GameListSettingsUnit Instance =>
-            GameListSettingsUnit.instance ?? (GameListSettingsUnit.instance = new GameListSettingsUnit());
-
-        #endregion Singleton
-
-
         public virtual string GamesFolderPath { get; set; }
         
-        public virtual string Name { get; set; } = "GameList Settings";
+        public override string Name { get; set; } = "GameList Settings";
 
 
         public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
@@ -43,7 +27,8 @@ namespace Freengy.GameList.Settings
                     nameof(GameListSettingsUnit.GamesFolderPath),
                     new Attribute[]
                     {
-                        new RequiredAttribute(), new StringLengthAttribute(SettingsConstants.PathMinLength)
+                        new RequiredAttribute(),
+                        new StringLengthAttribute(SettingsConstants.PathMinLength)
                     }
                 }
             };

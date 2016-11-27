@@ -26,6 +26,7 @@ namespace Base.Tests.Extensions
             TestDelegate testDelegate =
                 () =>
                 {
+                    // ReSharper disable once ExpressionIsAlwaysNull
                     Exception rootEx = ex.GetReallyRootException();
                 };
             

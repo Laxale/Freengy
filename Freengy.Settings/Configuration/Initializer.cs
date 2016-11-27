@@ -15,18 +15,29 @@ namespace Freengy.Settings.Configuration
     using NHibernate.Mapping.ByCode;
 
     
-    internal class Initializer
+    internal class Initializer 
     {
-        public static ISessionFactory SessionFactory { get; private set; }
+        private static readonly object Locker = new object();
 
-
-        public static ISession Session 
+        private static ISessionFactory sessionFactory;
+        private static ISessionFactory SessionFactory 
         {
-            get;
+            get
+            {
+                lock (Initializer.Locker)
+                {
+                    if (Initializer.sessionFactory == null)
+                    {
+                        Initializer.Configure();
+                    }
+
+                    return Initializer.sessionFactory;
+                }
+            }
         }
 
-
-        public static void Configure() 
+        
+        private static void Configure() 
         {
             var mapper = new ModelMapper();
             var config = new Configuration();
@@ -41,19 +52,18 @@ namespace Freengy.Settings.Configuration
                 config.AddMapping(mapper.CompileMappingForAllExplicitlyAddedEntities());
             }
 
-            Initializer.SessionFactory = config.BuildSessionFactory();
+            Initializer.sessionFactory = config.BuildSessionFactory();
         }
 
 
-        public static void OpenSession() 
+        public static ISession OpenSession() 
         {
-
+            return Initializer.SessionFactory.OpenSession();
         }
 
         public static void CloseSession() 
         {
-
+            SessionFactory.Close();
         }
-
     }
 }

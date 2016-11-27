@@ -11,7 +11,6 @@ namespace Freengy.GameList.Module
     using Freengy.Diagnostics.Interfaces;
 
     using Freengy.GameList.Views;
-    using Freengy.GameList.Settings;
     using Freengy.Settings.Interfaces;
     using Freengy.GameList.Diagnostics;
     
@@ -28,9 +27,6 @@ namespace Freengy.GameList.Module
         {
             var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
             controller.RegisterCategory(new GameListDiagnosticsCategory());
-
-            var facade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
-            facade.RegisterUnit(typeof(GameListSettingsUnit));
         }
     }
 }

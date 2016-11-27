@@ -3,53 +3,38 @@
 //
 
 
-namespace Freengy.Settings.DefaultImpl
+namespace Freengy.Settings.DefaultImpl 
 {
     using System;
-    using System.IO;
-    using System.Linq;
-    using System.Data.SQLite;
     using System.Collections.Generic;
 
     using Freengy.Settings.Configuration;
 
-    using Freengy.Settings.Constants;
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.ModuleSettings;
 
     using NHibernate.Mapping.ByCode;
-
     
+
     internal class SettingsFacade : ISettingsFacade 
     {
         #region vars
 
         private static readonly object Locker = new object();
 
-        private readonly IDictionary<string, Type> registeredEntityTypes = new Dictionary<string, Type>();
-
         private readonly IDictionary<string, IConformistHoldersProvider> registeredMappngs =
             new Dictionary<string, IConformistHoldersProvider>();
-
-        private readonly IDictionary<string, SettingsUnitBase> registeredUnits =
-            new Dictionary<string, SettingsUnitBase>();
-
+        
         #endregion vars
 
 
         #region Singleton
 
         private static SettingsFacade instance;
-        
-        private SettingsFacade() 
-        {
-            //this.CreateEmptyDatabase();
 
-        }
-
-        internal SettingsFacade(string connectionString) 
+        private SettingsFacade()
         {
-            
+            this.FillMappings();
         }
 
         public static ISettingsFacade Instance 
@@ -73,45 +58,50 @@ namespace Freengy.Settings.DefaultImpl
                 }
             }
         }
-        
+
         #endregion Singleton
 
 
-        public SettingsUnitBase GetUnit(string unitName)
+        public SettingsUnitBase GetUnit(string unitName) 
         {
-            throw new NotImplementedException();
-        }
+            if (string.IsNullOrWhiteSpace(unitName)) throw new ArgumentNullException(nameof(unitName));
 
-        public SettingsUnitBase GetUnit(Type settingsUnitType)
-        {
-            throw new NotImplementedException();
-        }
+            SettingsUnitBase unit;
 
-        public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase
-        {
-            throw new NotImplementedException();
-        }
+            bool unitCreated = this.IsUnitCreated(unitName, out unit);
 
-        public ISettingsFacade RegisterUnitType<TEntityType>() where TEntityType : SettingsUnitBase, new()
-        {
-            var mapping = new GenericMapping<TEntityType>();
-
-            try
+            if (!unitCreated)
             {
-                lock (Locker)
-                {
-                    this.registeredMappngs.Add(mapping.GetType().FullName, mapping);
-                }
-            }
-            catch (Exception)
-            {
-                // ignore if already registered
-                throw;
+                // create
             }
 
+            throw new NotImplementedException();
+        }
+
+        public SettingsUnitBase GetUnit(Type settingsUnitType) 
+        {
+            throw new NotImplementedException();
+        }
+
+        public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
+        {
+            TUnitType unit;
+
+            bool unitCreated = this.IsUnitCreated(out unit);
             
+            return unit;
+        }
 
-            throw new NotImplementedException();
+        public TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
+        {
+            TUnitType registeredUnit = this.GetUnit<TUnitType>();
+
+            if (registeredUnit == null)
+            {
+                this.AddUnit(out registeredUnit);
+            }
+
+            return registeredUnit;
         }
 
 
@@ -124,19 +114,63 @@ namespace Freengy.Settings.DefaultImpl
         }
 
 
-        private void CreateEmptyDatabase() 
+        private void FillMappings() 
         {
-            var dbFolderFullPath = Path.Combine(Environment.CurrentDirectory, SettingsConstants.DatabaseFolderName);
-            var dbFileFullPath = Path.Combine(dbFolderFullPath, SettingsConstants.SettingsDbFileName);
+            var gameListMapping = new GenericMapping<GameListSettingsUnit>();
+            var friendListMapping = new GenericMapping<FriendListSettingsUnit>();
 
-            if (!Directory.Exists(dbFolderFullPath))
+            registeredMappngs.Add(typeof(GameListSettingsUnit).FullName, gameListMapping);
+            registeredMappngs.Add(typeof(FriendListSettingsUnit).FullName, friendListMapping);
+        }
+
+        private void AddUnit<TUnitType>(out TUnitType addedUnit) where TUnitType : SettingsUnitBase, new() 
+        {
+            using (var session = Initializer.OpenSession())
             {
-                Directory.CreateDirectory(dbFolderFullPath);
+                using (var transaction = session.BeginTransaction())
+                {
+                    addedUnit = new TUnitType();
+                    session.SaveOrUpdate(addedUnit);
+                    transaction.Commit();
+                }
             }
+        }
 
-            if (!File.Exists(dbFileFullPath))
+        private bool IsUnitCreated<TUnitType>(out TUnitType unit) where TUnitType : SettingsUnitBase, new() 
+        {
+            unit = null;
+
+            using (var session = Initializer.OpenSession())
             {
-                SQLiteConnection.CreateFile(dbFileFullPath);
+                using (var transaction = session.BeginTransaction())
+                {
+                    try
+                    {
+                        unit = session.Get<TUnitType>(1);
+                    }
+                    catch (Exception)
+                    {
+                        // log this
+                        // may be unit is just not registered in hibernate configuration by mapping
+                    }
+                    
+                    return unit!= null;
+                }
+            }
+        }
+
+        private bool IsUnitCreated(string unitName, out SettingsUnitBase unit) 
+        {
+            using (var session = Initializer.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    object unitEntry = session.Get(unitName, 1);
+
+                    unit = unitEntry as SettingsUnitBase;
+
+                    return unitEntry != null;
+                }
             }
         }
     }

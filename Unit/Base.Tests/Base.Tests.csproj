@@ -29,6 +29,7 @@
     <Compile Include="DefaultImpl\ResponsibilityChainer.Tests.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.Tests.cs" />
     <Compile Include="Extensions\ExceptionExtensions.Tests.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.Tests.cs" />
     <Compile Include="Extensions\StringExtensions.Tests.cs" />
     <Compile Include="Helpers\Account.Tests.cs" />
     <Compile Include="Helpers\Common.Tests.cs" />

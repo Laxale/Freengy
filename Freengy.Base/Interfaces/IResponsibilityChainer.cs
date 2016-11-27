@@ -32,12 +32,12 @@ namespace Freengy.Base.Interfaces
         /// Add processing chain element
         /// </summary>
         /// <param name="handler">Chain element</param>
-        void AddHandler(Func<TObjectType, bool> handler);
+        IResponsibilityChainer<TObjectType> AddHandler(Func<TObjectType, bool> handler);
 
         /// <summary>
         /// Remove handler from a chain
         /// </summary>
         /// <param name="handler">Target handler</param>
-        void RemoveHandler(Func<TObjectType, bool> handler);
+        IResponsibilityChainer<TObjectType> RemoveHandler(Func<TObjectType, bool> handler);
     }
 }

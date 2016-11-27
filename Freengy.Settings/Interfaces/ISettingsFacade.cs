@@ -6,8 +6,7 @@
 namespace Freengy.Settings.Interfaces 
 {
     using System;
-    using System.Collections.Generic;
-
+    
     using Freengy.Settings.ModuleSettings;
 
 
@@ -18,17 +17,18 @@ namespace Freengy.Settings.Interfaces
     {
         SettingsUnitBase GetUnit(string unitName);
         SettingsUnitBase GetUnit(Type settingsUnitType);
-        TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase;
-
-        //ISettingsFacade RegisterUnit(SettingsUnitBase settningsUnit);
-        
         /// <summary>
-        /// Register settings unit by type
+        /// Get settings unit (must be registered in <see cref="ISettingsFacade"/> implementer before getting)
         /// </summary>
-        /// <typeparam name="TEntityType"><see cref="SettingsUnitBase"/> child type</typeparam>
-        /// <returns>Self. Just for lulz (well, fluent chaining)</returns>
-        ISettingsFacade RegisterUnitType<TEntityType>() where TEntityType : SettingsUnitBase, new();
+        /// <typeparam name="TUnitType"><see cref="SettingsUnitBase"/> child</typeparam>
+        /// <returns>Registered unit or null if not registered</returns>
+        TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase, new();
 
-        //ICollection<SettingsUnitBase> GetRegisteredEntityTypes();
+        /// <summary>
+        /// Get settings unit or register it if not yet registered
+        /// </summary>
+        /// <typeparam name="TUnitType"></typeparam>
+        /// <returns>Already or just yet registered unit</returns>
+        TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnitBase, new();
     }
 }

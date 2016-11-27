@@ -24,22 +24,26 @@ namespace Freengy.Base.DefaultImpl
         private readonly List<Func<TObjectType, bool>> chain = new List<Func<TObjectType, bool>>();
 
 
-        public void AddHandler(Func<TObjectType, bool> handler) 
+        public IResponsibilityChainer<TObjectType> AddHandler(Func<TObjectType, bool> handler) 
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
 
-            if (this.chain.Contains(handler)) return;
+            if (this.chain.Contains(handler)) return this;
 
             this.chain.Add(handler);
+
+            return this;
         }
 
-        public void RemoveHandler(Func<TObjectType, bool> handler) 
+        public IResponsibilityChainer<TObjectType> RemoveHandler(Func<TObjectType, bool> handler) 
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
 
-            if (!this.chain.Contains(handler)) return;
+            if (!this.chain.Contains(handler)) return this;
 
             this.chain.Remove(handler);
+
+            return this;
         }
 
         public bool Handle(TObjectType targetToProcess) 

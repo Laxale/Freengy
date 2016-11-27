@@ -3,17 +3,73 @@
 //
 
 
-namespace Freengy.Base.Extensions 
+namespace Freengy.Base.Extensions
 {
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Collections.Generic;
 
     using Freengy.Base.Helpers;
+    
 
-
-    public static class ReflectionExtensions 
+    public static class ReflectionExtensions
     {
+        public static Type FindInheritingType<TBaseType>(this Assembly assembly) where TBaseType : class 
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+
+            Type baseType = typeof(TBaseType);
+
+            Type inheritingType = assembly.ExportedTypes.FirstOrDefault(definedType => definedType.IsSubclassOf(baseType));
+            
+            ThrowNotImplementsIfNull(assembly, inheritingType, baseType);
+
+            return inheritingType;
+        }
+        public static Type TryFindInheritingType<TBaseType>(this Assembly assembly) where TBaseType : class 
+        {
+            try
+            {
+                return FindInheritingType<TBaseType>(assembly);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static IEnumerable<Type> FindInheritingTypes<TBaseType>(this Assembly assembly) where TBaseType : class 
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+
+            Type baseType = typeof(TBaseType);
+
+            IEnumerable<Type> implementingTypes =
+                assembly
+                .DefinedTypes
+                .Where(definedType => definedType.IsSubclassOf(baseType))
+                .ToArray();
+
+            ThrowNotImplementsIfNull(assembly, implementingTypes.FirstOrDefault(), baseType);
+
+            return implementingTypes;
+        }
+
+
+        public static Type FindImplementingType<TInterfaceType>(this Assembly assembly) where TInterfaceType : class 
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+
+            Type interfaceType = typeof(TInterfaceType);
+            Type implementingType =
+                assembly.DefinedTypes.FirstOrDefault(definedType => definedType.ImplementsInterface(interfaceType));
+
+            ReflectionExtensions.ThrowNotImplementsIfNull(assembly, implementingType, interfaceType);
+
+            return implementingType;
+        }
+
         /// <summary>
         /// Get first type from assembly that implements target interface type
         /// </summary>
@@ -24,27 +80,34 @@ namespace Freengy.Base.Extensions
         {
             Common.ThrowIfArgumentsHasNull(assembly, targetInterfaceType);
 
-            Type implementingType = 
+            Type implementingType =
                 assembly
-                .DefinedTypes
-                .FirstOrDefault(definedType => definedType.ImplementsInterface(targetInterfaceType));
+                    .DefinedTypes
+                    .FirstOrDefault(definedType => definedType.ImplementsInterface(targetInterfaceType));
 
             ThrowNotImplementsIfNull(assembly, implementingType, targetInterfaceType);
 
             return implementingType;
         }
 
-        public static Type FindImplementingType<TInterfaceType>(this Assembly assembly) where TInterfaceType : class 
+        /// <summary>
+        /// Tries to find <see cref="TInterfaceType"/> implementing type in assembly. Doesnt throw if any errors
+        /// </summary>
+        /// <typeparam name="TInterfaceType"></typeparam>
+        /// <param name="assembly"></param>
+        /// <returns><see cref="TInterfaceType"/> implementing type or null if any errors</returns>
+        public static Type TryFindImplementingType<TInterfaceType>(this Assembly assembly) where TInterfaceType : class 
         {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-
-            Type interfaceType = typeof (TInterfaceType);
-            Type implementingType = assembly.DefinedTypes.FirstOrDefault(definedType => definedType.ImplementsInterface(interfaceType));
-
-            ThrowNotImplementsIfNull(assembly, implementingType, interfaceType);
-
-            return implementingType;
+            try
+            {
+                return FindImplementingType<TInterfaceType>(assembly);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
+
 
         /// <summary>
         /// Checks if this type implements target interface type
@@ -60,7 +123,6 @@ namespace Freengy.Base.Extensions
 
             return isImplementingType;
         }
-
         public static bool ImplementsInterface(this Type type, Type interfaceType)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

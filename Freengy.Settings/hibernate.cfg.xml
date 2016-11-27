@@ -5,24 +5,19 @@
   </configSections>
 
   <connectionStrings>
-    <add name="SettingsConnectionString" connectionString="data source=db\Settings.sqlite;Foreign Keys=True" providerName="System.Data.SQLite" />
+    <add name="SettingsConnectionString"
+         connectionString="data source=db\Settings.sqlite;Foreign Keys=True"
+         providerName="System.Data.SQLite"/>
   </connectionStrings>
 
   <hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
     <session-factory>
       <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
       <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
-      <property name="connection.connection_string_name">SettingsConnectionString</property>
+      <!-- Doesnt work -->
+      <!-- <property name="connection.connection_string_name">SettingsConnectionString</property>-->
+      <property name="connection.connection_string">data source=db\Settings.sqlite;Foreign Keys=True</property>
       <property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>
     </session-factory>
   </hibernate-configuration>
-
-  <runtime>
-    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
-      <dependentAssembly>
-        <assemblyIdentity name="NHibernate" publicKeyToken="aa95f207798dfdb4" culture="neutral" />
-        <bindingRedirect oldVersion="0.0.0.0-4.0.0.4000" newVersion="4.0.0.4000" />
-      </dependentAssembly>
-    </assemblyBinding>
-  </runtime>
 </configuration>
