@@ -47,6 +47,11 @@ namespace Freengy.Chatter.ViewModels
 
         }
 
+        public override string ToString() 
+        {
+            return this.Session.Name;
+        }
+
         #endregion override
 
 

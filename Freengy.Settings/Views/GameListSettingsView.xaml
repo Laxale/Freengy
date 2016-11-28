@@ -1,10 +1,11 @@
-﻿<catel:UserControl x:Class="Freengy.Settings.Views.GameListSettingsView" 
+﻿<UserControl x:Class="Freengy.Settings.Views.GameListSettingsView" 
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:catel="http://catel.codeplex.com" 
+                   xmlns:prism="http://prismlibrary.com/"
+                   xmlns:gif="http://wpfanimatedgif.codeplex.com"
                    
                    xmlns:local="clr-namespace:Freengy.Settings" 
                    xmlns:views="clr-namespace:Freengy.Settings.Views" 
@@ -12,9 +13,18 @@
                    
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300"
-                   d:DataContext="{d:DesignInstance Type=viewModels:GameListSettingsViewModel}">
-
+                   d:DataContext="{d:DesignInstance Type=viewModels:GameListSettingsViewModel}"
+                   prism:ViewModelLocator.AutoWireViewModel="True">
+    
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -29,15 +39,59 @@
 
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding Path=GamesFolderPath, Mode=OneWay}" 
-                     HorizontalAlignment="Stretch" />
+            <DockPanel Grid.Column="1">
+                <Image MaxHeight="{StaticResource CommonMediumIconSize}" 
+                       gif:ImageBehavior.AutoStart="True"
+                       gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedHandIcon.gif">
 
-            <Button Grid.Column="1" DockPanel.Dock="Left" Content="..." MinWidth="30" HorizontalAlignment="Right" 
-                    Command="{Binding Path=CommandSelectGamesFolder}"/>
+                    <Image.Style>
+                        <Style TargetType="Image" BasedOn="{StaticResource CommonImageStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Value="False">
+                                    <DataTrigger.Binding>
+                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
+                                    </DataTrigger.Binding>
+                                    
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <Button MinWidth="30" HorizontalAlignment="Left" 
+                    Command="{Binding Path=CommandSelectGamesFolder}" 
+                    Content="{Binding Path=GamesFolderPath, Mode=OneWay, 
+                                      Converter={StaticResource IfNullToDefaultValueConverter},
+                                      ConverterParameter={x:Static local:Resources.DefaultSelectGamesFolderText}}">
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
+                                    </DataTrigger.Binding>
+
+                                    <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                </DataTrigger>
+
+                                <DataTrigger Value="False">
+                                    <DataTrigger.Binding>
+                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
+                                    </DataTrigger.Binding>
+
+                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </DockPanel>
         </Grid>
     </Grid>
-</catel:UserControl>
+</UserControl>

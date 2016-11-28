@@ -13,20 +13,30 @@ namespace Freengy.Settings.ViewModels
 
     using Catel.MVVM;
     using Catel.Messaging;
+    
 
-
-    public sealed class SettingsViewModel : WaitableViewModel 
+    public sealed class SettingsViewModel : WaitableViewModel
     {
+        private bool canSave;
+
+
+        public SettingsViewModel() 
+        {
+            base.messageMediator.Register<MessageSettingChanged>(this, this.MessageListener);
+
+            this.SetupCommands();
+        }
+
+
+        public bool ShowWindowTitle => false;
 
         public Command CommandSave { get; private set; }
         public Command<Window> CommandClose{ get; private set; }
 
 
-        public bool ShowWindowTitle => false;
-
         protected override void SetupCommands() 
         {
-            this.CommandSave  = new Command(this.SaveImpl);
+            this.CommandSave  = new Command(this.SaveImpl, this.CanSave);
             this.CommandClose = new Command<Window>(window => window.Close());
         }
 
@@ -36,6 +46,17 @@ namespace Freengy.Settings.ViewModels
             var saveRequestMessage = new MessageSaveRequest();
 
             base.messageMediator.SendMessage(saveRequestMessage);
+        }
+        private bool CanSave()
+        {
+            return this.canSave;
+        }
+
+        [MessageRecipient]
+        private void MessageListener(MessageSettingChanged isDirtyMesage) 
+        {
+            this.canSave = true;
+            this.CommandSave.RaiseCanExecuteChanged();
         }
     }
 }

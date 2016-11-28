@@ -16,5 +16,6 @@
     <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />
     <SolidColorBrush x:Key="ThirdMainBrush" Color="DarkGray" />
     <SolidColorBrush x:Key="DarkGrayBrush" Color="#777777" />
+    <SolidColorBrush x:Key="PurpleBrush" Color="Purple" />
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
 </ResourceDictionary>

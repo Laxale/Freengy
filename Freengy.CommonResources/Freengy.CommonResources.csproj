@@ -24,11 +24,12 @@
     <Compile Include="Controls\WatermarkTextBox.xaml.cs">
       <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IfNullToDefaultValueConverter.cs" />
     <Compile Include="Converters\PropertyNameToBindingConverter.cs" />
     <Compile Include="Converters\ResizeModeToVisibilityConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ReverseBooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\StringToBoolConverter.cs" />
+    <Compile Include="Converters\IsNullToBoolConverter.cs" />
     <Compile Include="Converters\StringUriToImageSourceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringResources.Designer.cs">
@@ -53,6 +54,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Styles\ToolTipStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TabControlStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\WatermarkTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\FailedIcon3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AnimatedHandIcon.gif" />
+    <Resource Include="Images\HandIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

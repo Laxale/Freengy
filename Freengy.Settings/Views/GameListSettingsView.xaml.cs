@@ -5,10 +5,10 @@
 
 namespace Freengy.Settings.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
+    using System.Windows.Controls;
 
-
-    public partial class GameListSettingsView : CatelControl 
+    
+    public partial class GameListSettingsView : UserControl 
     {
         public GameListSettingsView() 
         {

@@ -90,7 +90,7 @@
                 <!-- TODO какого хера кнопка не в любом месте юзерконтрола работает? -->
                 <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=CommandLogin}"
                         MinWidth="{StaticResource MinButtonWidth}" HorizontalAlignment="Right" IsDefault="True" 
-                        Content="{x:Static localprops:Resources.LogInText}" DockPanel.Dock="Right" Margin="{StaticResource All4Margin}"/>
+                        Content="{x:Static localprops:Resources.LogInText}" Margin="{StaticResource All4Margin}"/>
 
                 <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" 
                           Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}">

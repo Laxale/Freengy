@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultSelectGamesFolderText" xml:space="preserve">
+    <value>Select folder to hold games in</value>
+  </data>
   <data name="FriendListSettingsTitle" xml:space="preserve">
     <value>Friendlist</value>
   </data>

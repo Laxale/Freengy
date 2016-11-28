@@ -5,10 +5,10 @@
 
 namespace Freengy.Settings.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
+    using System.Windows.Controls;
+    
 
-
-    public partial class SettingsView : CatelControl 
+    public partial class SettingsView : UserControl 
     {
         public SettingsView() 
         {

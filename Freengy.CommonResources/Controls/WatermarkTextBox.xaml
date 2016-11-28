@@ -51,7 +51,7 @@
 
                 <DataTrigger Value="True">
                     <DataTrigger.Binding>
-                        <Binding Path="Text" Converter="{StaticResource StringToBoolConverter}">
+                        <Binding Path="Text" Converter="{StaticResource IsNullToBoolConverter}">
                             <Binding.RelativeSource>
                                 <RelativeSource Mode="Self"/>
                             </Binding.RelativeSource>

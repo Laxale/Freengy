@@ -1,18 +1,19 @@
-﻿<catel:UserControl x:Class="Freengy.Settings.Views.FriendListSettingsView" 
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+﻿<UserControl x:Class="Freengy.Settings.Views.FriendListSettingsView" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:catel="http://catel.codeplex.com" 
+             xmlns:prism="http://prismlibrary.com/"
                    
-                   xmlns:local="clr-namespace:Freengy.Settings" 
-                   xmlns:views="clr-namespace:Freengy.Settings.Views" 
-                   xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
+             xmlns:local="clr-namespace:Freengy.Settings" 
+             xmlns:views="clr-namespace:Freengy.Settings.Views" 
+             xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
                    
-                   mc:Ignorable="d" 
-                   d:DesignHeight="300" d:DesignWidth="300"
-                   d:DataContext="{d:DesignInstance Type=viewModels:FriendListSettingsViewModel}">
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance Type=viewModels:FriendListSettingsViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -29,4 +30,4 @@
         
         <TextBox Grid.Row="0" Grid.Column="1" Text=""/>
     </Grid>
-</catel:UserControl>
+</UserControl>

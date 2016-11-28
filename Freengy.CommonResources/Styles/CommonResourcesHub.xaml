@@ -8,43 +8,13 @@
         <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="ButtonStyles.xaml"/>
         <ResourceDictionary Source="Converters.xaml"/>
-        <ResourceDictionary Source="Converters.xaml"/>
         <ResourceDictionary Source="ImageStyles.xaml"/>
         <ResourceDictionary Source="ListBoxStyles.xaml"/>
         <ResourceDictionary Source="PasswordBoxStyles.xaml"/>
+        <ResourceDictionary Source="TabControlStyles.xaml"/>
         <ResourceDictionary Source="TextBlockStyles.xaml"/>
         <ResourceDictionary Source="TextBoxStyles.xaml"/>
+        <ResourceDictionary Source="ToolTipStyles.xaml"/>
         <ResourceDictionary Source="Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-       
-
-    <Style TargetType="ToolTip" x:Key="CommonToolTipStyle">
-        <Setter Property="Placement"     Value="Top"/>
-        <Setter Property="HasDropShadow" Value="True"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Grid Background="Transparent">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0" Background="{TemplateBinding Background}">
-                            <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
-                        </Border>
-
-                        <Path Grid.Row="1" Data="M10,170 L10,180 20,170" Stretch="Fill" 
-                              HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="25"
-                              Fill="{TemplateBinding Background}" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="ToolTip" x:Key="{x:Type ToolTip}" BasedOn="{StaticResource CommonToolTipStyle}">
-
-    </Style>
-
-
 </ResourceDictionary>

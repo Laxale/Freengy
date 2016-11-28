@@ -7,6 +7,7 @@ namespace Freengy.Settings.ViewModels
 {
     using System;
     using System.Windows.Forms;
+    using System.ComponentModel;
 
     using Freengy.Base.ViewModels;
     using Freengy.Settings.Messages;
@@ -15,12 +16,17 @@ namespace Freengy.Settings.ViewModels
     using Catel.MVVM;
     using Catel.Messaging;
 
+    using LocalRes = Resources;
 
-    public sealed class GameListSettingsViewModel : WaitableViewModel 
+
+    internal sealed class GameListSettingsViewModel : UnitViewModelBase 
     {
         public GameListSettingsViewModel() 
         {
             base.messageMediator.Register<MessageSaveRequest>(this, this.MessageListener);
+
+            // call this in ctor if viewmodel is not created by catel
+            this.SetupCommands();
         }
         
         public Command CommandSelectGamesFolder { get; private set; }
@@ -31,7 +37,10 @@ namespace Freengy.Settings.ViewModels
             this.CommandSelectGamesFolder = new Command(this.SelectGamesFolderImpl);
         }
 
-
+        public override string ToString() 
+        {
+            return LocalRes.GameListSettingsTitle;
+        }
 
         public string GamesFolderPath 
         {
@@ -42,8 +51,8 @@ namespace Freengy.Settings.ViewModels
         public static readonly PropertyData GamesFolderPathProperty =
             ModelBase.RegisterProperty<GameListSettingsViewModel, string>(viewModel => viewModel.GamesFolderPath, () => string.Empty);
 
-
-        private void SelectGamesFolderImpl()
+        
+        private void SelectGamesFolderImpl() 
         {
             var dialog = new FolderBrowserDialog
             {
@@ -59,9 +68,10 @@ namespace Freengy.Settings.ViewModels
         }
 
         [MessageRecipient]
-        private void MessageListener(MessageSaveRequest requestMessage)
+        private void MessageListener(MessageSaveRequest requestMessage) 
         {
             var t = 0;
+            // save changes to db
         }
     }
 }

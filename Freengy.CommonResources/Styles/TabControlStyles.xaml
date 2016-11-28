@@ -1,0 +1,69 @@
+﻿<ResourceDictionary x:Class="Freengy.CommonResources.Styles.TabControlStyles"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+        <ResourceDictionary Source="BorderStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    
+    <Style TargetType="TabItem" x:Key="CoolTabItemStyle">
+        <Setter Property="UseLayoutRounding"   Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid>
+                        <Border Name="ContentBorder">
+                            <ContentControl Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            Content="{TemplateBinding TabItem.Header}" Cursor="Hand"/>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabItem.IsSelected" Value="True">
+                            <Setter Property="Panel.ZIndex" Value="100" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="Orange" />
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentBorder" Property="Background" Value="DarkRed" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentSite" Property="Foreground" Value="{StaticResource PurpleBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TabItem" BasedOn="{StaticResource CoolTabItemStyle}">
+
+    </Style>
+
+
+    <Style TargetType="TabControl" x:Key="CoolTabControlStyle">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="Yellow"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="Green"/>
+                <Setter Property="Background" Value="Orange"/>
+                <!--                            <Setter Property="BorderThickness" Value="5"/>-->
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

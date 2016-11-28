@@ -54,12 +54,17 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Initializer.cs" />
     <Compile Include="Configuration\GenericMapping.cs" />
     <Compile Include="Constants\SettingsConstants.cs" />
     <Compile Include="Messages\MessageSaveRequest.cs" />
+    <Compile Include="Messages\MessageSettingChanged.cs" />
     <Compile Include="Migrations\MigrationAttributeHandler.cs" />
     <Compile Include="Migrations\SettingsMigration.cs" />
     <Compile Include="ModuleSettings\FriendListSettingsUnit.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="DefaultImpl\SettingsFacade.cs" />
     <Compile Include="Interfaces\ISettingsFacade.cs" />
     <Compile Include="InternalsExposer.cs" />
+    <Compile Include="ViewModels\UnitViewModelBase.cs" />
     <Compile Include="Views\FriendListSettingsView.xaml.cs">
       <DependentUpon>FriendListSettingsView.xaml</DependentUpon>
     </Compile>

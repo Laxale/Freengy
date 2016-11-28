@@ -61,6 +61,15 @@ namespace Freengy.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select folder to hold games in.
+        /// </summary>
+        public static string DefaultSelectGamesFolderText {
+            get {
+                return ResourceManager.GetString("DefaultSelectGamesFolderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Friendlist.
         /// </summary>
         public static string FriendListSettingsTitle {

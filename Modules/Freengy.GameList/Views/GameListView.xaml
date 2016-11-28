@@ -67,8 +67,8 @@
                                 </Style>
 
                                 <Style TargetType="Ellipse" x:Key="GameIconEllipseStyle">
-                                    <Setter Property="Height" Value="{StaticResource CommonIconSize}"/>
-                                    <Setter Property="Width" Value="{StaticResource CommonIconSize}"/>
+                                    <Setter Property="Height" Value="{StaticResource CommonLargeIconSize}"/>
+                                    <Setter Property="Width" Value="{StaticResource CommonLargeIconSize}"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                     <Setter Property="Fill" Value="{StaticResource ImgBrush}"/>

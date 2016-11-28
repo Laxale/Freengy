@@ -15,20 +15,20 @@
 
     <!-- TextBox -->
     <Style TargetType="TextBox" x:Key="CommonTextBoxStyle">
-        <Setter Property="Padding"             Value="2, 2"/>
+        <Setter Property="Padding"             Value="2, 0, 0, 0"/>
         <Setter Property="UseLayoutRounding"   Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
         <Setter Property="MinWidth"            Value="{StaticResource MinTextBoxWidth}"/>
-        <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
         <Setter Property="controls:WatermarkTextBox.MouseOverBrush" Value="{StaticResource TextBoxHighlightBrush}"/>
         
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Border Name="ErrorBorder" BorderBrush="Transparent" BorderThickness="0, 0, 0, 2" 
-                            Background="{TemplateBinding Background}">
+                            Background="{TemplateBinding Background}" MinHeight="{StaticResource MaxButtonHeight}">
                         <Border Name="HighlightBorder" BorderBrush="Transparent" 
                                 Background="{TemplateBinding controls:WatermarkTextBox.MouseOverBrush}">
                             <ScrollViewer Name="PART_ContentHost"/>

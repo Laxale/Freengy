@@ -1,0 +1,42 @@
+﻿<ResourceDictionary x:Class="Freengy.CommonResources.Styles.ToolTipStyles" 
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    
+                    mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Variables.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    
+    <Style TargetType="ToolTip" x:Key="CommonToolTipStyle">
+        <Setter Property="Placement"     Value="Top"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Background="{TemplateBinding Background}">
+                            <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
+                        </Border>
+
+                        <Path Grid.Row="1" Data="M10,170 L10,180 20,170" Stretch="Fill" 
+                              HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="25"
+                              Fill="{TemplateBinding Background}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="ToolTip" BasedOn="{StaticResource CommonToolTipStyle}">
+
+    </Style>
+</ResourceDictionary>

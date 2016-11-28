@@ -12,36 +12,32 @@
 
     <!-- Button -->
     <Style TargetType="Button" x:Key="CommonButtonStyle">
+        <Setter Property="Padding"             Value="-2"/>
         <Setter Property="UseLayoutRounding"   Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Padding"             Value="-2"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
         <Setter Property="MinWidth"            Value="{StaticResource MinButtonWidth}"/>
         <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
-        <!--<Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>-->
+        <Setter Property="MaxHeight"           Value="{StaticResource MaxButtonHeight}"/>
     </Style>
 
     <Style TargetType="Button" x:Key="HyperlinkButtonStyle" BasedOn="{StaticResource CommonButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <TextBlock Text="{TemplateBinding Button.Content}" Width="{TemplateBinding Width}"
+                    <TextBlock Text="{TemplateBinding Button.Content}" Width="{TemplateBinding Width}" Name="ContentSite"
                                Height="{TemplateBinding Height}" Foreground="{TemplateBinding Button.Foreground}"
                                FontSize="{TemplateBinding Button.FontSize}" Visibility="{TemplateBinding Visibility}"
-                               Margin="{TemplateBinding Margin}" Cursor="Hand" ToolTip="{TemplateBinding ToolTip}">
+                               Margin="{TemplateBinding Margin}" Cursor="Hand" ToolTip="{TemplateBinding ToolTip}"/>
 
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.Setters>
-                                            <Setter Property="TextDecorations" Value="Underline"/>
-                                        </Trigger.Setters>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="ContentSite" Property="TextDecorations" Value="Underline"/>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

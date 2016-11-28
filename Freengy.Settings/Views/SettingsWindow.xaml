@@ -18,7 +18,7 @@
         Title="{x:Static local:Resources.SettingsViewTitle}"
         MinHeight="400" MinWidth="600" Height="400" Width="600"
         d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel}"
-        Icon="pack://application:,,,/Freengy.CommonResources;component/Images/DiagnosticsIcon.png">
+        Icon="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">
 
     <Window.Resources>
         <ResourceDictionary>

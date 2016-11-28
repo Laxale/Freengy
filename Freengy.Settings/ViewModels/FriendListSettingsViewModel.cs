@@ -9,14 +9,21 @@ namespace Freengy.Settings.ViewModels
 
     using Freengy.Base.ViewModels;
 
+    using LocalRes = Freengy.Settings.Resources;
 
-    public sealed class FriendListSettingsViewModel : WaitableViewModel 
+
+    internal sealed class FriendListSettingsViewModel : UnitViewModelBase 
     {
 
 
         protected override void SetupCommands() 
         {
             
+        }
+
+        public override string ToString() 
+        {
+            return LocalRes.FriendListSettingsTitle;
         }
     }
 }
