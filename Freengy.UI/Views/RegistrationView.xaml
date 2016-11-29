@@ -7,12 +7,12 @@
                    xmlns:catel="http://catel.codeplex.com" 
                    
                    xmlns:local="clr-namespace:Freengy.UI.Views" 
+                   xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties" 
                    xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
-                   xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
-                   xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
-
+                   xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
+                   
                    mc:Ignorable="d" 
                    d:DesignWidth="360"
                    d:DataContext="{d:DesignInstance Type=viewModels:RegistrationViewModel}">
@@ -44,7 +44,12 @@
         
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <TextBlock DockPanel.Dock="Left" 
-                       Text="{x:Static localprops:Resources.CreateNewAccountText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+                       Text="{x:Static localprops:Resources.CreateNewAccountText}" 
+                       Style="{StaticResource SlidingTitleTextBlockStyle}"           
+                       />
+            <!--
+            
+            -->
 
             <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right"
                        Visibility="{Binding Path=Registered, Converter={StaticResource BoolToVisibilityConverter}}">

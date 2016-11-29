@@ -18,7 +18,7 @@
 
     <TextBox.Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource CommonTextBoxStyle}">
-            <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="Orange"/>
+            <Setter Property="local:WatermarkTextBox.MouseOverBrush" Value="{StaticResource FirstMainBrush}"/>
         </Style>
     </TextBox.Style>
 
@@ -51,7 +51,7 @@
 
                 <DataTrigger Value="True">
                     <DataTrigger.Binding>
-                        <Binding Path="Text" Converter="{StaticResource IsNullToBoolConverter}">
+                        <Binding Path="Text" Converter="{StaticResource IsNotNullToBoolConverter}">
                             <Binding.RelativeSource>
                                 <RelativeSource Mode="Self"/>
                             </Binding.RelativeSource>
@@ -59,7 +59,7 @@
                     </DataTrigger.Binding>
 
                     <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="PART_ContentHost" Property="Background" Value="Pink"/>
+<!--                    <Setter TargetName="PART_ContentHost" Property="Background" Value="Pink"/>-->
                 </DataTrigger>
 
                 <DataTrigger Value="True">

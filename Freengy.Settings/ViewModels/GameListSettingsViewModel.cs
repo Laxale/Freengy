@@ -21,15 +21,16 @@ namespace Freengy.Settings.ViewModels
     using LocalRes = Resources;
     
     
-    internal sealed class GameListSettingsViewModel : UnitViewModelBase
+    internal sealed class GameListSettingsViewModel : UnitViewModelBase 
     {
-        private bool loadedFromDatabase;
         private GameListSettingsUnit gameListUnit;
 
 
         public GameListSettingsViewModel() 
         {
-             this.InitializeAsync();
+            Task.Factory.StartNew(this.InitializeAsync);
+
+            base.messageMediator.Register<MessageSaveRequest>(this, this.MessageListener);
         }
         
 
@@ -48,30 +49,32 @@ namespace Freengy.Settings.ViewModels
             this.CommandSelectGamesFolder = new Command(this.SelectGamesFolderImpl);
         }
 
-        protected override Task InitializeAsync() 
+        protected override async Task InitializeAsync() 
         {
-            return 
+            await
                 Task.Factory.StartNew
-                    (
-                        () =>
-                        {
-#pragma warning disable 4014
-                            base.InitializeAsync();
-#pragma warning restore 4014
+                (
+                    async () =>
+                    {
+                        base.IsWaiting = true;
+
+                        await base.InitializeAsync();
                         
-                            base.messageMediator.Register<MessageSaveRequest>(this, this.MessageListener);
+                        this.gameListUnit = base.SettingsFacade.GetOrCreateUnit<GameListSettingsUnit>();
 
-                            this.gameListUnit = base.settingsFacade.GetUnit<GameListSettingsUnit>();
-                            this.FillPropertiesFromDatabase(gameListUnit);
+                        await this.FillPropertiesFromDatabase();
 
-                            // call this in ctor if viewmodel is not created by catel
-                            this.SetupCommands();
-                        }
-                    );
+                        // call this in ctor if viewmodel is not created by catel
+                        this.SetupCommands();
+                    }
+                )
+                .ContinueWith(this.InitializationContinuator);
         }
 
         protected override void InitializationContinuator(Task parentTask) 
         {
+            base.IsWaiting = false;
+
             if (parentTask.Exception != null)
             {
                 System.Windows.MessageBox.Show(parentTask.Exception.GetReallyRootException().Message, "GameList");
@@ -90,24 +93,38 @@ namespace Freengy.Settings.ViewModels
             {
                 SetValue(GamesFolderPathProperty, value);
 
-                if (this.loadedFromDatabase) this.gameListUnit.GamesFolderPath = value;
+                if (this.LoadedFromDatabase) this.gameListUnit.GamesFolderPath = value;
             }
         }
 
         public static readonly PropertyData GamesFolderPathProperty =
             ModelBase.RegisterProperty<GameListSettingsViewModel, string>(viewModel => viewModel.GamesFolderPath, () => string.Empty);
-
-
+        
         #endregion properties
+
+
+        protected override async Task FillPropertiesFromDatabase() 
+        {
+            Action fillAction =
+                () =>
+                {
+                    this.GamesFolderPath = this.gameListUnit.GamesFolderPath;
+
+                    base.LoadedFromDatabase = true;
+                };
+
+            await base.taskWrapper.Wrap(fillAction, task => base.IsDirty = false);
+        }
 
 
         private void SelectGamesFolderImpl() 
         {
             var dialog = new FolderBrowserDialog
             {
+                ShowNewFolderButton = true,
                 SelectedPath = Environment.CurrentDirectory
             };
-
+            
             var result = dialog.ShowDialog();
 
             if (result == DialogResult.OK)
@@ -116,19 +133,14 @@ namespace Freengy.Settings.ViewModels
             }
         }
 
-        private void FillPropertiesFromDatabase(GameListSettingsUnit gameListUnit) 
-        {
-            this.GamesFolderPath = gameListUnit.GamesFolderPath;
-
-            this.loadedFromDatabase = true;
-        }
-
         [MessageRecipient]
         private void MessageListener(MessageSaveRequest requestMessage) 
         {
             if (!this.IsDirty) return;
 
-            base.settingsFacade.UpdateUnit(this.gameListUnit);
+            this.SettingsFacade.UpdateUnit(this.gameListUnit);
+
+            base.IsDirty = false;
         }
     }
 }

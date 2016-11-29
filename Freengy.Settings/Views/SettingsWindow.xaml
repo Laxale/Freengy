@@ -28,6 +28,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding Path=CommandSave}"/>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -42,8 +46,9 @@
                     IsDefault="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
-            <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.SaveText}" HorizontalAlignment="Right"
-                    IsDefault="True" Command="{Binding Path=CommandSave}" Name="SaveButton"/>
+            <Button Name="SaveButton" DockPanel.Dock="Right" HorizontalAlignment="Right" 
+                    Content="{x:Static common:StringResources.SaveText}" Command="{Binding Path=CommandSave}"
+                    IsDefault="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled}"/>
         </DockPanel>
     </Grid>
 </Window>

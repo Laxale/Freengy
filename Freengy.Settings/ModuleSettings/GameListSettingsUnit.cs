@@ -12,14 +12,19 @@ namespace Freengy.Settings.ModuleSettings
     using Freengy.Settings.Constants;
     
 
-    internal class GameListSettingsUnit : SettingsUnitBase 
+    public class GameListSettingsUnit : SettingsUnitBase 
     {
-        public virtual string GamesFolderPath { get; set; }
-        
+        public GameListSettingsUnit() 
+        {
+            
+        }
+
+
         public override string Name { get; set; } = "GameList Settings";
 
-
-        public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
+        public virtual string GamesFolderPath { get; set; } = SettingsConstants.DefaultGamesFolderPath;
+        
+        protected internal override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
             new Dictionary<string, ICollection<Attribute>>
             {
                 { nameof(GameListSettingsUnit.Name), new [] { new RequiredAttribute() } },
@@ -27,7 +32,7 @@ namespace Freengy.Settings.ModuleSettings
                     nameof(GameListSettingsUnit.GamesFolderPath),
                     new Attribute[]
                     {
-                        new RequiredAttribute(),
+                        //new RequiredAttribute(),
                         new StringLengthAttribute(SettingsConstants.PathMinLength)
                     }
                 }

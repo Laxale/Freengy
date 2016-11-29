@@ -18,6 +18,8 @@
     <system:Double x:Key="CommonSmallIconSize">16</system:Double>
     <system:Double x:Key="CommonMediumIconSize">24</system:Double>
     <system:Double x:Key="CommonLargeIconSize">32</system:Double>
+    <system:Double x:Key="CommonMoreLargeIconSize">48</system:Double>
+    
     <system:Double x:Key="CommonCornerRadius">4</system:Double>
     
     <system:Double x:Key="MinButtonWidth">60</system:Double>

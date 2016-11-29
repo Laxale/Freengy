@@ -22,7 +22,7 @@
                 <ContentControl Content="{TemplateBinding Content}" 
                                 IsEnabled="{Binding Path=IsWaiting, Converter={StaticResource ReverseBooleanConverter}}"/>
                 <!-- Decoraion -->
-                <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}" Opacity="0.9"
+                <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}" Opacity="0.9" 
                                 Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </Grid>
         </ControlTemplate>

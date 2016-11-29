@@ -3,15 +3,14 @@
 //
 
 
-namespace Freengy.CommonResources.XamlResources 
+namespace Freengy.CommonResources.Styles 
 {
     using System;
     using System.Windows;
-    using System.Windows.Input;
     using System.Windows.Media;
+    using System.Windows.Input;
     using System.Windows.Interop;
     using System.Runtime.InteropServices;
-
 
     public static class LocalExtensions 
     {
@@ -43,14 +42,14 @@ namespace Freengy.CommonResources.XamlResources
     {
         #region sizing event handlers
 
-        private void OnSizeSouth(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.South); }
-        private void OnSizeNorth(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.North); }
-        private void OnSizeEast(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.East); }
-        private void OnSizeWest(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.West); }
-        private void OnSizeNorthWest(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.NorthWest); }
-        private void OnSizeNorthEast(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.NorthEast); }
-        private void OnSizeSouthEast(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.SouthEast); }
-        private void OnSizeSouthWest(object sender, MouseButtonEventArgs e) { OnSize(sender, SizingAction.SouthWest); }
+        private void OnSizeSouth(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.South); }
+        private void OnSizeNorth(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.North); }
+        private void OnSizeEast(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.East); }
+        private void OnSizeWest(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.West); }
+        private void OnSizeNorthWest(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.NorthWest); }
+        private void OnSizeNorthEast(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.NorthEast); }
+        private void OnSizeSouthEast(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.SouthEast); }
+        private void OnSizeSouthWest(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.SouthWest); }
 
         private void OnSize(object sender, SizingAction action) 
         {
@@ -77,7 +76,7 @@ namespace Freengy.CommonResources.XamlResources
             }
             else
             {
-                sender.ForWindowFromTemplate(w => SendMessage(w.GetWindowHandle(), StylishWindowStyle.WmSyscommand, (IntPtr)StylishWindowStyle.ScKeymenu, (IntPtr)' '));
+                sender.ForWindowFromTemplate(w => StylishWindowStyle.SendMessage(w.GetWindowHandle(), StylishWindowStyle.WmSyscommand, (IntPtr)StylishWindowStyle.ScKeymenu, (IntPtr)' '));
             }
         }
 
@@ -107,7 +106,7 @@ namespace Freengy.CommonResources.XamlResources
         {
             if (e.ClickCount > 1)
             {
-                MaxButtonClick(sender, e);
+                this.MaxButtonClick(sender, e);
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -163,8 +162,8 @@ namespace Freengy.CommonResources.XamlResources
 
         private static void DragSize(IntPtr handle, SizingAction sizingAction)  
         {
-            SendMessage(handle, StylishWindowStyle.WmSyscommand, (IntPtr)(StylishWindowStyle.ScSize + sizingAction), IntPtr.Zero);
-            SendMessage(handle, 514, IntPtr.Zero, IntPtr.Zero);
+            StylishWindowStyle.SendMessage(handle, StylishWindowStyle.WmSyscommand, (IntPtr)(StylishWindowStyle.ScSize + sizingAction), IntPtr.Zero);
+            StylishWindowStyle.SendMessage(handle, 514, IntPtr.Zero, IntPtr.Zero);
         }
         
         #endregion P/Invoke

@@ -9,8 +9,9 @@
                    
                    xmlns:const="clr-namespace:Freengy.UI.Constants" 
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels" 
-                   xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources" 
-                   
+                   xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+                   xmlns:gif="http://wpfanimatedgif.codeplex.com"
+
                    mc:Ignorable="d" 
                    MinWidth="700" MinHeight="500" 
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
@@ -45,56 +46,68 @@
                 
                 <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
 
-                <Button Grid.Column="1" MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top"
+                <DockPanel Grid.Column="1">
+                    <Image MaxHeight="{StaticResource CommonMediumIconSize}" HorizontalAlignment="Right"
+                           gif:ImageBehavior.AutoStart="True" VerticalAlignment="Top"
+                           Visibility="{Binding Path=ShowVisualHints, Converter={StaticResource BoolToVisibilityConverter}}"
+                           gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedBlackenedHandIcon.gif">
+
+                        <Image.ToolTip>
+                            <TextBlock Text="Hey, check this out!"/>
+                        </Image.ToolTip>
+                    </Image>
+
+                    <Button MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top"
                         ToolTip="{x:Static commonRes:StringResources.SettingsText}"
                         Command="{Binding Path=CommandShowSettings}"
                         Margin="{StaticResource All4Margin}" HorizontalAlignment="Right" Style="{x:Null}">
-                    <Button.Template>
-                        <ControlTemplate>
-                            <Image Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" RenderTransformOrigin="0.5, 0.5"
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" RenderTransformOrigin="0.5, 0.5"
                                    MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}" 
                                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">
 
-                                <Image.RenderTransform>
-                                    <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="Rotator"/>
-                                </Image.RenderTransform>
+                                    <Image.RenderTransform>
+                                        <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="Rotator"/>
+                                    </Image.RenderTransform>
 
-                                <Image.Style>
-                                    <Style TargetType="Image">
-                                        <Style.Triggers>
-                                            <EventTrigger RoutedEvent="MouseDown">
-                                                <EventTrigger.Actions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard 
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Style.Triggers>
+                                                <EventTrigger RoutedEvent="MouseDown">
+                                                    <EventTrigger.Actions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard 
                                                             Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)">
-                                                            <DoubleAnimation BeginTime="0" 
+                                                                <DoubleAnimation BeginTime="0" 
                                                                              AutoReverse="False" From="0" To="360" Duration="0:0:1">
-                                                                <DoubleAnimation.EasingFunction>
-                                                                    <SineEase EasingMode="EaseInOut"/>
-                                                                </DoubleAnimation.EasingFunction>
-                                                            </DoubleAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <SineEase EasingMode="EaseInOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
 
-                                                    <BeginStoryboard>
-                                                        <Storyboard Storyboard.TargetProperty="Width">
-                                                            <DoubleAnimation BeginTime="0" AutoReverse="True" From="24" To="16" 
+                                                        <BeginStoryboard>
+                                                            <Storyboard Storyboard.TargetProperty="Width">
+                                                                <DoubleAnimation BeginTime="0" AutoReverse="True" From="24" To="16" 
                                                                              Duration="0:0:0.4">
-                                                                <DoubleAnimation.EasingFunction>
-                                                                    <BounceEase Bounces="1" EasingMode="EaseOut"/>
-                                                                </DoubleAnimation.EasingFunction>
-                                                            </DoubleAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger.Actions>
-                                            </EventTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <BounceEase Bounces="1" EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger.Actions>
+                                                </EventTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DockPanel>
             </Grid>
         </Border>
         

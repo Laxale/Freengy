@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.GamePlugin.DefaultImpl 
+namespace Freengy.GamePlugin.DefaultImpl
 {
     using System;
     using System.IO;
@@ -16,6 +16,10 @@ namespace Freengy.GamePlugin.DefaultImpl
     using Freengy.Base.Messages;
     using Freengy.Base.Interfaces;
     using Freengy.Base.Extensions;
+
+    using Freengy.Settings.Interfaces;
+    using Freengy.Settings.ModuleSettings;
+
     using Freengy.GamePlugin.Helpers;
     using Freengy.GamePlugin.Messages;
     using Freengy.GamePlugin.Constants;
@@ -38,13 +42,14 @@ namespace Freengy.GamePlugin.DefaultImpl
         /// Contains loaded assembly paths and their <see cref="IGamePlugin"/> implementation
         /// </summary>
         private readonly IDictionary<string, IGamePlugin> loadedPlugins = new Dictionary<string, IGamePlugin>();
+
         /// <summary>
         /// Contains loaded assembly paths and their main view types
         /// </summary>
         private readonly IDictionary<string, string> loadedMainViewTypes = new Dictionary<string, string>();
 
 
-        public bool ContainsViewType(string viewType) 
+        public bool ContainsViewType(string viewType)
         {
             if (string.IsNullOrWhiteSpace(viewType)) throw new ArgumentNullException(nameof(viewType));
 
@@ -56,7 +61,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             }
         }
 
-        public IEnumerable<string> GetLoadedAssemblyPaths() 
+        public IEnumerable<string> GetLoadedAssemblyPaths()
         {
             lock (Locker)
             {
@@ -64,7 +69,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             }
         }
 
-        public IEnumerable<IGamePlugin> GetCurrentLoadedPlugins() 
+        public IEnumerable<IGamePlugin> GetCurrentLoadedPlugins()
         {
             lock (PluginsCache.Locker)
             {
@@ -72,7 +77,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             }
         }
 
-        public void AddPathAndViewType(string assemblyPath, string viewType) 
+        public void AddPathAndViewType(string assemblyPath, string viewType)
         {
             Common.ThrowIfArgumentsHasNull(assemblyPath, viewType);
 
@@ -80,14 +85,14 @@ namespace Freengy.GamePlugin.DefaultImpl
             {
                 if (this.loadedMainViewTypes.ContainsKey(assemblyPath))
                 {
-                    throw new InvalidOperationException($"Already stored path '{ assemblyPath }'");
+                    throw new InvalidOperationException($"Already stored path '{assemblyPath}'");
                 }
 
                 this.loadedMainViewTypes.Add(assemblyPath, viewType);
             }
         }
 
-        public void AddPathAndPlugin(string assemblyPath, IGamePlugin gamePlugin) 
+        public void AddPathAndPlugin(string assemblyPath, IGamePlugin gamePlugin)
         {
             Common.ThrowIfArgumentsHasNull(assemblyPath, gamePlugin);
 
@@ -95,7 +100,8 @@ namespace Freengy.GamePlugin.DefaultImpl
             {
                 if (this.loadedPlugins.ContainsKey(assemblyPath))
                 {
-                    throw new InvalidOperationException($"Already stored plugin '{ gamePlugin.Name }' on path '{ assemblyPath }'");
+                    throw new InvalidOperationException(
+                        $"Already stored plugin '{gamePlugin.Name}' on path '{assemblyPath}'");
                 }
 
                 this.loadedPlugins.Add(assemblyPath, gamePlugin);
@@ -103,11 +109,12 @@ namespace Freengy.GamePlugin.DefaultImpl
         }
     }
 
-    public class GameListProvider : IGameListProvider 
+    internal class GameListProvider : IGameListProvider 
     {
         #region vars
 
         private readonly ITypeFactory typeFactory;
+        private readonly ISettingsFacade settingsFacade;
         private readonly IAppDirectoryInspector directoryInspector;
         private readonly PluginsCache pluginsCache = new PluginsCache();
         private readonly IMessageMediator messageMediator = MessageMediator.Default;
@@ -118,15 +125,19 @@ namespace Freengy.GamePlugin.DefaultImpl
         #region Singleton
 
         private static GameListProvider instance;
-        
+
         private GameListProvider() 
         {
             this.typeFactory = this.GetTypeFactory();
+            this.settingsFacade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
             this.directoryInspector = ServiceLocator.Default.ResolveType<IAppDirectoryInspector>();
             this.messageMediator.Register<MessageWorkingDirectoryChanged>(this, this.MessageListener);
+
+            this.TryCreateDefaultGamesFolder();
         }
 
-        public static GameListProvider Instance => GameListProvider.instance ?? (GameListProvider.instance = new GameListProvider());
+        public static GameListProvider Instance
+            => GameListProvider.instance ?? (GameListProvider.instance = new GameListProvider());
 
         #endregion Singleton
 
@@ -147,15 +158,36 @@ namespace Freengy.GamePlugin.DefaultImpl
             return await Task.Factory.StartNew(this.GetInstalledGames);
         }
 
+        
+        private void TryCreateDefaultGamesFolder() 
+        {
+            var gameListSettings = this.settingsFacade.GetOrCreateUnit<GameListSettingsUnit>();
+
+            string folderPath = gameListSettings.GamesFolderPath;
+
+            if (!Directory.Exists(folderPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+                catch (Exception)
+                {
+                    // log this
+                }
+            }
+        }
 
         private IEnumerable<string> GetNewDllPathsInGameFolder() 
         {
             IEnumerable<string> loadedAssemblyPaths = this.pluginsCache.GetLoadedAssemblyPaths();
 
+            var gameListSettings = this.settingsFacade.GetUnit<GameListSettingsUnit>();
+
             var newDllInGameFolderPaths =
                 this
                 .directoryInspector
-                .GetDllsInSubFolder(StringConstants.GamesFolderName)
+                .GetDllsInSubFolder(gameListSettings.GamesFolderPath)
                 .Except(loadedAssemblyPaths);
 
             return newDllInGameFolderPaths;
@@ -232,8 +264,10 @@ namespace Freengy.GamePlugin.DefaultImpl
             if (changedMessage.ChangedArgs.ChangeType != WatcherChangeTypes.Created) return;
             // it could be file or folder created - cant say exactly until checking
             if (!File.Exists(changedMessage.ChangedArgs.FullPath)) return;
-            
-            if (!changedMessage.ChangedArgs.FullPath.Contains(StringConstants.GamesFolderPath)) return;
+
+            var gameListSettings = this.settingsFacade.GetUnit<GameListSettingsUnit>();
+
+            if (!changedMessage.ChangedArgs.FullPath.Contains(gameListSettings.GamesFolderPath)) return;
 
             var currentGamesList = this.pluginsCache.GetCurrentLoadedPlugins().ToArray();
 

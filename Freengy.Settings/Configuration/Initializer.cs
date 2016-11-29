@@ -6,6 +6,7 @@
 namespace Freengy.Settings.Configuration 
 {
     using System;
+    using System.Collections.Generic;
 
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.DefaultImpl;
@@ -13,6 +14,7 @@ namespace Freengy.Settings.Configuration
     using NHibernate;
     using NHibernate.Cfg;
     using NHibernate.Mapping.ByCode;
+    using NHibernate.Cfg.MappingSchema;
 
     
     internal class Initializer 
@@ -48,9 +50,9 @@ namespace Freengy.Settings.Configuration
             foreach (var mapping in mappings)
             {
                 mapper.AddMapping(mapping);
-
-                config.AddMapping(mapper.CompileMappingForAllExplicitlyAddedEntities());
             }
+
+            config.AddMapping(mapper.CompileMappingForAllExplicitlyAddedEntities());
 
             Initializer.sessionFactory = config.BuildSessionFactory();
         }

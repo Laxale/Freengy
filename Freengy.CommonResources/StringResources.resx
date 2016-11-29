@@ -189,4 +189,10 @@
   <data name="SaveText" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="LoadingDotsText" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="LoadingText" xml:space="preserve">
+    <value>Loading</value>
+  </data>
 </root>

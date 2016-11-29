@@ -3,6 +3,9 @@
 //
 
 
+using System.Threading.Tasks;
+
+
 namespace Freengy.Settings.ViewModels 
 {
     using System;
@@ -24,6 +27,11 @@ namespace Freengy.Settings.ViewModels
         public override string ToString() 
         {
             return LocalRes.FriendListSettingsTitle;
+        }
+
+        protected override Task FillPropertiesFromDatabase()
+        {
+            return Task.FromResult(0);
         }
     }
 }

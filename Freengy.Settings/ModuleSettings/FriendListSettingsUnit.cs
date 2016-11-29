@@ -19,7 +19,7 @@ namespace Freengy.Settings.ModuleSettings
         public override string Name { get; set; } = "FriendList Settings";
 
 
-        public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
+        protected internal override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
             new Dictionary<string, ICollection<Attribute>>
             {
                 { nameof(FriendListSettingsUnit.Name), new [] { new RequiredAttribute() } },

@@ -23,13 +23,13 @@ namespace Freengy.Settings.ModuleSettings
         /// <summary>
         /// Represents primary key in a table
         /// </summary>
-        public virtual long Id { get; set; }
+        protected internal virtual long Id { get; set; }
 
         public virtual string Name { get; set; }
 
         /// <summary>
         /// This exposes mappable property names and its attributes to ORM without reflection
         /// </summary>
-        public abstract IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; }
+        protected internal abstract IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; }
     }
 }

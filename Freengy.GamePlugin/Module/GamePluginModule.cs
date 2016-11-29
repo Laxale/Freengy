@@ -28,26 +28,8 @@ namespace Freengy.GamePlugin.Module
         /// </summary>
         public void Initialize() 
         {
-            this.TryCreateDefaultGamesDirectory();
-
             ServiceLocator.Default.RegisterInstance<IGameDispatcher>(GameDispatcher.Instance);
             ServiceLocator.Default.RegisterInstance<IGameListProvider>(GameListProvider.Instance);
-        }
-
-
-        private void TryCreateDefaultGamesDirectory() 
-        {
-            if (Directory.Exists(StringConstants.GamesFolderPath)) return;
-
-            try
-            {
-                Directory.CreateDirectory(StringConstants.GamesFolderPath);
-            }
-            catch (Exception)
-            {
-                // log and show information?
-                // later user needs to have a chance of setting plugin directory
-            }
         }
     }
 }

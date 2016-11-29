@@ -15,7 +15,7 @@
                    xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
                    
                    mc:Ignorable="d" 
-                   d:DesignHeight="200" d:DesignWidth="300"
+                   d:DesignWidth="300"
                    d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
     
     <Grid>
@@ -37,11 +37,6 @@
         </Grid.RowDefinitions>
         
         <TextBlock Grid.Row="0" Text="Game list" FontSize="24"/>
-
-        <Button Grid.Row="1" Content="Discover loading problems" VerticalAlignment="Top" FontSize="18"
-                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="{StaticResource DarkGrayBrush}" 
-                ToolTip="{x:Static gamelist:Resources.GamesNotFoundHintText}" Command="{Binding Path=CommandResolveProblems}"
-                Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <ListBox Grid.Row="1" Name="GameListBox" 
                  ItemsSource="{Binding Path=GameList}" Margin="{StaticResource All4Margin}" BorderThickness="0"
@@ -138,5 +133,10 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
+
+        <Button Grid.Row="1" Content="Discover loading problems" VerticalAlignment="Top" FontSize="16" 
+                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="{StaticResource ErrorBrush}" 
+                ToolTip="{x:Static gamelist:Resources.GamesNotFoundHintText}" Command="{Binding Path=CommandResolveProblems}"
+                Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </catel:UserControl>

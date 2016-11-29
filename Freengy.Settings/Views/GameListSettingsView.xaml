@@ -10,89 +10,89 @@
              xmlns:local="clr-namespace:Freengy.Settings" 
              xmlns:views="clr-namespace:Freengy.Settings.Views" 
              xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
-                   
+             xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+             
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              
              d:DataContext="{d:DesignData IsDesignTimeCreatable=False, Type=viewModels:GameListSettingsViewModel}">
     <!-- d:DataContext="{d:DesignInstance Type=viewModels:GameListSettingsViewModel}" -->
-    
-    <Grid>
-        <Grid.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Grid.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+            <DataTemplate x:Key="WaitTemplate">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource DarkGrayBrush}">
+                    <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image DockPanel.Dock="Top" MaxHeight="{StaticResource CommonMoreLargeIconSize}" 
+                               VerticalAlignment="Center" HorizontalAlignment="Center" 
+                               gif:ImageBehavior.AutoStart="True" 
+                               gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"/>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.GamesFolderPathText}"/>
+                        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
+                                   Text="{x:Static common:StringResources.LoadingText}" Foreground="{StaticResource FirstMainBrush}"/>
+                    </DockPanel>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-        <Grid Grid.Row="0" Grid.Column="1">
+
+    <controls:WaitableDecorator WaitTemplate="{StaticResource WaitTemplate}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <DockPanel Grid.Column="1">
-                <Image MaxHeight="{StaticResource CommonMediumIconSize}" 
-                       gif:ImageBehavior.AutoStart="True"
-                       gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedHandIcon.gif">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.GamesFolderPathText}"/>
 
-                    <Image.Style>
-                        <Style TargetType="Image" BasedOn="{StaticResource CommonImageStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Value="False">
-                                    <DataTrigger.Binding>
-                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
-                                    </DataTrigger.Binding>
-                                    
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <Button MinWidth="30" HorizontalAlignment="Left" 
-                    Command="{Binding Path=CommandSelectGamesFolder}" 
-                    Content="{Binding Path=GamesFolderPath, Mode=OneWay, 
-                                      Converter={StaticResource IfNullToDefaultValueConverter},
-                                      ConverterParameter={x:Static local:Resources.DefaultSelectGamesFolderText}}">
+                <DockPanel Grid.Column="1">
+                    <Button MinWidth="30" HorizontalAlignment="Left" 
+                            Command="{Binding Path=CommandSelectGamesFolder}" 
+                            Content="{Binding Path=GamesFolderPath, Mode=OneWay, 
+                                              Converter={StaticResource IfNullToDefaultValueConverter},
+                                              ConverterParameter={x:Static local:Resources.DefaultSelectGamesFolderText}}">
 
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Value="True">
-                                    <DataTrigger.Binding>
-                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
-                                    </DataTrigger.Binding>
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Value="True">
+                                        <DataTrigger.Binding>
+                                            <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
+                                        </DataTrigger.Binding>
 
-                                    <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
-                                </DataTrigger>
+                                        <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                    </DataTrigger>
 
-                                <DataTrigger Value="False">
-                                    <DataTrigger.Binding>
-                                        <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
-                                    </DataTrigger.Binding>
+                                    <DataTrigger Value="False">
+                                        <DataTrigger.Binding>
+                                            <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
+                                        </DataTrigger.Binding>
 
-                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </DockPanel>
+                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DockPanel>
+            </Grid>
         </Grid>
-    </Grid>
+    </controls:WaitableDecorator>
 </UserControl>

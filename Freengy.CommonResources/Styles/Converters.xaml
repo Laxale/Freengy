@@ -10,6 +10,7 @@
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <converters:IsNullToBoolConverter x:Key="IsNullToBoolConverter"/>
+    <converters:IsNotNullToBoolConverter x:Key="IsNotNullToBoolConverter"/>
     <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
     <converters:IfNullToDefaultValueConverter x:Key="IfNullToDefaultValueConverter"/>
     <!-- думал сделать динамическую привязку к переданному полю, обозначающему занятость вьюмодели -->

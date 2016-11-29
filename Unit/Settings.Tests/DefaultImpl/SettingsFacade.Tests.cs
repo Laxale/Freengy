@@ -20,7 +20,7 @@ namespace Settings.Tests.DefaultImpl
 
     internal class TestSettingsUnit : SettingsUnitBase 
     {
-        public override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
+        protected internal override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
             new Dictionary<string, ICollection<Attribute>>
             {
                 { nameof(TestSettingsUnit.Name), new [] { new RequiredAttribute() } }

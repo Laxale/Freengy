@@ -87,7 +87,7 @@ namespace Freengy.Settings.DefaultImpl
         {
             TUnitType unit;
 
-            bool unitCreated = this.IsUnitCreated(out unit);
+            this.IsUnitCreated(out unit);
             
             return unit;
         }
@@ -160,12 +160,13 @@ namespace Freengy.Settings.DefaultImpl
                 {
                     try
                     {
-                        unit = session.Get<TUnitType>(1);
+                        unit = session.Get<TUnitType>((long)1);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         // log this
                         // may be unit is just not registered in hibernate configuration by mapping
+                        System.Windows.MessageBox.Show(ex.Message, "IsUnitCreated()");
                     }
                     
                     return unit!= null;

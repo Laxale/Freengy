@@ -26,7 +26,7 @@ namespace Freengy.Settings.Configuration
     {
         public GenericMapping() 
         {
-            base.Table(nameof(T));
+            base.Table(typeof(T).Name);
             
             this.MapKey();
             this.MapProperties();

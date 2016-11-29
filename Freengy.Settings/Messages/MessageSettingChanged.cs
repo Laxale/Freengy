@@ -5,6 +5,8 @@
 
 namespace Freengy.Settings.Messages 
 {
+    using System;
+
     using Freengy.Base.Messages;
 
 
@@ -13,6 +15,17 @@ namespace Freengy.Settings.Messages
     /// </summary>
     internal class MessageSettingChanged : MessageBase 
     {
+        public MessageSettingChanged(string settingsUnitName, bool isChanged) 
+        {
+            if (string.IsNullOrWhiteSpace(settingsUnitName)) throw new ArgumentNullException(nameof(settingsUnitName));
 
+            this.SettingsUnitName = settingsUnitName;
+            this.IsChanged = isChanged;
+        }
+
+
+        public bool IsChanged { get; }
+
+        public string SettingsUnitName { get; }
     }
 }

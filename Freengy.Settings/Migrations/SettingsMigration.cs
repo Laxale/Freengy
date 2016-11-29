@@ -9,6 +9,7 @@ namespace Freengy.Settings.Migrations
     using System.Linq;
     using System.Reflection;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using Freengy.Settings.ModuleSettings;
 
@@ -68,7 +69,12 @@ namespace Freengy.Settings.Migrations
         {
             Type unitType = unit.GetType();
             PropertyInfo[] propInfos = unitType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            
+
+            if (unit.ColumnsProperties == null || !unit.ColumnsProperties.Any())
+            {
+                throw new InvalidOperationException($"{unitType.Name} has empty ColumnsProperties");
+            }
+
             foreach (KeyValuePair<string, ICollection<Attribute>> unitColumnsProperty in unit.ColumnsProperties)
             {
                 Type columnType =
@@ -83,16 +89,53 @@ namespace Freengy.Settings.Migrations
                     throw new InvalidOperationException(message);
                 }
 
-                // add column with a name of a property
                 var columnSyntax = createColumnSyntax.WithColumn(unitColumnsProperty.Key);
+                var columnTypeSyntax = this.AddColumnType(columnType, unitColumnsProperty.Value, columnSyntax);
+                this.AddNullabilityAttribute(unitColumnsProperty.Value, columnTypeSyntax);
+            }
+        }
 
-                var attributeHandler = new MigrationAttributeHandler(columnType, columnSyntax);
-                
-                // add column's properties - nullability, length, etc
-                foreach (Attribute attribute in unitColumnsProperty.Value)
+        private ICreateTableColumnOptionOrWithColumnSyntax AddColumnType(Type columnType, ICollection<Attribute> columnAttributes,
+            ICreateTableColumnAsTypeSyntax columnSyntax) 
+        {
+            if (columnType == typeof(int))
+            {
+                return columnSyntax.AsInt32();
+            }
+
+            if (columnType == typeof(long))
+            {
+                return columnSyntax.AsInt64();
+            }
+
+            if (columnType == typeof(string))
+            {
+                StringLengthAttribute strigLengthAttribute = 
+                    columnAttributes
+                    .FirstOrDefault(attribute => attribute is StringLengthAttribute) as StringLengthAttribute;
+
+                if (strigLengthAttribute == null)
                 {
-                    attributeHandler.Handle(attribute);
+                    return columnSyntax.AsString();
                 }
+                else
+                {
+                    return columnSyntax.AsString(strigLengthAttribute.MaximumLength);
+                }
+            }
+
+            throw new NotImplementedException($"Not implemented column type { columnType }");
+        }
+        
+        private void AddNullabilityAttribute(ICollection<Attribute> columnAttributes, ICreateTableColumnOptionOrWithColumnSyntax columnSyntax) 
+        {
+            if (columnAttributes.Any(attribute => attribute is RequiredAttribute))
+            {
+                columnSyntax.NotNullable();
+            }
+            else
+            {
+                columnSyntax.Nullable();
             }
         }
     }

@@ -21,6 +21,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\IsNotNullToBoolConverter.cs" />
     <Compile Include="Controls\WatermarkTextBox.xaml.cs">
       <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
     </Compile>
@@ -180,6 +181,9 @@
   <ItemGroup>
     <Resource Include="Images\AnimatedHandIcon.gif" />
     <Resource Include="Images\HandIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AnimatedBlackenedHandIcon.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
