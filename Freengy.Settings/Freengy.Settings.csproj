@@ -63,6 +63,8 @@
     <Compile Include="Configuration\Initializer.cs" />
     <Compile Include="Configuration\GenericMapping.cs" />
     <Compile Include="Constants\SettingsConstants.cs" />
+    <Compile Include="Helpers\DataContextSetter.cs" />
+    <Compile Include="Messages\MessageRequestContext.cs" />
     <Compile Include="Messages\MessageSaveRequest.cs" />
     <Compile Include="Messages\MessageSettingChanged.cs" />
     <Compile Include="Migrations\MigrationAttributeHandler.cs" />

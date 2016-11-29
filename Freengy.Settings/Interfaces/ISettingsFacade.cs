@@ -30,5 +30,13 @@ namespace Freengy.Settings.Interfaces
         /// <typeparam name="TUnitType"></typeparam>
         /// <returns>Already or just yet registered unit</returns>
         TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnitBase, new();
+
+        /// <summary>
+        /// Flush instance state to a database
+        /// </summary>
+        /// <typeparam name="TUnitType"></typeparam>
+        /// <param name="unitInstance"></param>
+        /// <returns>Self - for fluent purposes</returns>
+        ISettingsFacade UpdateUnit<TUnitType>(TUnitType unitInstance) where TUnitType : SettingsUnitBase, new();
     }
 }

@@ -81,7 +81,7 @@ namespace Freengy.Base.ViewModels
 
         }
 
-        protected virtual void InitializationContinuator(System.Threading.Tasks.Task parentTask)
+        protected virtual void InitializationContinuator(Task parentTask) 
         {
             if (parentTask.Exception != null)
             {

@@ -17,8 +17,11 @@ namespace Freengy.Settings.Module
 
     public sealed class SettingsModule : IModule 
     {
-        public void Initialize() 
+        public void Initialize()
         {
+            // instantiate a singleton
+            var wut = Freengy.Settings.Helpers.DataContextSetter.Instance;
+
             ServiceLocator.Default.RegisterInstance(SettingsFacade.Instance);
 
             var vizualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();

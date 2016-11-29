@@ -104,6 +104,20 @@ namespace Freengy.Settings.DefaultImpl
             return registeredUnit;
         }
 
+        public ISettingsFacade UpdateUnit<TUnitType>(TUnitType unitInstance) where TUnitType : SettingsUnitBase, new() 
+        {
+            using (var session = Initializer.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.Update(unitInstance);
+                    transaction.Commit();
+                }
+
+                return this;
+            }
+        }
+
 
         internal ICollection<IConformistHoldersProvider> GetRegisteredMappings() 
         {

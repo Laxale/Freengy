@@ -40,8 +40,7 @@
             <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.CloseText}" 
                     Command="{Binding Path=CommandClose}" HorizontalAlignment="Right"
                     IsDefault="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                    IsEnabled="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"/>
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
             <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.SaveText}" HorizontalAlignment="Right"
                     IsDefault="True" Command="{Binding Path=CommandSave}" Name="SaveButton"/>

@@ -12,8 +12,13 @@
                    
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance Type=viewModels:FriendListSettingsViewModel}">
+             
+             d:DataContext="{d:DesignData IsDesignTimeCreatable=False, Type=viewModels:FriendListSettingsViewModel}">
+    <!-- 
+    causes design-time exceptions - cannot construct viewmodel instance because dependencies is not registered in Catel
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    d:DataContext="{d:DesignInstance Type=viewModels:FriendListSettingsViewModel}"
+    -->
 
     <Grid>
         <Grid.RowDefinitions>

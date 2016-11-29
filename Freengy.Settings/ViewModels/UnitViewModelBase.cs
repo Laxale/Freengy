@@ -9,10 +9,15 @@ namespace Freengy.Settings.ViewModels
 
     using Freengy.Base.ViewModels;
     using Freengy.Settings.Messages;
+    using Freengy.Settings.Interfaces;
+    using Freengy.Settings.DefaultImpl;
 
 
-    internal abstract class UnitViewModelBase : WaitableViewModel 
+    internal abstract class UnitViewModelBase : WaitableViewModel
     {
+        protected readonly ISettingsFacade settingsFacade = SettingsFacade.Instance;
+
+
         protected UnitViewModelBase() 
         {
             this.PropertyChanged += this.PropertyChangedListener;
