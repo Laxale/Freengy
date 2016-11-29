@@ -9,6 +9,9 @@ namespace Freengy.GameList.Diagnostics
     using System.Linq;
     using System.Collections.Generic;
 
+    using Freengy.Settings.Interfaces;
+    using Freengy.Settings.ModuleSettings;
+
     using Freengy.Diagnostics.Interfaces;
 
     using Catel.IoC;
@@ -16,15 +19,19 @@ namespace Freengy.GameList.Diagnostics
     using LocalRes = Freengy.GameList.Resources;
 
 
-    internal class GameListDiagnosticsCategory : IDiagnosticsCategory
+    internal class GameListDiagnosticsCategory : IDiagnosticsCategory 
     {
-        private const string GameFolderUnitName = "What is your game folder?";
-        private const string TestAssembliesUnitName = "Are there assemblies in game folder?";
-        private const string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
+        #region vars
+
+        private static readonly string GameFolderUnitName = LocalRes.WhatIsYourGameFolderText;
+        private static readonly string TestAssembliesUnitName = "Are there assemblies in game folder?";
+        private static readonly string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
 
         private readonly IDiagnosticsUnitFactory unitFactory;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
+
+        #endregion vars
 
 
         internal GameListDiagnosticsCategory() 
@@ -60,10 +67,12 @@ namespace Freengy.GameList.Diagnostics
         }
 
 
-        private bool GameFolderAtomicUnit()
+        private bool GameFolderAtomicUnit() 
         {
-            this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo =
-                "Your game folder is: blabla";
+            var settingsFacade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
+            var gamelistUnit = settingsFacade.GetUnit<GameListSettingsUnit>();
+
+            this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo = gamelistUnit.GamesFolderPath;
 
             return true;
         }

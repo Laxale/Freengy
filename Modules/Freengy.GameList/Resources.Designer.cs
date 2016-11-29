@@ -86,5 +86,14 @@ namespace Freengy.GameList {
                 return ResourceManager.GetString("GamesNotFoundHintText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What is your game folder?.
+        /// </summary>
+        public static string WhatIsYourGameFolderText {
+            get {
+                return ResourceManager.GetString("WhatIsYourGameFolderText", resourceCulture);
+            }
+        }
     }
 }
