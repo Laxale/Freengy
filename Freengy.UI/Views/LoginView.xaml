@@ -10,7 +10,6 @@
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-                   xmlns:basexamlresources="clr-namespace:Freengy.CommonResources.XamlResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
                    Margin="60, 0, 60, 0"

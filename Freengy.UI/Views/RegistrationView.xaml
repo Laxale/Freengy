@@ -41,23 +41,17 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBlock DockPanel.Dock="Left" 
-                       Text="{x:Static localprops:Resources.CreateNewAccountText}" 
-                       Style="{StaticResource SlidingTitleTextBlockStyle}"           
-                       />
-            <!--
-            
-            -->
 
+        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.CreateNewAccountText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+            
             <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right"
                        Visibility="{Binding Path=Registered, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Image DockPanel.Dock="Right" MaxWidth="{StaticResource CommonSmallIconSize}" Margin="{StaticResource All4Margin}"
-                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
+                       Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
 
-                <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right"
-                       Foreground="{StaticResource SuccessBrush}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+                <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right" FontSize="16"
+                       Foreground="{StaticResource SuccessBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
             </DockPanel>
         </DockPanel>
         

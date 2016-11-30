@@ -8,7 +8,6 @@ namespace Freengy.UI.Views
     using System.Windows;
 
     using Freengy.UI.Helpers;
-    using Freengy.CommonResources.XamlResources;
 
     using CatelControl = Catel.Windows.Controls.UserControl;
 

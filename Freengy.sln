@@ -32,8 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.GameList", "Modules
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.SampleGame", "Freengy.SampleGame\Freengy.SampleGame.csproj", "{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.WebApi", "Freengy.WebApi\Freengy.WebApi.csproj", "{23344629-6671-4B06-82E1-904C2F46DF55}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Unsafe", "Freengy.Unsafe\Freengy.Unsafe.csproj", "{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Diagnostics", "Freengy.Diagnostics\Freengy.Diagnostics.csproj", "{4791ACEE-ADFD-49CC-B95F-ABC6EDB06162}"
@@ -92,10 +90,6 @@ Global
 		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FFF3997-B366-4CCA-98D8-F5DC0A206F22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23344629-6671-4B06-82E1-904C2F46DF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23344629-6671-4B06-82E1-904C2F46DF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23344629-6671-4B06-82E1-904C2F46DF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23344629-6671-4B06-82E1-904C2F46DF55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF04B9D0-B34F-40EC-9F3C-AB48086545C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
