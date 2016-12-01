@@ -11,6 +11,7 @@
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+                   xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
 
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d" d:DesignWidth="300" 
@@ -77,7 +78,7 @@
                              Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
-                <TextBox Grid.Row="1" Grid.Column="1" 
+                <TextBox Grid.Row="1" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}"
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <PasswordBox Grid.Row="2" Grid.Column="1" 

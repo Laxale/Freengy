@@ -5,6 +5,7 @@
 
 namespace Freengy.UI.Helpers 
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -47,7 +48,6 @@ namespace Freengy.UI.Helpers
         {
             return (bool)dp.GetValue(BindPasswordProperty);
         }
-
         public static string GetBoundPassword(DependencyObject dp) 
         {
             return (string)dp.GetValue(BoundPasswordProperty);
@@ -58,7 +58,6 @@ namespace Freengy.UI.Helpers
         {
             dp.SetValue(BindPasswordProperty, value);
         }
-
         public static void SetBoundPassword(DependencyObject dp, string value) 
         {
             dp.SetValue(BoundPasswordProperty, value);
@@ -69,7 +68,6 @@ namespace Freengy.UI.Helpers
         {
             return (bool)dp.GetValue(UpdatingPasswordProperty);
         }
-
         private static void SetUpdatingPassword(DependencyObject dp, bool value) 
         {
             dp.SetValue(UpdatingPasswordProperty, value);
@@ -80,7 +78,7 @@ namespace Freengy.UI.Helpers
         {
             var boxSender = sender as PasswordBox;
 
-            if (boxSender == null) throw new System.ArgumentException("Not a passwordbox sender");
+            if (boxSender == null) throw new ArgumentException("Not a passwordbox sender");
 
             // set a flag to indicate that we're updating the password
             SetUpdatingPassword(boxSender, true);
@@ -97,8 +95,7 @@ namespace Freengy.UI.Helpers
             var box = dp as PasswordBox;
 
             if (box == null) return;
-
-
+            
             if ((bool)e.OldValue)
             {
                 box.PasswordChanged -= OnPasswordChanged;
@@ -116,7 +113,7 @@ namespace Freengy.UI.Helpers
 
             // only handle this event when the property is attached to a PasswordBox
             // and when the BindPassword attached property has been set to true
-            if (d == null || !GetBindPassword(d))
+            if (box == null || !GetBindPassword(d))
             {
                 return;
             }

@@ -61,6 +61,15 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        public static string ChangePasswordText {
+            get {
+                return ResourceManager.GetString("ChangePasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create account.
         /// </summary>
         public static string CreateAccountText {
@@ -106,6 +115,15 @@ namespace Freengy.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password changed.
+        /// </summary>
+        public static string PasswordChangedText {
+            get {
+                return ResourceManager.GetString("PasswordChangedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This email has been sent to You because of Freengy password recovery request.
         ///If You didnt request such operation, just ignore this message.
         ///
@@ -123,6 +141,15 @@ namespace Freengy.UI.Properties {
         public static string PasswordRecoveryEmailSubjectText {
             get {
                 return ResourceManager.GetString("PasswordRecoveryEmailSubjectText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords must be equal.
+        /// </summary>
+        public static string PasswordsMustBeEqualText {
+            get {
+                return ResourceManager.GetString("PasswordsMustBeEqualText", resourceCulture);
             }
         }
     }

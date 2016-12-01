@@ -12,6 +12,7 @@ namespace Freengy.UI.ViewModels
     using System.Collections.Generic;
 
     using Freengy.Unsafe;
+    using Freengy.Base.Helpers;
     using Freengy.Base.ViewModels;
     using Freengy.Base.Extensions;
     
@@ -42,8 +43,17 @@ namespace Freengy.UI.ViewModels
         protected override void SetupCommands() 
         {
             this.CommandSendCode = new Command(this.SendCodeImpl, this.CanSendCode);
-            this.CommandChangePassword = new Command(this.ChangePasswordImpl, this.CanChangePassword);
             this.CommandFinish = new Command<Window>(this.CommandFinishImpl, this.CanFinish);
+            this.CommandChangePassword = new Command(this.ChangePasswordImpl, this.CanChangePassword);
+        }
+
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults) 
+        {
+            base.ValidateFields(validationResults);
+
+            this.CheckPasswordEmptiness(validationResults);
+            this.CheckPasswordsEquality(validationResults);
+            base.ValidatePassword(validationResults);
         }
 
         protected override void ValidatePassword(List<IFieldValidationResult> validationResults) { }
@@ -64,35 +74,18 @@ namespace Freengy.UI.ViewModels
 
         #region properties
 
-        /// <summary>
-        /// Is being compared with one sent to provided email
-        /// </summary>
-        public string ValidationCode
-        {
-            get { return (string)GetValue(ValidationCodeProperty); }
-
-            set
-            {
-                SetValue(ValidationCodeProperty, value);
-
-                this.IsCodeValid = this.secureDecorator.GetSecureString().Equals(this.ValidationCode);
-            }
-        }
-
         public bool IsCodeSent 
         {
             get { return (bool)GetValue(IsCodeSentProperty); }
 
             private set { SetValue(IsCodeSentProperty, value); }
         }
-
         public bool IsCodeValid 
         {
             get { return (bool)GetValue(IsCodeValidProperty); }
 
             private set { SetValue(IsCodeValidProperty, value); }
         }
-
         public bool IsPasswordChanged 
         {
             get { return (bool)GetValue(IsPasswordChangedProperty); }
@@ -100,14 +93,41 @@ namespace Freengy.UI.ViewModels
             private set { SetValue(IsPasswordChangedProperty, value); }
         }
 
+        /// <summary>
+        /// Is being compared with one sent to provided email
+        /// </summary>
+        public string ValidationCode 
+        {
+            get { return (string)this.GetValue(RecoverPasswordViewModel.ValidationCodeProperty); }
+
+            set
+            {
+                this.SetValue(RecoverPasswordViewModel.ValidationCodeProperty, value);
+
+                this.IsCodeValid = this.secureDecorator.GetSecureString().Equals(this.ValidationCode);
+            }
+        }
+        public string PasswordConfirmation 
+        {
+            get { return (string)GetValue(PasswordConfirmationProperty); }
+            private set { SetValue(PasswordConfirmationProperty, value); }
+        }
+
+
         public static readonly PropertyData IsCodeSentProperty =
             ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeSent, () => false);
-        public static readonly PropertyData IsPasswordChangedProperty =
-            ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsPasswordChanged, () => false);
+
         public static readonly PropertyData IsCodeValidProperty =
             ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsCodeValid, () => false);
+
+        public static readonly PropertyData IsPasswordChangedProperty =
+            ModelBase.RegisterProperty<RecoverPasswordViewModel, bool>(recViewModel => recViewModel.IsPasswordChanged, () => false);
+
         public static readonly PropertyData ValidationCodeProperty =
-            RegisterProperty<RecoverPasswordViewModel, string>(recViewModel => recViewModel.ValidationCode, () => string.Empty);
+            ModelBase.RegisterProperty<RecoverPasswordViewModel, string>(recViewModel => recViewModel.ValidationCode, () => string.Empty);
+
+        public static readonly PropertyData PasswordConfirmationProperty =
+            ModelBase.RegisterProperty<RecoverPasswordViewModel, string>(viewModel => viewModel.PasswordConfirmation, () => string.Empty);
 
         #endregion properties
 
@@ -172,7 +192,13 @@ namespace Freengy.UI.ViewModels
         }
         private bool CanChangePassword() 
         {
-            return this.IsCodeValid && !this.IsPasswordChanged;
+            return 
+                this.IsCodeValid && 
+                !this.IsPasswordChanged &&
+                !string.IsNullOrWhiteSpace(this.Password) &&
+                this.Password == this.PasswordConfirmation &&
+                !string.IsNullOrWhiteSpace(this.PasswordConfirmation) &&
+                Account.IsGoodPassword(this.Password);
         }
 
         private void CommandFinishImpl(Window registrationWindow)
@@ -196,6 +222,33 @@ namespace Freengy.UI.ViewModels
                    this.secureDecorator.SetSecureString(randomCode.ToString());
                }
             );
+        }
+
+        private void CheckPasswordEmptiness(List<IFieldValidationResult> validationResults) 
+        {
+            if (string.IsNullOrWhiteSpace(this.Password))
+            {
+                validationResults.Add
+                (
+                    FieldValidationResult.CreateError(PasswordProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
+                );
+            }
+
+            if (string.IsNullOrWhiteSpace(this.PasswordConfirmation))
+            {
+                validationResults.Add
+                (
+                    FieldValidationResult.CreateError(PasswordConfirmationProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
+                );
+            }
+        }
+
+        private void CheckPasswordsEquality(List<IFieldValidationResult> validationResults) 
+        {
+            if (this.Password == this.PasswordConfirmation) return;
+
+            validationResults.Add(FieldValidationResult.CreateError(CredentialViewModel.PasswordProperty, LocalRes.PasswordsMustBeEqualText));
+            validationResults.Add(FieldValidationResult.CreateError(RecoverPasswordViewModel.PasswordConfirmationProperty, LocalRes.PasswordsMustBeEqualText));
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Freengy.Base.Constants
     /// </summary>
     public static class Numeric 
     {
+        public const int MaxPasswordLength = 40;
         public const int MaxAccountNameLength = 40;
     }
 }
