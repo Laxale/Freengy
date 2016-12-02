@@ -31,8 +31,6 @@ namespace Freengy.UI.ViewModels
     {
         #region Variables
 
-        private readonly ILoginParameters loginParameters;
-
         private readonly IPleaseWaitService waiter;
         private readonly ILoginController loginController;
         
@@ -43,7 +41,6 @@ namespace Freengy.UI.ViewModels
         {
             // need to resolve it by interface to avoid knowledge about concrete implementer
             this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
-            this.loginParameters = base.serviceLocator.ResolveType<ILoginParameters>();
             this.loginController = base.serviceLocator.ResolveType<ILoginController>();
         }
 
@@ -266,7 +263,7 @@ namespace Freengy.UI.ViewModels
                 () =>
                 {
                     base.IsWaiting = true;
-                    this.loginController.LogIn(this.loginParameters);
+                    this.loginController.LogIn(this.GetCurrentLoginParameters());
                 };
 
             Action<Task> loginContinuator =
@@ -281,6 +278,17 @@ namespace Freengy.UI.ViewModels
                 };
 
             await base.taskWrapper.Wrap(loginAction, loginContinuator);
+        }
+
+        private ILoginParameters GetCurrentLoginParameters() 
+        {
+            var parameters = base.serviceLocator.ResolveType<ILoginParameters>();
+
+            parameters.HostName = this.HostName;
+            parameters.Password = this.Password;
+            parameters.UserName = this.UserName;
+
+            return parameters;
         }
 
         #endregion Privates

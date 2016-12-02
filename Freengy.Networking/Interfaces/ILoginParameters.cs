@@ -5,6 +5,9 @@
 
 namespace Freengy.Networking.Interfaces 
 {
+    using System.Security;
+
+
     public interface ILoginParameters 
     {
         string Port { get; set; }
@@ -15,6 +18,9 @@ namespace Freengy.Networking.Interfaces
 
         string UserName { get; set; }
 
+        /// <summary>
+        /// TODO: replace with <see cref="SecureString"/>
+        /// </summary>
         string Password { get; set; }
     }
 }

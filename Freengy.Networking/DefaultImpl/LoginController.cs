@@ -6,11 +6,15 @@
 namespace Freengy.Networking.DefaultImpl 
 {
     using System;
+    using System.Text;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Security.Cryptography.X509Certificates;
 
     using Freengy.Base.Messages;
     using Freengy.Base.Interfaces;
+    using Freengy.Base.Extensions;
     using Freengy.Networking.Messages;
     using Freengy.Networking.Interfaces;
 
@@ -18,7 +22,7 @@ namespace Freengy.Networking.DefaultImpl
     using Catel.Messaging;
 
 
-    public class LoginController : ILoginController 
+    internal class LoginController : ILoginController 
     {
         #region vars
 
@@ -56,26 +60,47 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        public void LogIn(ILoginParameters loginParameters) 
+        public async Task LogIn(ILoginParameters loginParameters) 
         {
-            this.taskWrapper.Wrap(this.LogInTask, this.LogInTaskContinuator);
+            await this.taskWrapper.Wrap(() => this.LogInTask(loginParameters), this.LogInTaskContinuator);
         }
 
 
-        private void LogInTask() 
+        private async void LogInTask(ILoginParameters loginParameters) 
         {
             this.messageMediator.SendMessage(this.messageLoggInAttempt);
             // TODO implement
-            // log in
-            // web api or whatever else - details must be hidden by abstract strategy class
+            using (var keccak = System.Security.Cryptography.SHA512.Create())
+            {
+                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.Password);
 
+                byte[] hash = keccak.ComputeHash(passwordBytes);
+            }
+
+            var handler = new HttpClientHandler
+            {
+                UseCookies = true
+            };
+
+            //X509Certificate2 certificate = GetMyX509Certificate();
+
+            HttpClient client = new HttpClient(handler);
+
+            var result = await client.GetAsync("http://localhost:44000");
+            
             Thread.Sleep(500);
         }
 
         private void LogInTaskContinuator(Task parentTask) 
         {
             // TODO implement
-            this.messageMediator.SendMessage(this.messageLoggedIn);
+
+            if (parentTask.Exception != null)
+            {
+                var message = parentTask.Exception.GetReallyRootException().Message;
+            }
+
+            //this.messageMediator.SendMessage(this.messageLoggedIn);
         }
     }
 }

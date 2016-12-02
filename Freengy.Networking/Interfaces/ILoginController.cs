@@ -5,10 +5,13 @@
 
 namespace Freengy.Networking.Interfaces 
 {
+    using System.Threading.Tasks;
+
+
     public interface ILoginController
     {
-        void LogIn(ILoginParameters loginParameters);
-
         bool IsLoggedIn { get; }
+
+        Task LogIn(ILoginParameters loginParameters);
     }
 }

@@ -61,14 +61,11 @@ namespace Freengy.Base.ViewModels
 
         #region virtual
 
-        public virtual void Refresh() 
-        {
-
-        }
+        public virtual void Refresh() { }
 
         public virtual async Task UninitializeAsync() 
         {
-
+            await Task.FromResult(0);
         }
 
         /// <summary>
@@ -76,16 +73,14 @@ namespace Freengy.Base.ViewModels
         /// </summary>
         protected abstract void SetupCommands();
 
-        public virtual void ReportMessage(string information) 
-        {
-
-        }
+        public virtual void ReportMessage(string information) { }
 
         protected virtual void InitializationContinuator(Task parentTask) 
         {
             if (parentTask.Exception != null)
             {
                 // show error dialog?
+                
             }
         }
 
@@ -93,16 +88,14 @@ namespace Freengy.Base.ViewModels
 
 
         #region properties
-
         public string Name 
         {
             get { return (string)this.GetValue(WaitableViewModel.NameProperty); }
 
             set { this.SetValue(WaitableViewModel.NameProperty, value); }
         }
-
         /// <summary>
-        ///     Represents long-running task state of the viewmodel
+        /// Represents long-running task state of the viewmodel
         /// </summary>
         public bool IsWaiting 
         {
