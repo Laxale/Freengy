@@ -6,8 +6,8 @@
 namespace Freengy.GamePlugin.Messages 
 {
     using Freengy.Base.Messages;
-    using Freengy.Base.Interfaces;
     using Freengy.GamePlugin.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
 
     /// <summary>

@@ -12,7 +12,7 @@ namespace Freengy.FriendList.ViewModels
     using System.Collections.ObjectModel;
 
     using Freengy.Base.ViewModels;
-    using Freengy.Base.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
     using Catel.IoC;
     using Catel.MVVM;

@@ -12,6 +12,7 @@ namespace Base.Tests.Chat
     using Freengy.Base.Interfaces;
     using Freengy.Base.Chat.Interfaces;
     using Freengy.Base.Chat.DefaultImpl;
+    using Freengy.SharedWebTypes.Interfaces;
 
     using NUnit.Framework;
 

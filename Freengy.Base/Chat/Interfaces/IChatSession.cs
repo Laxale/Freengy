@@ -8,7 +8,7 @@ namespace Freengy.Base.Chat.Interfaces
     using System;
     using System.Collections.Generic;
 
-    using Freengy.Base.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
 
     public interface IChatSession : IObjectWithId, INamedObject 

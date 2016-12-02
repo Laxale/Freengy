@@ -8,7 +8,7 @@ namespace Freengy.Diagnostics.Interfaces
     using System;
     using System.Collections.Generic;
 
-    using Freengy.Base.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
 
     /// <summary>

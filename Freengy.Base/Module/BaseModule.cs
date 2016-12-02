@@ -9,6 +9,8 @@ namespace Freengy.Base.Module
     using Freengy.Base.DefaultImpl;
     using Freengy.Base.Chat.Interfaces;
     using Freengy.Base.Chat.DefaultImpl;
+    using Freengy.SharedWebTypes.Objects;
+    using Freengy.SharedWebTypes.Interfaces;
     
     using Catel.IoC;
 

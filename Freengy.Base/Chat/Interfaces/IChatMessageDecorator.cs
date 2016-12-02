@@ -7,7 +7,7 @@ namespace Freengy.Base.Chat.Interfaces
 {
     using System;
 
-    using Freengy.Base.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
 
     /// <summary>

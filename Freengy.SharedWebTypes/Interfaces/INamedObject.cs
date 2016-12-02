@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Base.Interfaces 
+namespace Freengy.SharedWebTypes.Interfaces 
 {
     /// <summary>
     /// Represents object that has a name

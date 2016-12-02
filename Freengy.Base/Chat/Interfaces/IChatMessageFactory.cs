@@ -5,7 +5,7 @@
 
 namespace Freengy.Base.Chat.Interfaces 
 {
-    using Freengy.Base.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
     
 
     public interface IChatMessageFactory 

@@ -12,7 +12,8 @@ namespace Base.Tests.Chat
     using Freengy.Base.Interfaces;
     using Freengy.Base.Chat.Interfaces;
     using Freengy.Base.Chat.DefaultImpl;
-    
+    using Freengy.SharedWebTypes.Interfaces;
+
     using NUnit.Framework;
 
 
@@ -28,6 +29,14 @@ namespace Base.Tests.Chat
         public Guid Id { get; internal set; }
         public string Name { get; internal set; }
         public string DisplayedName { get; internal set; }
+
+        public int Level 
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 
 

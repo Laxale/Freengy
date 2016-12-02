@@ -3,10 +3,9 @@
 //
 
 
-namespace Freengy.Base.Interfaces 
+namespace Freengy.SharedWebTypes.Interfaces 
 {
     using System;
-
 
     public interface IObjectWithId 
     {

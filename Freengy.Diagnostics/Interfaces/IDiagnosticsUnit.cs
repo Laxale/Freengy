@@ -6,8 +6,8 @@
 namespace Freengy.Diagnostics.Interfaces 
 {
     using System;
-    
-    using Freengy.Base.Interfaces;
+
+    using Freengy.SharedWebTypes.Interfaces;
 
 
     public interface IDiagnosticsUnit : INamedObject 

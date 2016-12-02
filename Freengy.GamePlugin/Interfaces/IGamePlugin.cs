@@ -10,7 +10,8 @@ namespace Freengy.GamePlugin.Interfaces
     using System.Windows.Controls;
 
     using Freengy.Base.Interfaces;
-    
+    using Freengy.SharedWebTypes.Interfaces;
+
 
     public interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
     {

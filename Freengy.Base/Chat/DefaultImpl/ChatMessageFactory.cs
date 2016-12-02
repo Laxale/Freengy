@@ -7,8 +7,8 @@ namespace Freengy.Base.Chat.DefaultImpl
 {
     using System;
     
-    using Freengy.Base.Interfaces;
     using Freengy.Base.Chat.Interfaces;
+    using Freengy.SharedWebTypes.Interfaces;
 
     using Res = Freengy.CommonResources.StringResources;
 

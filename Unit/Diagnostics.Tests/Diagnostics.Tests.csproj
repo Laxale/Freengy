@@ -47,6 +47,10 @@
       <Project>{4791acee-adfd-49cc-b95f-abc6edb06162}</Project>
       <Name>Freengy.Diagnostics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Freengy.SharedWebTypes\Freengy.SharedWebTypes.csproj">
+      <Project>{0fa07bb5-e872-4e2e-835c-8d0c7d1201e4}</Project>
+      <Name>Freengy.SharedWebTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
