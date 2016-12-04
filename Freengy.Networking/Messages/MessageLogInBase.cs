@@ -9,7 +9,7 @@ namespace Freengy.Networking.Messages
 
 
     /// <summary>
-    /// Base class for client LogIn-related events
+    /// Base class for client LogInAsync-related events
     /// </summary>
     public class MessageLogInBase : MessageBase 
     {

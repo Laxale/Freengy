@@ -16,6 +16,7 @@ namespace Freengy.UI.ViewModels
     using Freengy.Base.ViewModels;
     using Freengy.Networking.Interfaces;
     using Freengy.Networking.DefaultImpl;
+    using Freengy.SharedWebTypes.Objects;
 
     using Catel.IoC;
     using Catel.Data;
@@ -263,7 +264,7 @@ namespace Freengy.UI.ViewModels
                 () =>
                 {
                     base.IsWaiting = true;
-                    this.loginController.LogIn(this.GetCurrentLoginParameters());
+                    this.loginController.LogInAsync(this.GetCurrentLoginParameters());
                 };
 
             Action<Task> loginContinuator =
@@ -280,12 +281,12 @@ namespace Freengy.UI.ViewModels
             await base.taskWrapper.Wrap(loginAction, loginContinuator);
         }
 
-        private ILoginParameters GetCurrentLoginParameters() 
+        private LoginModel GetCurrentLoginParameters() 
         {
-            var parameters = base.serviceLocator.ResolveType<ILoginParameters>();
+            var parameters = base.serviceLocator.ResolveType<LoginModel>();
 
-            parameters.HostName = this.HostName;
-            parameters.Password = this.Password;
+            parameters.UserName = this.UserName;
+            parameters.PasswordHash = this.Password; // TODO: waaaat?
             parameters.UserName = this.UserName;
 
             return parameters;

@@ -7,14 +7,14 @@ namespace Freengy.UI
 {
     using System;
     using System.Windows;
-    
+
     using Freengy.UI.Helpers;
 
     using Catel.Logging;
 
     public partial class App : Application 
     {
-        protected override void OnStartup(StartupEventArgs e) 
+        protected override void OnStartup(StartupEventArgs e)
         {
             var splasher = new SplashScreen("Images/splash.jpg");
             splasher.Show(true);

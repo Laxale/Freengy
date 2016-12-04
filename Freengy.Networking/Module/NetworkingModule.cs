@@ -31,8 +31,6 @@ namespace Freengy.Networking.Module
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
             // login controller uses task wrapper, so must register them this order
             ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
-            
-            ServiceLocator.Default.RegisterType<ILoginParameters, LoginParameters>(RegistrationType.Transient);
         }
     }
 }

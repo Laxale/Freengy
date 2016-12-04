@@ -10,10 +10,12 @@ namespace Freengy.UI.ViewModels
     using System.Windows;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    
+
     using Freengy.Base.Helpers;
     using Freengy.Base.ViewModels;
-    
+    using Freengy.Networking.Interfaces;
+    using Freengy.SharedWebTypes.Objects;
+
     using Catel.IoC;
     using Catel.Data;
     using Catel.MVVM;
@@ -23,11 +25,14 @@ namespace Freengy.UI.ViewModels
     internal class RegistrationViewModel : CredentialViewModel 
     {
         private readonly IPleaseWaitService waiter;
+        private readonly ILoginController loginController;
+
 
 
         public RegistrationViewModel() 
         {
             this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
+            this.loginController = base.serviceLocator.ResolveType<ILoginController>();
         }
 
 
@@ -52,16 +57,24 @@ namespace Freengy.UI.ViewModels
 
 
         #region properties
-
+        
         public bool Registered 
         {
             get { return (bool)GetValue(RegisteredProperty); }
 
             private set { SetValue(RegisteredProperty, value); }
         }
+        public bool IsCodeSent 
+        {
+            get { return (bool)GetValue(IsCodeSentProperty); }
+
+            private set { SetValue(IsCodeSentProperty, value); }
+        }
 
         public static readonly PropertyData RegisteredProperty =
             ModelBase.RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.Registered, () => false);
+        public static readonly PropertyData IsCodeSentProperty =
+            ModelBase.RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.IsCodeSent, () => false);
 
         #endregion properties
 
@@ -72,7 +85,12 @@ namespace Freengy.UI.ViewModels
         {
             this.waiter.Show("Checking data");
 
-            System.Threading.Thread.Sleep(500);
+            var loginModel = new LoginModel
+            {
+                UserName = this.UserName
+            };
+
+            this.loginController.Register(loginModel);
 
             this.waiter.Hide();
 

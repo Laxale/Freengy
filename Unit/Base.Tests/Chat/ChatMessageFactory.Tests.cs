@@ -23,7 +23,7 @@ namespace Base.Tests.Chat
     public class ChatMessageFactoryTests 
     {
         private IChatMessageFactory messageFactory;
-        private readonly IUserAccount author = new TestAccount { Name = "Awesome Author", Id = Guid.NewGuid() };
+        private readonly IUserAccount author = new TestAccount { Name = "Awesome Author", Id = new Random().Next() };
 
 
         [SetUp]

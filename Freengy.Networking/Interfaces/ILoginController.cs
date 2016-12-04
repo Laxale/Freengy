@@ -7,11 +7,14 @@ namespace Freengy.Networking.Interfaces
 {
     using System.Threading.Tasks;
 
+    using Freengy.SharedWebTypes.Objects;
 
     public interface ILoginController
     {
         bool IsLoggedIn { get; }
 
-        Task LogIn(ILoginParameters loginParameters);
+        bool Register(LoginModel loginParameters);
+
+        Task LogInAsync(LoginModel loginParameters);
     }
 }

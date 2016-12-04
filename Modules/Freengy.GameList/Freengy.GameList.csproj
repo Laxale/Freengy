@@ -22,6 +22,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
+    <Reference Include="Freengy.SharedWebTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\output\Freengy.SharedWebTypes\bin\Debug\netstandard1.6\Freengy.SharedWebTypes.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
@@ -93,10 +97,6 @@
     <ProjectReference Include="..\..\Freengy.Settings\Freengy.Settings.csproj">
       <Project>{deaa296b-5e75-4940-b0be-f68ab321589f}</Project>
       <Name>Freengy.Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Freengy.SharedWebTypes\Freengy.SharedWebTypes.csproj">
-      <Project>{0fa07bb5-e872-4e2e-835c-8d0c7d1201e4}</Project>
-      <Name>Freengy.SharedWebTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

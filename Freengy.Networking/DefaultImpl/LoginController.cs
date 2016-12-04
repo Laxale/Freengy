@@ -6,9 +6,12 @@
 namespace Freengy.Networking.DefaultImpl 
 {
     using System;
+    using System.IO;
     using System.Text;
+    using System.Runtime;
     using System.Net.Http;
     using System.Threading;
+    using System.Configuration;
     using System.Threading.Tasks;
     using System.Security.Cryptography.X509Certificates;
 
@@ -17,12 +20,15 @@ namespace Freengy.Networking.DefaultImpl
     using Freengy.Base.Extensions;
     using Freengy.Networking.Messages;
     using Freengy.Networking.Interfaces;
+    using Freengy.SharedWebTypes.Objects;
 
     using Catel.IoC;
     using Catel.Messaging;
 
+    using Newtonsoft.Json;
 
-    internal class LoginController : ILoginController 
+
+    internal class LoginController : ILoginController
     {
         #region vars
 
@@ -32,7 +38,13 @@ namespace Freengy.Networking.DefaultImpl
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly IMessageMediator messageMediator = MessageMediator.Default;
 
-        #endregion vars
+        private readonly MediaTypes mediaTypes = new MediaTypes();
+
+        private readonly Configuration networkingConfig;
+        private readonly string serverAddress;
+        private readonly string registrationActionSubPath;
+
+    #endregion vars
 
         
         #region Singleton
@@ -45,6 +57,12 @@ namespace Freengy.Networking.DefaultImpl
             this.messageLoggInAttempt = new MessageLogInAttempt();
 
             this.taskWrapper = this.serviceLocator.ResolveType<ITaskWrapper>();
+
+            this.networkingConfig = ConfigurationManager.OpenExeConfiguration(typeof(LoginController).Assembly.Location);
+            this.serverAddress = this.networkingConfig.AppSettings.Settings["FreengyServerAddress"].Value;
+            this.registrationActionSubPath =
+                $"{ this.networkingConfig.AppSettings.Settings["RegistrationControllerName"].Value }/" +
+                $"{ this.networkingConfig.AppSettings.Settings["RegistrationActionName"].Value }";
         }
 
         public static LoginController Instance => LoginController.instance ?? (LoginController.instance = new LoginController());
@@ -60,19 +78,44 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        public async Task LogIn(ILoginParameters loginParameters) 
+        public bool Register(LoginModel loginParameters) 
+        {
+            var registratioRequest = new RegistrationRequest(loginParameters.UserName);
+
+            var handler = new HttpClientHandler
+            {
+                UseCookies = true
+            };
+
+            HttpClient client = new HttpClient(handler);
+            var request = new RegistrationRequest(loginParameters.UserName);
+            string jsonRequest = JsonConvert.SerializeObject(request);
+            string jsonMediaType = this.mediaTypes.GetStringValue(MediaTypesEnum.Json);
+            var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
+            string registrationActionFullPath = $"{ this.serverAddress }/{ this.registrationActionSubPath }";
+
+            HttpResponseMessage response = client.PostAsync(registrationActionFullPath, httpRequest).Result;
+            
+            return true;
+        }
+
+        public async Task LogInAsync(LoginModel loginParameters) 
         {
             await this.taskWrapper.Wrap(() => this.LogInTask(loginParameters), this.LogInTaskContinuator);
         }
 
 
-        private async void LogInTask(ILoginParameters loginParameters) 
+        private async void LogInTask(LoginModel loginParameters) 
         {
+            Thread.Sleep(500);
+
+            return; // skip for now
+
             this.messageMediator.SendMessage(this.messageLoggInAttempt);
             // TODO implement
             using (var keccak = System.Security.Cryptography.SHA512.Create())
             {
-                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.Password);
+                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.PasswordHash);
 
                 byte[] hash = keccak.ComputeHash(passwordBytes);
             }
@@ -88,7 +131,7 @@ namespace Freengy.Networking.DefaultImpl
 
             var result = await client.GetAsync("http://localhost:44000");
             
-            Thread.Sleep(500);
+            
         }
 
         private void LogInTaskContinuator(Task parentTask) 
@@ -100,7 +143,7 @@ namespace Freengy.Networking.DefaultImpl
                 var message = parentTask.Exception.GetReallyRootException().Message;
             }
 
-            //this.messageMediator.SendMessage(this.messageLoggedIn);
+            this.messageMediator.SendMessage(this.messageLoggedIn);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Base.Tests.Chat
 
     internal class TestAccount : IUserAccount 
     {
-        public Guid Id { get; internal set; }
+        public long Id { get; internal set; }
         public string Name { get; internal set; }
         public string DisplayedName { get; internal set; }
 
