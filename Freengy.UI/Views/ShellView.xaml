@@ -10,7 +10,7 @@
                    xmlns:const="clr-namespace:Freengy.UI.Constants" 
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels" 
                    xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-                   xmlns:gif="http://wpfanimatedgif.codeplex.com"
+                   xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
                    mc:Ignorable="d" 
                    MinWidth="700" MinHeight="500" 
@@ -47,20 +47,15 @@
                 <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
 
                 <DockPanel Grid.Column="1">
-                    <Image MaxHeight="{StaticResource CommonMediumIconSize}" HorizontalAlignment="Right"
-                           gif:ImageBehavior.AutoStart="True" VerticalAlignment="Top"
-                           Visibility="{Binding Path=ShowVisualHints, Converter={StaticResource BoolToVisibilityConverter}}"
-                           gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedBlackenedHandIcon.gif">
+                    <controls:GifImage MaxHeight="{StaticResource CommonMediumIconSize}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                       ToolTip="Hey, check this out!" IsAutoStart="True" Stretch="UniformToFill"
+                                       GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedBlackenedHandIcon.gif" 
+                                       Visibility="{Binding Path=ShowVisualHints, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <Image.ToolTip>
-                            <TextBlock Text="Hey, check this out!"/>
-                        </Image.ToolTip>
-                    </Image>
-
-                    <Button MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top"
-                        ToolTip="{x:Static commonRes:StringResources.SettingsText}"
-                        Command="{Binding Path=CommandShowSettings}"
-                        Margin="{StaticResource All4Margin}" HorizontalAlignment="Right" Style="{x:Null}">
+                    <Button MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top" 
+                            ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
+                            Command="{Binding Path=CommandShowSettings}" Style="{x:Null}"
+                            Margin="{StaticResource All4Margin}" HorizontalAlignment="Right">
                         <Button.Template>
                             <ControlTemplate>
                                 <Image Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" RenderTransformOrigin="0.5, 0.5"

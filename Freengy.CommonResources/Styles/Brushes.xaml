@@ -8,6 +8,7 @@
 
     <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
+    <Color x:Key="ThirdMainColor" A="255" R="169" G="169" B="169"/>
 
     <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
     <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70" />

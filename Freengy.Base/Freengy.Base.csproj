@@ -16,7 +16,7 @@
       <HintPath>..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="Freengy.SharedWebTypes">
-      <HintPath>..\output\Freengy.SharedWebTypes\bin\Debug\netstandard1.6\Freengy.SharedWebTypes.dll</HintPath>
+      <HintPath>..\output\SharedWebTypes\Freengy.SharedWebTypes.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

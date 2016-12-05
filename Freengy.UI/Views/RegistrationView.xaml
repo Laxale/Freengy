@@ -12,7 +12,6 @@
                    xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-                   xmlns:gif="http://wpfanimatedgif.codeplex.com"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
                    mc:Ignorable="d" 
@@ -33,9 +32,8 @@
                         <TextBlock Text="Checking data..." Foreground="Black" FontSize="14" HorizontalAlignment="Center"/>
                         <TextBlock Text="Please dont burn your computer for a while" Foreground="Black" FontSize="14" HorizontalAlignment="Center"/>
 
-                        <Image MaxHeight="{StaticResource CommonLargeIconSize}" 
-                               gif:ImageBehavior.AutoStart="True"
-                               gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif"/>
+                        <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" 
+                                           IsAutoStart="True" Opacity="0.6" Stretch="UniformToFill" MaxHeight="{StaticResource CommonLargeIconSize}"/>
                     </StackPanel>
                 </Grid>
             </DataTemplate>

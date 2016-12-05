@@ -22,9 +22,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Catel.MVVM.4.5.3\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
-    <Reference Include="Freengy.SharedWebTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\output\Freengy.SharedWebTypes\bin\Debug\netstandard1.6\Freengy.SharedWebTypes.dll</HintPath>
+    <Reference Include="Freengy.SharedWebTypes">
+      <HintPath>..\output\SharedWebTypes\Freengy.SharedWebTypes.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -43,10 +42,6 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultImpl\DiagnosticsController.cs" />

@@ -35,17 +35,17 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
-        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}">
+        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}"
+                                    VerticalAlignment="Stretch">
             <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -57,42 +57,24 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.HostNameText}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
 
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0" 
-                             Text="{Binding Path=HostName, Mode=TwoWay, ValidatesOnDataErrors=True, 
-                                            NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <TextBlock Grid.Column="1" Text="porttt"/>
-
-                    <TextBox Grid.Column="2" MaxWidth="60" MinWidth="60" MaxLength="5"
-                             Text="{Binding Path=Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
-                </Grid>
-
-                <TextBox Grid.Row="1" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}"
+                <TextBox Grid.Row="0" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}"
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <PasswordBox Grid.Row="2" Grid.Column="1" 
+                <PasswordBox Grid.Row="1" Grid.Column="1" 
                              Margin="{StaticResource All4Margin}"
                              helpers:PasswordBoxBinder.BindPassword="True"
                              helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- TODO какого хера кнопка не в любом месте юзерконтрола работает? -->
-                <Button Grid.Row="3" Grid.Column="1" Command="{Binding Path=CommandLogin}"
+                <Button Grid.Row="2" Grid.Column="1" Command="{Binding Path=CommandLogin}"
                         MinWidth="{StaticResource MinButtonWidth}" HorizontalAlignment="Right" IsDefault="True" 
                         Content="{x:Static localprops:Resources.LogInText}" Margin="{StaticResource All4Margin}"/>
 
-                <CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" 
+                <CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" 
                           Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}">
 
                     <CheckBox.Content>
@@ -100,7 +82,7 @@
                     </CheckBox.Content>
                 </CheckBox>
 
-                <DockPanel Grid.Row="4" Grid.Column="1">
+                <DockPanel Grid.Row="3" Grid.Column="1">
                     <DockPanel.Resources>
                         <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
                             <Setter Property="Foreground" Value="Blue"/>
@@ -123,8 +105,20 @@
             </Grid>
         </controls:WaitableDecorator>
 
-        <TextBlock Grid.Row="2" VerticalAlignment="Bottom" Foreground="Crimson" Margin="10, 10" TextWrapping="Wrap"
-                   Text="{Binding Path=Information, Mode=OneWay}" 
-                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <DockPanel Grid.Row="2" VerticalAlignment="Bottom" MinHeight="60" 
+                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
+            <DockPanel.Background>
+                <LinearGradientBrush StartPoint="0.1, 0" EndPoint="0.1, 1.4">
+                    <GradientStop Color="Transparent" Offset="0"/>
+                    <GradientStop Color="{StaticResource ThirdMainColor}" Offset="0.5"/>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            
+            <Image Style="{StaticResource CommonImageStyle}" MaxHeight="{StaticResource CommonLargeIconSize}" 
+                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon.png"/>
+            
+            <TextBlock VerticalAlignment="Center" Foreground="{StaticResource ErrorBrush}" 
+                       Text="{Binding Path=Information, Mode=OneWay}" TextWrapping="Wrap"/>
+        </DockPanel>
     </Grid>
 </catel:UserControl>

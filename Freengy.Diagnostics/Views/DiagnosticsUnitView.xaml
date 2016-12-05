@@ -6,12 +6,12 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              
              xmlns:catel="http://catel.codeplex.com" 
-             xmlns:gif="http://wpfanimatedgif.codeplex.com"
-                          
+             
              xmlns:local="clr-namespace:Freengy.Diagnostics.Views"
              xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
              xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-             
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+
              mc:Ignorable="d" 
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsUnitViewModel}">
@@ -45,10 +45,10 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=UnitName}" TextWrapping="Wrap" MaxHeight="1000"/>
 
-            <Image Grid.Row="0" Grid.Column="1" 
-                   gif:ImageBehavior.AutoStart="True" ToolTip="{x:Static commonres:StringResources.InProgressText}" 
-                   gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif" 
-                   Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <controls:GifImage Grid.Row="0" Grid.Column="1"  ToolTip="{x:Static commonres:StringResources.InProgressText}" 
+                               Stretch="UniformToFill" IsAutoStart="True" Opacity="0.6" 
+                               GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif" 
+                               Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <Image Grid.Row="0" Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon2.png" 

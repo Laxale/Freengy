@@ -8,7 +8,8 @@
         
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-        
+        xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+
         mc:Ignorable="d"
         Style="{StaticResource CommonWindowStyle}"
         Title="{x:Static commonRes:StringResources.ProjectName}" 
@@ -17,7 +18,17 @@
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 
     <Window.Background>
-        <ImageBrush ImageSource="/Images/ShellBackground.jpg"/>
+<!--        <ImageBrush ImageSource="/Images/ShellBackground.jpg"/>-->
+        <VisualBrush>
+            <VisualBrush.Visual>
+                <Grid>
+                    <Image Source="/Images/ShellBackground.jpg" Opacity="0.5"/>
+
+                    <controls:GifImage GifSource="pack://application:,,,/Freengy.UI;component/Images/snow-animation-3.gif" 
+                                       Opacity="0.6" Stretch="UniformToFill" IsAutoStart="True"/>
+                </Grid>
+            </VisualBrush.Visual>
+        </VisualBrush>
     </Window.Background>
 
     <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>

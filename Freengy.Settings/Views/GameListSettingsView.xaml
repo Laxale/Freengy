@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                   
-             xmlns:prism="http://prismlibrary.com/"
-             xmlns:gif="http://wpfanimatedgif.codeplex.com"
-                   
+             
              xmlns:local="clr-namespace:Freengy.Settings" 
              xmlns:views="clr-namespace:Freengy.Settings.Views" 
              xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
@@ -28,10 +25,9 @@
             <DataTemplate x:Key="WaitTemplate">
                 <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource DarkGrayBrush}">
                     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Image DockPanel.Dock="Top" MaxHeight="{StaticResource CommonMoreLargeIconSize}" 
-                               VerticalAlignment="Center" HorizontalAlignment="Center" 
-                               gif:ImageBehavior.AutoStart="True" 
-                               gif:ImageBehavior.AnimatedSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"/>
+                        <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"
+                                           IsAutoStart="True" Opacity="0.6" DockPanel.Dock="Top" MaxHeight="{StaticResource CommonMoreLargeIconSize}" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
 
                         <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
                                    Text="{x:Static common:StringResources.LoadingText}" Foreground="{StaticResource FirstMainBrush}"/>

@@ -13,12 +13,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActiveUp.Net.Common, Version=2.0.2.37149, Culture=neutral, PublicKeyToken=6cceae6a4844c51b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ActiveUp\ActiveUp.Net.Common.dll</HintPath>
+    <Reference Include="ActiveUp.Net, Version=2.1.20.0, Culture=neutral, PublicKeyToken=2ff270728258992b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailSystem.Net-trunk.2.1.20\lib\net40\ActiveUp.Net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ActiveUp.Net.Smtp">
-      <HintPath>..\packages\ActiveUp\ActiveUp.Net.Smtp.dll</HintPath>
+    <Reference Include="ActiveUp.Net.Common, Version=2.1.20.0, Culture=neutral, PublicKeyToken=6cceae6a4844c51b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailSystem.Net-trunk.2.1.20\lib\net40\ActiveUp.Net.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Dns, Version=2.1.20.0, Culture=neutral, PublicKeyToken=6fc67824e0089991, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailSystem.Net-trunk.2.1.20\lib\net40\ActiveUp.Net.Dns.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Smtp, Version=2.1.20.0, Culture=neutral, PublicKeyToken=366752d00f09ae34, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailSystem.Net-trunk.2.1.20\lib\net40\ActiveUp.Net.Smtp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Catel.Core, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
@@ -64,10 +73,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WpfAnimatedGif, Version=1.4.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfAnimatedGif.1.4.14\lib\net\WpfAnimatedGif.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -217,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\splash.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\snow-animation-3.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
