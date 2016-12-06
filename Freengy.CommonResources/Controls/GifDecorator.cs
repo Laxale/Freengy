@@ -40,7 +40,7 @@ namespace Freengy.CommonResources.Controls
                 "IsAutoStart", 
                 typeof(bool), 
                 typeof(GifImage), 
-                new UIPropertyMetadata(false, GifImage.AutoStartPropertyChanged)
+                new UIPropertyMetadata(false)
             );
 
         public static readonly DependencyProperty GifSourceProperty =
@@ -49,7 +49,7 @@ namespace Freengy.CommonResources.Controls
                 "GifSource", 
                 typeof(string), 
                 typeof(GifImage), 
-                new UIPropertyMetadata(string.Empty, GifImage.GifSourcePropertyChanged)
+                new UIPropertyMetadata(string.Empty)
             );
 
         #endregion dependency props
@@ -59,23 +59,16 @@ namespace Freengy.CommonResources.Controls
         {
             UIElement.VisibilityProperty.OverrideMetadata(typeof(GifImage), new FrameworkPropertyMetadata(GifImage.VisibilityPropertyChanged));
         }
-
         public GifImage() 
         {
-            base.Loaded += this.LoadedGandler;
+            base.Loaded += this.LoadedHandler;
         }
 
 
-        /// <summary>
-        /// Stops the animation
-        /// </summary>
         public void StopAnimation() 
         {
             this.BeginAnimation(GifImage.FrameIndexProperty, null);
         }
-        /// <summary>
-        /// Starts the animation
-        /// </summary>
         public void StartAnimation() 
         {
             if (!this.isInitialized) this.Initialize();
@@ -89,9 +82,6 @@ namespace Freengy.CommonResources.Controls
             get { return (int)GetValue(FrameIndexProperty); }
             set { SetValue(FrameIndexProperty, value); }
         }
-        /// <summary>
-        /// Defines whether the animation starts on it's own
-        /// </summary>
         public bool IsAutoStart 
         {
             get { return (bool)GetValue(GifImage.IsAutoStartProperty); }
@@ -123,6 +113,7 @@ namespace Freengy.CommonResources.Controls
                         new TimeSpan
                         (
                             0, 0, 0, this.gifDecoder.Frames.Count/10,
+                            // ReSharper disable once PossibleLossOfFraction
                             (int)((this.gifDecoder.Frames.Count/10.0 - this.gifDecoder.Frames.Count/10) * 1000)
                         )
                     )
@@ -135,19 +126,17 @@ namespace Freengy.CommonResources.Controls
 
             this.isInitialized = true;
         }
+        private void LoadedHandler(object sender, RoutedEventArgs args) 
+        {
+            this.Initialize();
+
+            if (this.IsAutoStart) this.StartAnimation();
+        }
 
         private static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev) 
         {
             var gifImage = obj as GifImage;
             if (gifImage != null) gifImage.Source = gifImage.gifDecoder.Frames[(int)ev.NewValue];
-        }
-        private static void AutoStartPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
-        {
-//            if (!(bool)e.NewValue) return;
-//
-//            GifImage gifImage = sender as GifImage;
-//
-//            gifImage?.StartAnimation();
         }
         private static void VisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
@@ -159,19 +148,6 @@ namespace Freengy.CommonResources.Controls
             {
                 ((GifImage)sender).StopAnimation();
             }
-        }
-        private static void GifSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
-        {
-//            GifImage gifImage = sender as GifImage;
-//
-//            gifImage?.Initialize();
-        }
-        
-        private void LoadedGandler(object sender, RoutedEventArgs args) 
-        {
-            this.Initialize();
-
-            if (this.IsAutoStart) this.StartAnimation();
         }
     }
 }
