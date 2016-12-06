@@ -45,9 +45,9 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=UnitName}" TextWrapping="Wrap" MaxHeight="1000"/>
 
-            <controls:GifImage Grid.Row="0" Grid.Column="1"  ToolTip="{x:Static commonres:StringResources.InProgressText}" 
-                               Stretch="UniformToFill" IsAutoStart="True" Opacity="0.6" 
+            <controls:GifImage Grid.Row="0" Grid.Column="1" ToolTip="{x:Static commonres:StringResources.InProgressText}" 
                                GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif" 
+                               Stretch="UniformToFill" IsAutoStart="True" Opacity="0.6" MaxHeight="{StaticResource CommonSmallIconSize}"
                                Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <Image Grid.Row="0" Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 

@@ -48,8 +48,8 @@
 
                 <DockPanel Grid.Column="1">
                     <controls:GifImage MaxHeight="{StaticResource CommonMediumIconSize}" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                       ToolTip="Hey, check this out!" IsAutoStart="True" Stretch="UniformToFill"
                                        GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedBlackenedHandIcon.gif" 
+                                       ToolTip="Hey, check this out!" IsAutoStart="True" Stretch="UniformToFill"
                                        Visibility="{Binding Path=ShowVisualHints, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                     <Button MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top" 

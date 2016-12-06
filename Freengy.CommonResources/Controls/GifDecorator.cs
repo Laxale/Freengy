@@ -60,14 +60,51 @@ namespace Freengy.CommonResources.Controls
             UIElement.VisibilityProperty.OverrideMetadata(typeof(GifImage), new FrameworkPropertyMetadata(GifImage.VisibilityPropertyChanged));
         }
 
+        public GifImage() 
+        {
+            base.Loaded += this.LoadedGandler;
+        }
+
+
+        /// <summary>
+        /// Stops the animation
+        /// </summary>
+        public void StopAnimation() 
+        {
+            this.BeginAnimation(GifImage.FrameIndexProperty, null);
+        }
+        /// <summary>
+        /// Starts the animation
+        /// </summary>
+        public void StartAnimation() 
+        {
+            if (!this.isInitialized) this.Initialize();
+
+            this.BeginAnimation(FrameIndexProperty, this.animation);
+        }
+
 
         public int FrameIndex 
         {
             get { return (int)GetValue(FrameIndexProperty); }
             set { SetValue(FrameIndexProperty, value); }
         }
+        /// <summary>
+        /// Defines whether the animation starts on it's own
+        /// </summary>
+        public bool IsAutoStart 
+        {
+            get { return (bool)GetValue(GifImage.IsAutoStartProperty); }
+            set { SetValue(GifImage.IsAutoStartProperty, value); }
+        }
+        public string GifSource 
+        {
+            get { return (string)GetValue(GifSourceProperty); }
+            set { SetValue(GifSourceProperty, value); }
+        }
 
-        private void Initialize()
+
+        private void Initialize() 
         {
             string uri =
                 this.GifSource.StartsWith("pack://application:,,,") ? 
@@ -104,16 +141,14 @@ namespace Freengy.CommonResources.Controls
             var gifImage = obj as GifImage;
             if (gifImage != null) gifImage.Source = gifImage.gifDecoder.Frames[(int)ev.NewValue];
         }
-
         private static void AutoStartPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
-            if (!(bool)e.NewValue) return;
-
-            GifImage gifImage = sender as GifImage;
-
-            gifImage?.StartAnimation();
+//            if (!(bool)e.NewValue) return;
+//
+//            GifImage gifImage = sender as GifImage;
+//
+//            gifImage?.StartAnimation();
         }
-
         private static void VisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
             if ((Visibility)e.NewValue == Visibility.Visible)
@@ -125,45 +160,18 @@ namespace Freengy.CommonResources.Controls
                 ((GifImage)sender).StopAnimation();
             }
         }
-
         private static void GifSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
-            GifImage gifImage = sender as GifImage;
-
-            gifImage?.Initialize();
+//            GifImage gifImage = sender as GifImage;
+//
+//            gifImage?.Initialize();
         }
-
-        /// <summary>
-        /// Defines whether the animation starts on it's own
-        /// </summary>
-        public bool IsAutoStart 
+        
+        private void LoadedGandler(object sender, RoutedEventArgs args) 
         {
-            get { return (bool)GetValue(GifImage.IsAutoStartProperty); }
-            set { SetValue(GifImage.IsAutoStartProperty, value); }
-        }
+            this.Initialize();
 
-        public string GifSource 
-        {
-            get { return (string)GetValue(GifSourceProperty); }
-            set { SetValue(GifSourceProperty, value); }
-        }
-
-        /// <summary>
-        /// Starts the animation
-        /// </summary>
-        public void StartAnimation() 
-        {
-            if (!this.isInitialized) this.Initialize();
-
-            this.BeginAnimation(FrameIndexProperty, this.animation);
-        }
-
-        /// <summary>
-        /// Stops the animation
-        /// </summary>
-        public void StopAnimation() 
-        {
-            this.BeginAnimation(FrameIndexProperty, null);
+            if (this.IsAutoStart) this.StartAnimation();
         }
     }
 }
