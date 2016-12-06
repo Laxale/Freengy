@@ -114,7 +114,6 @@
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
         <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource WaitTemplate}">
-
             <controls:FlipPanel IsFrontPanelActive="{Binding Path=IsCodeSent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,
                                                              Converter={StaticResource ReverseBooleanConverter}}">
 

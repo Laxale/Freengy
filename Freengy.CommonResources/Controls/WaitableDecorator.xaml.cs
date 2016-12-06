@@ -17,13 +17,19 @@ namespace Freengy.CommonResources.Controls
         }
 
 
+        public bool CollapseContentOnWaiting 
+        {
+            get { return (bool)this.GetValue(CollapseContentOnWaitingProperty); }
+            set { this.SetValue(CollapseContentOnWaitingProperty, value); }
+        }
+
         /// <summary>
         /// Sets the name of a property that indicates busy state of a viewmodel
         /// </summary>
         public string IsWaitingPropertyName 
         {
-            get { return (string)this.GetValue(WaitableDecorator.IsWaitingPropertyNameProperty); }
-            set { this.SetValue(WaitableDecorator.IsWaitingPropertyNameProperty, value); }
+            get { return (string)this.GetValue(IsWaitingPropertyNameProperty); }
+            set { this.SetValue(IsWaitingPropertyNameProperty, value); }
         }
 
         /// <summary>
@@ -31,15 +37,23 @@ namespace Freengy.CommonResources.Controls
         /// </summary>
         public DataTemplate WaitTemplate 
         {
-            get { return (DataTemplate)this.GetValue(WaitableDecorator.WaitTemplateProperty); }
-            set { this.SetValue(WaitableDecorator.WaitTemplateProperty, value); }
+            get { return (DataTemplate)this.GetValue(WaitTemplateProperty); }
+            set { this.SetValue(WaitTemplateProperty, value); }
         }
 
+
+        public static readonly DependencyProperty CollapseContentOnWaitingProperty =
+            DependencyProperty.Register
+            (
+                nameof(CollapseContentOnWaiting),
+                typeof(bool),
+                typeof(WaitableDecorator), new PropertyMetadata(false)
+            );
 
         public static readonly DependencyProperty WaitTemplateProperty =
             DependencyProperty.Register
             (
-                "WaitTemplate",
+                nameof(WaitTemplate),
                 typeof(DataTemplate),
                 typeof(WaitableDecorator)
             );

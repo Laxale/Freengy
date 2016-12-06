@@ -15,6 +15,7 @@ namespace Freengy.Networking.Interfaces
 
         bool Register(LoginModel loginParameters);
 
+        void LogIn(LoginModel loginParameters);
         Task LogInAsync(LoginModel loginParameters);
     }
 }

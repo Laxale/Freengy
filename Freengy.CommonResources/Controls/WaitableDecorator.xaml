@@ -20,7 +20,25 @@
             <Grid>
                 <!-- Content -->
                 <ContentControl Content="{TemplateBinding Content}" 
-                                IsEnabled="{Binding Path=IsWaiting, Converter={StaticResource ReverseBooleanConverter}}"/>
+                                IsEnabled="{Binding Path=IsWaiting, Converter={StaticResource ReverseBooleanConverter}}">
+
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Value="True" Binding="{Binding Path=IsWaiting}"/>
+                                        
+                                        <Condition Value="True" Binding="{Binding ElementName=Root, Path=CollapseContentOnWaiting}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+
                 <!-- Decoraion -->
                 <ContentControl ContentTemplate="{Binding ElementName=Root, Path=WaitTemplate}" Opacity="0.9" 
                                 Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}"/>

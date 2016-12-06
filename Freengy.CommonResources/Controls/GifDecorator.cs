@@ -28,16 +28,28 @@ namespace Freengy.CommonResources.Controls
         public static readonly DependencyProperty FrameIndexProperty =
             DependencyProperty.Register
             (
-                "FrameIndex", 
+                nameof(FrameIndex), 
                 typeof(int), 
                 typeof(GifImage), 
-                new UIPropertyMetadata(0, new PropertyChangedCallback(GifImage.ChangingFrameIndex))
+                new UIPropertyMetadata(0, GifImage.ChangingFrameIndex)
             );
-        
+
+        /// <summary>
+        /// Frame rate in milliseconds
+        /// </summary>
+        public static readonly DependencyProperty FrameRateProperty =
+            DependencyProperty.Register
+            (
+                nameof(FrameRate),
+                typeof(int),
+                typeof(GifImage),
+                new UIPropertyMetadata(50)
+            );
+
         public static readonly DependencyProperty IsAutoStartProperty =
             DependencyProperty.Register
             (
-                "IsAutoStart", 
+                nameof(IsAutoStart),
                 typeof(bool), 
                 typeof(GifImage), 
                 new UIPropertyMetadata(false)
@@ -46,7 +58,7 @@ namespace Freengy.CommonResources.Controls
         public static readonly DependencyProperty GifSourceProperty =
             DependencyProperty.Register
             (
-                "GifSource", 
+                nameof(GifSource),
                 typeof(string), 
                 typeof(GifImage), 
                 new UIPropertyMetadata(string.Empty)
@@ -77,6 +89,11 @@ namespace Freengy.CommonResources.Controls
         }
 
 
+        public int FrameRate 
+        {
+            get { return (int)GetValue(FrameRateProperty); }
+            set { SetValue(FrameRateProperty, value); }
+        }
         public int FrameIndex 
         {
             get { return (int)GetValue(FrameIndexProperty); }
@@ -96,28 +113,18 @@ namespace Freengy.CommonResources.Controls
 
         private void Initialize() 
         {
-            string uri =
+            string uriString =
                 this.GifSource.StartsWith("pack://application:,,,") ? 
                     this.GifSource : 
                     "pack://application:,,," + this.GifSource;
 
-            this.gifDecoder = new GifBitmapDecoder(new Uri(uri), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+            var uri = new Uri(uriString);
 
-            this.animation = new 
-                Int32Animation
-                (
-                    0, 
-                    this.gifDecoder.Frames.Count - 1,
-                    new Duration
-                    (
-                        new TimeSpan
-                        (
-                            0, 0, 0, this.gifDecoder.Frames.Count/10,
-                            // ReSharper disable once PossibleLossOfFraction
-                            (int)((this.gifDecoder.Frames.Count/10.0 - this.gifDecoder.Frames.Count/10) * 1000)
-                        )
-                    )
-                )
+            this.gifDecoder = new GifBitmapDecoder(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+
+            var duration = new TimeSpan(0, 0, 0, 0, this.gifDecoder.Frames.Count * this.FrameRate);
+
+            this.animation = new Int32Animation(0, this.gifDecoder.Frames.Count - 1, duration)
             {
                 RepeatBehavior = RepeatBehavior.Forever
             };

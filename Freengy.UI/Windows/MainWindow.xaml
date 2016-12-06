@@ -21,10 +21,12 @@
         <VisualBrush>
             <VisualBrush.Visual>
                 <Grid>
-                    <Image Source="/Images/ShellBackground.jpg" Opacity="0.5"/>
+                    <Image Source="/Images/ShellBackground.jpg" Opacity="1"/>
 
+                    <!--
                     <controls:GifImage GifSource="pack://application:,,,/Freengy.UI;component/Images/snow-animation-3.gif" 
-                                       Opacity="0.6" Stretch="UniformToFill" IsAutoStart="True"/>
+                                       Opacity="0.2" Stretch="UniformToFill" IsAutoStart="True"/>
+                    -->
                 </Grid>
             </VisualBrush.Visual>
         </VisualBrush>

@@ -110,7 +110,7 @@ namespace Freengy.UI.ViewModels
         public string PasswordConfirmation 
         {
             get { return (string)GetValue(PasswordConfirmationProperty); }
-            private set { SetValue(PasswordConfirmationProperty, value); }
+            set { SetValue(PasswordConfirmationProperty, value); }
         }
 
 

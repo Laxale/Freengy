@@ -18,21 +18,30 @@
                    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
-    <Grid>
-        <Grid.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-                
-                <DataTemplate x:Key="LoginWaitTemplate">
-                    <StackPanel>
-                        <TextBlock Text="Connecting"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ResourceDictionary>
-        </Grid.Resources>
+    <catel:UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate x:Key="LoginWaitTemplate">
+                <Grid>
+                    <Grid.Effect>
+                        <DropShadowEffect/>
+                    </Grid.Effect>
+                    
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
+                        <TextBlock Text="Connecting" Foreground="White" FontSize="16" HorizontalAlignment="Center"/>
+
+                        <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
+                                           IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </catel:UserControl.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="4*"/>
@@ -42,7 +51,8 @@
         <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
-        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" VerticalAlignment="Stretch">
+        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" 
+                                    VerticalAlignment="Stretch" CollapseContentOnWaiting="True">
             <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

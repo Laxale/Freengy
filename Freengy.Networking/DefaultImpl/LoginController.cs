@@ -99,6 +99,12 @@ namespace Freengy.Networking.DefaultImpl
             return true;
         }
 
+        public void LogIn(LoginModel loginParameters) 
+        {
+            this.LogInTask(loginParameters);
+            this.LogInTaskContinuator();
+        }
+
         public Task LogInAsync(LoginModel loginParameters) 
         {
             return this.taskWrapper.Wrap(() => this.LogInTask(loginParameters), this.LogInTaskContinuator);
@@ -135,6 +141,10 @@ namespace Freengy.Networking.DefaultImpl
             
         }
 
+        private void LogInTaskContinuator() 
+        {
+            this.messageMediator.SendMessage(this.messageLoggedIn);
+        }
         private void LogInTaskContinuator(Task parentTask) 
         {
             // TODO implement

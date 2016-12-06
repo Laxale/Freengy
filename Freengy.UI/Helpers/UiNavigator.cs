@@ -119,7 +119,7 @@ namespace Freengy.UI.Helpers
 
             if (loggedInMessage == null) return false;
 
-            this.waiter.Hide();
+            //this.waiter.Hide();
 
             this.Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
 
@@ -132,7 +132,7 @@ namespace Freengy.UI.Helpers
 
             if (loggedInMessage == null) return false;
 
-            this.waiter.Hide();
+            //this.waiter.Hide();
 
             this.Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
 
@@ -147,7 +147,7 @@ namespace Freengy.UI.Helpers
 
             if (loggedInMessage == null) return false;
 
-            this.waiter.Show("Connecting...");
+            //this.waiter.Show("Connecting...");
 
             return true;
         }

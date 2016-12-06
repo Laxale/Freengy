@@ -260,25 +260,23 @@ namespace Freengy.UI.ViewModels
 
         private async void CommandLoginImpl() 
         {
-            Action loginAction =
-                async () =>
-                {
-                    base.IsWaiting = true;
-                    await this.loginController.LogInAsync(this.GetCurrentLoginParameters());
-                };
+            await base.taskWrapper.Wrap(this.LoginAction, this.LoginContinuator);
+        }
 
-            Action<Task> loginContinuator =
-                parentTask =>
-                {
-                    base.IsWaiting = false;
+        private void LoginAction() 
+        {
+            base.IsWaiting = true;
 
-                    if (parentTask.Exception != null)
-                    {
-                        this.ReportMessage(parentTask.Exception.GetReallyRootException().Message);
-                    }
-                };
+            this.loginController.LogIn(this.GetCurrentLoginParameters());
+        }
+        private void LoginContinuator(Task parentTask) 
+        {
+            base.IsWaiting = false;
 
-            await base.taskWrapper.Wrap(loginAction, loginContinuator);
+            if (parentTask.Exception != null)
+            {
+                this.ReportMessage(parentTask.Exception.GetReallyRootException().Message);
+            }
         }
 
         private LoginModel GetCurrentLoginParameters() 
