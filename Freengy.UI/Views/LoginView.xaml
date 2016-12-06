@@ -42,8 +42,7 @@
         <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
-        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}"
-                                    VerticalAlignment="Stretch">
+        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" VerticalAlignment="Stretch">
             <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

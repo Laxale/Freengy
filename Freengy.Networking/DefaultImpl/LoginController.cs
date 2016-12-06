@@ -99,19 +99,20 @@ namespace Freengy.Networking.DefaultImpl
             return true;
         }
 
-        public async Task LogInAsync(LoginModel loginParameters) 
+        public Task LogInAsync(LoginModel loginParameters) 
         {
-            await this.taskWrapper.Wrap(() => this.LogInTask(loginParameters), this.LogInTaskContinuator);
+            return this.taskWrapper.Wrap(() => this.LogInTask(loginParameters), this.LogInTaskContinuator);
         }
 
 
         private async void LogInTask(LoginModel loginParameters) 
         {
-            Thread.Sleep(500);
+            this.messageMediator.SendMessage(this.messageLoggInAttempt);
 
+            Thread.Sleep(1000);
+            
             return; // skip for now
 
-            this.messageMediator.SendMessage(this.messageLoggInAttempt);
             // TODO implement
             using (var keccak = System.Security.Cryptography.SHA512.Create())
             {

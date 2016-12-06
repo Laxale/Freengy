@@ -18,7 +18,6 @@
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 
     <Window.Background>
-<!--        <ImageBrush ImageSource="/Images/ShellBackground.jpg"/>-->
         <VisualBrush>
             <VisualBrush.Visual>
                 <Grid>

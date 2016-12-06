@@ -261,10 +261,10 @@ namespace Freengy.UI.ViewModels
         private async void CommandLoginImpl() 
         {
             Action loginAction =
-                () =>
+                async () =>
                 {
                     base.IsWaiting = true;
-                    this.loginController.LogInAsync(this.GetCurrentLoginParameters());
+                    await this.loginController.LogInAsync(this.GetCurrentLoginParameters());
                 };
 
             Action<Task> loginContinuator =
