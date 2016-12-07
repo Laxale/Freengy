@@ -25,6 +25,8 @@ namespace Freengy.Base.Interfaces
         /// </summary>
         string WorkingDirectoryPath { get; }
 
+        IEnumerable<string> GetDllsInFolder(string folderPath);
+
         /// <summary>
         /// Get paths to all .dll assemblies in a given .\WorkingDirectory\subfolderName
         /// </summary>

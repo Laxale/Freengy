@@ -24,6 +24,7 @@
       <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
@@ -36,6 +37,8 @@
     <Compile Include="Constants\StringConstants.cs" />
     <Compile Include="DefaultImpl\GameDispatcher.cs" />
     <Compile Include="DefaultImpl\GameListProvider.cs" />
+    <Compile Include="Helpers\GameFolderConfigFilterStrategy.cs" />
+    <Compile Include="Helpers\GameDirectoryFilterStrategyBase.cs" />
     <Compile Include="Helpers\PluginConfigResearcher.cs" />
     <Compile Include="Helpers\PluginSettingsValidator.cs" />
     <Compile Include="Interfaces\IGameDispatcher.cs" />

@@ -42,6 +42,17 @@ namespace Freengy.Base.DefaultImpl
 
         public string WorkingDirectoryPath => Environment.CurrentDirectory;
 
+        public IEnumerable<string> GetDllsInFolder(string folderPath) 
+        {
+            if (string.IsNullOrWhiteSpace(folderPath)) throw new ArgumentNullException(nameof(folderPath));
+
+            if (!Directory.Exists(folderPath)) throw new DirectoryNotFoundException(nameof(folderPath));
+
+            IEnumerable<string> foundDlls = Directory.EnumerateFiles(folderPath, "*.dll");
+
+            return foundDlls;
+        }
+
         public IEnumerable<string> GetDllsInSubFolder(string subFolderName) 
         {
             return this.GetFilesInSubfolderByFilter(subFolderName, "*.dll");
