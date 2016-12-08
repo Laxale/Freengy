@@ -126,6 +126,9 @@
   <data name="GamesNotFoundHintText" xml:space="preserve">
     <value>Games not found. Look for issue resolving</value>
   </data>
+  <data name="InviteFriendText" xml:space="preserve">
+    <value>Invite friend</value>
+  </data>
   <data name="WhatIsYourGameFolderText" xml:space="preserve">
     <value>What is your game folder?</value>
   </data>

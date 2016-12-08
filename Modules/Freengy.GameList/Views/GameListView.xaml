@@ -13,7 +13,8 @@
                    xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
                    xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
                    xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
-                   
+                   xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+
                    mc:Ignorable="d" 
                    d:DesignWidth="300"
                    d:DataContext="{d:DesignInstance Type=viewmodels:GameListViewModel}">
@@ -95,9 +96,10 @@
                                         </MenuItem.CommandParameter>
                                     </MenuItem>
 
-                                    <MenuItem Header="Invite friend"/>
+                                    <MenuItem Header="{x:Static gamelist:Resources.InviteFriendText}"/>
                                     <Separator/>
-                                    <MenuItem Header="Remove"/>
+                                    <MenuItem Header="{x:Static commonres:StringResources.IgnoreText}"/>
+                                    <MenuItem Header="{x:Static commonres:StringResources.RemoveText}"/>
                                 </ContextMenu>
                             </Grid.ContextMenu>
 

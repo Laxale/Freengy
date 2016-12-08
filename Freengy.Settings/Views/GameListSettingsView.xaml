@@ -27,7 +27,7 @@
                     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif"
                                            IsAutoStart="True" Opacity="0.6" DockPanel.Dock="Top" MaxHeight="{StaticResource CommonMoreLargeIconSize}" 
-                                           VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                         <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
                                    Text="{x:Static common:StringResources.LoadingText}" Foreground="{StaticResource FirstMainBrush}"/>
@@ -36,7 +36,6 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-
 
     <controls:WaitableDecorator WaitTemplate="{StaticResource WaitTemplate}">
         <Grid>
@@ -51,7 +50,6 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.GamesFolderPathText}"/>
-
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -89,6 +87,8 @@
                     </Button>
                 </DockPanel>
             </Grid>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Ignore list"/>
         </Grid>
     </controls:WaitableDecorator>
 </UserControl>

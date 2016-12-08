@@ -195,4 +195,10 @@
   <data name="LoadingText" xml:space="preserve">
     <value>Loading</value>
   </data>
+  <data name="IgnoreText" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
+  <data name="RemoveText" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

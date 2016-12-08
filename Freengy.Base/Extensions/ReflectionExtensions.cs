@@ -65,7 +65,7 @@ namespace Freengy.Base.Extensions
             Type implementingType =
                 assembly.DefinedTypes.FirstOrDefault(definedType => definedType.ImplementsInterface(interfaceType));
 
-            ReflectionExtensions.ThrowNotImplementsIfNull(assembly, implementingType, interfaceType);
+            ThrowNotImplementsIfNull(assembly, implementingType, interfaceType);
 
             return implementingType;
         }

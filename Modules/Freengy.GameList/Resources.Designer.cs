@@ -88,6 +88,15 @@ namespace Freengy.GameList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invite friend.
+        /// </summary>
+        public static string InviteFriendText {
+            get {
+                return ResourceManager.GetString("InviteFriendText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What is your game folder?.
         /// </summary>
         public static string WhatIsYourGameFolderText {

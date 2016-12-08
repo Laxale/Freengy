@@ -151,6 +151,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignore.
+        /// </summary>
+        public static string IgnoreText {
+            get {
+                return ResourceManager.GetString("IgnoreText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In progress.
         /// </summary>
         public static string InProgressText {
@@ -219,6 +228,15 @@ namespace Freengy.CommonResources {
         public static string RegisterText {
             get {
                 return ResourceManager.GetString("RegisterText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string RemoveText {
+            get {
+                return ResourceManager.GetString("RemoveText", resourceCulture);
             }
         }
         
