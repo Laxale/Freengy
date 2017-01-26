@@ -9,6 +9,7 @@ namespace Freengy.GameList.Diagnostics
     using System.Linq;
     using System.Collections.Generic;
 
+    using Freengy.Base.Interfaces;
     using Freengy.Settings.Interfaces;
     using Freengy.Settings.ModuleSettings;
 
@@ -27,16 +28,20 @@ namespace Freengy.GameList.Diagnostics
         private static readonly string TestAssembliesUnitName = "Are there assemblies in game folder?";
         private static readonly string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
 
+        private readonly ISettingsFacade settingsFacade;
         private readonly IDiagnosticsUnitFactory unitFactory;
+        private readonly IAppDirectoryInspector appDirectoryInspector;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
 
         #endregion vars
 
 
-        internal GameListDiagnosticsCategory() 
+        internal GameListDiagnosticsCategory()
         {
+            this.settingsFacade = this.serviceLocator.ResolveType<ISettingsFacade>();
             this.unitFactory = this.serviceLocator.ResolveType<IDiagnosticsUnitFactory>();
+            this.appDirectoryInspector = this.serviceLocator.ResolveType<IAppDirectoryInspector>();
 
             this.FillUnits();
         }
@@ -69,8 +74,7 @@ namespace Freengy.GameList.Diagnostics
 
         private bool GameFolderAtomicUnit() 
         {
-            var settingsFacade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
-            var gamelistUnit = settingsFacade.GetUnit<GameListSettingsUnit>();
+            var gamelistUnit = this.settingsFacade.GetUnit<GameListSettingsUnit>();
 
             this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo = gamelistUnit.GamesFolderPath;
 
@@ -80,10 +84,22 @@ namespace Freengy.GameList.Diagnostics
         {
             System.Threading.Thread.Sleep(1000);
 
-            this.diagnosticUnits.First(unit => unit.Name == TestAssembliesUnitName).ResultInfo =
-                "Found assemblies ig game folder : blabla";
+            string gamesPath = this.settingsFacade.GetUnit<GameListSettingsUnit>().GamesFolderPath;
+            IEnumerable<string> dllsInGamesPath = this.appDirectoryInspector.GetDllsInFolder(gamesPath).ToArray();
 
-            return false;
+            bool foundDlls = dllsInGamesPath.Any();
+
+            string message =
+                foundDlls ? 
+                    $"Found assemblies in game folder:{ Environment.NewLine } { string.Join(Environment.NewLine, dllsInGamesPath) }" : 
+                    "Nothing";
+
+            this
+                .diagnosticUnits
+                .First(unit => unit.Name == TestAssembliesUnitName)
+                .ResultInfo = message;
+
+            return foundDlls;
         }
 
         private bool AnyGameDllsAtomicTest() 
