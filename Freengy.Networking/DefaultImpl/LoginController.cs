@@ -9,6 +9,7 @@ using System.Runtime;
 using System.Net.Http;
 using System.Threading;
 using System.Configuration;
+using System.Net;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 
@@ -23,6 +24,7 @@ using Catel.IoC;
 using Catel.Messaging;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Enum;
+using Freengy.Networking.Helpers;
 using Newtonsoft.Json;
 
 
@@ -80,13 +82,8 @@ namespace Freengy.Networking.DefaultImpl
                 
                 HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
 
-                var serializer = new JsonSerializer();
-                
-                using (var streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
-                using (var jsonReader = new JsonTextReader(streamReader))
-                {
-                    request = serializer.Deserialize<RegistrationRequestModel>(jsonReader);
-                }
+                Stream responceStream = response.Content.ReadAsStreamAsync().Result;
+                request = new SerializeHelper().DeserializeObject<RegistrationRequestModel>(responceStream);
 
                 return request.Status;
             }
@@ -94,29 +91,10 @@ namespace Freengy.Networking.DefaultImpl
 
         public AccountOnlineStatus LogIn(LoginModel loginParameters) 
         {
-            LogInTask(loginParameters);
-            LogInTaskContinuator();
-
-            return AccountOnlineStatus.Error;
-        }
-
-        public Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
-        {
-            taskWrapper.Wrap(() => LogInTask(loginParameters), LogInTaskContinuator);
-
-            return Task.FromResult(AccountOnlineStatus.Error);
-        }
-
-
-        private async void LogInTask(LoginModel loginParameters) 
-        {
             messageMediator.SendMessage(messageLoggInAttempt);
 
-            Thread.Sleep(1000);
-            
-            return; // skip for now
+            Thread.Sleep(500);
 
-            // TODO implement
             using (var keccak = System.Security.Cryptography.SHA512.Create())
             {
                 byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.PasswordHash);
@@ -131,10 +109,38 @@ namespace Freengy.Networking.DefaultImpl
 
             //X509Certificate2 certificate = GetMyX509Certificate();
 
-            HttpClient client = new HttpClient(handler);
+            using (var client = new HttpClient(handler))
+            {
+                var serializedRequest = JsonConvert.SerializeObject(loginParameters);
+                var content = new StringContent(serializedRequest);
+                HttpResponseMessage result = client.PostAsync(Url.Http.ServerHttpLogInUrl, content).Result;
 
-            var result = await client.GetAsync("http://localhost:44000");
-            
+                if (result.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new InvalidOperationException("Login attempt failed");
+                }
+
+                loginParameters = new SerializeHelper().DeserializeObject<LoginModel>(result.Content.ReadAsStreamAsync().Result);
+
+                if (loginParameters.LogInStatus == AccountOnlineStatus.Online)
+                {
+                    messageMediator.SendMessage(messageLoggedIn);
+                }
+
+                return loginParameters.LogInStatus;
+            }
+        }
+
+        public Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
+        {
+            taskWrapper.Wrap(() => LogInTask(loginParameters), LogInTaskContinuator);
+
+            return Task.FromResult(AccountOnlineStatus.Error);
+        }
+
+
+        private async void LogInTask(LoginModel loginParameters) 
+        {
             
         }
 

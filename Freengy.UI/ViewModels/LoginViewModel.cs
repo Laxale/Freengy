@@ -22,7 +22,7 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
-
+using Freengy.Networking.Enum;
 using Prism.Regions;
 
 using CommonRes = Freengy.CommonResources.StringResources;
@@ -103,7 +103,12 @@ namespace Freengy.UI.ViewModels
         {
             get => (string)GetValue(InformationProperty);
 
-            private set => SetValue(InformationProperty, value);
+            private set
+            {
+                SetValue(InformationProperty, value);
+
+                SetValue(HasInformationProperty, !string.IsNullOrWhiteSpace(value));
+            }
         }
 
         public bool HasInformation 
@@ -292,7 +297,16 @@ namespace Freengy.UI.ViewModels
         {
             IsWaiting = true;
 
-            loginController.LogIn(GetCurrentLoginParameters());
+            AccountOnlineStatus status = loginController.LogIn(GetCurrentLoginParameters());
+
+            if (status == AccountOnlineStatus.Online)
+            {
+                Information = null;
+            }
+            else
+            {
+                Information = $"Failed to log in: { status }";
+            }
         }
         private void LoginContinuator(Task parentTask) 
         {

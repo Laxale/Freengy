@@ -39,6 +39,7 @@
     <Compile Include="DefaultImpl\MediaTypes.cs" />
     <Compile Include="Enum\AccountOnlineStatus.cs" />
     <Compile Include="Enum\RegistrationStatus.cs" />
+    <Compile Include="Helpers\SerializeHelper.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />

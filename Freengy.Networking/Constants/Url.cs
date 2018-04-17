@@ -14,6 +14,7 @@ namespace Freengy.Networking.Constants
     public static class Url 
     {
         private static readonly string helloAction;
+        private static readonly string logInAction;
         private static readonly string registerAction;
         private static readonly Configuration networkingConfig;
 
@@ -23,6 +24,7 @@ namespace Freengy.Networking.Constants
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
             helloAction = networkingConfig.AppSettings.Settings["HelloActionName"].Value;
+            logInAction = networkingConfig.AppSettings.Settings["LogInActionName"].Value;
             registerAction = networkingConfig.AppSettings.Settings["RegistrationActionName"].Value;
         }
 
@@ -34,6 +36,8 @@ namespace Freengy.Networking.Constants
             public static string ServerHttpHelloUrl { get; } = $"{ ServerRootHttpUrl }/{ helloAction }";
 
             public static string ServerHttpRegisterUrl { get; } = $"{ ServerRootHttpUrl }/{ registerAction }";
+
+            public static string ServerHttpLogInUrl { get; } = $"{ ServerRootHttpUrl }/{ logInAction }";
         }
 
         public static class Https 

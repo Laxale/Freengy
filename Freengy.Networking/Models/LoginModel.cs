@@ -25,6 +25,6 @@ namespace Freengy.Networking.Models
         /// <summary>
         /// Status is set by server when processed request.
         /// </summary>
-        public AccountOnlineStatus LoggedIn { get; set; }
+        public AccountOnlineStatus LogInStatus { get; set; }
     }
 }

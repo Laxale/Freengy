@@ -3,6 +3,7 @@
 //
 
 using System;
+
 using Freengy.Networking.Enum;
 
 
@@ -13,6 +14,14 @@ namespace Freengy.Networking.Models
     /// </summary>
     public class RegistrationRequestModel 
     {
+        /// <summary>
+        /// Default ctor for deserializing purposes.
+        /// </summary>
+        public RegistrationRequestModel() 
+        {
+            
+        }
+
         /// <summary>
         /// Creates new <see cref="RegistrationRequestModel"/> with a given user Name.
         /// </summary>
