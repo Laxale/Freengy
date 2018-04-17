@@ -2,32 +2,29 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.Diagnostics.DefaultImpl;
+
+using Moq;
+
+using NUnit.Framework;
+
+using Catel.IoC;
+
 
 namespace Diagnostics.Tests.DefaultImpl 
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Diagnostics.Interfaces;
-    using Freengy.Diagnostics.DefaultImpl;
-
-    using Moq;
-
-    using NUnit.Framework;
-
-    using Catel.IoC;
-
-
     [TestFixture]
     public class DiagnosticsControllerTests 
     {
         private IDiagnosticsController diagnosticsController;
 
-
-
-
+        
         [SetUp]
         public void Setup()
         {
