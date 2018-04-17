@@ -2,14 +2,13 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.Diagnostics.Interfaces 
-{
-    using System;
-
-    using Freengy.SharedWebTypes.Interfaces;
-
-
+{    
     public interface IDiagnosticsUnit : INamedObject 
     {
         Func<bool> UnitTest { get; }

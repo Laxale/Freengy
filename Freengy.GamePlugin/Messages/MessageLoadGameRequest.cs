@@ -2,14 +2,14 @@
 //
 //
 
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+using Freengy.GamePlugin.Interfaces;
+
 
 namespace Freengy.GamePlugin.Messages 
 {
-    using Freengy.Base.Messages;
-    using Freengy.GamePlugin.Interfaces;
-    using Freengy.SharedWebTypes.Interfaces;
-
-
+    
     /// <summary>
     /// Someone requests to load a game
     /// TODO: maybe add request source to filter bad requests?

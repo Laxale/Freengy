@@ -2,21 +2,19 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Chat.DefaultImpl;
+
+using NUnit.Framework;
+
 
 namespace Base.Tests.Chat 
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.Chat.Interfaces;
-    using Freengy.Base.Chat.DefaultImpl;
-    using Freengy.SharedWebTypes.Interfaces;
-
-    using NUnit.Framework;
-
-
     internal class TestMessage : IChatMessage 
     {
         public string Text { get; set; }

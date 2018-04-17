@@ -2,13 +2,12 @@
 //
 //
 
+using System;
+using System.Collections.Generic;
+
 
 namespace Freengy.Settings.ModuleSettings 
 {
-    using System;
-    using System.Collections.Generic;
-
-
     /// <summary>
     /// Just a base class for settings units. Nothing special. Just OOP purposes
     /// </summary>

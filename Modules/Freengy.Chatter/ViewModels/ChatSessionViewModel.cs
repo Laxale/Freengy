@@ -10,8 +10,8 @@ namespace Freengy.Chatter.ViewModels
     using System.ComponentModel;
     using System.Collections.ObjectModel;
 
-    using Freengy.Base.ViewModels;
-    using Freengy.Base.Chat.Interfaces;
+    using Base.ViewModels;
+    using Base.Chat.Interfaces;
 
     using Catel.IoC;
     using Catel.Data;
@@ -28,15 +28,15 @@ namespace Freengy.Chatter.ViewModels
         {
             if (session == null) throw new ArgumentNullException(nameof(session));
             
-            this.Session = session;
-            this.Session.MessageAdded += this.OnMessageAdded;
+            Session = session;
+            Session.MessageAdded += OnMessageAdded;
 
-            this.chatMessageFactory = base.serviceLocator.ResolveType<IChatMessageFactory>();
+            chatMessageFactory = serviceLocator.ResolveType<IChatMessageFactory>();
 
-            this.SessionMessages = CollectionViewSource.GetDefaultView(this.sessionMessages);
+            SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 
             // this viewmodel is not created by catel. need to init manually
-            this.CommandSendMessage = new Command(this.CommandSendMessageImpl, this.CanSendMessage);
+            CommandSendMessage = new Command(CommandSendMessageImpl, CanSendMessage);
         }
 
 
@@ -49,7 +49,7 @@ namespace Freengy.Chatter.ViewModels
 
         public override string ToString() 
         {
-            return this.Session.Name;
+            return Session.Name;
         }
 
         #endregion override
@@ -62,13 +62,14 @@ namespace Freengy.Chatter.ViewModels
         
 
         public IChatSession Session { get; }
+
         public ICollectionView SessionMessages { get; private set; }
 
         public string MessageText 
         {
-            get { return (string) base.GetValue(MessageTextProperty); }
+            get { return (string) GetValue(MessageTextProperty); }
 
-            set { base.SetValue(MessageTextProperty, value); }
+            set { SetValue(MessageTextProperty, value); }
         }
         public static readonly PropertyData MessageTextProperty = RegisterProperty(nameof(MessageText), typeof(string), () => string.Empty);
 
@@ -77,21 +78,21 @@ namespace Freengy.Chatter.ViewModels
         {
             IChatMessageDecorator processedMessage;
 
-            var newMessage = this.chatMessageFactory.CreateMessage(this.MessageText);
+            var newMessage = chatMessageFactory.CreateMessage(MessageText);
 
-            this.Session.SendMessage(newMessage, out processedMessage);
+            Session.SendMessage(newMessage, out processedMessage);
 
-            this.MessageText = string.Empty;
+            MessageText = string.Empty;
         }
         private bool CanSendMessage() 
         {
             //return true;
-            return !string.IsNullOrWhiteSpace(this.MessageText);
+            return !string.IsNullOrWhiteSpace(MessageText);
         }
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 
         {
-            this.sessionMessages.Add(addedMessage);
+            sessionMessages.Add(addedMessage);
         }
     }
 }

@@ -2,14 +2,13 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.Base.Chat.Interfaces 
 {
-    using System;
-
-    using Freengy.SharedWebTypes.Interfaces;
-
-
     /// <summary>
     /// Represents processed chat message - one that has been marked with id and timestamp
     /// </summary>

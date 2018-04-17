@@ -2,21 +2,20 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
-namespace Freengy.UI.Helpers
+using Freengy.Base.Interfaces;
+
+
+namespace Freengy.UI.Helpers 
 {
-    using System;
-    using System.Windows;
-    using System.Threading.Tasks;
-    using System.Windows.Threading;
-
-    using Freengy.Base.Interfaces;
-
-
     /// <summary>
     /// Do not add dispatcher.Invoke() - hangs in deadlock
     /// </summary>
-    internal sealed class UiDispatcher : IGuiDispatcher
+    internal sealed class UiDispatcher : IGuiDispatcher 
     {
         private static readonly Dispatcher uiDispatcher;
 
@@ -26,17 +25,17 @@ namespace Freengy.UI.Helpers
         private static UiDispatcher instance;
         
 
-        static UiDispatcher()
+        static UiDispatcher() 
         {
             uiDispatcher = Application.Current.MainWindow.Dispatcher;
         }
 
-        private UiDispatcher()
+        private UiDispatcher() 
         {
 
         }
 
-        public static UiDispatcher Instance => UiDispatcher.instance ?? (UiDispatcher.instance = new UiDispatcher());
+        public static UiDispatcher Instance => instance ?? (instance = new UiDispatcher());
 
         #endregion Singleton
 

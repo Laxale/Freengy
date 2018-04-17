@@ -2,22 +2,21 @@
 //
 //
 
+using System;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+
+using Freengy.Base.ViewModels;
+using Freengy.Base.Interfaces;
+
+using Catel.IoC;
+using Catel.MVVM;
+
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using System;
-    using System.Windows.Data;
-    using System.ComponentModel;
-    using System.Threading.Tasks;
-    using System.Collections.ObjectModel;
-
-    using Freengy.Base.ViewModels;
-    using Freengy.SharedWebTypes.Interfaces;
-
-    using Catel.IoC;
-    using Catel.MVVM;
-
-
     public class FriendListViewModel : WaitableViewModel 
     {
         private readonly ObservableCollection<IUserAccount> friendList = new ObservableCollection<IUserAccount>();

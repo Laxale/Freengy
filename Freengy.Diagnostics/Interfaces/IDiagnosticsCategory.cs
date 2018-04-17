@@ -2,15 +2,14 @@
 //
 //
 
+using System;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.Diagnostics.Interfaces 
-{
-    using System;
-    using System.Collections.Generic;
-
-    using Freengy.SharedWebTypes.Interfaces;
-
-
+{    
     /// <summary>
     /// Represents single diagnosic unit, which must be registered in <see cref="IDiagnosticsController"/>
     /// by unique name (can be diagnostics owner type full name). Thus single type can register single unit

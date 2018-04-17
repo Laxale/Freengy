@@ -2,32 +2,30 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Windows;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Freengy.Base.Helpers;
+using Freengy.Base.ViewModels;
+using Freengy.Networking.Interfaces;
+
+using Catel.IoC;
+using Catel.Data;
+using Catel.MVVM;
+using Catel.Services;
+using Freengy.Networking.Models;
+
 
 namespace Freengy.UI.ViewModels 
-{
-    using System;
-    using System.Linq;
-    using System.Windows;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Helpers;
-    using Freengy.Base.ViewModels;
-    using Freengy.Networking.Interfaces;
-    using Freengy.SharedWebTypes.Objects;
-
-    using Catel.IoC;
-    using Catel.Data;
-    using Catel.MVVM;
-    using Catel.Services;
-    
-
+{   
     internal class RegistrationViewModel : CredentialViewModel 
     {
         private readonly IPleaseWaitService waiter;
         private readonly ILoginController loginController;
-
-
+        
 
         public RegistrationViewModel() 
         {

@@ -2,15 +2,14 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.Chat.Interfaces;
+
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using System;
-
-    using Freengy.Base.Chat.Interfaces;
-    using Freengy.SharedWebTypes.Interfaces;
-
-
     internal class ChatMessage : IChatMessage 
     {
         public ChatMessage(IUserAccount author) 

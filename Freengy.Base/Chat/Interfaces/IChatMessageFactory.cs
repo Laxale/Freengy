@@ -2,12 +2,11 @@
 //
 //
 
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.Base.Chat.Interfaces 
 {
-    using Freengy.SharedWebTypes.Interfaces;
-    
-
     public interface IChatMessageFactory 
     {
         IUserAccount Author { get; set; }

@@ -1,25 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="..\..\CommonTargets.targets" />
+  <Import Project="..\UnitTest.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{40734B7E-3E84-4675-8A6E-9C327C4220C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Base.Tests</RootNamespace>
     <AssemblyName>Base.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\output\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Freengy.SharedWebTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\output\Freengy.SharedWebTypes\bin\Debug\netstandard1.6\Freengy.SharedWebTypes.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.0.5813.39035, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
@@ -45,7 +35,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>

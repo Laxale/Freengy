@@ -2,12 +2,11 @@
 //
 //
 
+using System.Configuration;
+
 
 namespace Freengy.Base.Settings 
 {
-    using System.Configuration;
-
-
     /// <summary>
     /// Holds user-specific application settings
     /// </summary>
@@ -23,7 +22,7 @@ namespace Freengy.Base.Settings
 
         }
 
-        public static AppSettings Instance => AppSettings.instance ?? (AppSettings.instance = new AppSettings());
+        public static AppSettings Instance => instance ?? (instance = new AppSettings());
 
         #endregion Singleton
         

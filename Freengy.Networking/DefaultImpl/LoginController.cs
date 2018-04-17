@@ -2,32 +2,31 @@
 //
 //
 
+using System;
+using System.IO;
+using System.Text;
+using System.Runtime;
+using System.Net.Http;
+using System.Threading;
+using System.Configuration;
+using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
+
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Extensions;
+using Freengy.Networking.Models;
+using Freengy.Networking.Messages;
+using Freengy.Networking.Interfaces;
+
+using Catel.IoC;
+using Catel.Messaging;
+
+using Newtonsoft.Json;
+
 
 namespace Freengy.Networking.DefaultImpl 
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Runtime;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Configuration;
-    using System.Threading.Tasks;
-    using System.Security.Cryptography.X509Certificates;
-
-    using Freengy.Base.Messages;
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.Extensions;
-    using Freengy.Networking.Messages;
-    using Freengy.Networking.Interfaces;
-    using Freengy.SharedWebTypes.Objects;
-
-    using Catel.IoC;
-    using Catel.Messaging;
-
-    using Newtonsoft.Json;
-
-
     internal class LoginController : ILoginController
     {
         #region vars
@@ -80,7 +79,7 @@ namespace Freengy.Networking.DefaultImpl
 
         public bool Register(LoginModel loginParameters) 
         {
-            var registratioRequest = new RegistrationRequest(loginParameters.UserName);
+            var registratioRequest = new RegistrationRequestModel(loginParameters.UserName);
 
             var handler = new HttpClientHandler
             {
@@ -88,7 +87,7 @@ namespace Freengy.Networking.DefaultImpl
             };
 
             HttpClient client = new HttpClient(handler);
-            var request = new RegistrationRequest(loginParameters.UserName);
+            var request = new RegistrationRequestModel(loginParameters.UserName);
             string jsonRequest = JsonConvert.SerializeObject(request);
             string jsonMediaType = this.mediaTypes.GetStringValue(MediaTypesEnum.Json);
             var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);

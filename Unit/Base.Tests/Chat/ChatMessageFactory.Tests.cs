@@ -2,23 +2,21 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Chat.DefaultImpl;
+
+using NUnit.Framework;
+
+using Res = Freengy.CommonResources.StringResources;
+
 
 namespace Base.Tests.Chat 
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.Chat.Interfaces;
-    using Freengy.Base.Chat.DefaultImpl;
-    using Freengy.SharedWebTypes.Interfaces;
-
-    using NUnit.Framework;
-
-    using Res = Freengy.CommonResources.StringResources;
-
-
     [TestFixture]
     public class ChatMessageFactoryTests 
     {

@@ -2,17 +2,13 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.GamePlugin.Interfaces 
 {
-    using System;
-    using System.Windows.Media;
-    using System.Windows.Controls;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.SharedWebTypes.Interfaces;
-
-
     public interface IGamePlugin : IUiModule, INamedObject, IObjectWithId 
     {
         string GameIconSource { get; }
