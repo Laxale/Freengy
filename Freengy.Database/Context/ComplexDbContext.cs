@@ -2,8 +2,10 @@
 //
 //
 
+using Freengy.Database.Object;
 
-namespace Freengy.Database 
+
+namespace Freengy.Database.Context 
 {
     /// <summary>
     /// Базовый класс EF-контекст базы данных PKI Client для работы со сложными настройками - требующими маппинга и содержащими вложенные типы.

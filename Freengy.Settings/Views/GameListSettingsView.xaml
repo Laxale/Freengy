@@ -9,7 +9,8 @@
              xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
              xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-             
+             xmlns:properties="clr-namespace:Freengy.Settings.Properties"
+
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              
@@ -50,7 +51,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.GamesFolderPathText}"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static properties:Resources.GamesFolderPathText}"/>
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -62,7 +63,7 @@
                             Command="{Binding Path=CommandSelectGamesFolder}" 
                             Content="{Binding Path=GamesFolderPath, Mode=OneWay, 
                                               Converter={StaticResource IfNullToDefaultValueConverter},
-                                              ConverterParameter={x:Static local:Resources.DefaultSelectGamesFolderText}}">
+                                              ConverterParameter={x:Static properties:Resources.DefaultSelectGamesFolderText}}">
 
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">

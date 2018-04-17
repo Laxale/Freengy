@@ -2,25 +2,24 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+
+using Freengy.Base.Extensions;
+using Freengy.Settings.Messages;
+using Freengy.Settings.ModuleSettings;
+
+using Catel.Data;
+using Catel.MVVM;
+using Catel.Messaging;
+
+using LocalRes = Freengy.Settings.Properties.Resources;
+
 
 namespace Freengy.Settings.ViewModels 
-{
-    using System;
-    using System.Windows;
-    using System.Windows.Forms;
-    using System.Threading.Tasks;
-
-    using Freengy.Base.Extensions;
-    using Freengy.Settings.Messages;
-    using Freengy.Settings.ModuleSettings;
-
-    using Catel.Data;
-    using Catel.MVVM;
-    using Catel.Messaging;
-
-    using LocalRes = Resources;
-    
-    
+{   
     internal sealed class GameListSettingsViewModel : UnitViewModelBase 
     {
         private GameListSettingsUnit gameListUnit;

@@ -6,6 +6,8 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 
 using Freengy.Base.Settings;
@@ -20,6 +22,7 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
+
 using Prism.Regions;
 
 using CommonRes = Freengy.CommonResources.StringResources;
@@ -45,6 +48,8 @@ namespace Freengy.UI.ViewModels
             // need to resolve it by interface to avoid knowledge about concrete implementer
             waiter = serviceLocator.ResolveType<IPleaseWaitService>();
             loginController = serviceLocator.ResolveType<ILoginController>();
+
+            CheckServerAsync();
         }
 
 
@@ -75,37 +80,44 @@ namespace Freengy.UI.ViewModels
 
         public string Port 
         {
-            get { return (string)GetValue(PortProperty); }
+            get => (string)GetValue(PortProperty);
 
-            set { SetValue(PortProperty, value); }
+            set => SetValue(PortProperty, value);
         }
 
         public string HostName 
         {
-            get { return (string)GetValue(HostNameProperty); }
+            get => (string)GetValue(HostNameProperty);
 
-            set { SetValue(HostNameProperty, value); }
+            set => SetValue(HostNameProperty, value);
         }
 
         public bool SavePassword 
         {
-            get { return (bool)GetValue(SavePasswordProperty); }
+            get => (bool)GetValue(SavePasswordProperty);
 
-            set { SetValue(SavePasswordProperty, value); }
+            set => SetValue(SavePasswordProperty, value);
         }
         
         public string Information 
         {
-            get { return (string)GetValue(InformationProperty); }
+            get => (string)GetValue(InformationProperty);
 
-            private set { SetValue(InformationProperty, value); }
+            private set => SetValue(InformationProperty, value);
         }
 
         public bool HasInformation 
         {
-            get { return (bool)GetValue(HasInformationProperty); }
+            get => (bool)GetValue(HasInformationProperty);
 
-            private set { SetValue(HasInformationProperty, value); }
+            private set => SetValue(HasInformationProperty, value);
+        }
+
+        public bool IsServerAvailable 
+        {
+            get => (bool)GetValue(IsServerAvailableProperty);
+
+            private set => SetValue(IsServerAvailableProperty, value);
         }
 
         #endregion Public properties
@@ -202,6 +214,17 @@ namespace Freengy.UI.ViewModels
 
 
         #region Privates
+
+        private async void CheckServerAsync() 
+        {
+            using (var client = new HttpClient())
+            {
+                string helloAddress = Freengy.Networking.Constants.Url.Http.ServerHttpHelloUrl;
+                HttpResponseMessage response = await client.GetAsync(helloAddress);
+
+                IsServerAvailable = response.StatusCode == HttpStatusCode.OK;
+            }
+        }
 
         private async void CreateAccountImpl() 
         {
@@ -311,6 +334,9 @@ namespace Freengy.UI.ViewModels
 
         public static readonly PropertyData SavePasswordProperty =
             RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.SavePassword, () => false);
+
+        public static readonly PropertyData IsServerAvailableProperty =
+            RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.IsServerAvailable, () => false);
 
         #endregion properties data
     }

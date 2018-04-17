@@ -2,17 +2,16 @@
 //
 //
 
+using System;
+using System.IO;
+
 
 namespace Freengy.Settings.Constants 
 {
-    using System;
-    using System.IO;
-
-
     public static class SettingsConstants 
     {
         public const string DatabaseFolderName = "db";
-        public const string SettingsDbFileName = "Settings.sqlite";
+        public const string SettingsDbFileName = "Settings.db";
 
         internal static readonly string ConnectionString = 
             $"data source={ Path.Combine(DatabaseFolderName, SettingsDbFileName) };Foreign Keys=True";

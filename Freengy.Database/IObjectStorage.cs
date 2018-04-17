@@ -3,6 +3,7 @@
 //
 
 using Freengy.Base.Helpers;
+using Freengy.Database.Object;
 
 
 namespace Freengy.Database 

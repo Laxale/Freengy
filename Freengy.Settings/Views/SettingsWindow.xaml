@@ -8,6 +8,7 @@
         xmlns:vies="clr-namespace:Freengy.Settings.Views"
         xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
         xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+        xmlns:properties="clr-namespace:Freengy.Settings.Properties"
 
         mc:Ignorable="d"
         ShowInTaskbar="False"
@@ -15,7 +16,7 @@
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"
-        Title="{x:Static local:Resources.SettingsViewTitle}"
+        Title="{x:Static properties:Resources.SettingsViewTitle}"
         MinHeight="400" MinWidth="600" Height="400" Width="600"
         d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel}"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">

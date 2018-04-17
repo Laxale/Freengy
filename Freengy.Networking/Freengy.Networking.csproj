@@ -34,6 +34,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Url.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="DefaultImpl\MediaTypes.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />

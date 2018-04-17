@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:Freengy.Settings" 
              xmlns:views="clr-namespace:Freengy.Settings.Views"
              xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
+             xmlns:properties="clr-namespace:Freengy.Settings.Properties"
 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -30,17 +31,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static local:Resources.SettingsViewTitle}"
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static properties:Resources.SettingsViewTitle}"
                    Style="{StaticResource SlidingTitleTextBlockStyle}"/>
 
         <TabControl Grid.Row="1" TabStripPlacement="Left" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                     Margin="{StaticResource All4Margin}" IsSynchronizedWithCurrentItem="True">
 
-            <TabItem Header="{x:Static local:Resources.GameListSettingsTitle}">
+            <TabItem Header="{x:Static properties:Resources.GameListSettingsTitle}">
                 <views:GameListSettingsView/>
             </TabItem>
 
-            <TabItem Header="{x:Static local:Resources.FriendListSettingsTitle}">
+            <TabItem Header="{x:Static properties:Resources.FriendListSettingsTitle}">
                 <views:FriendListSettingsView/>
             </TabItem>
         </TabControl>

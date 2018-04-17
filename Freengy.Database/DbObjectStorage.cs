@@ -8,6 +8,9 @@ using System.Linq;
 using System.Reflection;
 
 using Freengy.Base.Helpers;
+using Freengy.Database.Attributes;
+using Freengy.Database.Context;
+using Freengy.Database.Object;
 
 using NLog;
 
@@ -17,7 +20,7 @@ namespace Freengy.Database
     /// <summary>
     /// Репозиторий настроек приложения - объекты настроек хранятся в единственном экземпляре.
     /// </summary>
-    public class DbObjectStorage : IObjectStorage
+    public class DbObjectStorage : IObjectStorage 
     {
         private static readonly object Locker = new object();
 
@@ -51,7 +54,7 @@ namespace Freengy.Database
         /// <typeparam name="TSimpleObject">Тип простого объекта для сохранения.</typeparam>
         /// <param name="objectToSave">Объект простых настроек.</param>
         /// <returns>Результат сохранения.</returns>
-        public Result SaveSingleSimple<TSimpleObject>(TSimpleObject objectToSave) where TSimpleObject : SimpleDbObject, new()
+        public Result SaveSingleSimple<TSimpleObject>(TSimpleObject objectToSave) where TSimpleObject : SimpleDbObject, new() 
         {
             try
             {
@@ -155,7 +158,7 @@ namespace Freengy.Database
             }
         }
 
-        private Result<TObject> TryGetDbObject<TObject>() where TObject : DbObject, new()
+        private Result<TObject> TryGetDbObject<TObject>() where TObject : DbObject, new() 
         {
             try
             {

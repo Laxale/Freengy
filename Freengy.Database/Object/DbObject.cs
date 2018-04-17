@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Freengy.Database 
+namespace Freengy.Database.Object 
 {
     /// <summary>
     /// Базовый класс для хранящихся в базе объектов.

@@ -3,9 +3,10 @@
 //
 
 using System.Data.Entity;
+using Freengy.Database.Object;
 
 
-namespace Freengy.Database 
+namespace Freengy.Database.Context 
 {
     /// <summary>
     /// EF-контекст базы данных PKI Client для работы с простыми настройками - не требующими маппинга и не содержащими вложенных типов.

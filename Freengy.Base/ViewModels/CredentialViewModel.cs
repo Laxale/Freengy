@@ -28,7 +28,7 @@ namespace Freengy.Base.ViewModels
         }
 
         /// <summary>
-        /// Not all viewmodels are goind to require email. They can override this switch
+        /// Not all viewmodels are going to require email. They can override this switch
         /// </summary>
         protected virtual bool IsEmailMandatory => false;
 
@@ -52,25 +52,26 @@ namespace Freengy.Base.ViewModels
 
         public string Email 
         {
-            get { return (string)GetValue(EmailProperty); }
+            get => (string)GetValue(EmailProperty);
 
-            set { SetValue(EmailProperty, value); }
+            set => SetValue(EmailProperty, value);
         }
 
         public string UserName 
         {
-            get { return (string)GetValue(UserNameProperty); }
+            get => (string)GetValue(UserNameProperty);
 
-            set { SetValue(UserNameProperty, value); }
+            set => SetValue(UserNameProperty, value);
         }
 
         public string Password 
         {
-            get { return (string)GetValue(PasswordProperty); }
+            get => (string)GetValue(PasswordProperty);
 
-            set { SetValue(PasswordProperty, value); }
+            set => SetValue(PasswordProperty, value);
         }
 
+        
         public static readonly PropertyData EmailProperty =
             RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Email, () => "axel.1777@mail.ru");
         public static readonly PropertyData UserNameProperty =

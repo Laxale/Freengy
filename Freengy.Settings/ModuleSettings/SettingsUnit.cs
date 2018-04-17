@@ -4,6 +4,7 @@
 
 using Freengy.Base.Interfaces;
 using Freengy.Database;
+using Freengy.Database.Object;
 
 
 namespace Freengy.Settings.ModuleSettings 

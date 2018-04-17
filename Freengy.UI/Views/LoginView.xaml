@@ -14,7 +14,7 @@
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
 
                    Margin="60, 0, 60, 0"
-                   mc:Ignorable="d" d:DesignWidth="300" 
+                   mc:Ignorable="d"
                    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
@@ -48,8 +48,28 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Name="WelcomeTextBlock" Text="{x:Static localprops:Resources.LogInWelcomeText}"
-                   Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+        <DockPanel Grid.Row="0">
+            <!-- Выезжающий блок приветствия -->
+            <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.LogInWelcomeText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+
+            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource HeavyTextBlockStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="True">
+                                <Setter Property="Text" Value="Server online"/>
+                                <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="False">
+                                <Setter Property="Text" Value="Server not available"/>
+                                <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </DockPanel>
 
         <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" 
                                     VerticalAlignment="Stretch" CollapseContentOnWaiting="True">
@@ -114,6 +134,7 @@
             </Grid>
         </controls:WaitableDecorator>
 
+        <!-- Панелька информации об ошибке -->
         <DockPanel Grid.Row="2" VerticalAlignment="Bottom" MinHeight="60" 
                    Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
             <DockPanel.Background>

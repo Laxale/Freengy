@@ -12,35 +12,32 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 
+using Freengy.Database.Object;
+
 using NLog;
 
 using SQLite.CodeFirst;
 
 
-namespace Freengy.Database 
+namespace Freengy.Database.Context 
 {
     /// <summary>
     /// Базовый класс для EF-контекстов.
     /// </summary>
     /// <typeparam name="T">Тип хранимы контекстом объектов - наследник <see cref="DbObject"/>.</typeparam>
     [DbConfigurationType(typeof(SQLiteConfiguration))]
-    public abstract class DbContextBase<T> : DbContext where T : DbObject, new()
+    public abstract class DbContextBase<T> : DbContext where T : DbObject, new() 
     {
         private static readonly string dbFilePath;
-        private static readonly string applicationStoragePath = @"InfoTeCS\ViPNet PKI Client\FileUnit\Storage\";
-
+        
         protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly int commandTimeoutInSeconds = 5;
 
 
-        static DbContextBase()
+        static DbContextBase() 
         {
-            string storagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationStoragePath);
-
-            EnsureDirectoryExistsUnsafely(storagePath);
-
-            dbFilePath = Path.Combine(storagePath, DbConst.DbFileName);
+            dbFilePath = Initializer.DbFilePath;
 
             DbInterception.Add(new EfCommandInterceptor());
         }
@@ -89,7 +86,7 @@ namespace Freengy.Database
         /// Some error occurred attempting to process entities in the context either before or after sending commands
         /// to the database.
         /// </exception>
-        public override int SaveChanges()
+        public override int SaveChanges() 
         {
             SetEntityValidation(false);
 
@@ -103,7 +100,7 @@ namespace Freengy.Database
         }
 
 
-        protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
+        protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items) 
         {
             //игнорим ошибку "Требуется поле ..." - дурная прокси EF не загружает нужное свойство
             var result = base.ValidateEntity(entityEntry, items);
@@ -148,23 +145,6 @@ namespace Freengy.Database
             };
 
             return new SQLiteConnection(builder.ConnectionString);
-        }
-
-        private static void EnsureDirectoryExistsUnsafely(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                logger.Debug($"Директория {directory} не существует. Попробуем создать.");
-                try
-                {
-                    Directory.CreateDirectory(directory);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, $"Не удалось создать папку {directory}");
-                    throw new Exception($"Не удалось создать папку {directory}", ex);
-                }
-            }
         }
 
 

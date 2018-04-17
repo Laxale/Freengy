@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Database 
+namespace Freengy.Database.Object 
 {
     /// <summary>
     /// Базовый класс для наследования объектов простых настроек. 

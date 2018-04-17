@@ -2,17 +2,16 @@
 //
 //
 
+using System;
+
+using Catel.IoC;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.DefaultImpl;
+
 
 namespace Freengy.UI.Helpers 
 {
-    using System;
-
-    using Catel.IoC;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.DefaultImpl;
-    
-
     /// <summary>
     /// Registers interfaces and implementations to service loctor
     /// TODO: may be move to common IModule implementation?
@@ -45,7 +44,7 @@ namespace Freengy.UI.Helpers
         public void Unregister()
         {
             throw new NotImplementedException();
-            this.IsRegistered = false;
+            //this.IsRegistered = false;
         }
     }
 }

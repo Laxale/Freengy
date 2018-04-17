@@ -3,16 +3,26 @@
 //
 
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using Freengy.Base.Helpers;
+using Freengy.Database;
+using Freengy.Database.Context;
 using Freengy.Settings.Interfaces;
 using Freengy.Settings.ModuleSettings;
+
+using NLog;
 
 
 namespace Freengy.Settings.DefaultImpl 
 {
+    /// <summary>
+    /// <see cref="ISettingsRepository"/> implementer.
+    /// </summary>
     public class SettingsRepository : ISettingsRepository 
     {
         private static readonly object Locker = new object();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private static SettingsRepository instance;
 
@@ -55,7 +65,20 @@ namespace Freengy.Settings.DefaultImpl
         /// <returns>Registered unit or null if not registered</returns>
         public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnit, new() 
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var context = new SimpleDbContext<TUnitType>())
+                {
+                    var dbObjects = context.Objects;
+
+                    return dbObjects.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"Не удалось получить { typeof(TUnitType).Name } из базы");
+                return null;
+            }
         }
 
         /// <summary>
@@ -65,7 +88,26 @@ namespace Freengy.Settings.DefaultImpl
         /// <returns>Already or just yet registered unit</returns>
         public TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnit, new() 
         {
-            throw new NotImplementedException();
+            try
+            {
+                var storage = new DbObjectStorage();
+                Result<TUnitType> result = storage.GetSingleSimple<TUnitType>();
+
+                if (result.Value == null)
+                {
+                    var newObject = new TUnitType();
+                    storage.SaveSingleSimple(newObject);
+
+                    return newObject;
+                }
+
+                return result.Value;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"Не удалось получить { typeof(TUnitType).Name } из базы");
+                return null;
+            }
         }
 
         /// <summary>

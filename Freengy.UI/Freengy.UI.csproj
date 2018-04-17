@@ -56,6 +56,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime">
       <HintPath>..\packages\System.Runtime.4.1.0\lib\net462\System.Runtime.dll</HintPath>
     </Reference>
@@ -74,10 +75,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-	
-	<Compile Include="..\NLog.config">
+    <None Include="..\NLog.config">
       <Link>NLog.config</Link>
-    </Compile>
+    </None>
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Constants\ViewNames.cs" />
     <Compile Include="Helpers\PasswordBoxBinder.cs" />
@@ -226,6 +226,7 @@
     <Resource Include="Images\snow-animation-3.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\sqlite.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

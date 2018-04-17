@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Freengy.Database 
+namespace Freengy.Database.Object 
 {
     /// <summary>
     /// Базовый класс для наследования объектов сложных настроек. 

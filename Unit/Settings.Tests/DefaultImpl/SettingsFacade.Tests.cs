@@ -2,22 +2,21 @@
 //
 //
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Settings.Tests.DefaultImpl
+using Freengy.Settings.Interfaces;
+using Freengy.Settings.DefaultImpl;
+using Freengy.Settings.ModuleSettings;
+
+using NUnit.Framework;
+
+using Catel.IoC;
+
+
+namespace Settings.Tests.DefaultImpl 
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using Freengy.Settings.Interfaces;
-    using Freengy.Settings.DefaultImpl;
-    using Freengy.Settings.ModuleSettings;
-
-    using NUnit.Framework;
-
-    using Catel.IoC;
-
-
     internal class TestSettingsUnit : SettingsUnit 
     {
         public override string Name { get; } = Guid.NewGuid().ToString().Substring(0, 6);

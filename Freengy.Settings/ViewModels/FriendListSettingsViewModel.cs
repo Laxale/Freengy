@@ -3,22 +3,18 @@
 //
 
 
+using System;
 using System.Threading.Tasks;
+
+using Freengy.Base.ViewModels;
+
+using LocalRes = Freengy.Settings.Properties.Resources;
 
 
 namespace Freengy.Settings.ViewModels 
 {
-    using System;
-
-    using Freengy.Base.ViewModels;
-
-    using LocalRes = Freengy.Settings.Resources;
-
-
     internal sealed class FriendListSettingsViewModel : UnitViewModelBase 
     {
-
-
         protected override void SetupCommands() 
         {
             

@@ -2,7 +2,10 @@
 //
 //
 
+using Freengy.Database;
+using Freengy.Base.Constants;
 using Freengy.Settings.Views;
+using Freengy.Settings.Constants;
 using Freengy.Settings.ViewModels;
 using Freengy.Settings.Interfaces;
 using Freengy.Settings.DefaultImpl;
@@ -21,6 +24,11 @@ namespace Freengy.Settings.Module
         {
             // instantiate a singleton
             var wut = Freengy.Settings.Helpers.DataContextSetter.Instance;
+
+            string appDataFolderPath = Initializer.GetFolderPathInAppData(FreengyPaths.AppDataRootFolderName);
+            Initializer.SetStorageDirectoryPath(appDataFolderPath);
+            Initializer.SetDbFileName(SettingsConstants.SettingsDbFileName);
+
             ServiceLocator.Default.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
 
             var vizualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
