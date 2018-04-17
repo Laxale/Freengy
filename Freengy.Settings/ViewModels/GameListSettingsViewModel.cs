@@ -60,7 +60,7 @@ namespace Freengy.Settings.ViewModels
 
                         await base.InitializeAsync();
                         
-                        this.gameListUnit = base.SettingsFacade.GetOrCreateUnit<GameListSettingsUnit>();
+                        this.gameListUnit = base.SettingsRepository.GetOrCreateUnit<GameListSettingsUnit>();
 
                         await this.FillPropertiesFromDatabase();
 
@@ -138,7 +138,7 @@ namespace Freengy.Settings.ViewModels
         {
             if (!this.IsDirty) return;
 
-            this.SettingsFacade.UpdateUnit(this.gameListUnit);
+            this.SettingsRepository.UpdateUnit(this.gameListUnit);
 
             base.IsDirty = false;
         }

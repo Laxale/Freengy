@@ -20,7 +20,7 @@ namespace Freengy.Base.Helpers
         /// <param name="action">Действие.</param>
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
-        public static Result OnBoth(this Result result, Action<Result> action)
+        public static Result OnBoth(this Result result, Action<Result> action) 
         {
             action(result);
 

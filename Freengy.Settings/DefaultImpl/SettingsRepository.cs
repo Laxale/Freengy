@@ -1,57 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Created by Laxale 17.04.2018
+//
+//
+
+using System;
+
 using Freengy.Settings.Interfaces;
 using Freengy.Settings.ModuleSettings;
 
-namespace Freengy.Settings.DefaultImpl
+
+namespace Freengy.Settings.DefaultImpl 
 {
-    public class SettingsFacade : ISettingsFacade 
+    public class SettingsRepository : ISettingsRepository 
     {
         private static readonly object Locker = new object();
 
-        private static SettingsFacade instance;
+        private static SettingsRepository instance;
 
 
-        private SettingsFacade() 
+        private SettingsRepository() 
         {
 
         }
 
 
         /// <summary>
-        /// Единственный инстанс <see cref="SettingsFacade"/>.
+        /// Единственный инстанс <see cref="SettingsRepository"/>.
         /// </summary>
-        public static SettingsFacade Instance 
+        public static SettingsRepository Instance 
         {
             get
             {
                 lock (Locker)
                 {
-                    return instance ?? (instance = new SettingsFacade());
+                    return instance ?? (instance = new SettingsRepository());
                 }
             }
         }
 
 
-        public SettingsUnitBase GetUnit(string unitName) 
+        public SettingsUnit GetUnit(string unitName) 
         {
             throw new NotImplementedException();
         }
 
-        public SettingsUnitBase GetUnit(Type settingsUnitType) 
+        public SettingsUnit GetUnit(Type settingsUnitType) 
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Get settings unit (must be registered in <see cref="ISettingsFacade"/> implementer before getting)
+        /// Get settings unit (must be registered in <see cref="ISettingsRepository"/> implementer before getting)
         /// </summary>
-        /// <typeparam name="TUnitType"><see cref="SettingsUnitBase"/> child</typeparam>
+        /// <typeparam name="TUnitType"><see cref="SettingsUnit"/> child</typeparam>
         /// <returns>Registered unit or null if not registered</returns>
-        public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
+        public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnit, new() 
         {
             throw new NotImplementedException();
         }
@@ -61,7 +63,7 @@ namespace Freengy.Settings.DefaultImpl
         /// </summary>
         /// <typeparam name="TUnitType"></typeparam>
         /// <returns>Already or just yet registered unit</returns>
-        public TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
+        public TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnit, new() 
         {
             throw new NotImplementedException();
         }
@@ -72,7 +74,7 @@ namespace Freengy.Settings.DefaultImpl
         /// <typeparam name="TUnitType"></typeparam>
         /// <param name="unitInstance"></param>
         /// <returns>Self - for fluent purposes</returns>
-        public ISettingsFacade UpdateUnit<TUnitType>(TUnitType unitInstance) where TUnitType : SettingsUnitBase, new() 
+        public ISettingsRepository UpdateUnit<TUnitType>(TUnitType unitInstance) where TUnitType : SettingsUnit, new() 
         {
             throw new NotImplementedException();
         }

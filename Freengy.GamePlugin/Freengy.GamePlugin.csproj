@@ -13,10 +13,6 @@
     <Reference Include="Catel.Core">
       <HintPath>..\packages\Catel.Core.4.5.3\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Freengy.SharedWebTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\output\Freengy.SharedWebTypes\bin\Debug\netstandard1.6\Freengy.SharedWebTypes.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism.Wpf">
@@ -60,6 +56,10 @@
     <ProjectReference Include="..\Freengy.Base\Freengy.Base.csproj">
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Freengy.Database\Freengy.Database.csproj">
+      <Project>{edc70343-7369-4ab5-8bd9-60cb7478e0a2}</Project>
+      <Name>Freengy.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\Freengy.Settings\Freengy.Settings.csproj">
       <Project>{deaa296b-5e75-4940-b0be-f68ab321589f}</Project>

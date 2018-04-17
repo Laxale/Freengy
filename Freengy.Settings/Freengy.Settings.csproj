@@ -56,17 +56,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\SettingsConstants.cs" />
-    <Compile Include="DefaultImpl\SettingsFacade.cs" />
+    <Compile Include="DefaultImpl\SettingsRepository.cs" />
     <Compile Include="Helpers\DataContextSetter.cs" />
     <Compile Include="Messages\MessageRequestContext.cs" />
     <Compile Include="Messages\MessageSaveRequest.cs" />
     <Compile Include="Messages\MessageSettingChanged.cs" />
-    <Compile Include="Migrations\SettingsMigration.cs" />
     <Compile Include="ModuleSettings\FriendListSettingsUnit.cs" />
     <Compile Include="ModuleSettings\GameListSettingsUnit.cs" />
     <Compile Include="ViewModels\FriendListSettingsViewModel.cs" />
-    <Compile Include="ModuleSettings\SettingsUnitBase.cs" />
-    <Compile Include="Interfaces\ISettingsFacade.cs" />
+    <Compile Include="ModuleSettings\SettingsUnit.cs" />
+    <Compile Include="Interfaces\ISettingsRepository.cs" />
     <Compile Include="InternalsExposer.cs" />
     <Compile Include="ViewModels\UnitViewModelBase.cs" />
     <Compile Include="Views\FriendListSettingsView.xaml.cs">

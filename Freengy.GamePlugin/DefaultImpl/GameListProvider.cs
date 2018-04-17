@@ -2,35 +2,34 @@
 //
 //
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Freengy.Base.Helpers;
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Extensions;
+
+using Freengy.Settings.Interfaces;
+using Freengy.Settings.ModuleSettings;
+
+using Freengy.GamePlugin.Helpers;
+using Freengy.GamePlugin.Messages;
+using Freengy.GamePlugin.Constants;
+using Freengy.GamePlugin.Interfaces;
+
+using Prism.Modularity;
+
+using Catel.IoC;
+using Catel.Messaging;
+
 
 namespace Freengy.GamePlugin.DefaultImpl 
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Helpers;
-    using Freengy.Base.Messages;
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.Extensions;
-
-    using Freengy.Settings.Interfaces;
-    using Freengy.Settings.ModuleSettings;
-
-    using Freengy.GamePlugin.Helpers;
-    using Freengy.GamePlugin.Messages;
-    using Freengy.GamePlugin.Constants;
-    using Freengy.GamePlugin.Interfaces;
-
-    using Prism.Modularity;
-
-    using Catel.IoC;
-    using Catel.Messaging;
-
-
     /// <summary>
     /// Thread-safe plugins cache. No need to use lock() outside
     /// </summary>
@@ -55,7 +54,7 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             lock (Locker)
             {
-                bool contains = this.loadedMainViewTypes.Values.Contains(viewType);
+                bool contains = loadedMainViewTypes.Values.Contains(viewType);
 
                 return contains;
             }
@@ -65,15 +64,15 @@ namespace Freengy.GamePlugin.DefaultImpl
         {
             lock (Locker)
             {
-                return this.loadedPlugins.Keys;
+                return loadedPlugins.Keys;
             }
         }
 
         public IEnumerable<IGamePlugin> GetCurrentLoadedPlugins() 
         {
-            lock (PluginsCache.Locker)
+            lock (Locker)
             {
-                return this.loadedPlugins.Values;
+                return loadedPlugins.Values;
             }
         }
 
@@ -83,12 +82,12 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             lock (Locker)
             {
-                if (this.loadedMainViewTypes.ContainsKey(assemblyPath))
+                if (loadedMainViewTypes.ContainsKey(assemblyPath))
                 {
                     throw new InvalidOperationException($"Already stored path '{assemblyPath}'");
                 }
 
-                this.loadedMainViewTypes.Add(assemblyPath, viewType);
+                loadedMainViewTypes.Add(assemblyPath, viewType);
             }
         }
 
@@ -98,13 +97,13 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             lock (Locker)
             {
-                if (this.loadedPlugins.ContainsKey(assemblyPath))
+                if (loadedPlugins.ContainsKey(assemblyPath))
                 {
                     throw new InvalidOperationException(
                         $"Already stored plugin '{gamePlugin.Name}' on path '{assemblyPath}'");
                 }
 
-                this.loadedPlugins.Add(assemblyPath, gamePlugin);
+                loadedPlugins.Add(assemblyPath, gamePlugin);
             }
         }
     }
@@ -114,7 +113,7 @@ namespace Freengy.GamePlugin.DefaultImpl
         #region vars
 
         private readonly ITypeFactory typeFactory;
-        private readonly ISettingsFacade settingsFacade;
+        private readonly ISettingsRepository settingsRepository;
         private readonly IAppDirectoryInspector directoryInspector;
         private readonly PluginsCache pluginsCache = new PluginsCache();
         private readonly GameDirectoryFilterStrategyBase gameFolderStrategy;
@@ -129,41 +128,41 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         private GameListProvider() 
         {
-            this.typeFactory = this.GetTypeFactory();
-            this.gameFolderStrategy = new GameFolderConfigFilterStrategy();
-            this.settingsFacade = ServiceLocator.Default.ResolveType<ISettingsFacade>();
-            this.directoryInspector = ServiceLocator.Default.ResolveType<IAppDirectoryInspector>();
-            this.messageMediator.Register<MessageWorkingDirectoryChanged>(this, this.MessageListener);
+            typeFactory = this.GetTypeFactory();
+            gameFolderStrategy = new GameFolderConfigFilterStrategy();
+            settingsRepository = ServiceLocator.Default.ResolveType<ISettingsRepository>();
+            directoryInspector = ServiceLocator.Default.ResolveType<IAppDirectoryInspector>();
+            messageMediator.Register<MessageWorkingDirectoryChanged>(this, MessageListener);
 
-            this.TryCreateDefaultGamesFolder();
+            TryCreateDefaultGamesFolder();
         }
 
         public static GameListProvider Instance
-            => GameListProvider.instance ?? (GameListProvider.instance = new GameListProvider());
+            => instance ?? (instance = new GameListProvider());
 
         #endregion Singleton
 
 
         public IEnumerable<IGamePlugin> GetInstalledGames() 
         {
-            IEnumerable<string> newDllInGameFolderPaths = this.GetNewDllPathsInGameFolder();
+            IEnumerable<string> newDllInGameFolderPaths = GetNewDllPathsInGameFolder();
 
-            IEnumerable<string> dllsWithNotLoadedViewType = this.FilterLoadedViewTyes(newDllInGameFolderPaths);
+            IEnumerable<string> dllsWithNotLoadedViewType = FilterLoadedViewTyes(newDllInGameFolderPaths);
 
-            this.LoadGameAssemblies(dllsWithNotLoadedViewType);
+            LoadGameAssemblies(dllsWithNotLoadedViewType);
 
-            return this.pluginsCache.GetCurrentLoadedPlugins();
+            return pluginsCache.GetCurrentLoadedPlugins();
         }
 
         public async Task<IEnumerable<IGamePlugin>> GetInstalledGamesAsync() 
         {
-            return await Task.Factory.StartNew(this.GetInstalledGames);
+            return await Task.Factory.StartNew(GetInstalledGames);
         }
 
         
         private void TryCreateDefaultGamesFolder() 
         {
-            var gameListSettings = this.settingsFacade.GetOrCreateUnit<GameListSettingsUnit>();
+            var gameListSettings = settingsRepository.GetOrCreateUnit<GameListSettingsUnit>();
 
             string folderPath = gameListSettings.GamesFolderPath;
 
@@ -182,9 +181,9 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         private IEnumerable<string> GetNewDllPathsInGameFolder() 
         {
-            IEnumerable<string> loadedAssemblyPaths = this.pluginsCache.GetLoadedAssemblyPaths();
+            IEnumerable<string> loadedAssemblyPaths = pluginsCache.GetLoadedAssemblyPaths();
 
-            var gameListSettings = this.settingsFacade.GetUnit<GameListSettingsUnit>();
+            var gameListSettings = settingsRepository.GetUnit<GameListSettingsUnit>();
 
             var allGameDllPaths = new List<string>();
 
@@ -196,7 +195,7 @@ namespace Freengy.GamePlugin.DefaultImpl
                     innerDirectoryInfo =>
                     {
                         string gameDllPath;
-                        bool isGameFolder = this.gameFolderStrategy.IsGameFolder(innerDirectoryInfo.FullName, out gameDllPath);
+                        bool isGameFolder = gameFolderStrategy.IsGameFolder(innerDirectoryInfo.FullName, out gameDllPath);
 
                         if (isGameFolder) allGameDllPaths.Add(gameDllPath);
 
@@ -222,11 +221,11 @@ namespace Freengy.GamePlugin.DefaultImpl
                 string mainViewType;
                 if(!сonfigResearcher.GetMainPluginViewName(out mainViewType)) continue;
 
-                if (this.pluginsCache.ContainsViewType(mainViewType)) continue;
+                if (pluginsCache.ContainsViewType(mainViewType)) continue;
 
                 filteredPaths.Add(newDllPath);
 
-                this.pluginsCache.AddPathAndViewType(newDllPath, mainViewType);
+                pluginsCache.AddPathAndViewType(newDllPath, mainViewType);
             }
 
             return filteredPaths;
@@ -236,15 +235,15 @@ namespace Freengy.GamePlugin.DefaultImpl
         {
             foreach (string newDllPath in newGameDllPaths)
             {
-                Assembly loadedAssembly = this.LoadAssembly(newDllPath);
+                Assembly loadedAssembly = LoadAssembly(newDllPath);
 
                 Type gamePluginImplementer = loadedAssembly.FindImplementingType<IGamePlugin>();
 
-                this.TryInitializePluginModule(loadedAssembly);
+                TryInitializePluginModule(loadedAssembly);
 
-                var gamePlugin = this.typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
+                var gamePlugin = typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
 
-                this.pluginsCache.AddPathAndPlugin(newDllPath, gamePlugin);
+                pluginsCache.AddPathAndPlugin(newDllPath, gamePlugin);
             }
         }
 
@@ -264,7 +263,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             {
                 Type gameImoduleImplementer = pluginAssembly.FindImplementingType<IModule>();
 
-                var gameModule = this.typeFactory.CreateInstanceWithParameters(gameImoduleImplementer) as IModule;
+                var gameModule = typeFactory.CreateInstanceWithParameters(gameImoduleImplementer) as IModule;
 
                 gameModule?.Initialize();
             }
@@ -283,20 +282,20 @@ namespace Freengy.GamePlugin.DefaultImpl
             // it could be file or folder created - cant say exactly until checking
             if (!File.Exists(changedMessage.ChangedArgs.FullPath)) return;
 
-            var gameListSettings = this.settingsFacade.GetUnit<GameListSettingsUnit>();
+            var gameListSettings = settingsRepository.GetUnit<GameListSettingsUnit>();
 
             if (!changedMessage.ChangedArgs.FullPath.Contains(gameListSettings.GamesFolderPath)) return;
 
-            var currentGamesList = this.pluginsCache.GetCurrentLoadedPlugins().ToArray();
+            var currentGamesList = pluginsCache.GetCurrentLoadedPlugins().ToArray();
 
-            var updatedGamesList = this.GetInstalledGames();
+            var updatedGamesList = GetInstalledGames();
 
             var newGames = updatedGamesList.Except(currentGamesList).ToArray();
 
             if (newGames.Any())
             {
                 var gamesAddedMessage = new MessageGamesAdded(newGames);
-                this.messageMediator.SendMessage(gamesAddedMessage);
+                messageMediator.SendMessage(gamesAddedMessage);
             }
         }
     }

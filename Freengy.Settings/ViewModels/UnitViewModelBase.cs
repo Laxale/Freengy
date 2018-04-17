@@ -18,7 +18,7 @@ namespace Freengy.Settings.ViewModels
 
     internal abstract class UnitViewModelBase : WaitableViewModel
     {
-        protected readonly ISettingsFacade SettingsFacade = DefaultImpl.SettingsFacade.Instance;
+        protected readonly ISettingsRepository SettingsRepository = DefaultImpl.SettingsRepository.Instance;
 
 
         protected UnitViewModelBase() 

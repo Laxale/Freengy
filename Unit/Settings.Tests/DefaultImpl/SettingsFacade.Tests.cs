@@ -18,15 +18,9 @@ namespace Settings.Tests.DefaultImpl
     using Catel.IoC;
 
 
-    internal class TestSettingsUnit : SettingsUnitBase 
+    internal class TestSettingsUnit : SettingsUnit 
     {
-        protected internal override IDictionary<string, ICollection<Attribute>> ColumnsProperties { get; } =
-            new Dictionary<string, ICollection<Attribute>>
-            {
-                { nameof(TestSettingsUnit.Name), new [] { new RequiredAttribute() } }
-            };
-
-        public override string Name { get; set; } = Guid.NewGuid().ToString().Substring(0, 6);
+        public override string Name { get; } = Guid.NewGuid().ToString().Substring(0, 6);
     }
 
 
@@ -36,7 +30,7 @@ namespace Settings.Tests.DefaultImpl
         [Test(Description = "Try to get not registered unit - receive null")]
         public void GetUnit_GenericNotRegistered() 
         {
-            var facade = SettingsFacade.Instance;
+            var facade = SettingsRepository.Instance;
 
             var result = facade.GetUnit<TestSettingsUnit>();
 

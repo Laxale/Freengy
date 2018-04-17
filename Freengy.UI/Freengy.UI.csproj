@@ -74,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+	
+	<Compile Include="..\NLog.config">
+      <Link>NLog.config</Link>
+    </Compile>
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Constants\ViewNames.cs" />
     <Compile Include="Helpers\PasswordBoxBinder.cs" />

@@ -28,7 +28,7 @@ namespace Freengy.GameList.Diagnostics
         private static readonly string TestAssembliesUnitName = "Are there assemblies in game folder?";
         private static readonly string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
 
-        private readonly ISettingsFacade settingsFacade;
+        private readonly ISettingsRepository settingsRepository;
         private readonly IDiagnosticsUnitFactory unitFactory;
         private readonly IAppDirectoryInspector appDirectoryInspector;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
@@ -37,9 +37,9 @@ namespace Freengy.GameList.Diagnostics
         #endregion vars
 
 
-        internal GameListDiagnosticsCategory()
+        internal GameListDiagnosticsCategory() 
         {
-            this.settingsFacade = this.serviceLocator.ResolveType<ISettingsFacade>();
+            this.settingsRepository = this.serviceLocator.ResolveType<ISettingsRepository>();
             this.unitFactory = this.serviceLocator.ResolveType<IDiagnosticsUnitFactory>();
             this.appDirectoryInspector = this.serviceLocator.ResolveType<IAppDirectoryInspector>();
 
@@ -74,7 +74,7 @@ namespace Freengy.GameList.Diagnostics
 
         private bool GameFolderAtomicUnit() 
         {
-            var gamelistUnit = this.settingsFacade.GetUnit<GameListSettingsUnit>();
+            var gamelistUnit = this.settingsRepository.GetUnit<GameListSettingsUnit>();
 
             this.diagnosticUnits.First(unit => unit.Name == GameFolderUnitName).ResultInfo = gamelistUnit.GamesFolderPath;
 
@@ -84,7 +84,7 @@ namespace Freengy.GameList.Diagnostics
         {
             System.Threading.Thread.Sleep(1000);
 
-            string gamesPath = this.settingsFacade.GetUnit<GameListSettingsUnit>().GamesFolderPath;
+            string gamesPath = this.settingsRepository.GetUnit<GameListSettingsUnit>().GamesFolderPath;
             IEnumerable<string> dllsInGamesPath = this.appDirectoryInspector.GetDllsInFolder(gamesPath).ToArray();
 
             bool foundDlls = dllsInGamesPath.Any();

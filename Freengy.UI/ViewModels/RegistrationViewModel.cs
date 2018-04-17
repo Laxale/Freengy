@@ -29,8 +29,8 @@ namespace Freengy.UI.ViewModels
 
         public RegistrationViewModel() 
         {
-            this.waiter = base.serviceLocator.ResolveType<IPleaseWaitService>();
-            this.loginController = base.serviceLocator.ResolveType<ILoginController>();
+            waiter = serviceLocator.ResolveType<IPleaseWaitService>();
+            loginController = serviceLocator.ResolveType<ILoginController>();
         }
 
 
@@ -38,8 +38,8 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.CommandFinish   = new Command<Window>(this.CommandFinishImpl, this.CanFinish);
-            this.CommandRegister = new Command(this.CommandRegisterImpl, this.CanCallRegistration);
+            CommandFinish   = new Command<Window>(CommandFinishImpl, CanFinish);
+            CommandRegister = new Command(CommandRegisterImpl, CanCallRegistration);
         }
         
         #endregion override
@@ -70,9 +70,9 @@ namespace Freengy.UI.ViewModels
         }
 
         public static readonly PropertyData RegisteredProperty =
-            ModelBase.RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.Registered, () => false);
+            RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.Registered, () => false);
         public static readonly PropertyData IsCodeSentProperty =
-            ModelBase.RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.IsCodeSent, () => false);
+            RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.IsCodeSent, () => false);
 
         #endregion properties
 
@@ -81,25 +81,25 @@ namespace Freengy.UI.ViewModels
 
         private void CommandRegisterImpl() 
         {
-            this.waiter.Show("Checking data");
+            waiter.Show("Checking data");
 
             var loginModel = new LoginModel
             {
-                UserName = this.UserName
+                UserName = UserName
             };
 
-            this.loginController.Register(loginModel);
+            loginController.Register(loginModel);
 
-            this.waiter.Hide();
+            waiter.Hide();
 
-            this.Registered = true;
+            Registered = true;
         }
         private bool CanCallRegistration() 
         {
-            if (this.Registered) return false;
+            if (Registered) return false;
 
             List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
-            this.ValidateFields(validationResults);
+            ValidateFields(validationResults);
 
             bool canTryRegister = !validationResults.Any();
 
@@ -113,7 +113,7 @@ namespace Freengy.UI.ViewModels
         }
         private bool CanFinish(Window registrationWindow) 
         {
-            return this.Registered;
+            return Registered;
         }
 
         #endregion privates

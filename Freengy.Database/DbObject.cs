@@ -17,7 +17,7 @@ namespace Freengy.Database
         /// <summary>
         /// Конструктор.
         /// </summary>
-        protected DbObject()
+        protected DbObject() 
         {
             Id = Guid.NewGuid().ToString();
         }
