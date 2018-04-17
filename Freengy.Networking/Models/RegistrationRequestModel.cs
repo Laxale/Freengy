@@ -3,6 +3,7 @@
 //
 
 using System;
+using Freengy.Networking.Enum;
 
 
 namespace Freengy.Networking.Models 
@@ -26,8 +27,24 @@ namespace Freengy.Networking.Models
         }
 
 
-        public DateTime RequestTime { get; }
+        /// <summary>
+        /// Request creation timestamp.
+        /// </summary>
+        public DateTime RequestTime { get; set; }
 
-        public string UserName { get; }
+        /// <summary>
+        /// Registration time is set by server in case of success.
+        /// </summary>
+        public DateTime? RegistrationTime { get; set; }
+
+        /// <summary>
+        /// Desired user name to register.
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// Registration status is set by server when processed request.
+        /// </summary>
+        public RegistrationStatus Status { get; set; }
     }
 }

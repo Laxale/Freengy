@@ -22,6 +22,7 @@ using Freengy.Networking.Interfaces;
 using Catel.IoC;
 using Catel.Messaging;
 using Freengy.Networking.Constants;
+using Freengy.Networking.Enum;
 using Newtonsoft.Json;
 
 
@@ -63,7 +64,7 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        public bool Register(LoginModel loginParameters) 
+        public RegistrationStatus Register(string userName) 
         {
             var handler = new HttpClientHandler
             {
@@ -72,26 +73,38 @@ namespace Freengy.Networking.DefaultImpl
 
             using (HttpClient client = new HttpClient(handler))
             {
-                var request = new RegistrationRequestModel(loginParameters.UserName);
+                var request = new RegistrationRequestModel(userName);
                 string jsonRequest = JsonConvert.SerializeObject(request);
                 string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
                 var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
                 
                 HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
-            
-                return true;
+
+                var serializer = new JsonSerializer();
+                
+                using (var streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    request = serializer.Deserialize<RegistrationRequestModel>(jsonReader);
+                }
+
+                return request.Status;
             }
         }
 
-        public void LogIn(LoginModel loginParameters) 
+        public AccountOnlineStatus LogIn(LoginModel loginParameters) 
         {
             LogInTask(loginParameters);
             LogInTaskContinuator();
+
+            return AccountOnlineStatus.Error;
         }
 
-        public Task LogInAsync(LoginModel loginParameters) 
+        public Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
         {
-            return taskWrapper.Wrap(() => LogInTask(loginParameters), LogInTaskContinuator);
+            taskWrapper.Wrap(() => LogInTask(loginParameters), LogInTaskContinuator);
+
+            return Task.FromResult(AccountOnlineStatus.Error);
         }
 
 

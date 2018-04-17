@@ -37,6 +37,8 @@
     <Compile Include="Constants\Url.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="DefaultImpl\MediaTypes.cs" />
+    <Compile Include="Enum\AccountOnlineStatus.cs" />
+    <Compile Include="Enum\RegistrationStatus.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />
@@ -58,6 +60,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contract\LoginRequest.txt" />
+    <Content Include="Contract\RegistrationRequest.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

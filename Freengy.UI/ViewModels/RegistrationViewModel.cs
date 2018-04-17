@@ -88,7 +88,7 @@ namespace Freengy.UI.ViewModels
                 UserName = UserName
             };
 
-            loginController.Register(loginModel);
+            loginController.Register(loginModel.UserName);
 
             waiter.Hide();
 

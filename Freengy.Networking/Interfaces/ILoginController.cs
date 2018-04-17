@@ -3,7 +3,7 @@
 //
 
 using System.Threading.Tasks;
-
+using Freengy.Networking.Enum;
 using Freengy.Networking.Models;
 
 
@@ -22,21 +22,21 @@ namespace Freengy.Networking.Interfaces
         /// <summary>
         /// Attempts to register new user.
         /// </summary>
-        /// <param name="loginParameters">Log-in attempt data model.</param>
+        /// <param name="userName">Desired new user name.</param>
         /// <returns>True if new user is registered.</returns>
-        bool Register(LoginModel loginParameters);
+        RegistrationStatus Register(string userName);
 
         /// <summary>
         /// Attempts to log in the user.
         /// </summary>
         /// <param name="loginParameters">User data model.</param>
-        void LogIn(LoginModel loginParameters);
+        AccountOnlineStatus LogIn(LoginModel loginParameters);
 
         /// <summary>
         /// Attempts to log in the user asynchronously.
         /// </summary>
         /// <param name="loginParameters">User data model.</param>
         /// <returns></returns>
-        Task LogInAsync(LoginModel loginParameters);
+        Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters);
     }
 }
