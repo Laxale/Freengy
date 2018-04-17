@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Freengy.Diagnostics</RootNamespace>
     <AssemblyName>Freengy.Diagnostics</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Optimize>false</Optimize>

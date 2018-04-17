@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Freengy.GamePlugin</RootNamespace>
     <AssemblyName>Freengy.GamePlugin</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core">

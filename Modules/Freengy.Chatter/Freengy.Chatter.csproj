@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Freengy.Chatter</RootNamespace>
     <AssemblyName>Freengy.Chatter</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\output\</OutputPath>

@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Diagnostics.Tests</RootNamespace>
     <AssemblyName>Diagnostics.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\output\</OutputPath>

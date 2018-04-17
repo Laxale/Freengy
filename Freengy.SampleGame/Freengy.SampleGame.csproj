@@ -9,6 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Freengy.SampleGame</RootNamespace>
     <AssemblyName>Freengy.SampleGame</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Freengy.SharedWebTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

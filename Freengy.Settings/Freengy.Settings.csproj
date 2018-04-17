@@ -11,6 +11,8 @@
     <AssemblyName>Freengy.Settings</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Catel.Core, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
