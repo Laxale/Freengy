@@ -2,20 +2,19 @@
 //
 //
 
+using System.Threading.Tasks;
+
+using Freengy.Base.Interfaces;
+
+using Catel.IoC;
+using Catel.Data;
+using Catel.MVVM;
+using Catel.Services;
+using Catel.Messaging;
+
 
 namespace Freengy.Base.ViewModels 
 {
-    using System.Threading.Tasks;
-
-    using Freengy.Base.Interfaces;
-
-    using Catel.IoC;
-    using Catel.Data;
-    using Catel.MVVM;
-    using Catel.Services;
-    using Catel.Messaging;
-
-
     public abstract class WaitableViewModel : ViewModelBase, IRefreshable 
     {
         #region vars

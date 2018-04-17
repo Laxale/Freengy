@@ -1,21 +1,22 @@
-﻿<catel:UserControl x:Class="Freengy.Diagnostics.Views.DiagnosticsView" 
-                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                  
-                  xmlns:catel="http://catel.codeplex.com" 
-                  
-                  xmlns:local="clr-namespace:Freengy.Diagnostics.Views" 
-                  xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
-                   xmlns:helpers="clr-namespace:Freengy.Diagnostics.Helpers"
-                  xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
-                  xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-                  
-                  mc:Ignorable="d" 
-                  d:DesignHeight="300" d:DesignWidth="500"
-                  d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsViewModel}">
+﻿<catelSchema:UserControl x:Class="Freengy.Diagnostics.Views.DiagnosticsView" 
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                         
+                         xmlns:catel="http://catel.codeplex.com" 
+                         xmlns:catelSchema="http://schemas.catelproject.com"
+                         
+                         xmlns:local="clr-namespace:Freengy.Diagnostics.Views" 
+                         xmlns:diagnostics="clr-namespace:Freengy.Diagnostics"
+                         xmlns:helpers="clr-namespace:Freengy.Diagnostics.Helpers"
+                         xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
+                         xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+                         
+                         mc:Ignorable="d" 
+                         d:DesignHeight="300" d:DesignWidth="500"
+                         d:DataContext="{d:DesignInstance Type=viewModels:DiagnosticsViewModel}">
 
     <Grid>
         <Grid.Resources>
@@ -54,7 +55,7 @@
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <catel:EventToCommand Command="{Binding Path=CommandRaiseCanRunUnits}" DisableAssociatedObjectOnCannotExecute="False"/>
+                        <catelSchema:EventToCommand Command="{Binding Path=CommandRaiseCanRunUnits}" DisableAssociatedObjectOnCannotExecute="False"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
@@ -78,4 +79,4 @@
             </ListBox>
         </DockPanel>
     </Grid>
-</catel:UserControl>
+</catelSchema:UserControl>

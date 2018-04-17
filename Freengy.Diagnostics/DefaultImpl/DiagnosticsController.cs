@@ -2,22 +2,21 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.Diagnostics.ViewModels;
+
+using Catel.IoC;
+using Catel.Services;
+
 
 namespace Freengy.Diagnostics.DefaultImpl 
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Diagnostics.Interfaces;
-    using Freengy.Diagnostics.ViewModels;
-
-    using Catel.IoC;
-    using Catel.Services;
-
-
     internal class DiagnosticsController : IDiagnosticsController
     {
         private readonly IGuiDispatcher guiDispatcher;

@@ -2,37 +2,36 @@
 //
 //
 
+using System;
+using System.Windows;
+
+using Freengy.UI.Views;
+using Freengy.UI.Module;
+using Freengy.UI.Windows;
+using Freengy.UI.Constants;
+
+using Freengy.Base.Module;
+using Freengy.Chatter.Module;
+using Freengy.GameList.Module;
+using Freengy.Settings.Module;
+using Freengy.Networking.Module;
+using Freengy.GamePlugin.Module;
+using Freengy.FriendList.Module;
+using Freengy.Diagnostics.Module;
+
+using Catel.IoC;
+using Catel.Messaging;
+
+using Prism;
+using Prism.Unity;
+using Prism.Regions;
+using Prism.Modularity;
+
+using Microsoft.Practices.Unity;
+
 
 namespace Freengy.UI.Helpers 
 {
-    using System;
-    using System.Windows;
-    
-    using Freengy.UI.Views;
-    using Freengy.UI.Module;
-    using Freengy.UI.Windows;
-    using Freengy.UI.Constants;
-    
-    using Freengy.Base.Module;
-    using Freengy.Chatter.Module;
-    using Freengy.GameList.Module;
-    using Freengy.Settings.Module;
-    using Freengy.Networking.Module;
-    using Freengy.GamePlugin.Module;
-    using Freengy.FriendList.Module;
-    using Freengy.Diagnostics.Module;
-    
-    using Catel.IoC;
-    using Catel.Messaging;
-
-    using Prism;
-    using Prism.Unity;
-    using Prism.Regions;
-    using Prism.Modularity;
-
-    using Microsoft.Practices.Unity;
-
-
     public class ShellBootstrapper : UnityBootstrapper 
     {
         private IRegionManager regionManager;

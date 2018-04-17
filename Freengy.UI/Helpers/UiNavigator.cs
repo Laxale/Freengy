@@ -2,31 +2,28 @@
 //
 //
 
-
+using System;
 using System.Windows;
+
+using Freengy.UI.Constants;
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Exceptions;
+using Freengy.Base.DefaultImpl;
+using Freengy.Networking.Messages;
+using Freengy.GamePlugin.Messages;
+
+using Prism.Regions;
+
+using Catel.IoC;
+using Catel.Services;
+using Catel.Messaging;
+
+using Microsoft.Practices.Unity;
 
 
 namespace Freengy.UI.Helpers 
-{
-    using System;
-
-    using Freengy.UI.Constants;
-    using Freengy.Base.Messages;
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.Exceptions;
-    using Freengy.Base.DefaultImpl;
-    using Freengy.Networking.Messages;
-    using Freengy.GamePlugin.Messages;
-
-    using Prism.Regions;
-
-    using Catel.IoC;
-    using Catel.Services;
-    using Catel.Messaging;
-
-    using Microsoft.Practices.Unity;
-
-    
+{    
     /// <summary>
     /// Centralized handler of navigation request messages or any messages related to navigation
     /// </summary>

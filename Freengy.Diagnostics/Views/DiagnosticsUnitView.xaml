@@ -11,6 +11,7 @@
              xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
              xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+             xmlns:interactivity="http://schemas.catelproject.com"
 
              mc:Ignorable="d" 
              d:DesignWidth="300"
@@ -55,7 +56,7 @@
                    Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                        <interactivity:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
@@ -64,7 +65,7 @@
                    Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <catel:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                        <interactivity:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>

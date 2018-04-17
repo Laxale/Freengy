@@ -17,12 +17,16 @@ using Freengy.UI.Views;
 using Freengy.Networking.Models;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
+using Freengy.Networking.Constants;
+using Freengy.Networking.Enum;
 
 using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
-using Freengy.Networking.Enum;
+
+using NLog;
+
 using Prism.Regions;
 
 using CommonRes = Freengy.CommonResources.StringResources;
@@ -33,16 +37,14 @@ namespace Freengy.UI.ViewModels
     /// <summary>
     /// ViewModel for <see cref="LoginView"/>.
     /// </summary>
-    internal class LoginViewModel : CredentialViewModel, INavigationAware 
+    internal class LoginViewModel : CredentialViewModel, INavigationAware
     {
-        #region Variables
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IPleaseWaitService waiter;
         private readonly ILoginController loginController;
+
         
-        #endregion Variables
-
-
         public LoginViewModel() 
         {
             // need to resolve it by interface to avoid knowledge about concrete implementer
@@ -224,10 +226,17 @@ namespace Freengy.UI.ViewModels
         {
             using (var client = new HttpClient())
             {
-                string helloAddress = Freengy.Networking.Constants.Url.Http.ServerHttpHelloUrl;
-                HttpResponseMessage response = await client.GetAsync(helloAddress);
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(Url.Http.ServerHttpHelloUrl);
 
-                IsServerAvailable = response.StatusCode == HttpStatusCode.OK;
+                    IsServerAvailable = response.StatusCode == HttpStatusCode.OK;
+                }
+                catch (Exception ex)
+                {
+                    logger.Warn(ex, "Failed to check server");
+                    IsServerAvailable = false;
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<catel:UserControl x:Class="Freengy.Chatter.Views.ChatterView" 
+﻿<controls:UserControl x:Class="Freengy.Chatter.Views.ChatterView" 
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,8 @@
                    xmlns:local="clr-namespace:Freengy.Chatter.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.Chatter.ViewModels"
                    xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
-                   
+                   xmlns:controls="http://schemas.catelproject.com"
+
                    mc:Ignorable="d" 
                    d:DesignHeight="200" d:DesignWidth="400"
                    d:DataContext="{d:DesignInstance Type=viewmodels:ChatterViewModel}">
@@ -30,4 +31,4 @@
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>
-</catel:UserControl>
+</controls:UserControl>

@@ -1,4 +1,4 @@
-﻿<catel:UserControl x:Class="Freengy.UI.Views.RegistrationView" 
+﻿<catel1:UserControl x:Class="Freengy.UI.Views.RegistrationView" 
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,13 +13,14 @@
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+                   xmlns:catel1="http://schemas.catelproject.com"
 
                    mc:Ignorable="d" 
                    d:DesignWidth="360"
                    d:DataContext="{d:DesignInstance Type=viewModels:RegistrationViewModel}">
     <!-- d:DataContext="{d:DesignInstance Type=viewModels:RegistrationViewModel}" -->
 
-    <catel:UserControl.Resources>
+    <catel1:UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
@@ -102,7 +103,7 @@
                 </DockPanel>
             </Grid>
         </ResourceDictionary>
-    </catel:UserControl.Resources>
+    </catel1:UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -129,4 +130,4 @@
             </controls:FlipPanel>
         </controls:WaitableDecorator>
     </Grid>
-</catel:UserControl>
+</catel1:UserControl>

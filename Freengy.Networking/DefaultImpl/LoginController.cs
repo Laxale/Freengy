@@ -13,6 +13,9 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
 
+using Freengy.Networking.Constants;
+using Freengy.Networking.Enum;
+using Freengy.Networking.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Extensions;
@@ -20,18 +23,26 @@ using Freengy.Networking.Models;
 using Freengy.Networking.Messages;
 using Freengy.Networking.Interfaces;
 
+using NLog;
+
 using Catel.IoC;
 using Catel.Messaging;
-using Freengy.Networking.Constants;
-using Freengy.Networking.Enum;
-using Freengy.Networking.Helpers;
+
 using Newtonsoft.Json;
 
 
 namespace Freengy.Networking.DefaultImpl 
 {
+    using System.Security.Cryptography;
+
+
+    /// <summary>
+    /// <see cref="ILoginController"/> implementer.
+    /// </summary>
     internal class LoginController : ILoginController 
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLoggInAttempt;
@@ -95,7 +106,7 @@ namespace Freengy.Networking.DefaultImpl
 
             Thread.Sleep(500);
 
-            using (var keccak = System.Security.Cryptography.SHA512.Create())
+            using (SHA512 keccak = SHA512.Create())
             {
                 byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.PasswordHash);
 
@@ -131,33 +142,9 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        public Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
+        public async Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
         {
-            taskWrapper.Wrap(() => LogInTask(loginParameters), LogInTaskContinuator);
-
-            return Task.FromResult(AccountOnlineStatus.Error);
-        }
-
-
-        private async void LogInTask(LoginModel loginParameters) 
-        {
-            
-        }
-
-        private void LogInTaskContinuator() 
-        {
-            messageMediator.SendMessage(messageLoggedIn);
-        }
-        private void LogInTaskContinuator(Task parentTask) 
-        {
-            // TODO implement
-
-            if (parentTask.Exception != null)
-            {
-                var message = parentTask.Exception.GetReallyRootException().Message;
-            }
-
-            messageMediator.SendMessage(messageLoggedIn);
+            return await Task.Run(() => LogIn(loginParameters));
         }
     }
 }
