@@ -49,9 +49,14 @@
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Helpers\DataContextProxy.cs" />
     <Compile Include="Helpers\DllFileSearchFilter.cs" />
+    <Compile Include="Helpers\ErrorReason.cs" />
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
+    <Compile Include="Helpers\Result.cs" />
+    <Compile Include="Helpers\ResultExtensions.cs" />
+    <Compile Include="Helpers\ResultOfT.cs" />
+    <Compile Include="Helpers\UnexpectedErrorReason.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Chat\Interfaces\IChatMessage.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageDecorator.cs" />

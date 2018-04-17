@@ -16,7 +16,9 @@ namespace Freengy.Settings.Interfaces
     public interface ISettingsFacade 
     {
         SettingsUnitBase GetUnit(string unitName);
+
         SettingsUnitBase GetUnit(Type settingsUnitType);
+        
         /// <summary>
         /// Get settings unit (must be registered in <see cref="ISettingsFacade"/> implementer before getting)
         /// </summary>

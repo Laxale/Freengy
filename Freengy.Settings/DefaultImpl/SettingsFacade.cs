@@ -1,80 +1,43 @@
-﻿// Created by Laxale 23.11.2016
-//
-//
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Freengy.Settings.Interfaces;
+using Freengy.Settings.ModuleSettings;
 
-
-namespace Freengy.Settings.DefaultImpl 
+namespace Freengy.Settings.DefaultImpl
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Freengy.Settings.Configuration;
-
-    using Freengy.Settings.Interfaces;
-    using Freengy.Settings.ModuleSettings;
-
-    using NHibernate.Mapping.ByCode;
-    
-
-    internal class SettingsFacade : ISettingsFacade 
+    public class SettingsFacade : ISettingsFacade 
     {
-        #region vars
-
         private static readonly object Locker = new object();
-
-        private readonly IDictionary<string, IConformistHoldersProvider> registeredMappngs =
-            new Dictionary<string, IConformistHoldersProvider>();
-        
-        #endregion vars
-
-
-        #region Singleton
 
         private static SettingsFacade instance;
 
-        private SettingsFacade()
+
+        private SettingsFacade() 
         {
-            this.FillMappings();
+
         }
 
-        public static ISettingsFacade Instance 
-        {
-            get
-            {
-                lock (Locker)
-                {
-                    return SettingsFacade.instance ?? (SettingsFacade.instance = new SettingsFacade());
-                }
-            }
-        }
 
-        internal static SettingsFacade FullInstance 
+        /// <summary>
+        /// Единственный инстанс <see cref="SettingsFacade"/>.
+        /// </summary>
+        public static SettingsFacade Instance 
         {
             get
             {
                 lock (Locker)
                 {
-                    return SettingsFacade.instance ?? (SettingsFacade.instance = new SettingsFacade());
+                    return instance ?? (instance = new SettingsFacade());
                 }
             }
         }
-
-        #endregion Singleton
 
 
         public SettingsUnitBase GetUnit(string unitName) 
         {
-            if (string.IsNullOrWhiteSpace(unitName)) throw new ArgumentNullException(nameof(unitName));
-
-            SettingsUnitBase unit;
-
-            bool unitCreated = this.IsUnitCreated(unitName, out unit);
-
-            if (!unitCreated)
-            {
-                // create
-            }
-
             throw new NotImplementedException();
         }
 
@@ -83,110 +46,35 @@ namespace Freengy.Settings.DefaultImpl
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get settings unit (must be registered in <see cref="ISettingsFacade"/> implementer before getting)
+        /// </summary>
+        /// <typeparam name="TUnitType"><see cref="SettingsUnitBase"/> child</typeparam>
+        /// <returns>Registered unit or null if not registered</returns>
         public TUnitType GetUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
         {
-            TUnitType unit;
-
-            this.IsUnitCreated(out unit);
-            
-            return unit;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get settings unit or register it if not yet registered
+        /// </summary>
+        /// <typeparam name="TUnitType"></typeparam>
+        /// <returns>Already or just yet registered unit</returns>
         public TUnitType GetOrCreateUnit<TUnitType>() where TUnitType : SettingsUnitBase, new() 
         {
-            TUnitType registeredUnit = this.GetUnit<TUnitType>();
-
-            if (registeredUnit == null)
-            {
-                this.AddUnit(out registeredUnit);
-            }
-
-            return registeredUnit;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Flush instance state to a database
+        /// </summary>
+        /// <typeparam name="TUnitType"></typeparam>
+        /// <param name="unitInstance"></param>
+        /// <returns>Self - for fluent purposes</returns>
         public ISettingsFacade UpdateUnit<TUnitType>(TUnitType unitInstance) where TUnitType : SettingsUnitBase, new() 
         {
-            using (var session = Initializer.OpenSession())
-            {
-                using (var transaction = session.BeginTransaction())
-                {
-                    session.Update(unitInstance);
-                    transaction.Commit();
-                }
-
-                return this;
-            }
-        }
-
-
-        internal ICollection<IConformistHoldersProvider> GetRegisteredMappings() 
-        {
-            lock (Locker)
-            {
-                return this.registeredMappngs.Values;
-            }
-        }
-
-
-        private void FillMappings() 
-        {
-            var gameListMapping = new GenericMapping<GameListSettingsUnit>();
-            var friendListMapping = new GenericMapping<FriendListSettingsUnit>();
-
-            registeredMappngs.Add(typeof(GameListSettingsUnit).FullName, gameListMapping);
-            registeredMappngs.Add(typeof(FriendListSettingsUnit).FullName, friendListMapping);
-        }
-
-        private void AddUnit<TUnitType>(out TUnitType addedUnit) where TUnitType : SettingsUnitBase, new() 
-        {
-            using (var session = Initializer.OpenSession())
-            {
-                using (var transaction = session.BeginTransaction())
-                {
-                    addedUnit = new TUnitType();
-                    session.SaveOrUpdate(addedUnit);
-                    transaction.Commit();
-                }
-            }
-        }
-
-        private bool IsUnitCreated<TUnitType>(out TUnitType unit) where TUnitType : SettingsUnitBase, new() 
-        {
-            unit = null;
-
-            using (var session = Initializer.OpenSession())
-            {
-                using (var transaction = session.BeginTransaction())
-                {
-                    try
-                    {
-                        unit = session.Get<TUnitType>((long)1);
-                    }
-                    catch (Exception ex)
-                    {
-                        // log this
-                        // may be unit is just not registered in hibernate configuration by mapping
-                        System.Windows.MessageBox.Show(ex.Message, "IsUnitCreated()");
-                    }
-                    
-                    return unit!= null;
-                }
-            }
-        }
-
-        private bool IsUnitCreated(string unitName, out SettingsUnitBase unit) 
-        {
-            using (var session = Initializer.OpenSession())
-            {
-                using (var transaction = session.BeginTransaction())
-                {
-                    object unitEntry = session.Get(unitName, 1);
-
-                    unit = unitEntry as SettingsUnitBase;
-
-                    return unitEntry != null;
-                }
-            }
+            throw new NotImplementedException();
         }
     }
 }
