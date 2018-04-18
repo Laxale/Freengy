@@ -38,7 +38,7 @@ namespace Freengy.Networking.Interfaces
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Login result.</returns>
-        Result<AccountOnlineStatus> LogIn(LoginModel loginModel);
+        Result<AccountState> LogIn(LoginModel loginModel);
 
         /// <summary>
         /// Attempts to log the user out.
@@ -50,6 +50,6 @@ namespace Freengy.Networking.Interfaces
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Logging user in <see cref="Task"/>.</returns>
-        Task<Result<AccountOnlineStatus>> LogInAsync(LoginModel loginModel);
+        Task<Result<AccountState>> LogInAsync(LoginModel loginModel);
     }
 }

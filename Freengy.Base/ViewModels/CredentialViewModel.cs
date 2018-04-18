@@ -13,7 +13,7 @@ using CommonRes = Freengy.CommonResources.StringResources;
 
 namespace Freengy.Base.ViewModels 
 {
-    public class CredentialViewModel : WaitableViewModel 
+    public abstract class CredentialViewModel : WaitableViewModel 
     {
         protected override void SetupCommands() { }
 
@@ -73,9 +73,9 @@ namespace Freengy.Base.ViewModels
 
         
         public static readonly PropertyData EmailProperty =
-            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Email, () => "axel.1777@mail.ru");
+            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Email, () => string.Empty);
         public static readonly PropertyData UserNameProperty =
-            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.UserName, () => "tost");
+            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.UserName, () => string.Empty);
         public static readonly PropertyData PasswordProperty =
             RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Password, () => string.Empty);
 

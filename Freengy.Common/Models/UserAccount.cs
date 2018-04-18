@@ -45,5 +45,19 @@ namespace Freengy.Common.Models
         /// Gets or sets user account registration date.
         /// </summary>
         public DateTime RegistrationTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets last user log-in time.
+        /// </summary>
+        public DateTime LastLogInTime { get; set; }
+
+
+        /// <summary>
+        /// Set <see cref="UserAccount.UniqueId"/> equal to main <see cref="UserAccount.Id"/> property.
+        /// </summary>
+        public void SyncUniqueIdToId()  
+        {
+            UniqueId = Guid.Parse(Id);
+        }
     }
 }

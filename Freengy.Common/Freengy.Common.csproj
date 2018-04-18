@@ -36,6 +36,7 @@
     <Compile Include="Helpers\SerializeHelper.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
+    <Compile Include="Models\AccountState.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegistrationRequestModel.cs" />
     <Compile Include="Models\UserAccount.cs" />

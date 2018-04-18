@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -38,13 +39,15 @@ namespace Freengy.UI.ViewModels
     /// <summary>
     /// ViewModel for <see cref="LoginView"/>.
     /// </summary>
-    internal class LoginViewModel : CredentialViewModel, INavigationAware
+    internal class LoginViewModel : CredentialViewModel, INavigationAware 
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IPleaseWaitService waiter;
         private readonly IAccountManager accountManager;
         private readonly ILoginController loginController;
+
+        private UserAccount currentAccount;
 
 
         public LoginViewModel() 
@@ -82,20 +85,6 @@ namespace Freengy.UI.ViewModels
 
 
         #region Public properties
-
-        public string Port 
-        {
-            get => (string)GetValue(PortProperty);
-
-            set => SetValue(PortProperty, value);
-        }
-
-        public string HostName 
-        {
-            get => (string)GetValue(HostNameProperty);
-
-            set => SetValue(HostNameProperty, value);
-        }
 
         public bool SavePassword 
         {
@@ -156,44 +145,6 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        protected override void ValidateFields(List<IFieldValidationResult> validationResults) 
-        {
-            base.ValidateFields(validationResults);
-
-            if (string.IsNullOrWhiteSpace(HostName))
-            {
-                validationResults.Add
-                (
-                    //new FieldValidationResult(HostNameProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.HostNameText)
-                    FieldValidationResult.CreateError(HostNameProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.HostNameText)
-                );
-            }
-
-            if (string.IsNullOrWhiteSpace(UserName))
-            {
-                validationResults.Add
-                (
-                    new FieldValidationResult(UserNameProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText)
-                );
-            }
-
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                validationResults.Add
-                (
-                    new FieldValidationResult(PasswordProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
-                );
-            }
-
-            if (string.IsNullOrWhiteSpace(Port))
-            {
-                validationResults.Add
-                (
-                    new FieldValidationResult(PortProperty, ValidationResultType.Error, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
-                );
-            }
-        }
-
         #endregion Overrides
 
 
@@ -242,18 +193,14 @@ namespace Freengy.UI.ViewModels
 
         private void LoadCredsFromSettings() 
         {
+            var lastLoggedResult = accountManager.GetLastLoggedIn();
             var settings = AppSettings.Instance;
 
-            //this.Port     = settings.Port;
-            //this.HostName = settings.HostName;
-            //this.UserName = settings.UserName;
-            Port = settings.Port;
-            HostName = "localhost";
-            UserName = @"Администратор";
-            //            this.HostName = @"w610sstd64en-55";
-            //            this.UserName = @"w610sstd64en-55\Debugger";
-            Password = "Qwerty1234";
-//            return;
+            if (lastLoggedResult.Success && lastLoggedResult.Value != null)
+            {
+                currentAccount = lastLoggedResult.Value;
+                UserName = currentAccount.Name;
+            }
 
             SavePassword = settings.SavePassword;
 
@@ -269,7 +216,7 @@ namespace Freengy.UI.ViewModels
                 {
                     Password = string.Empty;
 
-//                    this.ReportMessage(CommonRes.FailedToDecryptPasswordError);
+                    ReportMessage("Failed to decrypt password");
                 }
             }
         }
@@ -283,21 +230,24 @@ namespace Freengy.UI.ViewModels
         {
             IsWaiting = true;
 
-            Result<AccountOnlineStatus> result = loginController.LogIn(GetCurrentLoginParameters());
+            LoginModel loginModel = GetCurrentLoginParameters();
+            Result<AccountState> result = loginController.LogIn(loginModel);
 
             if (result.Failure)
             {
                 ReportMessage(result.Error.Message);
             }
-            else if(result.Value != AccountOnlineStatus.Online)
+            else if(result.Value.OnlineStatus != AccountOnlineStatus.Online)
             {
                 ReportMessage($"Failed to log in: { result.Value }");
             }
             else
             {
+                accountManager.SaveLastLoggedIn(result.Value.Account);
                 ReportMessage(null);
             }
         }
+
         private void LoginContinuator(Task parentTask) 
         {
             IsWaiting = false;
@@ -310,15 +260,22 @@ namespace Freengy.UI.ViewModels
 
         private LoginModel GetCurrentLoginParameters() 
         {
-            var parameters = serviceLocator.ResolveType<LoginModel>();
-            Result<UserAccount> lastLoggedInResult = accountManager.GetLastLoggedIn();
-
-            if (lastLoggedInResult.Success)
-            {
-                parameters.Account = lastLoggedInResult.Value;
-                parameters.PasswordHash = Password; // TODO: waaaat?
-            }
+            var parameters = new LoginModel();
             
+            if (currentAccount != null)
+            {
+                parameters.Account = 
+                    UserName == currentAccount.Name ? 
+                        currentAccount : 
+                        new UserAccount { Name = UserName };
+            }
+            else
+            {
+                parameters.Account = new UserAccount { Name = UserName };
+            }
+
+            parameters.PasswordHash = Password; // TODO: waaaat?
+
             return parameters;
         }
 
@@ -326,12 +283,6 @@ namespace Freengy.UI.ViewModels
 
 
         #region properties data
-
-        public static readonly PropertyData PortProperty =
-            RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.Port, () => string.Empty);
-
-        public static readonly PropertyData HostNameProperty =
-            RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.HostName, () => string.Empty);
 
         public static readonly PropertyData SavePasswordProperty =
             RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.SavePassword, () => false);

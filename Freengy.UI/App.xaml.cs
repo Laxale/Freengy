@@ -2,24 +2,27 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Windows.Threading;
+using Freengy.UI.Helpers;
+
+using Catel.Logging;
+
 
 namespace Freengy.UI 
 {
-    using System;
-    using System.Windows;
-
-    using Helpers;
-
-    using Catel.Logging;
-
     public partial class App : Application 
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e) 
         {
             var splasher = new SplashScreen("Images/splash.jpg");
-            splasher.Show(true);
+            splasher.Show(false);
 
             base.OnStartup(e);
+
+            this.DispatcherUnhandledException += OnUnhandledException;
+
 #if DEBUG
             LogManager.AddDebugListener();
 #endif
@@ -28,6 +31,7 @@ namespace Freengy.UI
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
             bootstrapper.Run();
 
+            splasher.Close(TimeSpan.FromMilliseconds(100));
             if (MainWindow != null)
             {
                 MainWindow.Show();
@@ -43,6 +47,13 @@ namespace Freengy.UI
         private void OnMainWindowClosed(object sender, EventArgs args) 
         {
             // log or whatever
+            Shutdown();
+        }
+
+        private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args) 
+        {
+            MessageBox.Show(args.Exception.Message);
+
             Shutdown();
         }
     }

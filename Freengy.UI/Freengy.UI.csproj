@@ -51,6 +51,12 @@
     <Reference Include="Catel.MVVM, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Catel.MVVM.5.3.0\lib\net45\Catel.MVVM.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
@@ -77,6 +83,7 @@
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
@@ -131,6 +138,7 @@
     </None>
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Constants\ViewNames.cs" />
+    <Compile Include="DefaultImpl\AccountManager.cs" />
     <Compile Include="Helpers\PasswordBoxBinder.cs" />
     <Compile Include="Helpers\ShellBootstrapper.cs" />
     <Compile Include="Helpers\TypeRegistrator.cs" />
@@ -237,6 +245,10 @@
     <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
       <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
       <Name>Freengy.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Freengy.Database\Freengy.Database.csproj">
+      <Project>{edc70343-7369-4ab5-8bd9-60cb7478e0a2}</Project>
+      <Name>Freengy.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\Freengy.Diagnostics\Freengy.Diagnostics.csproj">
       <Project>{4791acee-adfd-49cc-b95f-abc6edb06162}</Project>

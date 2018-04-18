@@ -89,7 +89,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
 
-                <TextBox Grid.Row="0" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}"
+                <TextBox Grid.Row="0" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}" Style="{StaticResource CommonTextBoxStyle}"
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <PasswordBox Grid.Row="1" Grid.Column="1" 

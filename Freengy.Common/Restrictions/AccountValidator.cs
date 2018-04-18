@@ -76,6 +76,23 @@ namespace Freengy.Common.Restrictions
                 trimmedAccount.Privilege = AccountPrivilege.UltramarineImperator;
             }
 
+            if (string.IsNullOrWhiteSpace(trimmedAccount.Id))
+            {
+                if (trimmedAccount.UniqueId == Guid.Empty)
+                {
+                    trimmedAccount.UniqueId = Guid.NewGuid();
+                }
+
+                trimmedAccount.Id = trimmedAccount.UniqueId.ToString();
+            }
+            else
+            {
+                if (trimmedAccount.UniqueId == Guid.Empty)
+                {
+                    trimmedAccount.UniqueId = Guid.Parse(trimmedAccount.Id);
+                }
+            }
+
             return trimmedAccount;
         }
 

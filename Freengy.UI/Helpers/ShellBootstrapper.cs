@@ -40,20 +40,21 @@ namespace Freengy.UI.Helpers
         protected override void InitializeShell() 
         {
             base.InitializeShell();
-            Application.Current.MainWindow = (Window)this.Shell;
+            Application.Current.MainWindow = (Window)Shell;
+            //Application.Current.MainWindow.Show();
             
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
-            this.regionManager = base.Container.TryResolve<IRegionManager>();
+            regionManager = Container.TryResolve<IRegionManager>();
 
-            this.Register();
+            Register();
 
-            ServiceLocator.Default.RegisterInstance(base.Container);
-            ServiceLocator.Default.RegisterInstance(this.regionManager);
+            ServiceLocator.Default.RegisterInstance(Container);
+            ServiceLocator.Default.RegisterInstance(regionManager);
 
             TypeRegistrator.Instance.Register();
 
-            this.regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
+            regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
         
         protected override DependencyObject CreateShell() 
@@ -83,7 +84,7 @@ namespace Freengy.UI.Helpers
         {
             base.ConfigureContainer();
 
-            base.Container
+            Container
                 .RegisterType<object, LoginView>(ViewNames.LoginViewName)
                 .RegisterType<object, ShellView>(ViewNames.ShellViewName);
         }
@@ -106,8 +107,7 @@ namespace Freengy.UI.Helpers
             var gameListModule = new GameListModule();
             var friendListModule = new FriendListModule();
 
-            this
-                .regionManager
+            regionManager
                 .RegisterViewWithRegion(RegionNames.GameListRegion, gameListModule.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.ChatRegion, ChatterModule.Instance.ExportedViewType)
                 .RegisterViewWithRegion(RegionNames.FriendListRegion, friendListModule.ExportedViewType);

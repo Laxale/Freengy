@@ -2,25 +2,23 @@
 //
 //
 
+using System;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
+using Freengy.Base.ViewModels;
+using Freengy.Base.Chat.Interfaces;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
 
+using Catel.IoC;
+using Catel.Data;
+using Catel.MVVM;
+
+
 namespace Freengy.Chatter.ViewModels 
 {
-    using System;
-    using System.Windows.Data;
-    using System.ComponentModel;
-    using System.Collections.ObjectModel;
-
-    using Base.ViewModels;
-    using Base.Chat.Interfaces;
-
-    using Catel.IoC;
-    using Catel.Data;
-    using Catel.MVVM;
-
-
     public class ChatSessionViewModel : WaitableViewModel 
     {
         private readonly ILoginController loginController;
@@ -32,12 +30,6 @@ namespace Freengy.Chatter.ViewModels
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
             Session.MessageAdded += OnMessageAdded;
-
-            bool isreg = serviceLocator.IsTypeRegistered(typeof(IChatMessage));
-            bool isreg1 = serviceLocator.IsTypeRegistered(typeof(IChatMessageFactory));
-            var acc = serviceLocator.ResolveType<UserAccount>();
-
-            var reginfo = serviceLocator.GetRegistrationInfo(typeof(IChatMessageFactory));
 
             loginController = serviceLocator.ResolveType<ILoginController>();
             chatMessageFactory = serviceLocator.ResolveTypeUsingParameters<IChatMessageFactory>(new object[]{ loginController.CurrentAccount });

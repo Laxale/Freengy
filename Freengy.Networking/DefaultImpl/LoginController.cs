@@ -43,7 +43,6 @@ namespace Freengy.Networking.DefaultImpl
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly ITaskWrapper taskWrapper;
-        private readonly IAccountManager accountManager;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLoggInAttempt;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
@@ -62,7 +61,6 @@ namespace Freengy.Networking.DefaultImpl
             messageLoggInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
-            accountManager = serviceLocator.ResolveType<IAccountManager>();
         }
 
         public static LoginController Instance => instance ?? (instance = new LoginController());
@@ -134,36 +132,35 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Login result.</returns>
-        public Result<AccountOnlineStatus> LogIn(LoginModel loginModel) 
+        public Result<AccountState> LogIn(LoginModel loginModel) 
         {
             try
             {
                 if (loginModel?.Account == null)
                 {
-                    return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
+                    return Result<AccountState>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
                 }
 
                 messageMediator.SendMessage(messageLoggInAttempt);
 
                 Thread.Sleep(500);
 
-                AccountOnlineStatus logInStatus = LogInImpl(loginModel);
+                AccountState logInStatus = LogInImpl(loginModel);
 
-                if (logInStatus == AccountOnlineStatus.Online)
+                if (logInStatus.OnlineStatus == AccountOnlineStatus.Online)
                 {
-                    accountManager.SaveLastLoggedIn(loginModel.Account);
-
-                    return Result<AccountOnlineStatus>.Ok(logInStatus);
+                    CurrentAccount = loginModel.Account;
+                    return Result<AccountState>.Ok(logInStatus);
                 }
 
-                return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason(logInStatus.ToString()));
+                return Result<AccountState>.Fail(new UnexpectedErrorReason(logInStatus.ToString()));
             }
             catch (Exception ex)
             {
                 string message = $"Failed to log '{ loginModel?.Account?.Name }' in";
                 logger.Error(ex, message);
 
-                return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason(message));
+                return Result<AccountState>.Fail(new UnexpectedErrorReason(message));
             }
         }
 
@@ -175,13 +172,13 @@ namespace Freengy.Networking.DefaultImpl
             throw new NotImplementedException();
         }
 
-        public async Task<Result<AccountOnlineStatus>> LogInAsync(LoginModel loginParameters) 
+        public async Task<Result<AccountState>> LogInAsync(LoginModel loginParameters) 
         {
             return await Task.Run(() => LogIn(loginParameters));
         }
 
 
-        private AccountOnlineStatus LogInImpl(LoginModel loginModel) 
+        private AccountState LogInImpl(LoginModel loginModel) 
         {
             using (SHA512 keccak = SHA512.Create())
             {
@@ -208,14 +205,14 @@ namespace Freengy.Networking.DefaultImpl
                     throw new InvalidOperationException("Login attempt failed");
                 }
 
-                loginModel = new SerializeHelper().DeserializeObject<LoginModel>(result.Content.ReadAsStreamAsync().Result);
+                var loginState  = new SerializeHelper().DeserializeObject<AccountState>(result.Content.ReadAsStreamAsync().Result);
 
-                if (loginModel.LogInStatus == AccountOnlineStatus.Online)
+                if (loginState.OnlineStatus == AccountOnlineStatus.Online)
                 {
                     messageMediator.SendMessage(messageLoggedIn);
                 }
 
-                return loginModel.LogInStatus;
+                return loginState;
             }
         }
     }

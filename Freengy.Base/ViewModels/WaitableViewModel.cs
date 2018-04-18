@@ -31,6 +31,8 @@ namespace Freengy.Base.ViewModels
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
             guiDispatcher = serviceLocator.ResolveType<IGuiDispatcher>();
             uiVisualizer = serviceLocator.ResolveType<IUIVisualizerService>();
+
+            DeferValidationUntilFirstSaveCall = false;
         }
 
 

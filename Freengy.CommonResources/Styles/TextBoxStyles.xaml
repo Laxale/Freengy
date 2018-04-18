@@ -53,7 +53,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="TextBox" x:Key="{x:Type TextBox}" BasedOn="{StaticResource CommonTextBoxStyle}">
 
-    </Style>
+    <Style TargetType="TextBox" x:Key="{x:Type TextBox}" BasedOn="{StaticResource CommonTextBoxStyle}"/>
 </ResourceDictionary>
