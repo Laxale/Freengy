@@ -111,7 +111,7 @@ namespace Freengy.Base.ViewModels
                 string error = string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText);
                 validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));
             }
-            else if (Common.HasInvalidSymbols(UserName))
+            else if (Helpers.Common.HasInvalidSymbols(UserName))
             {
                 string error = string.Format(CommonRes.ValuesContainsInvalidSymbols, CommonRes.UserNameText);
                 validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));

@@ -10,6 +10,7 @@
                    xmlns:viewmodels="clr-namespace:Freengy.FriendList.ViewModels"
                    xmlns:baseinterfaces="clr-namespace:Freengy.Base.Interfaces;assembly=Freengy.Base"
                    xmlns:controls="http://schemas.catelproject.com"
+                   xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
 
                    mc:Ignorable="d" 
                    d:DesignHeight="300" d:DesignWidth="300"
@@ -47,7 +48,7 @@
 
             <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" SelectionChanged="FriendList_SelectionChanged">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type baseinterfaces:IUserAccount}">
+                    <DataTemplate DataType="{x:Type models:UserAccount}">
                         <Grid>
                             <Grid.Resources>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">

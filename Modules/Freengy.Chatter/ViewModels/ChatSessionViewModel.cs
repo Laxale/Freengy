@@ -3,6 +3,9 @@
 //
 
 
+using Freengy.Common.Models;
+using Freengy.Networking.Interfaces;
+
 namespace Freengy.Chatter.ViewModels 
 {
     using System;
@@ -20,18 +23,24 @@ namespace Freengy.Chatter.ViewModels
 
     public class ChatSessionViewModel : WaitableViewModel 
     {
+        private readonly ILoginController loginController;
         private readonly IChatMessageFactory chatMessageFactory;
         private readonly ObservableCollection<IChatMessageDecorator> sessionMessages = new ObservableCollection<IChatMessageDecorator>();
 
         
         public ChatSessionViewModel(IChatSession session) 
         {
-            if (session == null) throw new ArgumentNullException(nameof(session));
-            
-            Session = session;
+            Session = session ?? throw new ArgumentNullException(nameof(session));
             Session.MessageAdded += OnMessageAdded;
 
-            chatMessageFactory = serviceLocator.ResolveType<IChatMessageFactory>();
+            bool isreg = serviceLocator.IsTypeRegistered(typeof(IChatMessage));
+            bool isreg1 = serviceLocator.IsTypeRegistered(typeof(IChatMessageFactory));
+            var acc = serviceLocator.ResolveType<UserAccount>();
+
+            var reginfo = serviceLocator.GetRegistrationInfo(typeof(IChatMessageFactory));
+
+            loginController = serviceLocator.ResolveType<ILoginController>();
+            chatMessageFactory = serviceLocator.ResolveTypeUsingParameters<IChatMessageFactory>(new object[]{ loginController.CurrentAccount });
 
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 

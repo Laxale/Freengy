@@ -51,6 +51,10 @@
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
+      <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
+      <Name>Freengy.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Freengy.GamePlugin\Freengy.GamePlugin.csproj">
       <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
       <Name>Freengy.GamePlugin</Name>

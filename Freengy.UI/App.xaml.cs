@@ -8,7 +8,7 @@ namespace Freengy.UI
     using System;
     using System.Windows;
 
-    using Freengy.UI.Helpers;
+    using Helpers;
 
     using Catel.Logging;
 
@@ -27,15 +27,23 @@ namespace Freengy.UI
             // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
             // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
             bootstrapper.Run();
-            
-            Application.Current.MainWindow.Closed += this.OnMainWindowClosed;
+
+            if (MainWindow != null)
+            {
+                MainWindow.Show();
+                MainWindow.Closed += OnMainWindowClosed;
+            }
+            else
+            {
+                MessageBox.Show("Wow. Main window is not found");
+            }
         }
 
 
         private void OnMainWindowClosed(object sender, EventArgs args) 
         {
             // log or whatever
-            this.Shutdown();
+            Shutdown();
         }
     }
 }

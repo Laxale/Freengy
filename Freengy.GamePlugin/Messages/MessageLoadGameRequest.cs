@@ -2,8 +2,9 @@
 //
 //
 
-using Freengy.Base.Messages;
-using Freengy.Base.Interfaces;
+using System.Collections.Generic;
+
+using Freengy.Common.Models;
 using Freengy.GamePlugin.Interfaces;
 
 
@@ -16,15 +17,15 @@ namespace Freengy.GamePlugin.Messages
     /// </summary>
     public class MessageLoadGameRequest : MessageGameStateRequest 
     {
-        public MessageLoadGameRequest(IGamePlugin gamePlugin, IUserAccount friendToInvite) 
+        public MessageLoadGameRequest(IGamePlugin gamePlugin, IEnumerable<UserAccount> friendsToInvite) 
         {
             this.Plugin = gamePlugin;
-            this.FriendToInvite = friendToInvite;
+            this.FriendsToInvite = friendsToInvite;
         }
 
 
         public IGamePlugin Plugin { get; }
 
-        public IUserAccount FriendToInvite { get; }
+        public IEnumerable<UserAccount> FriendsToInvite { get; }
     }
 }

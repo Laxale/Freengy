@@ -3,6 +3,7 @@
 //
 
 using Freengy.Base.Interfaces;
+using Freengy.Common.Interfaces;
 using Freengy.Database;
 using Freengy.Database.Object;
 

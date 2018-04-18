@@ -10,15 +10,16 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 
+using Freengy.Common.Enums;
+using Freengy.Common.Models;
 using Freengy.Base.Settings;
 using Freengy.Base.Extensions;
 using Freengy.Base.ViewModels;
+using Freengy.Base.Interfaces;
 using Freengy.UI.Views;
-using Freengy.Networking.Models;
 using Freengy.Networking.Interfaces;
-using Freengy.Networking.DefaultImpl;
 using Freengy.Networking.Constants;
-using Freengy.Networking.Enum;
+using Freengy.Common.Helpers.Result;
 
 using Catel.IoC;
 using Catel.Data;
@@ -42,13 +43,15 @@ namespace Freengy.UI.ViewModels
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IPleaseWaitService waiter;
+        private readonly IAccountManager accountManager;
         private readonly ILoginController loginController;
 
-        
+
         public LoginViewModel() 
         {
             // need to resolve it by interface to avoid knowledge about concrete implementer
             waiter = serviceLocator.ResolveType<IPleaseWaitService>();
+            accountManager = serviceLocator.ResolveType<IAccountManager>();
             loginController = serviceLocator.ResolveType<ILoginController>();
 
             CheckServerAsync();
@@ -101,25 +104,6 @@ namespace Freengy.UI.ViewModels
             set => SetValue(SavePasswordProperty, value);
         }
         
-        public string Information 
-        {
-            get => (string)GetValue(InformationProperty);
-
-            private set
-            {
-                SetValue(InformationProperty, value);
-
-                SetValue(HasInformationProperty, !string.IsNullOrWhiteSpace(value));
-            }
-        }
-
-        public bool HasInformation 
-        {
-            get => (bool)GetValue(HasInformationProperty);
-
-            private set => SetValue(HasInformationProperty, value);
-        }
-
         public bool IsServerAvailable 
         {
             get => (bool)GetValue(IsServerAvailableProperty);
@@ -155,13 +139,6 @@ namespace Freengy.UI.ViewModels
             await base.InitializeAsync();
 
             LoadCredsFromSettings();
-        }
-
-        public override void ReportMessage(string information) 
-        {
-            HasInformation = !string.IsNullOrWhiteSpace(information);
-
-            Information = information;
         }
 
         protected override void InitializationContinuator(Task parentTask) 
@@ -306,15 +283,19 @@ namespace Freengy.UI.ViewModels
         {
             IsWaiting = true;
 
-            AccountOnlineStatus status = loginController.LogIn(GetCurrentLoginParameters());
+            Result<AccountOnlineStatus> result = loginController.LogIn(GetCurrentLoginParameters());
 
-            if (status == AccountOnlineStatus.Online)
+            if (result.Failure)
             {
-                Information = null;
+                ReportMessage(result.Error.Message);
+            }
+            else if(result.Value != AccountOnlineStatus.Online)
+            {
+                ReportMessage($"Failed to log in: { result.Value }");
             }
             else
             {
-                Information = $"Failed to log in: { status }";
+                ReportMessage(null);
             }
         }
         private void LoginContinuator(Task parentTask) 
@@ -330,11 +311,14 @@ namespace Freengy.UI.ViewModels
         private LoginModel GetCurrentLoginParameters() 
         {
             var parameters = serviceLocator.ResolveType<LoginModel>();
+            Result<UserAccount> lastLoggedInResult = accountManager.GetLastLoggedIn();
 
-            parameters.UserName = UserName;
-            parameters.PasswordHash = Password; // TODO: waaaat?
-            parameters.UserName = UserName;
-
+            if (lastLoggedInResult.Success)
+            {
+                parameters.Account = lastLoggedInResult.Value;
+                parameters.PasswordHash = Password; // TODO: waaaat?
+            }
+            
             return parameters;
         }
 
@@ -348,12 +332,6 @@ namespace Freengy.UI.ViewModels
 
         public static readonly PropertyData HostNameProperty =
             RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.HostName, () => string.Empty);
-
-        public static readonly PropertyData InformationProperty =
-            RegisterProperty<LoginViewModel, string>(loginViewModel => loginViewModel.Information, () => string.Empty);
-
-        public static readonly PropertyData HasInformationProperty =
-            RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.HasInformation, () => false);
 
         public static readonly PropertyData SavePasswordProperty =
             RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.SavePassword, () => false);

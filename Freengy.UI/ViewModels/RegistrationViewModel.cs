@@ -8,7 +8,10 @@ using System.Windows;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+using Freengy.Common.Enums;
+using Freengy.Common.Helpers.Result;
 using Freengy.Base.Helpers;
+using Freengy.Common.Models;
 using Freengy.Base.ViewModels;
 using Freengy.Networking.Interfaces;
 
@@ -16,7 +19,6 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
-using Freengy.Networking.Models;
 
 
 namespace Freengy.UI.ViewModels 
@@ -83,16 +85,18 @@ namespace Freengy.UI.ViewModels
         {
             waiter.Show("Checking data");
 
-            var loginModel = new LoginModel
-            {
-                UserName = UserName
-            };
-
-            loginController.Register(loginModel.UserName);
+            Result<UserAccount> result = loginController.Register(UserName);
 
             waiter.Hide();
 
-            Registered = true;
+            if (result.Failure)
+            {
+                ReportMessage(result.Error.Message);
+            }
+            else
+            {
+                Registered = true;
+            }
         }
         private bool CanCallRegistration() 
         {

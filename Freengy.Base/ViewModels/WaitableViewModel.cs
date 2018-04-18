@@ -17,8 +17,6 @@ namespace Freengy.Base.ViewModels
 {
     public abstract class WaitableViewModel : ViewModelBase, IRefreshable 
     {
-        #region vars
-
         protected readonly ITaskWrapper taskWrapper;
         protected readonly ITypeFactory typeFactory;
         protected readonly IGuiDispatcher guiDispatcher;
@@ -26,20 +24,14 @@ namespace Freengy.Base.ViewModels
         protected readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         protected readonly IMessageMediator messageMediator = MessageMediator.Default;
 
-        #endregion vars
-
-
-        #region ctor
 
         protected WaitableViewModel() 
         {
-            this.typeFactory = this.GetTypeFactory();
-            this.taskWrapper = this.serviceLocator.ResolveType<ITaskWrapper>();
-            this.guiDispatcher = this.serviceLocator.ResolveType<IGuiDispatcher>();
-            this.uiVisualizer = this.serviceLocator.ResolveType<IUIVisualizerService>();
+            typeFactory = this.GetTypeFactory();
+            taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
+            guiDispatcher = serviceLocator.ResolveType<IGuiDispatcher>();
+            uiVisualizer = serviceLocator.ResolveType<IUIVisualizerService>();
         }
-
-        #endregion ctor
 
 
         #region override
@@ -52,7 +44,7 @@ namespace Freengy.Base.ViewModels
         {
             await base.InitializeAsync();
 
-            this.SetupCommands();
+            SetupCommands();
         }
 
         #endregion override
@@ -72,7 +64,10 @@ namespace Freengy.Base.ViewModels
         /// </summary>
         protected abstract void SetupCommands();
 
-        public virtual void ReportMessage(string information) { }
+        public virtual void ReportMessage(string information) 
+        {
+            Information = information;
+        }
 
         protected virtual void InitializationContinuator(Task parentTask) 
         {
@@ -86,33 +81,56 @@ namespace Freengy.Base.ViewModels
         #endregion virtual
 
 
-        #region properties
         public string Name 
         {
-            get { return (string)this.GetValue(WaitableViewModel.NameProperty); }
+            get => (string)GetValue(NameProperty);
 
-            set { this.SetValue(WaitableViewModel.NameProperty, value); }
+            set => SetValue(NameProperty, value);
         }
+
+        public string Information 
+        {
+            get => (string)GetValue(InformationProperty);
+
+            protected set
+            {
+                SetValue(InformationProperty, value);
+
+                SetValue(HasInformationProperty, !string.IsNullOrWhiteSpace(value));
+            }
+        }
+
         /// <summary>
-        /// Represents long-running task state of the viewmodel
+        /// Represents long-running task flag of the viewmodel.
         /// </summary>
         public bool IsWaiting 
         {
-            get { return (bool)this.GetValue(WaitableViewModel.IsWaitingProperty); }
+            get => (bool)GetValue(IsWaitingProperty);
 
-            set { this.SetValue(WaitableViewModel.IsWaitingProperty, value); }
+            protected set => SetValue(IsWaitingProperty, value);
         }
-        
-        #endregion properties
+
+        public bool HasInformation 
+        {
+            get => (bool)GetValue(HasInformationProperty);
+
+            protected set => SetValue(HasInformationProperty, value);
+        }
 
 
         #region property data
 
         public static readonly PropertyData IsWaitingProperty =
-            ModelBase.RegisterProperty<WaitableViewModel, bool>(loginViewModel => loginViewModel.IsWaiting, () => false);
+            RegisterProperty<WaitableViewModel, bool>(waitViewModel => waitViewModel.IsWaiting, () => false);
 
         public static readonly PropertyData NameProperty =
-            ModelBase.RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Name, () => string.Empty);
+            RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Name, () => string.Empty);
+
+        public static readonly PropertyData InformationProperty =
+            RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Information, () => string.Empty);
+
+        public static readonly PropertyData HasInformationProperty =
+            RegisterProperty<WaitableViewModel, bool>(waitViewModel => waitViewModel.HasInformation, () => false);
 
         #endregion property data
     }

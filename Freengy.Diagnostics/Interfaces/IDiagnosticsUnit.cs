@@ -4,7 +4,7 @@
 
 using System;
 
-using Freengy.Base.Interfaces;
+using Freengy.Common.Interfaces;
 
 
 namespace Freengy.Diagnostics.Interfaces 

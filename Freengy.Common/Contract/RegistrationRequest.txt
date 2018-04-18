@@ -1,0 +1,22 @@
+﻿Registration request is shared between client and server to process new user registration
+
+
+/// <summary>
+/// Request creation timestamp.
+/// </summary>
+public DateTime RequestTime { get; set; }
+
+/// <summary>
+/// Registration time is set by server in case of success.
+/// </summary>
+public DateTime? RegistrationTime { get; set; }
+
+/// <summary>
+/// Desired user name to register.
+/// </summary>
+public string UserName { get; set; }
+
+/// <summary>
+/// Registration status is set by server when processed request.
+/// </summary>
+public RegistrationStatus Status { get; set; }

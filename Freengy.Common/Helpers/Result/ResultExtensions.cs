@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 
 
-namespace Freengy.Base.Helpers 
+namespace Freengy.Common.Helpers.Result 
 {
     /// <summary>
     /// Расширения для <see cref="Result"/>.
@@ -82,7 +82,7 @@ namespace Freengy.Base.Helpers
         /// <param name="action">Действие.</param>
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
-        public static Result OnFailure(this Result result, Action<ErrorReason> action)
+        public static Result OnFailure(this Result result, Action<ErrorReason.ErrorReason> action)
         {
             if (result.Failure)
             {
@@ -100,7 +100,7 @@ namespace Freengy.Base.Helpers
         /// <param name="action">Действие.</param>
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
-        public static Result<TResult> OnFailure<TResult>(this Result<TResult> result, Func<ErrorReason, TResult> action)
+        public static Result<TResult> OnFailure<TResult>(this Result<TResult> result, Func<ErrorReason.ErrorReason, TResult> action)
         {
             if (result.Failure)
             {
@@ -121,7 +121,7 @@ namespace Freengy.Base.Helpers
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
         public static Result<TResult> OnFailure<TResult>(this Result<TResult> result,
-            Func<ErrorReason, Result<TResult>> action)
+            Func<ErrorReason.ErrorReason, Result<TResult>> action)
         {
             if (result.Failure)
             {

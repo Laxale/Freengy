@@ -3,6 +3,8 @@
 //
 
 
+using Freengy.Common.Database;
+
 namespace Freengy.Database.Object 
 {
     /// <summary>

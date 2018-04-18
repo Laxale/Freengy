@@ -11,7 +11,7 @@ namespace Freengy.Settings.Constants
     public static class SettingsConstants 
     {
         public const string DatabaseFolderName = "db";
-        public const string SettingsDbFileName = "Settings.db";
+        public const string SettingsDbFileName = "freengy-client.db";
 
         internal static readonly string ConnectionString = 
             $"data source={ Path.Combine(DatabaseFolderName, SettingsDbFileName) };Foreign Keys=True";

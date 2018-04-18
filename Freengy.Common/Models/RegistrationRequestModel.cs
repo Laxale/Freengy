@@ -3,11 +3,9 @@
 //
 
 using System;
+using Freengy.Common.Enums;
 
-using Freengy.Networking.Enum;
-
-
-namespace Freengy.Networking.Models 
+namespace Freengy.Common.Models 
 {
     /// <summary>
     /// Model to serialize and send to server new user registration request.
@@ -55,5 +53,10 @@ namespace Freengy.Networking.Models
         /// Registration status is set by server when processed request.
         /// </summary>
         public RegistrationStatus Status { get; set; }
+
+        /// <summary>
+        /// Account is created by server in case of success.
+        /// </summary>
+        public UserAccount CreatedAccount { get; set; }
     }
 }

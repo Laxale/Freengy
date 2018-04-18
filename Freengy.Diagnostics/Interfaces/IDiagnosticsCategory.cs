@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-using Freengy.Base.Interfaces;
+using Freengy.Common.Interfaces;
 
 
 namespace Freengy.Diagnostics.Interfaces 

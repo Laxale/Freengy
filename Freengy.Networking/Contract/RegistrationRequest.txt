@@ -1,3 +1,0 @@
-﻿public DateTime RequestTime { get; set; }
-
-public string UserName { get; set; }

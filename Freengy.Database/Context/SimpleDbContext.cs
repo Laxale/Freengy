@@ -3,6 +3,7 @@
 //
 
 using System.Data.Entity;
+using Freengy.Common.Database;
 using Freengy.Database.Object;
 
 

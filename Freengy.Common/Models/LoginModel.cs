@@ -2,10 +2,10 @@
 //
 //
 
-using Freengy.Networking.Enum;
+using Freengy.Common.Enums;
 
 
-namespace Freengy.Networking.Models 
+namespace Freengy.Common.Models 
 {
     /// <summary>
     /// Log-in process model.
@@ -15,7 +15,7 @@ namespace Freengy.Networking.Models
         /// <summary>
         /// Name of user trying to log in.
         /// </summary>
-        public string UserName { get; set; }
+        public UserAccount Account { get; set; }
 
         /// <summary>
         /// Hash of user password.

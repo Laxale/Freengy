@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
+using Freengy.Common.Models;
 
 using NUnit.Framework;
 
@@ -18,23 +19,14 @@ namespace Base.Tests.Chat
     internal class TestMessage : IChatMessage 
     {
         public string Text { get; set; }
-        public IUserAccount Author { get; set; }
+
+        public UserAccount Author { get; set; }
     }
 
 
-    internal class TestAccount : IUserAccount 
+    internal class TestAccount : UserAccount 
     {
-        public long Id { get; internal set; }
-        public string Name { get; internal set; }
-        public string DisplayedName { get; internal set; }
-
-        public int Level 
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        
     }
 
 
@@ -166,7 +158,7 @@ namespace Base.Tests.Chat
 
             bool sentMessage = this.chatSession.SendMessage(testMessage, out processedMessage);
 
-            Assert.AreNotEqual(processedMessage.Id, Guid.Empty);
+            Assert.AreNotEqual(processedMessage.UniqueId, Guid.Empty);
         }
 
         [Test]
@@ -222,7 +214,7 @@ namespace Base.Tests.Chat
             bool sessionHasNewMessage = 
                 this
                 .chatSession
-                .GetMessages(message => message.Id == processedMessage.Id)
+                .GetMessages(message => message.UniqueId == processedMessage.UniqueId)
                 .First() != null;
 
             Assert.IsTrue(sessionHasNewMessage);

@@ -13,19 +13,20 @@ using Freengy.Base.Interfaces;
 
 using Catel.IoC;
 using Catel.MVVM;
+using Freengy.Common.Models;
 
 
 namespace Freengy.FriendList.ViewModels 
 {
     public class FriendListViewModel : WaitableViewModel 
     {
-        private readonly ObservableCollection<IUserAccount> friendList = new ObservableCollection<IUserAccount>();
+        private readonly ObservableCollection<UserAccount> friendList = new ObservableCollection<UserAccount>();
 
         
         protected override void SetupCommands() 
         {
             this.CommandAddFriend = new Command(this.AddFriendImpl, this.CanAddFriend);
-            this.CommandRemoveFriend = new Command<IUserAccount>(this.RemoveFriendImpl, this.CanRemoveFriend);
+            this.CommandRemoveFriend = new Command<UserAccount>(this.RemoveFriendImpl, this.CanRemoveFriend);
         }
 
         protected override async Task InitializeAsync() 
@@ -45,7 +46,7 @@ namespace Freengy.FriendList.ViewModels
 
         public Command CommandAddFriend { get; private set; }
 
-        public Command<IUserAccount> CommandRemoveFriend { get; private set; }
+        public Command<UserAccount> CommandRemoveFriend { get; private set; }
 
         #endregion Commands
 
@@ -54,8 +55,8 @@ namespace Freengy.FriendList.ViewModels
 
         private void FillFriendList() 
         {
-            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
-            var friendTwo = base.serviceLocator.ResolveType<IUserAccount>();
+            var friendOne = base.serviceLocator.ResolveType<UserAccount>();
+            var friendTwo = base.serviceLocator.ResolveType<UserAccount>();
             
             this.friendList.Add(friendOne);
             this.friendList.Add(friendTwo);
@@ -64,7 +65,7 @@ namespace Freengy.FriendList.ViewModels
         private void AddFriendImpl() 
         {
             // just for testing
-            var friendOne = base.serviceLocator.ResolveType<IUserAccount>();
+            var friendOne = base.serviceLocator.ResolveType<UserAccount>();
 
             this.friendList.Add(friendOne);
         }
@@ -74,13 +75,13 @@ namespace Freengy.FriendList.ViewModels
             return true;
         }
 
-        private void RemoveFriendImpl(IUserAccount friendAccount)
+        private void RemoveFriendImpl(UserAccount friendAccount)
         {
             if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
 
             this.friendList.Remove(friendAccount);
         }
-        private bool CanRemoveFriend(IUserAccount friendAccount) 
+        private bool CanRemoveFriend(UserAccount friendAccount) 
         {
             // check if friend is not null and exists
             return friendAccount != null;

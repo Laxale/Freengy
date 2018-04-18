@@ -66,6 +66,10 @@
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
+      <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
+      <Name>Freengy.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Freengy.Database\Freengy.Database.csproj">
       <Project>{edc70343-7369-4ab5-8bd9-60cb7478e0a2}</Project>
       <Name>Freengy.Database</Name>

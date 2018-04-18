@@ -1,25 +1,24 @@
-﻿<catel1:UserControl x:Class="Freengy.UI.Views.LoginView"
+﻿<catel:UserControl x:Class="Freengy.UI.Views.LoginView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:catel="http://catel.codeplex.com"
-             
+                   xmlns:catel="http://schemas.catelproject.com"
+
                    xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
                    xmlns:localprops="clr-namespace:Freengy.UI.Properties"
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
-                   xmlns:catel1="http://schemas.catelproject.com"
-
+                   
                    Margin="60, 0, 60, 0"
                    mc:Ignorable="d"
                    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
-    <catel1:UserControl.Resources>
+    <catel:UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
@@ -40,7 +39,7 @@
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
-    </catel1:UserControl.Resources>
+    </catel:UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -152,4 +151,4 @@
                        Text="{Binding Path=Information, Mode=OneWay}" TextWrapping="Wrap"/>
         </DockPanel>
     </Grid>
-</catel1:UserControl>
+</catel:UserControl>

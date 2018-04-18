@@ -11,16 +11,18 @@ using System.Threading;
 using System.Configuration;
 using System.Net;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-using Freengy.Networking.Constants;
-using Freengy.Networking.Enum;
-using Freengy.Networking.Helpers;
+using Freengy.Common.Enums;
+using Freengy.Common.Models;
+using Freengy.Common.Helpers;
+using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
-using Freengy.Base.Extensions;
-using Freengy.Networking.Models;
 using Freengy.Networking.Messages;
+using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using NLog;
@@ -33,9 +35,6 @@ using Newtonsoft.Json;
 
 namespace Freengy.Networking.DefaultImpl 
 {
-    using System.Security.Cryptography;
-
-
     /// <summary>
     /// <see cref="ILoginController"/> implementer.
     /// </summary>
@@ -44,6 +43,7 @@ namespace Freengy.Networking.DefaultImpl
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly ITaskWrapper taskWrapper;
+        private readonly IAccountManager accountManager;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLoggInAttempt;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
@@ -62,6 +62,7 @@ namespace Freengy.Networking.DefaultImpl
             messageLoggInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
+            accountManager = serviceLocator.ResolveType<IAccountManager>();
         }
 
         public static LoginController Instance => instance ?? (instance = new LoginController());
@@ -77,38 +78,114 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        public RegistrationStatus Register(string userName) 
+        /// <summary>
+        /// Returns current user account in usage.
+        /// </summary>
+        public UserAccount CurrentAccount { get; private set; }
+
+
+        public Result<UserAccount> Register(string userName) 
         {
-            var handler = new HttpClientHandler
+            try
             {
-                UseCookies = true
-            };
+                if (string.IsNullOrWhiteSpace(userName))
+                {
+                    return Result<UserAccount>.Fail(new UnexpectedErrorReason("User name should not be empty"));
+                }
 
-            using (HttpClient client = new HttpClient(handler))
+                var handler = new HttpClientHandler
+                {
+                    UseCookies = true
+                };
+
+                using (HttpClient client = new HttpClient(handler))
+                {
+                    var request = new RegistrationRequestModel(userName);
+                    string jsonRequest = JsonConvert.SerializeObject(request, Formatting.Indented);
+                    string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
+                    var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
+                    
+                    HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
+
+                    Stream responceStream = response.Content.ReadAsStreamAsync().Result;
+                    request = new SerializeHelper().DeserializeObject<RegistrationRequestModel>(responceStream);
+
+                    if (request.CreatedAccount == null)
+                    {
+                        return Result<UserAccount>.Fail(new UnexpectedErrorReason(request.Status.ToString()));
+                    }
+
+                    CurrentAccount = request.CreatedAccount;
+
+                    return Result<UserAccount>.Ok(request.CreatedAccount);
+                }
+            }
+            catch (Exception ex)
             {
-                var request = new RegistrationRequestModel(userName);
-                string jsonRequest = JsonConvert.SerializeObject(request);
-                string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
-                var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
-                
-                HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
+                string message = $"Failed to register account '{ userName }'";
+                logger.Error(ex, message);
 
-                Stream responceStream = response.Content.ReadAsStreamAsync().Result;
-                request = new SerializeHelper().DeserializeObject<RegistrationRequestModel>(responceStream);
-
-                return request.Status;
+                return Result<UserAccount>.Fail(new UnexpectedErrorReason(message));
             }
         }
 
-        public AccountOnlineStatus LogIn(LoginModel loginParameters) 
+        /// <summary>
+        /// Attempts to log the user in.
+        /// </summary>
+        /// <param name="loginModel">User account data to log in.</param>
+        /// <returns>Login result.</returns>
+        public Result<AccountOnlineStatus> LogIn(LoginModel loginModel) 
         {
-            messageMediator.SendMessage(messageLoggInAttempt);
+            try
+            {
+                if (loginModel?.Account == null)
+                {
+                    return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
+                }
 
-            Thread.Sleep(500);
+                messageMediator.SendMessage(messageLoggInAttempt);
 
+                Thread.Sleep(500);
+
+                AccountOnlineStatus logInStatus = LogInImpl(loginModel);
+
+                if (logInStatus == AccountOnlineStatus.Online)
+                {
+                    accountManager.SaveLastLoggedIn(loginModel.Account);
+
+                    return Result<AccountOnlineStatus>.Ok(logInStatus);
+                }
+
+                return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason(logInStatus.ToString()));
+            }
+            catch (Exception ex)
+            {
+                string message = $"Failed to log '{ loginModel?.Account?.Name }' in";
+                logger.Error(ex, message);
+
+                return Result<AccountOnlineStatus>.Fail(new UnexpectedErrorReason(message));
+            }
+        }
+
+        /// <summary>
+        /// Attempts to log the user out.
+        /// </summary>
+        public AccountOnlineStatus LogOut() 
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Result<AccountOnlineStatus>> LogInAsync(LoginModel loginParameters) 
+        {
+            return await Task.Run(() => LogIn(loginParameters));
+        }
+
+
+        private AccountOnlineStatus LogInImpl(LoginModel loginModel) 
+        {
             using (SHA512 keccak = SHA512.Create())
             {
-                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginParameters.PasswordHash);
+                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginModel.PasswordHash);
 
                 byte[] hash = keccak.ComputeHash(passwordBytes);
             }
@@ -122,7 +199,7 @@ namespace Freengy.Networking.DefaultImpl
 
             using (var client = new HttpClient(handler))
             {
-                var serializedRequest = JsonConvert.SerializeObject(loginParameters);
+                var serializedRequest = JsonConvert.SerializeObject(loginModel);
                 var content = new StringContent(serializedRequest);
                 HttpResponseMessage result = client.PostAsync(Url.Http.ServerHttpLogInUrl, content).Result;
 
@@ -131,20 +208,15 @@ namespace Freengy.Networking.DefaultImpl
                     throw new InvalidOperationException("Login attempt failed");
                 }
 
-                loginParameters = new SerializeHelper().DeserializeObject<LoginModel>(result.Content.ReadAsStreamAsync().Result);
+                loginModel = new SerializeHelper().DeserializeObject<LoginModel>(result.Content.ReadAsStreamAsync().Result);
 
-                if (loginParameters.LogInStatus == AccountOnlineStatus.Online)
+                if (loginModel.LogInStatus == AccountOnlineStatus.Online)
                 {
                     messageMediator.SendMessage(messageLoggedIn);
                 }
 
-                return loginParameters.LogInStatus;
+                return loginModel.LogInStatus;
             }
-        }
-
-        public async Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters) 
-        {
-            return await Task.Run(() => LogIn(loginParameters));
         }
     }
 }

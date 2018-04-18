@@ -6,22 +6,21 @@ using System;
 
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Common.Models;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
     internal class ChatMessage : IChatMessage 
     {
-        public ChatMessage(IUserAccount author) 
+        public ChatMessage(UserAccount author) 
         {
-            if (author == null) throw new ArgumentNullException(nameof(author));
-
-            this.Author = author;
+            this.Author = author ?? throw new ArgumentNullException(nameof(author));
         }
 
 
         public string Text { get; internal set; }
 
-        public IUserAccount Author { get; internal set; }   
+        public UserAccount Author { get; internal set; }   
     }
 }

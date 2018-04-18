@@ -19,11 +19,12 @@ namespace Freengy.Base.Module
         public void Initialize() 
         {
             ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
-            ServiceLocator.Default.RegisterType<IChatMessageFactory, ChatMessageFactory>(RegistrationType.Transient);
 
-            ServiceLocator.Default.RegisterType<IUserAccount, UserAccount>(RegistrationType.Transient);
+            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, AccountManager>();
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessage, ChatMessage>(RegistrationType.Transient);
+            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessageFactory, ChatMessageFactory>(RegistrationType.Transient);
         }
     }
 }

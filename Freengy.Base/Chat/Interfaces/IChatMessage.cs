@@ -3,14 +3,15 @@
 //
 
 using Freengy.Base.Interfaces;
+using Freengy.Common.Models;
 
 
 namespace Freengy.Base.Chat.Interfaces 
 {
-    public interface IChatMessage  
+    public interface IChatMessage 
     {
         string Text { get; }
 
-        IUserAccount Author { get; }
+        UserAccount Author { get; }
     }
 }

@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Networking.Enum 
+namespace Freengy.Common.Enums 
 {
     /// <summary>
     /// Represents possible results of a new user registration process.

@@ -3,7 +3,7 @@
 //
 
 using Freengy.Database;
-using Freengy.Base.Constants;
+using Freengy.Common.Constants;
 using Freengy.Settings.Views;
 using Freengy.Settings.Constants;
 using Freengy.Settings.ViewModels;

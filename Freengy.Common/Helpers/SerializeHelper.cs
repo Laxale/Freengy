@@ -7,7 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 
-namespace Freengy.Networking.Helpers 
+namespace Freengy.Common.Helpers 
 {
     /// <summary>
     /// Contains some methods to (de)serialize objects from streams to json.

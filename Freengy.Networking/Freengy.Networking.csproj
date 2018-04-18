@@ -57,16 +57,11 @@
     <Compile Include="Constants\Url.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="DefaultImpl\MediaTypes.cs" />
-    <Compile Include="Enum\AccountOnlineStatus.cs" />
-    <Compile Include="Enum\RegistrationStatus.cs" />
-    <Compile Include="Helpers\SerializeHelper.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />
     <Compile Include="Messages\MessageLogInAttempt.cs" />
     <Compile Include="Messages\MessageLogInBase.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\RegistrationRequestModel.cs" />
     <Compile Include="Module\NetworkingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,6 +70,10 @@
       <Project>{aaefc67f-e1da-450a-bca6-b01b0ae862da}</Project>
       <Name>Freengy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
+      <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
+      <Name>Freengy.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -82,10 +81,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Contract\LoginRequest.txt" />
-    <Content Include="Contract\RegistrationRequest.txt" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

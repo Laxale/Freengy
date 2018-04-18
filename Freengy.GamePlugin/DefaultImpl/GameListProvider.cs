@@ -78,7 +78,7 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public void AddPathAndViewType(string assemblyPath, string viewType) 
         {
-            Common.ThrowIfArgumentsHasNull(assemblyPath, viewType);
+            Base.Helpers.Common.ThrowIfArgumentsHasNull(assemblyPath, viewType);
 
             lock (Locker)
             {
@@ -93,14 +93,13 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public void AddPathAndPlugin(string assemblyPath, IGamePlugin gamePlugin) 
         {
-            Common.ThrowIfArgumentsHasNull(assemblyPath, gamePlugin);
+            Base.Helpers.Common.ThrowIfArgumentsHasNull(assemblyPath, gamePlugin);
 
             lock (Locker)
             {
                 if (loadedPlugins.ContainsKey(assemblyPath))
                 {
-                    throw new InvalidOperationException(
-                        $"Already stored plugin '{gamePlugin.Name}' on path '{assemblyPath}'");
+                    throw new InvalidOperationException($"Already stored plugin '{gamePlugin.Name}' on path '{assemblyPath}'");
                 }
 
                 loadedPlugins.Add(assemblyPath, gamePlugin);

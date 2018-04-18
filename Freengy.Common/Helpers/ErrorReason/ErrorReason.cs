@@ -6,7 +6,7 @@ using System;
 using System.Text;
 
 
-namespace Freengy.Base.Helpers 
+namespace Freengy.Common.Helpers.ErrorReason 
 {
     /// <summary>
     /// Причина ошибки.

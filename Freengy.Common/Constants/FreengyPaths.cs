@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Base.Constants 
+namespace Freengy.Common.Constants 
 {
     /// <summary>
     /// Holds some working directory paths/names.

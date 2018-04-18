@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Base.Helpers 
+namespace Freengy.Common.Helpers.Result 
 {
     /// <summary>
     /// Результат операции.
@@ -15,7 +15,7 @@ namespace Freengy.Base.Helpers
         /// </summary>
         protected Result()
         {
-            Error = ErrorReason.None;
+            Error = ErrorReason.ErrorReason.None;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Freengy.Base.Helpers
         /// <summary>
         /// Ошибка.
         /// </summary>
-        public ErrorReason Error { get; private set; }
+        public ErrorReason.ErrorReason Error { get; private set; }
 
         /// <summary>
         /// Провальный ли результат.
@@ -42,7 +42,7 @@ namespace Freengy.Base.Helpers
         /// </summary>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        public static Result Fail(ErrorReason error)
+        public static Result Fail(ErrorReason.ErrorReason error)
         {
             return new Result().Failed(error);
         }
@@ -53,7 +53,7 @@ namespace Freengy.Base.Helpers
         /// <typeparam name="T">Тип значения.</typeparam>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        public static Result<T> Fail<T>(ErrorReason error)
+        public static Result<T> Fail<T>(ErrorReason.ErrorReason error)
         {
             return Result<T>.Fail(error);
         }
@@ -82,7 +82,7 @@ namespace Freengy.Base.Helpers
         /// Преведение ErrorReason к Result.
         /// </summary>
         /// <param name="reason">Ошибка.</param>
-        public static implicit operator Result(ErrorReason reason)
+        public static implicit operator Result(ErrorReason.ErrorReason reason)
         {
             return Fail(reason);
         }
@@ -92,7 +92,7 @@ namespace Freengy.Base.Helpers
         /// </summary>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        protected Result Failed(ErrorReason error)
+        protected Result Failed(ErrorReason.ErrorReason error)
         {
             Success = false;
             Error = error;

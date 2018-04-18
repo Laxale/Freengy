@@ -17,13 +17,13 @@ namespace Freengy.Base.Chat.DefaultImpl
         {
             Common.ThrowIfArgumentsHasNull(originalMessage, session);
 
-            this.Id = Guid.NewGuid();
+            this.UniqueId = Guid.NewGuid();
             this.ChatSession = session;
             this.TimeStamp = DateTime.UtcNow;
             this.OriginalMessage = originalMessage;
         }
 
-        public Guid Id { get; }
+        public Guid UniqueId { get; }
         public DateTime TimeStamp { get; }
         public IChatSession ChatSession { get; }
         public IChatMessage OriginalMessage { get; }

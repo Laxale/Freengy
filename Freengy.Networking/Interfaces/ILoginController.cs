@@ -3,8 +3,10 @@
 //
 
 using System.Threading.Tasks;
-using Freengy.Networking.Enum;
-using Freengy.Networking.Models;
+
+using Freengy.Common.Enums;
+using Freengy.Common.Helpers.Result;
+using Freengy.Common.Models;
 
 
 namespace Freengy.Networking.Interfaces 
@@ -20,23 +22,34 @@ namespace Freengy.Networking.Interfaces
         bool IsLoggedIn { get; }
 
         /// <summary>
+        /// Returns current user account in usage.
+        /// </summary>
+        UserAccount CurrentAccount { get; }
+
+        /// <summary>
         /// Attempts to register new user.
         /// </summary>
         /// <param name="userName">Desired new user name.</param>
-        /// <returns>True if new user is registered.</returns>
-        RegistrationStatus Register(string userName);
+        /// <returns>Registration result - new account or error details.</returns>
+        Result<UserAccount> Register(string userName);
 
         /// <summary>
-        /// Attempts to log in the user.
+        /// Attempts to log the user in.
         /// </summary>
-        /// <param name="loginParameters">User data model.</param>
-        AccountOnlineStatus LogIn(LoginModel loginParameters);
+        /// <param name="loginModel">User account data to log in.</param>
+        /// <returns>Login result.</returns>
+        Result<AccountOnlineStatus> LogIn(LoginModel loginModel);
+
+        /// <summary>
+        /// Attempts to log the user out.
+        /// </summary>
+        AccountOnlineStatus LogOut();
 
         /// <summary>
         /// Attempts to log in the user asynchronously.
         /// </summary>
-        /// <param name="loginParameters">User data model.</param>
-        /// <returns></returns>
-        Task<AccountOnlineStatus> LogInAsync(LoginModel loginParameters);
+        /// <param name="loginModel">User account data to log in.</param>
+        /// <returns>Logging user in <see cref="Task"/>.</returns>
+        Task<Result<AccountOnlineStatus>> LogInAsync(LoginModel loginModel);
     }
 }

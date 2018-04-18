@@ -2,7 +2,7 @@
 //
 //
 
-using Freengy.Base.Helpers;
+using Freengy.Common.Helpers.ErrorReason;
 
 
 namespace Freengy.Database 

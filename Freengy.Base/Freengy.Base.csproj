@@ -43,15 +43,14 @@
   <ItemGroup>
     <Compile Include="Chat\DefaultImpl\ChatMessage.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageFactory.cs" />
-    <Compile Include="Constants\FreengyPaths.cs" />
     <Compile Include="Constants\Numeric.cs" />
+    <Compile Include="DefaultImpl\AccountManager.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSession.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
-    <Compile Include="DefaultImpl\UserAccount.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
@@ -61,28 +60,21 @@
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Helpers\DataContextProxy.cs" />
     <Compile Include="Helpers\DllFileSearchFilter.cs" />
-    <Compile Include="Helpers\ErrorReason.cs" />
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
-    <Compile Include="Helpers\Result.cs" />
-    <Compile Include="Helpers\ResultExtensions.cs" />
-    <Compile Include="Helpers\ResultOfT.cs" />
-    <Compile Include="Helpers\UnexpectedErrorReason.cs" />
+    <Compile Include="Interfaces\IAccountManager.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Chat\Interfaces\IChatMessage.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageDecorator.cs" />
     <Compile Include="Chat\Interfaces\IChatSession.cs" />
     <Compile Include="Chat\Interfaces\IChatSessionFactory.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
-    <Compile Include="Interfaces\INamedObject.cs" />
-    <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
     <Compile Include="Interfaces\IResponsibilityChainer.cs" />
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
-    <Compile Include="Interfaces\IUserAccount.cs" />
     <Compile Include="InternalsExposer.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
@@ -96,6 +88,10 @@
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
       <Project>{2e1330e3-c913-41c5-8979-13bbe707d2e5}</Project>
       <Name>Freengy.CommonResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
+      <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
+      <Name>Freengy.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

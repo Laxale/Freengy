@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
+using Freengy.Common.Models;
 
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace Base.Tests.Chat
     public class ChatMessageFactoryTests 
     {
         private IChatMessageFactory messageFactory;
-        private readonly IUserAccount author = new TestAccount { Name = "Awesome Author", Id = new Random().Next() };
+        private readonly UserAccount author = new TestAccount { Name = "Awesome Author", UniqueId = Guid.NewGuid() };
 
 
         [SetUp]

@@ -41,8 +41,7 @@ namespace Freengy.UI.Helpers
         {
             base.InitializeShell();
             Application.Current.MainWindow = (Window)this.Shell;
-            Application.Current.MainWindow.Show();
-
+            
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
             this.regionManager = base.Container.TryResolve<IRegionManager>();
