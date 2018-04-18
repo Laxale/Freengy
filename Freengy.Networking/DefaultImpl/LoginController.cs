@@ -98,7 +98,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 using (HttpClient client = new HttpClient(handler))
                 {
-                    var request = new RegistrationRequestModel(userName);
+                    var request = new RegistrationRequest(userName);
                     string jsonRequest = JsonConvert.SerializeObject(request, Formatting.Indented);
                     string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
                     var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
@@ -106,7 +106,7 @@ namespace Freengy.Networking.DefaultImpl
                     HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
 
                     Stream responceStream = response.Content.ReadAsStreamAsync().Result;
-                    request = new SerializeHelper().DeserializeObject<RegistrationRequestModel>(responceStream);
+                    request = new SerializeHelper().DeserializeObject<RegistrationRequest>(responceStream);
 
                     if (request.CreatedAccount == null)
                     {

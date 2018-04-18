@@ -55,8 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Url.cs" />
+    <Compile Include="DefaultImpl\EntitySearcher.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="DefaultImpl\MediaTypes.cs" />
+    <Compile Include="Interfaces\IEntitySearcher.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />

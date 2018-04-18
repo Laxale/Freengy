@@ -28,6 +28,7 @@
     <Compile Include="Enums\AccountOnlineStatus.cs" />
     <Compile Include="Enums\AccountPrivilege.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
+    <Compile Include="Enums\SearchEntity.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
     <Compile Include="Helpers\Result\Result.cs" />
@@ -38,7 +39,8 @@
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountState.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\RegistrationRequestModel.cs" />
+    <Compile Include="Models\RegistrationRequest.cs" />
+    <Compile Include="Models\SearchRequest.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Restrictions\AccountValidator.cs" />

@@ -8,17 +8,57 @@
               
               xmlns:local="clr-namespace:Freengy.FriendList.Views"
               xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+              xmlns:viewModels="clr-namespace:Freengy.FriendList.ViewModels"
+              xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
 
               mc:Ignorable="d" 
               Height="400"
               Width="600"
               Title="Add new friend"
               WindowStartupLocation="CenterOwner"
-              d:DesignHeight="450" d:DesignWidth="800">
+              d:DesignHeight="450" d:DesignWidth="800"
+              Style="{StaticResource CommonWindowStyle}"
+              Background="{StaticResource SecondMainBrush}"
+              d:DataContext="{d:DesignInstance viewModels:AddNewFriendViewModel}">
+
+    <catel:Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/StylishWindowStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </catel:Window.Resources>
 
     <DockPanel>
         <DockPanel Margin="10">
-            <controls:Filter DockPanel.Dock="Top" WatermarkText="Search for new awesome friends!"/>
+            <controls:Filter DockPanel.Dock="Top" WatermarkText="Search for new awesome friends!" FilterText="{Binding Path=SearchFilter}"/>
+            
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FoundUsers}" Margin="0, 10, 0, 0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="models:UserAccount">
+                        <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4">
+                            <DockPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Let's be friends!"/>
+                                    <MenuItem Header="Ban this faggot!"/>
+                                </ContextMenu>
+                            </DockPanel.ContextMenu>
+
+                            <TextBlock DockPanel.Dock="Left" Text="{Binding Path=Name}"/>
+                            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource PurpleBrush}">
+                                <Run Text="Level"/>
+                                <Run Text="{Binding Path=Level}"/>
+                            </TextBlock>
+                            <TextBlock DockPanel.Dock="Left">
+                                <Run Text="("/>
+                                <Run Text="{Binding Path=Privilege}"/>
+                                <Run Text=")"/>
+                            </TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </DockPanel>
     </DockPanel>
 </catel:Window>

@@ -2,21 +2,20 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.DefaultImpl;
+using Freengy.Networking.Interfaces;
+using Freengy.Networking.DefaultImpl;
+
+using Catel.IoC;
+
+using Prism.Modularity;
+
 
 namespace Freengy.Networking.Module 
 {
-    using System;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Base.DefaultImpl;
-    using Freengy.Networking.Interfaces;
-    using Freengy.Networking.DefaultImpl;
-
-    using Catel.IoC;
-
-    using Prism.Modularity;
-
-
     /// <summary>
     /// Exposes networking <see cref="IModule"/> implementation
     /// </summary>
@@ -29,6 +28,7 @@ namespace Freengy.Networking.Module
         public void Initialize() 
         {
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IEntitySearcher, EntitySearcher>(RegistrationType.Transient);
             // login controller uses task wrapper, so must register them this order
             ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
         }
