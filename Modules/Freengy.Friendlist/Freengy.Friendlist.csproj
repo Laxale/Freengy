@@ -32,6 +32,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -48,7 +51,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ViewModels\AddNewFriendViewModel.cs" />
     <Compile Include="ViewModels\FriendlistViewModel.cs" />
+    <Compile Include="Views\AddNewFriendWindow.xaml.cs">
+      <DependentUpon>AddNewFriendWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FriendListView.xaml.cs">
       <DependentUpon>FriendListView.xaml</DependentUpon>
     </Compile>
@@ -76,6 +83,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddNewFriendWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FriendListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

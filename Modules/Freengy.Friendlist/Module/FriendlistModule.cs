@@ -2,21 +2,22 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Interfaces;
+using Freengy.FriendList.Views;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.FriendList.Diagnostics;
+using Freengy.FriendList.ViewModels;
+
+using Prism.Modularity;
+
+using Catel.IoC;
+using Catel.Services;
+
 
 namespace Freengy.FriendList.Module 
 {
-    using System;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.FriendList.Views;
-    using Freengy.Diagnostics.Interfaces;
-    using Freengy.FriendList.Diagnostics;
-
-    using Prism.Modularity;
-
-    using Catel.IoC;
-
-
     public class FriendListModule : IUiModule, IModule 
     {
         public Type ExportedViewType { get; } = typeof (FriendListView);
@@ -24,6 +25,10 @@ namespace Freengy.FriendList.Module
 
         public void Initialize() 
         {
+            var uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
+
+            uiVisualizer.Register<AddNewFriendViewModel, AddNewFriendWindow>();
+
             var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
             controller.RegisterCategory(new FriendListDiagnosticsCategory());
         }

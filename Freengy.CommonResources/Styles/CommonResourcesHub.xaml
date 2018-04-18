@@ -4,6 +4,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Animations.xaml"/>
+        <ResourceDictionary Source="PathDatas.xaml"/>
         <ResourceDictionary Source="BorderStyles.xaml"/>
         <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="ButtonStyles.xaml"/>

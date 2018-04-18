@@ -10,10 +10,12 @@ using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
+using Freengy.Common.Models;
 
 using Catel.IoC;
 using Catel.MVVM;
-using Freengy.Common.Models;
+using Catel.Services;
+using Freengy.FriendList.Views;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -25,50 +27,55 @@ namespace Freengy.FriendList.ViewModels
         
         protected override void SetupCommands() 
         {
-            this.CommandAddFriend = new Command(this.AddFriendImpl, this.CanAddFriend);
-            this.CommandRemoveFriend = new Command<UserAccount>(this.RemoveFriendImpl, this.CanRemoveFriend);
+            CommandAddFriend = new Command(AddFriendImpl, CanAddFriend);
+            CommandRemoveFriend = new Command<UserAccount>(RemoveFriendImpl, CanRemoveFriend);
         }
 
         protected override async Task InitializeAsync() 
         {
             await base.InitializeAsync();
 
-            this.FillFriendList();
+            FillFriendList();
 
-            this.FriendList = CollectionViewSource.GetDefaultView(this.friendList);
+            FriendList = CollectionViewSource.GetDefaultView(friendList);
         }
 
 
-        public ICollectionView FriendList { get; private set; }
-
-
-        #region Commands
-
+        /// <summary>
+        /// Command to add new friend.
+        /// </summary>
         public Command CommandAddFriend { get; private set; }
 
+        /// <summary>
+        /// Command to remove a friend.
+        /// </summary>
         public Command<UserAccount> CommandRemoveFriend { get; private set; }
 
-        #endregion Commands
+
+        public ICollectionView FriendList { get; private set; }
 
 
         #region privates
 
         private void FillFriendList() 
         {
-            var friendOne = base.serviceLocator.ResolveType<UserAccount>();
-            var friendTwo = base.serviceLocator.ResolveType<UserAccount>();
+            var friendOne = serviceLocator.ResolveType<UserAccount>();
+            var friendTwo = serviceLocator.ResolveType<UserAccount>();
             
-            this.friendList.Add(friendOne);
-            this.friendList.Add(friendTwo);
+            friendList.Add(friendOne);
+            friendList.Add(friendTwo);
         }
 
-        private void AddFriendImpl() 
+        private async void AddFriendImpl() 
         {
             // just for testing
-            var friendOne = base.serviceLocator.ResolveType<UserAccount>();
+            var viewModel = new AddNewFriendViewModel();
+            var service = serviceLocator.ResolveType<IUIVisualizerService>();
+            var result = await service.ShowDialogAsync(viewModel);
 
-            this.friendList.Add(friendOne);
+            friendList.Add(null);
         }
+
         private bool CanAddFriend() 
         {
             // just a stub
@@ -79,7 +86,7 @@ namespace Freengy.FriendList.ViewModels
         {
             if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
 
-            this.friendList.Remove(friendAccount);
+            friendList.Remove(friendAccount);
         }
         private bool CanRemoveFriend(UserAccount friendAccount) 
         {

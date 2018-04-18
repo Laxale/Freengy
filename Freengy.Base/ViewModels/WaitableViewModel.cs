@@ -62,7 +62,7 @@ namespace Freengy.Base.ViewModels
         }
 
         /// <summary>
-        ///     This is called in InitializeAsync - force coderast to not init commands manually
+        /// This is called in InitializeAsync - force coderast to not init commands manually
         /// </summary>
         protected abstract void SetupCommands();
 
