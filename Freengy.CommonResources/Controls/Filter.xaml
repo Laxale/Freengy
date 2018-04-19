@@ -38,13 +38,8 @@
             <Grid.Resources>
                 <ScaleTransform x:Key="IconScaleTransform" CenterX="0.5" CenterY="0.5" ScaleX="0.9" ScaleY="0.9"/>
                 
-                <Style TargetType="Path">
-                    <Setter Property="Height" Value="22"/>
-                    <Setter Property="Width" Value="22"/>
+                <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
                     <Setter Property="Margin" Value="2, 4, 0, 0"/>
-                    <Setter Property="StrokeThickness" Value="0.2"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="Fill" Value="{StaticResource BlackBrush}"/>
                     <Setter Property="Stroke" Value="{StaticResource BlackBrush}"/>
                     <Setter Property="RenderTransform" Value="{StaticResource IconScaleTransform}"/>

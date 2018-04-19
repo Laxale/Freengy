@@ -3,12 +3,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Variables.xaml"/>
         <ResourceDictionary Source="Animations.xaml"/>
-        <ResourceDictionary Source="PathDatas.xaml"/>
-        <ResourceDictionary Source="BorderStyles.xaml"/>
-        <ResourceDictionary Source="Brushes.xaml"/>
-        <ResourceDictionary Source="ButtonStyles.xaml"/>
         <ResourceDictionary Source="Converters.xaml"/>
+        <ResourceDictionary Source="PathDatas.xaml"/>
+
+        <ResourceDictionary Source="Brushes.xaml"/>
+
+        <ResourceDictionary Source="BorderStyles.xaml"/>
+        <ResourceDictionary Source="ButtonStyles.xaml"/>
         <ResourceDictionary Source="ImageStyles.xaml"/>
         <ResourceDictionary Source="ListBoxStyles.xaml"/>
         <ResourceDictionary Source="PasswordBoxStyles.xaml"/>
@@ -16,6 +19,6 @@
         <ResourceDictionary Source="TextBlockStyles.xaml"/>
         <ResourceDictionary Source="TextBoxStyles.xaml"/>
         <ResourceDictionary Source="ToolTipStyles.xaml"/>
-        <ResourceDictionary Source="Variables.xaml"/>
+        <ResourceDictionary Source="PathStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

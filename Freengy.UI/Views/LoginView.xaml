@@ -93,6 +93,7 @@
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <PasswordBox Grid.Row="1" Grid.Column="1" 
+                             Loaded="PsswordBox_OnLoaded"
                              Margin="{StaticResource All4Margin}"
                              helpers:PasswordBoxBinder.BindPassword="True"
                              helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,

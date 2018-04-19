@@ -1,22 +1,29 @@
-﻿<controls:UserControl x:Class="Freengy.Chatter.Views.ChatterView" 
+﻿<catel:UserControl x:Class="Freengy.Chatter.Views.ChatterView" 
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:catel="http://catel.codeplex.com" 
-                   
                    xmlns:local="clr-namespace:Freengy.Chatter.Views" 
                    xmlns:viewmodels="clr-namespace:Freengy.Chatter.ViewModels"
-                   xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
-                   xmlns:controls="http://schemas.catelproject.com"
+                   xmlns:catel="http://schemas.catelproject.com"
 
                    mc:Ignorable="d" 
                    d:DesignHeight="200" d:DesignWidth="400"
                    d:DataContext="{d:DesignInstance Type=viewmodels:ChatterViewModel}">
 
-    <TabControl ItemsSource="{Binding Path=ChatSessions}" IsSynchronizedWithCurrentItem="True" Background="Transparent"
-                BorderThickness="0">
+    <catel:UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/StylishWindowStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </catel:UserControl.Resources>
+
+    <!-- Chat sessions -->
+    <TabControl ItemsSource="{Binding Path=ChatSessions}" 
+                IsSynchronizedWithCurrentItem="True" Background="Transparent" BorderThickness="0">
         <TabControl.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -26,9 +33,11 @@
         </TabControl.Resources>
 
         <TabControl.ContentTemplate>
-            <DataTemplate>
-                <local:ChatSessionView/>
+            <DataTemplate DataType="viewmodels:ChatSessionViewModel">
+                <local:ChatSessionView Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ChatterView}, 
+                                                            Path=IsCollapsed,
+                                                            Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>
-</controls:UserControl>
+</catel:UserControl>

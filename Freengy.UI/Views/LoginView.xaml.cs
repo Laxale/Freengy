@@ -3,16 +3,26 @@
 //
 
 
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+using CatelControl = Catel.Windows.Controls.UserControl;
+
+
 namespace Freengy.UI.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
     public partial class LoginView : CatelControl 
     {
         public LoginView() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
+        }
+
+
+        private void PsswordBox_OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            Keyboard.Focus((PasswordBox) sender);
         }
     }
 }

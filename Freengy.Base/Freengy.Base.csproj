@@ -76,7 +76,9 @@
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
     <Compile Include="InternalsExposer.cs" />
+    <Compile Include="Messages\Collapse\MessageCollapseBase.cs" />
     <Compile Include="Messages\MessageBase.cs" />
+    <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

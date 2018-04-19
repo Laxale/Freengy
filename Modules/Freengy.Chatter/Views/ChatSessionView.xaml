@@ -9,7 +9,7 @@
              xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:ChatSessionViewModel}">
 
     <Grid>
@@ -27,9 +27,9 @@
             <RowDefinition Height="Auto" MinHeight="40" MaxHeight="80" Name="TextBoxRow"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}">
-
-            <ListBox.ItemTemplate>
+        <!-- Chat messages list -->
+        <ItemsControl Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="interfaces:IChatMessageDecorator">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -39,18 +39,19 @@
 
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock Text="{Binding Path=TimeStamp}" Foreground="Blue"/>
-                            <TextBlock Text="{Binding Path=OriginalMessage.Author.Name}" Foreground="Orange"/>
+                            <TextBlock Text="{Binding Path=OriginalMessage.Author.Name}" Foreground="{StaticResource FirstMainBrush}"/>
                         </StackPanel> 
                         
                         <TextBlock Grid.Row="1" Text="{Binding Path=OriginalMessage.Text}"/>
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-        <GridSplitter Grid.Row="1" Height="6" Width="Auto" ResizeBehavior="PreviousAndNext" Background="LightGray" 
+        <GridSplitter Grid.Row="1" Height="6" Width="Auto" ResizeBehavior="PreviousAndNext" Background="{StaticResource DarkGrayBrush}" 
                       Margin="{StaticResource All4Margin}" HorizontalAlignment="Stretch"/>
 
+        <!-- Sending messages panel -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

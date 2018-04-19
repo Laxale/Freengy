@@ -11,7 +11,8 @@
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels" 
                    xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-                   
+                   xmlns:views="clr-namespace:Freengy.UI.Views"
+
                    mc:Ignorable="d" 
                    MinWidth="700" MinHeight="500" 
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
@@ -27,9 +28,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" MinHeight="180"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MinHeight="180"/>
+            <RowDefinition Height="*" MinHeight="60" Name="ChatterRegionDefinition"/>
         </Grid.RowDefinitions>
 
+        <!-- Settings panel -->
         <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
             <Border.Background>
                 <LinearGradientBrush>
@@ -109,9 +111,11 @@
         <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" ResizeBehavior="PreviousAndNext"
                       Width="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
 
+        <!-- Friends panel -->
         <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" Margin="{StaticResource All4Margin}" Opacity="0.9"
                         HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
 
+        <!-- Game panel -->
         <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource All4Margin}">
             <Border Background="Gray" Opacity="0.6"/>
 
@@ -120,11 +124,39 @@
 
         <GridSplitter Grid.Row="2" Grid.Column="0" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"
                       Height="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
-        
-        <Grid Grid.Row="3" Grid.Column="0" Margin="{StaticResource All4Margin}">
-            <Border Background="LightGray" Opacity="0.6"/>
 
-            <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
+        <!-- Chatter panel -->
+        <Grid Grid.Row="3" Grid.Column="0" Margin="{StaticResource All4Margin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Just for background -->
+            <Border Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource LightGrayBrush}" Opacity="0.6"/>
+
+            <!-- Collapsing button -->
+            <Button Grid.Column="0" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top"
+                    HorizontalAlignment="Left" Margin="2" Click="ChatCollapserButton_OnClick" ToolTip="{x:Static commonRes:StringResources.Collapse}">
+                <Path Fill="{StaticResource BlackBrush}">
+                    <Path.Style>
+                        <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="True">
+                                    <Setter Property="Data" Value="{StaticResource ArrowUpIconGeometry}"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="False">
+                                    <Setter Property="Data" Value="{StaticResource ArrowDownIconGeometry}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+            </Button>
+
+            <!-- Chat container region -->
+            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
         </Grid>
     </Grid>
 </catel:UserControl>

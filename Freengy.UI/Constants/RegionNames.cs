@@ -5,14 +5,17 @@
 
 namespace Freengy.UI.Constants 
 {
+    /// <summary>
+    /// Contains the names of main window regions.
+    /// </summary>
     public static class RegionNames 
     {
-        public const string MainWindowRegion = "MainWindowRegion";
+        public const string MainWindowRegion = nameof(MainWindowRegion);
 
-        public const string GameListRegion   = "GameListRegion";
-        public const string FriendListRegion = "FriendListRegion";
+        public const string GameListRegion   = nameof(GameListRegion);
+        public const string FriendListRegion = nameof(FriendListRegion);
 
-        public const string GameRegion = "GameRegion";
-        public const string ChatRegion = "ChatRegion";
+        public const string GameRegion = nameof(GameRegion);
+        public const string ChatRegion = nameof(ChatRegion);
     }
 }
