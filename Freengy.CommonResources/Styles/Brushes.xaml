@@ -6,17 +6,21 @@
                     
                     mc:Ignorable="d">
 
+    <Color x:Key="OrangeColor">Orange</Color>
     <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
     <Color x:Key="ThirdMainColor" A="255" R="169" G="169" B="169"/>
 
-    <SolidColorBrush x:Key="ErrorBrush" Color="Red" />
-    <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70" />
-    <SolidColorBrush x:Key="FirstMainBrush" Color="Orange" />
-    <SolidColorBrush x:Key="TextBoxHighlightBrush" Color="Orange" />
-    <SolidColorBrush x:Key="SecondMainBrush" Color="LightGray" />
+    <SolidColorBrush x:Key="ErrorBrush" Color="Red"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
+    <SolidColorBrush x:Key="BlackBrush" Color="Black"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70"/>
+    <SolidColorBrush x:Key="LightGrayBrush" Color="#FFEEEEEE"/>
     <SolidColorBrush x:Key="ThirdMainBrush" Color="DarkGray" />
     <SolidColorBrush x:Key="DarkGrayBrush" Color="#777777" />
     <SolidColorBrush x:Key="PurpleBrush" Color="Purple" />
+    <SolidColorBrush x:Key="AlmostTransparent" Color="#02FFFFFF"/>
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
+    <SolidColorBrush x:Key="FirstMainBrush" Color="{StaticResource OrangeColor}"/>
+    <SolidColorBrush x:Key="TextBoxHighlightBrush" Color="{StaticResource OrangeColor}"/>
 </ResourceDictionary>

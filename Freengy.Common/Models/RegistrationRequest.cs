@@ -42,11 +42,6 @@ namespace Freengy.Common.Models
         public DateTime RequestTime { get; set; }
 
         /// <summary>
-        /// Registration time is set by server in case of success.
-        /// </summary>
-        public DateTime? RegistrationTime { get; set; }
-
-        /// <summary>
         /// Desired user name to register.
         /// </summary>
         public string UserName { get; set; }

@@ -2,12 +2,11 @@
 //
 //
 
+using System.Collections.Generic;
+
 
 namespace Freengy.Networking.DefaultImpl 
 {
-    using System.Collections.Generic;
-
-
     internal enum MediaTypesEnum 
     {
         Json,
@@ -25,7 +24,7 @@ namespace Freengy.Networking.DefaultImpl
 
         public string GetStringValue(MediaTypesEnum mediaType) 
         {
-            return MediaTypes.mediaTypes[mediaType];
+            return mediaTypes[mediaType];
         }
     }
 }

@@ -3,19 +3,31 @@
 //
 
 
+using System.Windows.Input;
+
+using Freengy.Base.Helpers;
+
+
 namespace Freengy.FriendList.Views 
 {
     /// <summary>
-    /// Interaction logic for AddNewFriendWindow.xaml
+    /// Window to search users and interact with them.
     /// </summary>
     public partial class AddNewFriendWindow : Catel.Windows.Window 
     {
-        public AddNewFriendWindow()
+        /// <inheritdoc />
+        /// <summary>
+        /// Construct new <see cref="T:Freengy.FriendList.Views.AddNewFriendWindow" />.
+        /// </summary>
+        public AddNewFriendWindow() 
         {
             InitializeComponent();
         }
 
 
-
+        private void AddNewFriendWindow_OnKeyDown(object sender, KeyEventArgs e) 
+        {
+            new KeyHandler(e).ExecuteOnEscapePressed(Close);
+        }
     }
 }

@@ -7,6 +7,7 @@
                     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -43,7 +44,33 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}">
+    <Style TargetType="Button" x:Key="ImageButtonStyle">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="ClickMode" Value="Press"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
 
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="Bord" Width="{TemplateBinding Width}" 
+                            Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="Bord" Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource LightGrayBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}"/>
 </ResourceDictionary>

@@ -201,4 +201,7 @@
   <data name="RemoveText" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
 </root>

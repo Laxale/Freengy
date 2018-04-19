@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls"
+             xmlns:commonResources="clr-namespace:Freengy.CommonResources"
 
              mc:Ignorable="d">
 
@@ -31,8 +32,25 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border x:Name="FilterBorder" VerticalAlignment="Top" Padding="0,0,8,0" BorderThickness="1" BorderBrush="Black" Background="White">
+    <Border x:Name="FilterBorder" VerticalAlignment="Top" BorderThickness="1" 
+            BorderBrush="{StaticResource BlackBrush}" Background="{StaticResource WhiteBrush}">
         <Grid>
+            <Grid.Resources>
+                <ScaleTransform x:Key="IconScaleTransform" CenterX="0.5" CenterY="0.5" ScaleX="0.9" ScaleY="0.9"/>
+                
+                <Style TargetType="Path">
+                    <Setter Property="Height" Value="22"/>
+                    <Setter Property="Width" Value="22"/>
+                    <Setter Property="Margin" Value="2, 4, 0, 0"/>
+                    <Setter Property="StrokeThickness" Value="0.2"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Fill" Value="{StaticResource BlackBrush}"/>
+                    <Setter Property="Stroke" Value="{StaticResource BlackBrush}"/>
+                    <Setter Property="RenderTransform" Value="{StaticResource IconScaleTransform}"/>
+                </Style>
+            </Grid.Resources>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -40,7 +58,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Картинка поиска -->
-            <Path Data="{StaticResource SearchIconGeometry}" StrokeThickness="0.2" Height="22" Stroke="Black" Fill="Black" Margin="2, 0, 0, 0"/>
+            <Path Data="{StaticResource SearchIconGeometry}"/>
 
             <Grid Grid.Column="1">
                 <!-- Поле ввода текста для поиска -->
@@ -58,10 +76,10 @@
                                                 Converter={StaticResource ReversedNullToVisibilityConverter}}"/>
             </Grid>
 
-            <!-- Картинка очистки текста фильтра 
-            Style="{StaticResource DeleteButtonStyle}"-->
-            <Button Grid.Column="2" VerticalAlignment="Center" Content="Clear"
-                    ClickMode="Press" Click="ClearButton_OnClick" Width="16" Height="16" Cursor="Hand">
+            <!-- Картинка очистки текста фильтра -->
+            <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="ClearButton_OnClick" 
+                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}" Height="24" Width="24" ToolTip="{x:Static commonResources:StringResources.Clear}">
+                <Path Data="{StaticResource CloseIconGeometry}" IsHitTestVisible="False"/>
             </Button>
         </Grid>
     </Border>

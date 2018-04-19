@@ -11,34 +11,36 @@ using System.Windows.Data;
 
 using Freengy.Base.ViewModels;
 using Freengy.Common.Models;
+using Freengy.Common.Enums;
+using Freengy.Common.Helpers;
 using Freengy.FriendList.Views;
+using Freengy.Networking.Interfaces;
 
+using Catel.Data;
+using Catel.IoC;
 using Catel.MVVM;
 
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using Catel.Data;
-    using Catel.IoC;
-
-    using Freengy.Common.Enums;
-    using Freengy.Networking.Interfaces;
-
-
     /// <summary>
     /// Viewmodel for <see cref="AddNewFriendWindow"/>.
     /// </summary>
-    internal class AddNewFriendViewModel : WaitableViewModel 
+    internal class AddNewFriendViewModel : WaitableViewModel, IDisposable 
     {
+        private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(300);
         private readonly ObservableCollection<UserAccount> foundUsers = new ObservableCollection<UserAccount>();
 
-
+        
         public AddNewFriendViewModel() 
         {
+            delayedInvoker.DelayedEvent += SearchUsersImpl;
             FoundUsers = CollectionViewSource.GetDefaultView(foundUsers);
+        }
 
-            foundUsers.Add(new UserAccount() { Name = "Fuk" });
-            foundUsers.Add(new UserAccount() { Name = "Wow", Level = 50 });
+        ~AddNewFriendViewModel() 
+        {
+            Dispose(false);
         }
 
 
@@ -57,11 +59,28 @@ namespace Freengy.FriendList.ViewModels
         {
             get => (string)GetValue(SearchFilterProperty);
 
-            set => SetValue(SearchFilterProperty, value);
+            set
+            {
+                if ((string) GetValue(SearchFilterProperty) == value) return;
+
+                SetValue(SearchFilterProperty, value);
+
+                delayedInvoker.RequestDelayedEvent();
+            }
         }
 
         public static readonly PropertyData SearchFilterProperty =
             RegisterProperty<AddNewFriendViewModel, string>(model => model.SearchFilter, () => string.Empty);
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() 
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
 
         /// <summary>
@@ -73,17 +92,45 @@ namespace Freengy.FriendList.ViewModels
         }
 
 
-        private void SearchUsersImpl() 
+        private async void SearchUsersImpl() 
         {
+            if (string.IsNullOrWhiteSpace(SearchFilter)) return;
+
             var searcher = serviceLocator.ResolveType<IEntitySearcher>();
 
-            var parameters = new SearchRequest
-            {
-                Entity = SearchEntity.Users,
-                SearchFilter = this.SearchFilter
-            };
+            var searchResult = await searcher.SearchUsersAsync(SearchFilter);
 
-            var searchResult = searcher.SearchEntities(parameters);
+            if (searchResult.Failure)
+            {
+                ReportMessage(searchResult.Error.Message);
+            }
+            else
+            {
+                guiDispatcher.InvokeOnGuiThread(() =>
+                {
+                    foundUsers.Clear();
+
+                    foreach (UserAccount foundUser in searchResult.Value)
+                    {
+                        foundUsers.Add(foundUser);
+                    }
+                });
+            }
+        }
+
+        private void ReleaseUnmanagedResources() 
+        {
+            // TODO release unmanaged resources here
+            delayedInvoker.DelayedEvent -= SearchUsersImpl;
+        }
+
+        private void Dispose(bool disposing) 
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                delayedInvoker?.Dispose();
+            }
         }
     }
 }

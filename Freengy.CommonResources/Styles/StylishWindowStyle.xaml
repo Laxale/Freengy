@@ -121,19 +121,24 @@
                                         <Button x:Name="MinButton" Grid.Column="2" Click="MinButtonClick" Style="{StaticResource TitleBarButtonStyle}"
                                                 Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},
                                                                      Path=ResizeMode, Converter={StaticResource ResizeModeToVisibilityConverter}}">
-                                            <Path Data="M0,8 H8 M0,7 H8 M0,6 H8" />
+                                            <Path Data="M0,8 H10 M0,8 H10 M0,8 H10" StrokeThickness="1.1"/>
                                         </Button>
 
                                         <Button Grid.Column="3" x:Name="MaxButton" Click="MaxButtonClick" Style="{StaticResource TitleBarButtonStyle}"
                                                 Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},
                                                                      Path=ResizeMode, Converter={StaticResource ResizeModeToVisibilityConverter}}">
-                                            <Path x:Name="PART_MaxButton_Path" Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8" />
+                                            <Path x:Name="PART_MaxButton_Path" Data="M0,0 H10 V8 H0.5 V0 M0,1 H10 M0,2 H10" StrokeThickness="1"/>
                                         </Button>
 
                                         <Button Grid.Column="4" x:Name="CloseButton" Click="CloseButtonClick" Background="Red"
                                                 Style="{StaticResource TitleBarButtonStyle}" Padding="4, 0, 0, 0">
                                             
-                                            <Path StrokeThickness="1.5" Data="M0,0 L8.5,8.5 M0,8 L8,0" />
+                                            <Path StrokeThickness="1.1" Fill="Black" Stroke="Black" Data="{StaticResource CloseIconGeometry}" 
+                                                  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 4, 0, 0">
+                                                <Path.RenderTransform>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="0.6" ScaleY="0.6"/>
+                                                </Path.RenderTransform>
+                                            </Path>
                                         </Button>
                                     </Grid>
                                 </Border>

@@ -55,7 +55,7 @@ namespace Freengy.Common.Models
         /// <summary>
         /// Set <see cref="UserAccount.UniqueId"/> equal to main <see cref="UserAccount.Id"/> property.
         /// </summary>
-        public void SyncUniqueIdToId()  
+        public void SyncUniqueIdToId() 
         {
             UniqueId = Guid.Parse(Id);
         }

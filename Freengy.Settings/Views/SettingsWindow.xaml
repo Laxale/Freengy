@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
-        xmlns:local="clr-namespace:Freengy.Settings"
         xmlns:vies="clr-namespace:Freengy.Settings.Views"
         xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
         xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
@@ -13,6 +12,7 @@
         mc:Ignorable="d"
         ShowInTaskbar="False"
         ResizeMode="CanResizeWithGrip"
+        KeyDown="SettingsWindow_OnKeyDown"
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"

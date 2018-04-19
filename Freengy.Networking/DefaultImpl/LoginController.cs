@@ -82,6 +82,12 @@ namespace Freengy.Networking.DefaultImpl
         public UserAccount CurrentAccount { get; private set; }
 
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Attempts to register new user.
+        /// </summary>
+        /// <param name="userName">Desired new user name.</param>
+        /// <returns>Registration result - new account or error details.</returns>
         public Result<UserAccount> Register(string userName) 
         {
             try
@@ -91,22 +97,13 @@ namespace Freengy.Networking.DefaultImpl
                     return Result<UserAccount>.Fail(new UnexpectedErrorReason("User name should not be empty"));
                 }
 
-                var handler = new HttpClientHandler
-                {
-                    UseCookies = true
-                };
+                var request = new RegistrationRequest(userName);
 
-                using (HttpClient client = new HttpClient(handler))
+                using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
-                    var request = new RegistrationRequest(userName);
-                    string jsonRequest = JsonConvert.SerializeObject(request, Formatting.Indented);
-                    string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
-                    var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
-                    
-                    HttpResponseMessage response = client.PostAsync(Url.Http.ServerHttpRegisterUrl, httpRequest).Result;
+                    httpActor.SetAddress(Url.Http.ServerHttpRegisterUrl);
 
-                    Stream responceStream = response.Content.ReadAsStreamAsync().Result;
-                    request = new SerializeHelper().DeserializeObject<RegistrationRequest>(responceStream);
+                    request = httpActor.PostAsync<RegistrationRequest, RegistrationRequest>(request).Result;
 
                     if (request.CreatedAccount == null)
                     {
@@ -117,6 +114,8 @@ namespace Freengy.Networking.DefaultImpl
 
                     return Result<UserAccount>.Ok(request.CreatedAccount);
                 }
+
+                
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@
 
         mc:Ignorable="d" 
         ShowInTaskbar="True"
+        KeyDown="DiagnosticsWindow_OnKeyDown"
         ResizeMode="CanResizeWithGrip"
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource DarkGrayBrush}"

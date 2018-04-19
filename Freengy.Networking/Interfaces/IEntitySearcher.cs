@@ -2,6 +2,9 @@
 //
 //
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Freengy.Common.Models;
 using Freengy.Common.Helpers.Result;
 
@@ -18,6 +21,13 @@ namespace Freengy.Networking.Interfaces
         /// </summary>
         /// <param name="searchRequest">Search parameters model.</param>
         /// <returns>Search result.</returns>
-        Result SearchEntities(SearchRequest searchRequest);
+        Task<Result<TResponce>> SearchEntitiesAsync<TResponce>(SearchRequest searchRequest) where TResponce : class, new ();
+
+        /// <summary>
+        /// Invoke users search by given search parameters.
+        /// </summary>
+        /// <param name="nameFilter">Search name filter.</param>
+        /// <returns>Search result.</returns>
+        Task<Result<IEnumerable<UserAccount>>> SearchUsersAsync(string nameFilter);
     }
 }

@@ -10,10 +10,22 @@ using Newtonsoft.Json;
 namespace Freengy.Common.Helpers 
 {
     /// <summary>
-    /// Contains some methods to (de)serialize objects from streams to json.
+    /// Contains some methods to (de)serialize objects from streams to JSON.
     /// </summary>
     public class SerializeHelper 
     {
+        /// <summary>
+        /// Serialize the object using accepted serializing settings.
+        /// </summary>
+        /// <param name="target">Object to serialize.</param>
+        /// <returns>Serialized object representation.</returns>
+        public string Serialize(object target) 
+        {
+            string serialized = JsonConvert.SerializeObject(target, Formatting.Indented);
+
+            return serialized;
+        }
+
         /// <summary>
         /// Deserialize <see cref="T"/> object from a json stream.
         /// </summary>
