@@ -156,7 +156,7 @@ namespace Freengy.UI.ViewModels
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(Url.Http.ServerHttpHelloUrl);
+                    HttpResponseMessage response = await client.GetAsync(Url.Http.HelloUrl);
 
                     IsServerAvailable = response.StatusCode == HttpStatusCode.OK;
                 }

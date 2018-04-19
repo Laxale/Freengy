@@ -5,7 +5,7 @@
 using System;
 
 
-namespace Freengy.Database.Attributes 
+namespace Freengy.Common.Database 
 {
     /// <summary>
     /// Атрибут, объявляющий ORM-контекст для типа объекта, хранимого в базе.

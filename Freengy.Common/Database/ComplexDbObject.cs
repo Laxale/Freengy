@@ -4,17 +4,15 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Freengy.Common.Database;
 
 
-namespace Freengy.Database.Object 
+namespace Freengy.Common.Database 
 {
     /// <summary>
-    /// Базовый класс для наследования объектов сложных настроек. 
-    /// Сложные настройки содержат кастомные типы данных, коллекции.
-    /// Сложные настройки нуждаются в маппинге, то есть в отдельном контексте.
+    /// Базовый класс для наследования сложных объектов. 
+    /// Сложные объекты содержат кастомные типы данных, коллекции.
+    /// Сложные объекты нуждаются в маппинге, то есть в отдельном контексте.
     /// </summary>
-
     public abstract class ComplexDbObject : DbObject 
     {
         /// <summary>

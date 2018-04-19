@@ -10,6 +10,8 @@
               xmlns:viewModels="clr-namespace:Freengy.FriendList.ViewModels"
               xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
               xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+              xmlns:system="clr-namespace:System;assembly=mscorlib"
+              xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
 
               mc:Ignorable="d" 
               Height="400"
@@ -62,6 +64,35 @@
                                 <Run Text="("/>
                                 <Run Text="{Binding Path=Privilege}"/>
                                 <Run Text=")"/>
+                            </TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=SentRequestResults}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="models:FriendRequest">
+                        <DockPanel>
+                            <Path DockPanel.Dock="Left">
+                                <Path.Style>
+                                    <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=RequestState}" Value="{x:Static enums:FriendRequestState.AwaitingUserAnswer}">
+                                                <Setter Property="Data" Value="{StaticResource SuccessIconGeometry}"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Path=RequestState}" Value="{x:Static enums:FriendRequestState.Error}">
+                                                <Setter Property="Data" Value="{StaticResource WarningIconGeometry}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+
+                            <TextBlock DockPanel.Dock="Left">
+                                <Run Text="Sent request to"/>
+                                <Run Text="{Binding Path=TargetAccount.Name}" FontWeight="Medium" Foreground="{StaticResource PurpleBrush}"/>
                             </TextBlock>
                         </DockPanel>
                     </DataTemplate>

@@ -14,6 +14,8 @@ namespace Freengy.Networking.Constants
     public static class Url 
     {
         private static readonly string helloAction;
+        private static readonly string friendAction;
+        private static readonly string requestAction;
         private static readonly string searchAction;
         private static readonly string usersAction;
         private static readonly string logInAction;
@@ -25,6 +27,8 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            requestAction = networkingConfig.AppSettings.Settings["RequestActionName"].Value;
+            friendAction = networkingConfig.AppSettings.Settings["FriendActionName"].Value;
             helloAction = networkingConfig.AppSettings.Settings["HelloActionName"].Value;
             usersAction = networkingConfig.AppSettings.Settings["UsersActionName"].Value;
             searchAction = networkingConfig.AppSettings.Settings["SearchActionName"].Value;
@@ -35,15 +39,17 @@ namespace Freengy.Networking.Constants
 
         public static class Http 
         {
-            public static string ServerRootHttpUrl { get; } = networkingConfig.AppSettings.Settings["FreengyServerHttpAddress"].Value;
+            public static string RootUrl { get; } = networkingConfig.AppSettings.Settings["FreengyServerHttpAddress"].Value;
 
-            public static string ServerHttpHelloUrl { get; } = $"{ ServerRootHttpUrl }/{ helloAction }";
+            public static string HelloUrl { get; } = $"{ RootUrl }/{ helloAction }";
 
-            public static string ServerHttpRegisterUrl { get; } = $"{ ServerRootHttpUrl }/{ registerAction }";
+            public static string RegisterUrl { get; } = $"{ RootUrl }/{ registerAction }";
 
-            public static string ServerHttpLogInUrl { get; } = $"{ ServerRootHttpUrl }/{ logInAction }";
+            public static string LogInUrl { get; } = $"{ RootUrl }/{ logInAction }";
 
-            public static string ServerHttpSearchUsersUrl { get; } = $"{ ServerRootHttpUrl }/{ searchAction }/{ usersAction }";
+            public static string SearchUsersUrl { get; } = $"{ RootUrl }/{ searchAction }/{ usersAction }";
+
+            public static string AddFriendUrl { get; } = $"{ RootUrl }/{ requestAction }/{ friendAction }";
         }
 
         public static class Https 

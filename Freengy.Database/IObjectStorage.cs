@@ -2,6 +2,7 @@
 //
 //
 
+using Freengy.Common.Database;
 using Freengy.Database.Object;
 using Freengy.Common.Helpers.Result;
 

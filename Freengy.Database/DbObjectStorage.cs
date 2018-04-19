@@ -9,7 +9,6 @@ using System.Reflection;
 
 using Freengy.Common.Database;
 using Freengy.Common.Helpers.Result;
-using Freengy.Database.Attributes;
 using Freengy.Database.Context;
 using Freengy.Database.Object;
 

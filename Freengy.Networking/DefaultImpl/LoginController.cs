@@ -101,7 +101,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
-                    httpActor.SetAddress(Url.Http.ServerHttpRegisterUrl);
+                    httpActor.SetAddress(Url.Http.RegisterUrl);
 
                     request = httpActor.PostAsync<RegistrationRequest, RegistrationRequest>(request).Result;
 
@@ -197,7 +197,7 @@ namespace Freengy.Networking.DefaultImpl
             {
                 var serializedRequest = JsonConvert.SerializeObject(loginModel);
                 var content = new StringContent(serializedRequest);
-                HttpResponseMessage result = client.PostAsync(Url.Http.ServerHttpLogInUrl, content).Result;
+                HttpResponseMessage result = client.PostAsync(Url.Http.LogInUrl, content).Result;
 
                 if (result.StatusCode != HttpStatusCode.OK)
                 {

@@ -24,9 +24,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\FreengyPaths.cs" />
+    <Compile Include="Database\ChildComplexDbObject.cs" />
+    <Compile Include="Database\ComplexDbObject.cs" />
     <Compile Include="Database\DbObject.cs" />
+    <Compile Include="Database\RelationalContextAttribute.cs" />
     <Compile Include="Enums\AccountOnlineStatus.cs" />
     <Compile Include="Enums\AccountPrivilege.cs" />
+    <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
@@ -39,6 +43,7 @@
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountState.cs" />
+    <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />

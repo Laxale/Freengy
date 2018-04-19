@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ using System.Collections.ObjectModel;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Models;
+using Freengy.FriendList.Views;
+using Freengy.Networking.Constants;
+using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
-using Freengy.FriendList.Views;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -24,10 +27,12 @@ namespace Freengy.FriendList.ViewModels
     {
         private readonly ObservableCollection<UserAccount> friendList = new ObservableCollection<UserAccount>();
 
+        private UserAccount myAccount;
+
         
         protected override void SetupCommands() 
         {
-            CommandAddFriend = new Command(AddFriendImpl, CanAddFriend);
+            CommandSearchFriend = new Command(AddFriendImpl, CanAddFriend);
             CommandRemoveFriend = new Command<UserAccount>(RemoveFriendImpl, CanRemoveFriend);
         }
 
@@ -35,29 +40,40 @@ namespace Freengy.FriendList.ViewModels
         {
             await base.InitializeAsync();
 
-            FillFriendList();
+            FillDebugFriendList();
 
             FriendList = CollectionViewSource.GetDefaultView(friendList);
+
+            myAccount = serviceLocator.ResolveType<ILoginController>().CurrentAccount;
+
+            IEnumerable<UserAccount> friends = SearchRealFriends();
+
+            foreach (UserAccount friend in friends)
+            {
+                friendList.Add(friend);
+            }
         }
 
 
         /// <summary>
-        /// Command to add new friend.
+        /// Command to search for new friend.
         /// </summary>
-        public Command CommandAddFriend { get; private set; }
+        public Command CommandSearchFriend { get; private set; }
 
         /// <summary>
         /// Command to remove a friend.
         /// </summary>
         public Command<UserAccount> CommandRemoveFriend { get; private set; }
 
-
+        /// <summary>
+        /// Friends of current user.
+        /// </summary>
         public ICollectionView FriendList { get; private set; }
 
 
         #region privates
 
-        private void FillFriendList() 
+        private void FillDebugFriendList() 
         {
             var friendOne = serviceLocator.ResolveType<UserAccount>();
             var friendTwo = serviceLocator.ResolveType<UserAccount>();
@@ -66,14 +82,25 @@ namespace Freengy.FriendList.ViewModels
             friendList.Add(friendTwo);
         }
 
+        private IEnumerable<UserAccount> SearchRealFriends() 
+        {
+            using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+            {
+                httpActor.SetAddress(Url.Http.SearchUsersUrl);
+                SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccount, string.Empty);
+
+                List<UserAccount> result = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;
+
+                return result;
+            }
+        }
+
         private async void AddFriendImpl() 
         {
-            // just for testing
-            var viewModel = new AddNewFriendViewModel();
+            var viewModel = new AddNewFriendViewModel(myAccount);
             var service = serviceLocator.ResolveType<IUIVisualizerService>();
-            var result = await service.ShowDialogAsync(viewModel);
 
-            friendList.Add(null);
+            await service.ShowDialogAsync(viewModel);
         }
 
         private bool CanAddFriend() 

@@ -36,7 +36,27 @@ namespace Freengy.Networking.DefaultImpl
         /// <returns>Search result.</returns>
         public Task<Result<TResponce>> SearchEntitiesAsync<TResponce>(SearchRequest searchRequest) where TResponce : class, new() 
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                try
+                {
+                    using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
+                    {
+                        httpActor.SetAddress(Url.Http.AddFriendUrl);
+
+                        var responce = httpActor.PostAsync<SearchRequest, TResponce>(searchRequest).Result;
+
+                        return Result<TResponce>.Ok(responce);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string message = "Failed to search users";
+                    logger.Error(ex, message);
+
+                    return Result<TResponce>.Fail(new UnexpectedErrorReason(message));
+                }
+            });
         }
 
         /// <summary>
@@ -58,7 +78,7 @@ namespace Freengy.Networking.DefaultImpl
                             SearchFilter = nameFilter
                         };
 
-                        httpActor.SetAddress(Url.Http.ServerHttpSearchUsersUrl);
+                        httpActor.SetAddress(Url.Http.AddFriendUrl);
 
                         var responce = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;
 
