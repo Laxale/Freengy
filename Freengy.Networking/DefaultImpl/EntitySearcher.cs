@@ -78,7 +78,7 @@ namespace Freengy.Networking.DefaultImpl
                             SearchFilter = nameFilter
                         };
 
-                        httpActor.SetAddress(Url.Http.AddFriendUrl);
+                        httpActor.SetAddress(Url.Http.SearchUsersUrl);
 
                         var responce = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;
 

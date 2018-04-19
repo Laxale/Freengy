@@ -17,6 +17,8 @@ using Freengy.FriendList.Views;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
 
+using NLog;
+
 using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
@@ -30,6 +32,7 @@ namespace Freengy.FriendList.ViewModels
     internal class AddNewFriendViewModel : WaitableViewModel, IDisposable 
     {
         private readonly UserAccount myAccount;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(300);
         private readonly ObservableCollection<UserAccount> foundUsers = new ObservableCollection<UserAccount>();
         private readonly ObservableCollection<FriendRequest> requestResults = new ObservableCollection<FriendRequest>();
@@ -54,6 +57,11 @@ namespace Freengy.FriendList.ViewModels
         /// Command to search registered users on server.
         /// </summary>
         public Command SearchUsersCommand { get; private set; }
+
+        /// <summary>
+        /// Command to send a friendship request.
+        /// </summary>
+        public Command<UserAccount> RequestFriendCommand { get; private set; }
 
 
         /// <summary>
@@ -103,6 +111,7 @@ namespace Freengy.FriendList.ViewModels
         protected override void SetupCommands() 
         {
             SearchUsersCommand = new Command(SearchUsersImpl);
+            RequestFriendCommand = new Command<UserAccount>(RequestFriend);
         }
 
 
@@ -134,19 +143,28 @@ namespace Freengy.FriendList.ViewModels
 
         private void RequestFriend(UserAccount targetAccount) 
         {
-            using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+            try
             {
-                var request = new FriendRequest
+                using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
-                    RequesterAccount = myAccount,
-                    TargetAccount = targetAccount
-                };
+                    var request = new FriendRequest
+                    {
+                        RequesterAccount = myAccount,
+                        TargetAccount = targetAccount
+                    };
 
-                httpActor.SetAddress(Url.Http.AddFriendUrl);
+                    httpActor.SetAddress(Url.Http.AddFriendUrl);
 
-                FriendRequest result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
+                    FriendRequest result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
 
-                requestResults.Add(result);
+                    requestResults.Add(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = "Failed to send friend request";
+                logger.Error(ex, message);
+                ReportMessage(message);
             }
         }
 

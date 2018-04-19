@@ -12,6 +12,7 @@
               xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
               xmlns:system="clr-namespace:System;assembly=mscorlib"
               xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
+              xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
 
               mc:Ignorable="d" 
               Height="400"
@@ -45,12 +46,16 @@
             <!-- Found users list -->
             <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FoundUsers}" Margin="0, 10, 0, 0"
                           Visibility="{Binding Path=FoundUsers.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+                <ItemsControl.Resources>
+                    <helpers:DataContextProxy x:Key="ContextProxy" Data="{Binding}"/>
+                </ItemsControl.Resources>
+
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="models:UserAccount">
                         <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Let's be friends!"/>
+                                    <MenuItem Header="Let's be friends!" Command="{Binding Source={StaticResource ContextProxy}, Path=Data.RequestFriendCommand}"/>
                                     <MenuItem Header="Ban this faggot!"/>
                                 </ContextMenu>
                             </DockPanel.ContextMenu>
@@ -70,6 +75,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <!-- Sent requests results -->
             <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=SentRequestResults}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="models:FriendRequest">
