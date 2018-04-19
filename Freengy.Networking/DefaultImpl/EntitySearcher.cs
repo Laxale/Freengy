@@ -70,14 +70,17 @@ namespace Freengy.Networking.DefaultImpl
             {
                 try
                 {
+                    UserAccount currentAccount = ServiceLocator.Default.ResolveType<ILoginController>().CurrentAccount;
+
+                    var searchRequest = new SearchRequest
+                    {
+                        Entity = SearchEntity.Users,
+                        SearchFilter = nameFilter,
+                        SenderId = currentAccount.UniqueId
+                    };
+
                     using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
                     {
-                        var searchRequest = new SearchRequest
-                        {
-                            Entity = SearchEntity.Users,
-                            SearchFilter = nameFilter
-                        };
-
                         httpActor.SetAddress(Url.Http.SearchUsersUrl);
 
                         var responce = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;

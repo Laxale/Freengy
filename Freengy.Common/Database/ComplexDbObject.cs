@@ -40,6 +40,6 @@ namespace Freengy.Common.Database
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
         /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected abstract List<string> GetIncludedPropNames();
+        protected abstract IEnumerable<string> GetIncludedPropNames();
     }
 }

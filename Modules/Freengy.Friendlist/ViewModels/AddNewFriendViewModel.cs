@@ -33,7 +33,7 @@ namespace Freengy.FriendList.ViewModels
     {
         private readonly UserAccount myAccount;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(300);
+        private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(400);
         private readonly ObservableCollection<UserAccount> foundUsers = new ObservableCollection<UserAccount>();
         private readonly ObservableCollection<FriendRequest> requestResults = new ObservableCollection<FriendRequest>();
 
@@ -147,14 +147,9 @@ namespace Freengy.FriendList.ViewModels
             {
                 using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
-                    var request = new FriendRequest
-                    {
-                        RequesterAccount = myAccount,
-                        TargetAccount = targetAccount
-                    };
-
                     httpActor.SetAddress(Url.Http.AddFriendUrl);
 
+                    FriendRequest request = FriendRequest.Create(myAccount, targetAccount);
                     FriendRequest result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
 
                     requestResults.Add(result);

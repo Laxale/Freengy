@@ -2,12 +2,15 @@
 //
 //
 
+using System;
+
 using Freengy.Common.Enums;
 using Freengy.Common.Database;
 
 
 namespace Freengy.Common.Models 
 {
+    /// <inheritdoc />
     /// <summary>
     /// A friend request model.
     /// </summary>
@@ -27,5 +30,34 @@ namespace Freengy.Common.Models
         /// State of this request. Is set by server.
         /// </summary>
         public FriendRequestState RequestState { get; set; }
+
+        /// <summary>
+        /// Request creation timestamp.
+        /// </summary>
+        public DateTime CreationDate { get; set; }
+
+        /// <summary>
+        /// Request decision timestamp.
+        /// </summary>
+        public DateTime DecisionDate { get; set; }
+
+
+        /// <summary>
+        /// Create ready for use <see cref="FriendRequest"/> instance.
+        /// </summary>
+        /// <param name="sender">Request sender account.</param>
+        /// <param name="target">Request target account.</param>
+        /// <returns><see cref="FriendRequest"/> instance.</returns>
+        public static FriendRequest Create(UserAccount sender, UserAccount target) 
+        {
+            var request = new FriendRequest
+            {
+                RequesterAccount = sender,
+                TargetAccount = target,
+                CreationDate = DateTime.Now
+            };
+
+            return request;
+        }
     }
 }

@@ -55,7 +55,9 @@
                         <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Let's be friends!" Command="{Binding Source={StaticResource ContextProxy}, Path=Data.RequestFriendCommand}"/>
+                                    <MenuItem Header="Let's be friends!" 
+                                              CommandParameter="{Binding}"
+                                              Command="{Binding Source={StaticResource ContextProxy}, Path=Data.RequestFriendCommand}"/>
                                     <MenuItem Header="Ban this faggot!"/>
                                 </ContextMenu>
                             </DockPanel.ContextMenu>

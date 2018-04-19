@@ -61,6 +61,12 @@ namespace Freengy.Common.Models
             UniqueId = Guid.Parse(Id);
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Name} [Level {Level} {Privilege}]";
+        }
+
         /// <summary>
         /// Создать реальный объект из объекта-прокси EF.
         /// </summary>
@@ -84,7 +90,7 @@ namespace Freengy.Common.Models
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
         /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected override List<string> GetIncludedPropNames() 
+        protected override IEnumerable<string> GetIncludedPropNames() 
         {
             return new List<string>();
         }
