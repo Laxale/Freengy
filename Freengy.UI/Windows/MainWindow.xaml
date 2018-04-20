@@ -17,19 +17,18 @@
         MinHeight="360" MinWidth="630" Width="630" Height="360"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
 
-    <Window.Background>
-        <VisualBrush>
-            <VisualBrush.Visual>
-                <Grid>
-                    <Image Source="/Images/ShellBackground.jpg" Opacity="1"/>
-
-                    <!--
+    <!--
                     <controls:GifImage GifSource="pack://application:,,,/Freengy.UI;component/Images/snow-animation-3.gif" 
                                        Opacity="0.2" Stretch="UniformToFill" IsAutoStart="True"/>
                     -->
-                </Grid>
+    <Window.Background>
+
+        <VisualBrush>
+            <VisualBrush.Visual>
+                <Image Source="/Images/ShellBackground.jpg"/>
             </VisualBrush.Visual>
         </VisualBrush>
+        
     </Window.Background>
 
     <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>

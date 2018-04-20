@@ -2,27 +2,30 @@
 //
 //
 
+using System.Windows;
+using System.Windows.Input;
+
+using Freengy.Base.Helpers;
+
 
 namespace Freengy.UI.Windows 
 {
-    using System.Windows;
-    using System.Windows.Input;
-
-
+    /// <summary>
+    /// Window for new user registration.
+    /// </summary>
     public partial class RegistrationWindow 
     {
         public RegistrationWindow() 
         {
-            this.Owner = Application.Current.MainWindow;
-            this.InitializeComponent();
+            InitializeComponent();
+
+            Owner = Application.Current.MainWindow;
         }
 
-        private void Window_KeyUp(object sender, KeyEventArgs e) 
+
+        private void Window_KeyDown(object sender, KeyEventArgs e) 
         {
-            if (e.Key == Key.Escape)
-            {
-                this.Close();
-            }
+            new KeyHandler(e).ExecuteOnEscapePressed(Close);
         }
     }
 }

@@ -5,12 +5,15 @@
 using System.Threading.Tasks;
 
 using Freengy.Base.Interfaces;
+using Freengy.Base.Extensions;
 
 using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
 using Catel.Messaging;
+
+using NLog;
 
 
 namespace Freengy.Base.ViewModels 
@@ -21,6 +24,7 @@ namespace Freengy.Base.ViewModels
         protected readonly ITypeFactory typeFactory;
         protected readonly IGuiDispatcher guiDispatcher;
         protected readonly IUIVisualizerService uiVisualizer;
+        protected readonly Logger logger = LogManager.GetCurrentClassLogger();
         protected readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         protected readonly IMessageMediator messageMediator = MessageMediator.Default;
 
@@ -36,29 +40,37 @@ namespace Freengy.Base.ViewModels
         }
 
 
-        #region override
-
-        /// <summary>
-        /// To auto-initialize use Catel controls for viewmodels - they call InitializeAsync() internally
-        /// </summary>
-        /// <returns>Initializing <see cref="Task"/></returns>
-        protected override async Task InitializeAsync() 
-        {
-            await base.InitializeAsync();
-
-            SetupCommands();
-        }
-
-        #endregion override
-
-
-        #region virtual
-
         public virtual void Refresh() { }
 
-        public virtual async Task UninitializeAsync() 
+        public virtual void ReportMessage(string information) 
         {
-            await Task.FromResult(0);
+            Information = information;
+        }
+
+
+        /// <summary>
+        /// Set the IsWaiting flag and report message.
+        /// </summary>
+        protected void SetBusySilent() 
+        {
+            IsWaiting = true;
+        }
+
+        /// <summary>
+        /// Set the IsWaiting flag and report message.
+        /// </summary>
+        protected void SetBusy(string message) 
+        {
+            IsWaiting = true;
+            ReportMessage(message);
+        }
+
+        /// <summary>
+        /// Clear the IsWaiting flag.
+        /// </summary>
+        protected void ClearBusyState() 
+        {
+            IsWaiting = false;
         }
 
         /// <summary>
@@ -66,28 +78,25 @@ namespace Freengy.Base.ViewModels
         /// </summary>
         protected abstract void SetupCommands();
 
-        public virtual void ReportMessage(string information) 
-        {
-            Information = information;
-        }
-
         protected virtual void InitializationContinuator(Task parentTask) 
         {
             if (parentTask.Exception != null)
             {
                 // show error dialog?
-                
+                logger.Error(parentTask.Exception.GetReallyRootException(), $"{ GetType() } initialization failed");
             }
         }
 
-        #endregion virtual
-
-
-        public string Name 
+        /// <inheritdoc />
+        /// <summary>
+        /// To auto-initialize use Catel controls for viewmodels - they call InitializeAsync() internally
+        /// </summary>
+        /// <returns>Initializing <see cref="Task"/>.</returns>
+        protected override async Task InitializeAsync() 
         {
-            get => (string)GetValue(NameProperty);
+            await base.InitializeAsync();
 
-            set => SetValue(NameProperty, value);
+            SetupCommands();
         }
 
         public string Information 
@@ -124,10 +133,7 @@ namespace Freengy.Base.ViewModels
 
         public static readonly PropertyData IsWaitingProperty =
             RegisterProperty<WaitableViewModel, bool>(waitViewModel => waitViewModel.IsWaiting, () => false);
-
-        public static readonly PropertyData NameProperty =
-            RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Name, () => string.Empty);
-
+        
         public static readonly PropertyData InformationProperty =
             RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Information, () => string.Empty);
 

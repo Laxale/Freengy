@@ -55,7 +55,7 @@
 
             <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" SelectionChanged="FriendList_SelectionChanged">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:UserAccount}">
+                    <DataTemplate DataType="{x:Type models:UserAccountModel}">
                         <Grid>
                             <Grid.Resources>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">

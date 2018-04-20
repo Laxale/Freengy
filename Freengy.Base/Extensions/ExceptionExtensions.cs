@@ -2,12 +2,11 @@
 //
 //
 
+using System;
+
 
 namespace Freengy.Base.Extensions 
 {
-    using System;
-    
-
     public static class ExceptionExtensions 
     {
         /// <summary>

@@ -33,6 +33,7 @@
     <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
+    <Compile Include="Extensions\AccountExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
@@ -45,9 +46,10 @@
     <Compile Include="Models\AccountState.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />
-    <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Restrictions\AccountValidator.cs" />
   </ItemGroup>

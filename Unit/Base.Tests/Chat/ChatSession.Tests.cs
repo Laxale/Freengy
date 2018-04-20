@@ -24,12 +24,6 @@ namespace Base.Tests.Chat
     }
 
 
-    internal class TestAccount : UserAccount 
-    {
-        
-    }
-
-
     [TestFixture]
     public class ChatSessionTests 
     {
@@ -87,7 +81,7 @@ namespace Base.Tests.Chat
 
                     var testMessage = new TestMessage
                     {
-                        Author = new TestAccount(),
+                        Author = new UserAccount(CreateAccountModel()),
                         Text = text
                     };
 
@@ -104,7 +98,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -120,7 +114,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -136,7 +130,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -152,7 +146,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -168,7 +162,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -184,7 +178,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -205,7 +199,7 @@ namespace Base.Tests.Chat
 
             var testMessage = new TestMessage
             {
-                Author = new TestAccount(),
+                Author = new UserAccount(CreateAccountModel()),
                 Text = "wow such text much awesome"
             };
 
@@ -258,9 +252,10 @@ namespace Base.Tests.Chat
             return sentCount;
         }
 
-        private static IEnumerable<IChatMessage> CreateTestMessages(string authorName) 
+        private static IEnumerable<IChatMessage> CreateTestMessages(string authorName)
         {
-            var author = new TestAccount { Name = authorName };
+            var model = CreateAccountModel();
+            var author = new UserAccount(model);
 
             return new List<IChatMessage>
             {
@@ -281,6 +276,18 @@ namespace Base.Tests.Chat
                     Author = author,
                     Text = "tests"
                 }
+            };
+        }
+
+        private static UserAccountModel CreateAccountModel() 
+        {
+            var id = Guid.NewGuid();
+
+            return new UserAccountModel
+            {
+                Id = id.ToString(),
+                UniqueId = id,
+                Name = "Wow a test name"
             };
         }
     }

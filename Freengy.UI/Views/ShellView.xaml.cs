@@ -3,6 +3,7 @@
 //
 
 using System.Windows;
+using System.Windows.Controls;
 using Catel.IoC;
 using Catel.Messaging;
 
@@ -23,6 +24,7 @@ namespace Freengy.UI.Views
         private readonly IMessageMediator mediator = MessageMediator.Default;
 
         private GridLength previousChatHeight;
+        private RowDefinition chatterRowDefinition;
 
 
         public ShellView() 
@@ -45,12 +47,12 @@ namespace Freengy.UI.Views
             {
                 if (value)
                 {
-                    previousChatHeight = ChatterRegionDefinition.Height;
-                    ChatterRegionDefinition.Height = new GridLength(60);
+                    previousChatHeight = chatterRowDefinition.Height;
+                    chatterRowDefinition.Height = new GridLength(60);
                 }
                 else
                 {
-                    ChatterRegionDefinition.Height = previousChatHeight;
+                    chatterRowDefinition.Height = previousChatHeight;
                 }
 
                 SetValue(IsChatCollapsedProperty, value);
@@ -63,6 +65,11 @@ namespace Freengy.UI.Views
             IsChatCollapsed = !IsChatCollapsed;
 
             mediator.SendMessage(new MessageCollapseChatRequest(IsChatCollapsed));
+        }
+
+        private void ChatterRegionDefinition_OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            chatterRowDefinition = (RowDefinition)sender;
         }
     }
 }

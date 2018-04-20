@@ -26,7 +26,7 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
-
+using Freengy.Common.Extensions;
 using NLog;
 
 using Prism.Regions;
@@ -47,7 +47,7 @@ namespace Freengy.UI.ViewModels
         private readonly IAccountManager accountManager;
         private readonly ILoginController loginController;
 
-        private UserAccount currentAccount;
+        private UserAccount CurrentAccount => loginController.CurrentAccount;
 
 
         public LoginViewModel() 
@@ -198,8 +198,7 @@ namespace Freengy.UI.ViewModels
 
             if (lastLoggedResult.Success && lastLoggedResult.Value != null)
             {
-                currentAccount = lastLoggedResult.Value;
-                UserName = currentAccount.Name;
+                UserName = CurrentAccount?.Name ?? lastLoggedResult.Value.Name;
             }
 
             SavePassword = settings.SavePassword;
@@ -228,7 +227,7 @@ namespace Freengy.UI.ViewModels
 
         private void LoginAction() 
         {
-            IsWaiting = true;
+            SetBusySilent();
 
             LoginModel loginModel = GetCurrentLoginParameters();
             Result<AccountState> result = loginController.LogIn(loginModel);
@@ -243,14 +242,14 @@ namespace Freengy.UI.ViewModels
             }
             else
             {
-                accountManager.SaveLastLoggedIn(result.Value.Account);
+                accountManager.SaveLastLoggedIn(loginController.CurrentAccount);
                 ReportMessage(null);
             }
         }
 
         private void LoginContinuator(Task parentTask) 
         {
-            IsWaiting = false;
+            ClearBusyState();
 
             if (parentTask.Exception != null)
             {
@@ -262,16 +261,16 @@ namespace Freengy.UI.ViewModels
         {
             var parameters = new LoginModel();
             
-            if (currentAccount != null)
+            if (CurrentAccount != null)
             {
                 parameters.Account = 
-                    UserName == currentAccount.Name ? 
-                        currentAccount : 
-                        new UserAccount { Name = UserName };
+                    UserName == CurrentAccount?.Name ? 
+                        CurrentAccount.ToModel() : 
+                        new UserAccountModel { Name = UserName };
             }
             else
             {
-                parameters.Account = new UserAccount { Name = UserName };
+                parameters.Account = new UserAccountModel { Name = UserName };
             }
 
             parameters.PasswordHash = Password; // TODO: waaaat?

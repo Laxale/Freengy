@@ -18,7 +18,7 @@ using Prism.Regions;
 using Catel.IoC;
 using Catel.Services;
 using Catel.Messaging;
-
+using Freengy.UI.Messages;
 using Microsoft.Practices.Unity;
 
 
@@ -47,17 +47,17 @@ namespace Freengy.UI.Helpers
 
         private UiNavigator() 
         {
-            this.requestHandleChain = new ResponsibilityChainer<MessageBase>();
-            this.waiter = this.serviceLocator.ResolveType<IPleaseWaitService>();
-            this.regionManager  = this.serviceLocator.ResolveType<IRegionManager>();
-            this.unityContainer = this.serviceLocator.ResolveType<IUnityContainer>();
+            requestHandleChain = new ResponsibilityChainer<MessageBase>();
+            waiter = serviceLocator.ResolveType<IPleaseWaitService>();
+            regionManager  = serviceLocator.ResolveType<IRegionManager>();
+            unityContainer = serviceLocator.ResolveType<IUnityContainer>();
 
-            this.messageMediator.Register<MessageBase>(this, this.MessageListener);
+            messageMediator.Register<MessageBase>(this, MessageListener);
 
-            this.SetupChainer();
+            SetupChainer();
         }
 
-        public static UiNavigator Instance => UiNavigator.instance ?? (UiNavigator.instance = new UiNavigator());
+        public static UiNavigator Instance => instance ?? (instance = new UiNavigator());
 
         #endregion Singleton
 
@@ -65,7 +65,7 @@ namespace Freengy.UI.Helpers
         [MessageRecipient]
         private async void MessageListener(MessageBase message) 
         {
-            bool handled = await this.requestHandleChain.HandleAsync(message);
+            bool handled = await requestHandleChain.HandleAsync(message);
 
             // must never call this. Default handler should always handle possibly unknown messages
             if (!handled) throw new NotHandledException();
@@ -74,12 +74,14 @@ namespace Freengy.UI.Helpers
         private void SetupChainer() 
         {
             // possibility of having more navigation ways later
-            this.requestHandleChain.AddHandler(this.HandleLogInFailedMessage);
-            this.requestHandleChain.AddHandler(this.HandleLogInAttemptMessage);
-            this.requestHandleChain.AddHandler(this.HandleLogInSuccessMessage);
-            this.requestHandleChain.AddHandler(this.HandleRequestNavigate);
-            // default handler is a good thing to catch unknown messages
-            this.requestHandleChain.AddHandler(this.DefaultHandler);
+            requestHandleChain
+                .AddHandler(HandleLogInFailedMessage)
+                .AddHandler(HandleLogInAttemptMessage)
+                .AddHandler(HandleLogInSuccessMessage)
+                .AddHandler(HandleRequestNavigate)
+                .AddHandler(HandleLogOutRequestMessage)
+                // default handler is a good thing to catch unknown messages
+                .AddHandler(DefaultHandler);
         }
 
         /// <summary>
@@ -95,56 +97,52 @@ namespace Freengy.UI.Helpers
 
         private bool HandleRequestNavigate(MessageBase message) 
         {
-            var requestGameUi = message as MessageRequestGameUi;
+            if (!(message is MessageRequestGameUi requestGameUi)) return false;
 
-            if (requestGameUi == null) return false;
-
-            UiDispatcher.Invoke(() => this.regionManager.RegisterViewWithRegion(RegionNames.GameRegion, requestGameUi.GameUiType));
+            UiDispatcher.Invoke(() => regionManager.RegisterViewWithRegion(RegionNames.GameRegion, requestGameUi.GameUiType));
 
             string gameViewName = requestGameUi.GameUiType.FullName;
 
-            this.unityContainer.RegisterType(typeof(object), requestGameUi.GameUiType, gameViewName);
+            unityContainer.RegisterType(typeof(object), requestGameUi.GameUiType, gameViewName);
 
-            this.Navigate(RegionNames.GameRegion, gameViewName);
+            Navigate(RegionNames.GameRegion, gameViewName);
 
             return true;
         }
 
         private bool HandleLogInFailedMessage(MessageBase message) 
         {
-            var loggedInMessage = message as MessageLogInFailed;
+            if (!(message is MessageLogInFailed)) return false;
 
-            if (loggedInMessage == null) return false;
-
-            //this.waiter.Hide();
-
-            this.Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
+            Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
 
             return true;
         }
 
         private bool HandleLogInSuccessMessage(MessageBase message) 
         {
-            var loggedInMessage = message as MessageLogInSuccess;
+            if (!(message is MessageLogInSuccess)) return false;
 
-            if (loggedInMessage == null) return false;
+            Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
 
-            //this.waiter.Hide();
-
-            this.Navigate(RegionNames.MainWindowRegion, ViewNames.ShellViewName);
-
-            UiDispatcher.Invoke(this.SetMainWindowSizeForShell);
+            UiDispatcher.Invoke(SetMainWindowSizeForShell);
 
             return true;
         }
 
         private bool HandleLogInAttemptMessage(MessageBase message) 
         {
-            var loggedInMessage = message as MessageLogInAttempt;
+            if (!(message is MessageLogInAttempt)) return false;
 
-            if (loggedInMessage == null) return false;
+            return true;
+        }
 
-            //this.waiter.Show("Connecting...");
+        private bool HandleLogOutRequestMessage(MessageBase message) 
+        {
+            if (!(message is MessageLogoutRequest)) return false;
+
+            Navigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
+            UiDispatcher.Invoke(SetMainWindowSizeForLogIn);
 
             return true;
         }
@@ -154,13 +152,22 @@ namespace Freengy.UI.Helpers
             if (string.IsNullOrWhiteSpace(viewName))   throw new ArgumentNullException(nameof(viewName));
             if (string.IsNullOrWhiteSpace(regionName)) throw new ArgumentNullException(nameof(regionName));
             
-            UiDispatcher.Invoke(() => this.regionManager.RequestNavigate(regionName, viewName));
+            UiDispatcher.Invoke(() => regionManager.RequestNavigate(regionName, viewName));
         }
 
         private void SetMainWindowSizeForShell() 
         {
             Application.Current.MainWindow.MinWidth  = 800;
             Application.Current.MainWindow.MinHeight = 600;
+        }
+
+        private void SetMainWindowSizeForLogIn() 
+        {
+            Application.Current.MainWindow.MinWidth = 630;
+            Application.Current.MainWindow.Width = 630;
+
+            Application.Current.MainWindow.MinHeight = 360;
+            Application.Current.MainWindow.Height = 360;
         }
     }
 }

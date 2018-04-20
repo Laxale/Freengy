@@ -75,7 +75,7 @@
                                 Background="{TemplateBinding Background}" BorderBrush="{StaticResource CommonWindowBorderBrush}">
 
                             <Border.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="7" ShadowDepth="2" Direction="315"/>
+                                <DropShadowEffect Color="{StaticResource BlacColor}" Opacity="0.7" BlurRadius="7" ShadowDepth="2" Direction="315"/>
                             </Border.Effect>
 
                             <Grid Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -133,8 +133,9 @@
                                         <Button Grid.Column="4" x:Name="CloseButton" Click="CloseButtonClick" Background="Red"
                                                 Style="{StaticResource TitleBarButtonStyle}" Padding="4, 0, 0, 0">
                                             
-                                            <Path StrokeThickness="1.1" Fill="Black" Stroke="Black" Data="{StaticResource CloseIconGeometry}" 
-                                                  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 4, 0, 0">
+                                            <Path StrokeThickness="1.1" Fill="{StaticResource BlackBrush}" 
+                                                  Stroke="{StaticResource BlackBrush}" Data="{StaticResource CloseIconGeometry}" 
+                                                  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6, 4, 0, 0">
                                                 <Path.RenderTransform>
                                                     <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="0.6" ScaleY="0.6"/>
                                                 </Path.RenderTransform>

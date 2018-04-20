@@ -13,9 +13,14 @@ namespace Freengy.Common.Models
     public class LoginModel 
     {
         /// <summary>
+        /// Is use logging in or out.
+        /// </summary>
+        public bool IsLoggingIn { get; set; }
+
+        /// <summary>
         /// Name of user trying to log in.
         /// </summary>
-        public UserAccount Account { get; set; }
+        public UserAccountModel Account { get; set; }
 
         /// <summary>
         /// Hash of user password.

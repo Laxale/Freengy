@@ -22,6 +22,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.3\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
@@ -31,8 +34,14 @@
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -50,6 +59,8 @@
     <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
+    <Compile Include="DefaultImpl\UserActivityHub.cs" />
+    <Compile Include="ErrorReasons\UserCancelledReason.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
@@ -75,8 +86,11 @@
     <Compile Include="Interfaces\IResponsibilityChainer.cs" />
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
+    <Compile Include="Interfaces\IUserActivity.cs" />
+    <Compile Include="Interfaces\IUserActivityHub.cs" />
     <Compile Include="InternalsExposer.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseBase.cs" />
+    <Compile Include="Messages\MessageActivityChanged.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />

@@ -13,11 +13,11 @@ using Freengy.Common.Models;
 namespace Freengy.Common.Restrictions 
 {
     /// <summary>
-    /// Contains validation logic for <see cref="UserAccount"/> model.
+    /// Contains validation logic for <see cref="UserAccountModel"/> model.
     /// </summary>
     public class AccountValidator 
     {
-        private readonly UserAccount account;
+        private readonly UserAccountModel account;
 
         /// <summary>
         /// Maximum account level.
@@ -31,10 +31,10 @@ namespace Freengy.Common.Restrictions
 
 
         /// <summary>
-        /// Creates instance of <see cref="AccountValidator"/> for a given <see cref="UserAccount"/>.
+        /// Creates instance of <see cref="AccountValidator"/> for a given <see cref="UserAccountModel"/>.
         /// </summary>
         /// <param name="account">Account to validate.</param>
-        public AccountValidator(UserAccount account) 
+        public AccountValidator(UserAccountModel account) 
         {
             this.account = account ?? throw new ArgumentNullException(nameof(account));
         }
@@ -44,9 +44,9 @@ namespace Freengy.Common.Restrictions
         /// Trim account properties that are out of limited bounds.
         /// </summary>
         /// <returns>New <see cref="UserAccount"/> clone of incame account nstance with a trimmed properties.</returns>
-        public UserAccount Trim() 
+        public UserAccountModel Trim() 
         {
-            var trimmedAccount = new UserAccount
+            var trimmedAccount = new UserAccountModel
             {
                 Id = account.Id,
                 Name = account.Name,

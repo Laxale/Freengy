@@ -3,12 +3,14 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Runtime;
 using System.Net.Http;
 using System.Threading;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
@@ -29,7 +31,7 @@ using NLog;
 
 using Catel.IoC;
 using Catel.Messaging;
-
+using Freengy.Common.Extensions;
 using Newtonsoft.Json;
 
 
@@ -44,7 +46,7 @@ namespace Freengy.Networking.DefaultImpl
 
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
-        private readonly MessageBase messageLoggInAttempt;
+        private readonly MessageBase messageLogInAttempt;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly IMessageMediator messageMediator = MessageMediator.Default;
 
@@ -58,7 +60,7 @@ namespace Freengy.Networking.DefaultImpl
         private LoginController() 
         {
             messageLoggedIn = new MessageLogInSuccess();
-            messageLoggInAttempt = new MessageLogInAttempt();
+            messageLogInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
         }
@@ -76,6 +78,7 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Returns current user account in usage.
         /// </summary>
@@ -110,9 +113,9 @@ namespace Freengy.Networking.DefaultImpl
                         return Result<UserAccount>.Fail(new UnexpectedErrorReason(request.Status.ToString()));
                     }
 
-                    CurrentAccount = request.CreatedAccount;
+                    CurrentAccount = new UserAccount(request.CreatedAccount);
 
-                    return Result<UserAccount>.Ok(request.CreatedAccount);
+                    return Result<UserAccount>.Ok(CurrentAccount);
                 }
 
                 
@@ -126,6 +129,7 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Attempts to log the user in.
         /// </summary>
@@ -133,85 +137,103 @@ namespace Freengy.Networking.DefaultImpl
         /// <returns>Login result.</returns>
         public Result<AccountState> LogIn(LoginModel loginModel) 
         {
+            if (loginModel?.Account == null)
+            {
+                return Result<AccountState>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
+            }
+
+            loginModel.IsLoggingIn = true;
+
+            return InvokeLogInOrOut(loginModel);
+        }
+
+        /// <summary>
+        /// Attempts to log the user out.
+        /// </summary>
+        public Result<AccountState> LogOut() 
+        {
+            var loginModel = new LoginModel
+            {
+                IsLoggingIn = false,
+                Account = CurrentAccount.ToModel(),
+                PasswordHash = "fffuuuu"
+            };
+            
+            return InvokeLogInOrOut(loginModel);
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Attempts to log in the user asynchronously.
+        /// </summary>
+        /// <param name="loginModel">User account data to log in.</param>
+        /// <returns>Logging user in <see cref="T:System.Threading.Tasks.Task" />.</returns>
+        public async Task<Result<AccountState>> LogInAsync(LoginModel loginModel) 
+        {
+            return await Task.Run(() => LogIn(loginModel));
+        }
+
+
+        private Result<AccountState> InvokeLogInOrOut(LoginModel loginModel)
+        {
+            AccountOnlineStatus targetStatus = loginModel.IsLoggingIn ? AccountOnlineStatus.Online : AccountOnlineStatus.Offline;
+
             try
             {
-                if (loginModel?.Account == null)
-                {
-                    return Result<AccountState>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
-                }
-
-                messageMediator.SendMessage(messageLoggInAttempt);
+                messageMediator.SendMessage(messageLogInAttempt);
 
                 Thread.Sleep(500);
 
-                AccountState logInStatus = LogInImpl(loginModel);
+                AccountState state = LogInImpl(loginModel);
 
-                if (logInStatus.OnlineStatus == AccountOnlineStatus.Online)
+                if (state.OnlineStatus != targetStatus)
                 {
-                    CurrentAccount = loginModel.Account;
-                    return Result<AccountState>.Ok(logInStatus);
+                    return Result<AccountState>.Fail(new UnexpectedErrorReason(state.OnlineStatus.ToString()));
                 }
 
-                return Result<AccountState>.Fail(new UnexpectedErrorReason(logInStatus.ToString()));
+                CurrentAccount = new UserAccount(state.Account);
+                return Result<AccountState>.Ok(state);
             }
             catch (Exception ex)
             {
-                string message = $"Failed to log '{ loginModel?.Account?.Name }' in";
+                string direction = loginModel.IsLoggingIn ? "in" : "out";
+                string message = $"Failed to log '{loginModel?.Account?.Name}' {direction}";
                 logger.Error(ex, message);
 
                 return Result<AccountState>.Fail(new UnexpectedErrorReason(message));
             }
         }
 
-        /// <summary>
-        /// Attempts to log the user out.
-        /// </summary>
-        public AccountOnlineStatus LogOut() 
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Result<AccountState>> LogInAsync(LoginModel loginParameters) 
-        {
-            return await Task.Run(() => LogIn(loginParameters));
-        }
-
 
         private AccountState LogInImpl(LoginModel loginModel) 
+        {
+            //X509Certificate2 certificate = GetMyX509Certificate();
+            HashThePassword(loginModel);
+
+            using (var actor = serviceLocator.ResolveType<IHttpActor>())
+            {
+                actor.SetAddress(Url.Http.LogInUrl);
+
+                AccountState result = actor.PostAsync<LoginModel, AccountState>(loginModel).Result;
+
+                if (result.OnlineStatus == AccountOnlineStatus.Online)
+                {
+                    messageMediator.SendMessage(messageLoggedIn);
+                }
+
+                return result;
+            }
+        }
+
+        private void HashThePassword(LoginModel loginModel) 
         {
             using (SHA512 keccak = SHA512.Create())
             {
                 byte[] passwordBytes = Encoding.ASCII.GetBytes(loginModel.PasswordHash);
 
                 byte[] hash = keccak.ComputeHash(passwordBytes);
-            }
 
-            var handler = new HttpClientHandler
-            {
-                UseCookies = true
-            };
-
-            //X509Certificate2 certificate = GetMyX509Certificate();
-
-            using (var client = new HttpClient(handler))
-            {
-                var serializedRequest = JsonConvert.SerializeObject(loginModel);
-                var content = new StringContent(serializedRequest);
-                HttpResponseMessage result = client.PostAsync(Url.Http.LogInUrl, content).Result;
-
-                if (result.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new InvalidOperationException("Login attempt failed");
-                }
-
-                var loginState  = new SerializeHelper().DeserializeObject<AccountState>(result.Content.ReadAsStreamAsync().Result);
-
-                if (loginState.OnlineStatus == AccountOnlineStatus.Online)
-                {
-                    messageMediator.SendMessage(messageLoggedIn);
-                }
-
-                return loginState;
+                loginModel.PasswordHash = Convert.ToBase64String(hash);
             }
         }
     }

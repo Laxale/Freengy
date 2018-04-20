@@ -15,148 +15,140 @@
 
                    mc:Ignorable="d" 
                    MinWidth="700" MinHeight="500" 
+                   catel:CloseViewModelOnUnloaded="False"
                    d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="180" />
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="360"/>
-        </Grid.ColumnDefinitions>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MinHeight="180"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" MinHeight="60" Name="ChatterRegionDefinition"/>
-        </Grid.RowDefinitions>
-
-        <!-- Settings panel -->
-        <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
-            <Border.Background>
-                <LinearGradientBrush>
-                    <GradientStop Color="Chocolate" Offset="0.6"/>
-                    <GradientStop Color="Transparent" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-
+    <UserControl.Resources>
+        <DataTemplate x:Key="LogoutWaitTemplate">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
+                <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
+                    <TextBlock Text="Disconnecting" Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
 
-                <DockPanel Grid.Column="1">
+                    <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
+                                       IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}">
+                        <controls:GifImage.Effect>
+                            <DropShadowEffect/>
+                        </controls:GifImage.Effect>
+                    </controls:GifImage>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <controls:WaitableDecorator WaitTemplate="{StaticResource LogoutWaitTemplate}" CollapseContentOnWaiting="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="180" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="360"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" MinHeight="180"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" MinHeight="60" Loaded="ChatterRegionDefinition_OnLoaded"/>
+            </Grid.RowDefinitions>
+
+            <!-- Settings panel -->
+            <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="Chocolate" Offset="0.6"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <DockPanel>
+                    <!-- Settings button -->
+                    <DockPanel DockPanel.Dock="Right">
+                        <!--
                     <controls:GifImage MaxHeight="{StaticResource CommonMediumIconSize}" HorizontalAlignment="Right" VerticalAlignment="Top"
                                        GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/AnimatedBlackenedHandIcon.gif" 
                                        ToolTip="Hey, check this out!" IsAutoStart="True" Stretch="UniformToFill" Margin="{StaticResource All4Margin}"
                                        Visibility="{Binding Path=ShowVisualHints, Converter={StaticResource BoolToVisibilityConverter}}" FrameRate="50"/>
+                    -->
 
-                    <Button MaxWidth="24" MaxHeight="24" Width="24" VerticalAlignment="Top" 
-                            ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
-                            Command="{Binding Path=CommandShowSettings}" Style="{x:Null}"
-                            Margin="{StaticResource All4Margin}" HorizontalAlignment="Right">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Image Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" RenderTransformOrigin="0.5, 0.5"
-                                   MaxHeight="{TemplateBinding MaxHeight}" MaxWidth="{TemplateBinding MaxWidth}" 
-                                   Source="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">
+                        <Button DockPanel.Dock="Right" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
+                            Command="{Binding Path=CommandShowSettings}" Style="{StaticResource ImageButtonStyle}" 
+                            HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="3, 2, 0, 0">
+                            <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
+                        </Button>
 
-                                    <Image.RenderTransform>
-                                        <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="Rotator"/>
-                                    </Image.RenderTransform>
-
-                                    <Image.Style>
-                                        <Style TargetType="Image">
-                                            <Style.Triggers>
-                                                <EventTrigger RoutedEvent="MouseDown">
-                                                    <EventTrigger.Actions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard 
-                                                            Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)">
-                                                                <DoubleAnimation BeginTime="0" 
-                                                                             AutoReverse="False" From="0" To="360" Duration="0:0:1">
-                                                                    <DoubleAnimation.EasingFunction>
-                                                                        <SineEase EasingMode="EaseInOut"/>
-                                                                    </DoubleAnimation.EasingFunction>
-                                                                </DoubleAnimation>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-
-                                                        <BeginStoryboard>
-                                                            <Storyboard Storyboard.TargetProperty="Width">
-                                                                <DoubleAnimation BeginTime="0" AutoReverse="True" From="24" To="16" 
-                                                                             Duration="0:0:0.4">
-                                                                    <DoubleAnimation.EasingFunction>
-                                                                        <BounceEase Bounces="1" EasingMode="EaseOut"/>
-                                                                    </DoubleAnimation.EasingFunction>
-                                                                </DoubleAnimation>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger.Actions>
-                                                </EventTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                        <Button DockPanel.Dock="Left" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.LogOut}" Padding="2, 0, 0, 0"
+                            Command="{Binding Path=CommandLogOut}" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right">
+                            <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource LevelUpIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                                <Path.LayoutTransform>
+                                    <TransformGroup>
+                                        <RotateTransform CenterX="0.5" CenterY="0.5" Angle="270"/>
+                                    </TransformGroup>
+                                </Path.LayoutTransform>
+                            </Path>
+                        </Button>
+                    </DockPanel>
                 </DockPanel>
+            </Border>
+
+            <!-- Gamelist region -->
+            <ContentControl Grid.Row="1" Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameListRegion}"/>
+
+            <GridSplitter Grid.Row="1" Grid.RowSpan="4" Grid.Column="1" ResizeBehavior="PreviousAndNext"
+                      Width="2" Margin="{StaticResource All4Margin}" Background="{StaticResource DarkGrayBrush}"/>
+
+            <!-- Friends panel -->
+            <DockPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="5">
+                <!-- My account details panel -->
+                <views:MyAccountVisitView DockPanel.Dock="Top" Margin="{StaticResource All4Margin}"/>
+
+                <!-- Friendlist region -->
+                <ContentControl Margin="{StaticResource All4Margin}" DockPanel.Dock="Top"
+                            HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
+            </DockPanel>
+
+            <!-- Game panel -->
+            <Grid Grid.Row="2" Grid.Column="0" Margin="{StaticResource All4Margin}">
+                <Border Background="{StaticResource LightGrayBrush}" Opacity="0.6"/>
+
+                <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameRegion}"/>
             </Grid>
-        </Border>
-        
-        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" ResizeBehavior="PreviousAndNext"
-                      Width="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
 
-        <!-- Friends panel -->
-        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" Margin="{StaticResource All4Margin}" Opacity="0.9"
-                        HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
+            <GridSplitter Grid.Row="3" Grid.Column="0" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"
+                      Height="2" Margin="{StaticResource All4Margin}" Background="{StaticResource DarkGrayBrush}"/>
 
-        <!-- Game panel -->
-        <Grid Grid.Row="1" Grid.Column="0" Margin="{StaticResource All4Margin}">
-            <Border Background="Gray" Opacity="0.6"/>
+            <!-- Chatter panel -->
+            <Grid Grid.Row="4" Grid.Column="0" Margin="{StaticResource All4Margin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <ContentControl Grid.Column="0" prism:RegionManager.RegionName="{x:Static const:RegionNames.GameRegion}"/>
-        </Grid>
+                <!-- Just for background -->
+                <Border Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource LightGrayBrush}" Opacity="0.6"/>
 
-        <GridSplitter Grid.Row="2" Grid.Column="0" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Stretch"
-                      Height="2" Margin="{StaticResource All4Margin}" Background="Gray"/>
-
-        <!-- Chatter panel -->
-        <Grid Grid.Row="3" Grid.Column="0" Margin="{StaticResource All4Margin}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Just for background -->
-            <Border Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource LightGrayBrush}" Opacity="0.6"/>
-
-            <!-- Collapsing button -->
-            <Button Grid.Column="0" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top"
+                <!-- Collapsing button -->
+                <Button Grid.Column="0" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top"
                     HorizontalAlignment="Left" Margin="2" Click="ChatCollapserButton_OnClick" ToolTip="{x:Static commonRes:StringResources.Collapse}">
-                <Path Fill="{StaticResource BlackBrush}">
-                    <Path.Style>
-                        <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="True">
-                                    <Setter Property="Data" Value="{StaticResource ArrowUpIconGeometry}"/>
-                                </DataTrigger>
+                    <Path Fill="{StaticResource BlackBrush}">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="True">
+                                        <Setter Property="Data" Value="{StaticResource ArrowUpIconGeometry}"/>
+                                    </DataTrigger>
 
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="False">
-                                    <Setter Property="Data" Value="{StaticResource ArrowDownIconGeometry}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Path.Style>
-                </Path>
-            </Button>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ShellView}, Path=IsChatCollapsed}" Value="False">
+                                        <Setter Property="Data" Value="{StaticResource ArrowDownIconGeometry}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </Button>
 
-            <!-- Chat container region -->
-            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
+                <!-- Chat container region -->
+                <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </controls:WaitableDecorator>
 </catel:UserControl>

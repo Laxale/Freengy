@@ -13,9 +13,9 @@ namespace Freengy.Common.Models
     public class AccountState 
     {
         /// <summary>
-        /// User account.
+        /// User account model.
         /// </summary>
-        public UserAccount Account { get; set; }
+        public UserAccountModel Account { get; set; }
 
         /// <summary>
         /// User account online status.

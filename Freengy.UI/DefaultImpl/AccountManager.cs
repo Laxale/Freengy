@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Freengy.Base.Interfaces;
+using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers.Result;
@@ -20,16 +21,16 @@ namespace Freengy.UI.DefaultImpl
     internal static class DbSetExtensions 
     {
         /// <summary>
-        /// Find user account with latest log-in time.
+        /// Find user account model with latest log-in time.
         /// </summary>
         /// <param name="accounts">Set of user accounts.</param>
         /// <returns>Latest logged-in account or null.</returns>
-        public static UserAccount FindMax(this IEnumerable<UserAccount> accounts) 
+        public static UserAccountModel FindLatestLogIn(this IEnumerable<UserAccountModel> accounts) 
         {
-            UserAccount maxAccount = null;
+            UserAccountModel maxAccount = null;
             var maximumLoginTime = DateTime.MinValue;
 
-            foreach (UserAccount account in accounts)
+            foreach (var account in accounts)
             {
                 if (account.LastLogInTime > maximumLoginTime)
                 {
@@ -51,6 +52,7 @@ namespace Freengy.UI.DefaultImpl
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
+        /// <inheritdoc />
         /// <summary>
         /// Get account that was last logged in.
         /// </summary>
@@ -59,9 +61,9 @@ namespace Freengy.UI.DefaultImpl
         {
             try
             {
-                using (var context = new SimpleDbContext<UserAccount>())
+                using (var context = new SimpleDbContext<UserAccountModel>())
                 {
-                    UserAccount lastLogged = context.Objects.FindMax();
+                    var lastLogged = context.Objects.FindLatestLogIn();
 
                     if (lastLogged == null)
                     {
@@ -70,7 +72,7 @@ namespace Freengy.UI.DefaultImpl
 
                     lastLogged.SyncUniqueIdToId();
 
-                    return Result<UserAccount>.Ok(lastLogged);
+                    return Result<UserAccount>.Ok(new UserAccount(lastLogged));
                 }
             }
             catch (Exception ex)
@@ -91,9 +93,9 @@ namespace Freengy.UI.DefaultImpl
         {
             try
             {
-                using (var context = new SimpleDbContext<UserAccount>())
+                using (var context = new SimpleDbContext<UserAccountModel>())
                 {
-                    UserAccount savedAcc = context.Objects.FirstOrDefault(acc => acc.Id == account.Id);
+                    var savedAcc = context.Objects.FirstOrDefault(acc => acc.Id == account.Id);
 
                     if (savedAcc != null)
                     {
@@ -101,7 +103,8 @@ namespace Freengy.UI.DefaultImpl
                     }
                     else
                     {
-                        context.Objects.Add(account);
+                        UserAccountModel model = account.ToModel();
+                        context.Objects.Add(model);
                     }
 
                     context.SaveChanges();

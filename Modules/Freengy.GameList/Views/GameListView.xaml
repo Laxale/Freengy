@@ -138,7 +138,7 @@
         </ListBox>
 
         <Button Grid.Row="1" Content="Discover loading problems" VerticalAlignment="Top" FontSize="16" 
-                HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle}" Foreground="{StaticResource ErrorBrush}" 
+                HorizontalAlignment="Left" Style="{StaticResource LinkButtonStyle}" Foreground="{StaticResource ErrorBrush}" 
                 ToolTip="{x:Static gamelist:Resources.GamesNotFoundHintText}" Command="{Binding Path=CommandResolveProblems}"
                 Visibility="{Binding Path=GameList.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>

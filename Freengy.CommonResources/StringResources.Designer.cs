@@ -187,6 +187,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string Level {
+            get {
+                return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string LoadingDotsText {
@@ -205,6 +214,15 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log out.
+        /// </summary>
+        public static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimum length of 10 symbols and no spaces.
         /// </summary>
         public static string PasswordRequirementsText {
@@ -219,6 +237,15 @@ namespace Freengy.CommonResources {
         public static string PasswordText {
             get {
                 return ResourceManager.GetString("PasswordText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privilege.
+        /// </summary>
+        public static string Privilege {
+            get {
+                return ResourceManager.GetString("Privilege", resourceCulture);
             }
         }
         

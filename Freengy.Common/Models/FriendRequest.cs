@@ -6,6 +6,7 @@ using System;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Database;
+using Freengy.Common.Extensions;
 
 
 namespace Freengy.Common.Models 
@@ -19,12 +20,12 @@ namespace Freengy.Common.Models
         /// <summary>
         /// Account that user wants to be friends with.
         /// </summary>
-        public UserAccount TargetAccount { get; set; }
+        public UserAccountModel TargetAccount { get; set; }
 
         /// <summary>
         /// User account that wants to be friends.
         /// </summary>
-        public UserAccount RequesterAccount { get; set; }
+        public UserAccountModel RequesterAccount { get; set; }
 
         /// <summary>
         /// State of this request. Is set by server.
@@ -52,8 +53,8 @@ namespace Freengy.Common.Models
         {
             var request = new FriendRequest
             {
-                RequesterAccount = sender,
-                TargetAccount = target,
+                RequesterAccount = sender.ToModel(),
+                TargetAccount = target.ToModel(),
                 CreationDate = DateTime.Now
             };
 

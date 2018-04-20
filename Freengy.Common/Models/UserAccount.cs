@@ -1,12 +1,9 @@
-﻿// Created by Laxale 18.04.2018
+﻿// Created by Laxale 20.04.2018
 //
 //
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
-using Freengy.Common.Constants;
 using Freengy.Common.Database;
 using Freengy.Common.Enums;
 using Freengy.Common.Interfaces;
@@ -15,84 +12,50 @@ using Freengy.Common.Interfaces;
 namespace Freengy.Common.Models 
 {
     /// <summary>
-    /// Data model of a user account.
+    /// Read-only wrapper other fragile <see cref="UserAccountModel" /> that must not be used in client code.
     /// </summary>
-    public class UserAccount : ComplexDbObject, INamedObject, IObjectWithId 
+    public class UserAccount : DbObject, INamedObject, IObjectWithId 
     {
-        /// <inheritdoc />
-        /// <summary>
-        /// Gets or sets unique user identifier.
-        /// </summary>
-        [NotMapped]
-        public Guid UniqueId { set; get; }
-
-        /// <summary>
-        /// Gets or sets level of a user account.
-        /// </summary>
-        public int Level { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets privileges of account.
-        /// </summary>
-        public AccountPrivilege Privilege { get; set; } = AccountPrivilege.Common;
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Gets or sets user name.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets user account registration date.
-        /// </summary>
-        public DateTime RegistrationTime { get; set; }
-
-        /// <summary>
-        /// Gets or sets last user log-in time.
-        /// </summary>
-        public DateTime LastLogInTime { get; set; }
-
-
-        /// <summary>
-        /// Set <see cref="UserAccount.UniqueId"/> equal to main <see cref="UserAccount.Id"/> property.
-        /// </summary>
-        public void SyncUniqueIdToId() 
+        public UserAccount(UserAccountModel accountModel)
         {
-            UniqueId = Guid.Parse(Id);
+            Id = accountModel.Id;
+            Name = accountModel.Name;
+            UniqueId = accountModel.UniqueId;
+            LastLogInTime = accountModel.LastLogInTime;
+            RegistrationTime = accountModel.RegistrationTime;
+            Level = accountModel.Level;
+            Privilege = accountModel.Privilege;
         }
 
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Name} [Level {Level} {Privilege}]";
-        }
 
         /// <summary>
-        /// Создать реальный объект из объекта-прокси EF.
+        /// Account name.
         /// </summary>
-        /// <param name="dbProxy">Прокси-объект, полученный из базы, который нужно превратить в реальный объект.</param>
-        /// <returns>Реальный объект <see cref="DbObject"/>.</returns>
-        public override DbObject CreateFromProxy(DbObject dbProxy) 
-        {
-            return (UserAccount) dbProxy;
-        }
+        public string Name { get; }
 
         /// <summary>
-        /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
+        /// Account level.
         /// </summary>
-        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
-        public override ComplexDbObject PrepareMappedProps()
-        {
-            return this;
-        }
+        public int Level { get; }
 
         /// <summary>
-        /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
+        /// Account privilege.
         /// </summary>
-        /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected override IEnumerable<string> GetIncludedPropNames() 
-        {
-            return new List<string>();
-        }
+        public AccountPrivilege Privilege { get; }
+        
+        /// <summary>
+        /// Returns unique identifier of an implementer object.
+        /// </summary>
+        public Guid UniqueId { get; }
+
+        /// <summary>
+        /// Account last login time.
+        /// </summary>
+        public DateTime LastLogInTime { get; }
+
+        /// <summary>
+        /// Account registration time.
+        /// </summary>
+        public DateTime RegistrationTime { get; }
     }
 }

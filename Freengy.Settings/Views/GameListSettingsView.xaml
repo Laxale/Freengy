@@ -66,7 +66,7 @@
                                               ConverterParameter={x:Static properties:Resources.DefaultSelectGamesFolderText}}">
 
                         <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource HyperlinkButtonStyle}">
+                            <Style TargetType="Button" BasedOn="{StaticResource LinkButtonStyle}">
                                 <Style.Triggers>
                                     <DataTrigger Value="True">
                                         <DataTrigger.Binding>

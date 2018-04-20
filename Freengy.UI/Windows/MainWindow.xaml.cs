@@ -2,21 +2,23 @@
 //
 //
 
+using System.Windows;
+
 
 namespace Freengy.UI.Windows 
 {
-    using System.Windows;
-
-
+    /// <summary>
+    /// Main application window.
+    /// </summary>
     public partial class MainWindow : Window 
     {
         public MainWindow() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             var asmVersion = typeof(MainWindow).Assembly.GetName().Version;
 
-            this.Title = $"{ this.Title } | { asmVersion }";
+            Title = $"{ this.Title } | { asmVersion }";
         }
     }
 }

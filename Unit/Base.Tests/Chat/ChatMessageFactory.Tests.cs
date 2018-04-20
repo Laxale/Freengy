@@ -22,7 +22,7 @@ namespace Base.Tests.Chat
     public class ChatMessageFactoryTests 
     {
         private IChatMessageFactory messageFactory;
-        private readonly UserAccount author = new TestAccount { Name = "Awesome Author", UniqueId = Guid.NewGuid() };
+        private readonly UserAccount author = new UserAccount(new UserAccountModel { Name = "Awesome Author", UniqueId = Guid.NewGuid() });
 
 
         [SetUp]
@@ -53,7 +53,7 @@ namespace Base.Tests.Chat
         [Test]
         public void Author_TestEqualsToArgument()
         {
-            var newAuthor = new TestAccount { Name = "test name" };
+            var newAuthor = new UserAccount(new UserAccountModel { Name = "test name" });
             this.messageFactory.Author = newAuthor;
 
             Assert.AreEqual(this.messageFactory.Author, newAuthor);

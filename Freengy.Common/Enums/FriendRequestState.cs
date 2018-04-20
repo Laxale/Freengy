@@ -33,6 +33,11 @@ namespace Freengy.Common.Enums
         Declined,
 
         /// <summary>
+        /// Target account doesnt exist.
+        /// </summary>
+        DoesntExist,
+
+        /// <summary>
         /// Some error occured.
         /// </summary>
         Error

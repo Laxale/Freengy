@@ -28,8 +28,8 @@
             <DataTemplate x:Key="WaitTemplate">
                 <Grid Background="{StaticResource ThirdMainBrush}">
                     <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
-                        <TextBlock Text="Checking data..." Foreground="Black" FontSize="14" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Please dont burn your computer for a while" Foreground="Black" FontSize="14" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Checking data..." Foreground="{StaticResource BlackBrush}" FontSize="14" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Please dont burn your computer for a while" Foreground="{StaticResource BlackBrush}" FontSize="14" HorizontalAlignment="Center"/>
 
                         <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" 
                                            IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonLargeIconSize}"/>
@@ -54,13 +54,12 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                    <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right"
-                       Visibility="{Binding Path=Registered, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right" Visibility="{Binding Path=Registered, Converter={StaticResource BoolToVisibilityConverter}}">
                         <Image DockPanel.Dock="Right" MaxWidth="{StaticResource CommonSmallIconSize}" Margin="{StaticResource All4Margin}"
-                       Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
+                               Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
 
                         <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right" FontSize="16"
-                       Foreground="{StaticResource SuccessBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
+                                   Foreground="{StaticResource SuccessBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
                     </DockPanel>
                 </DockPanel>
 
@@ -82,8 +81,7 @@
                 <DockPanel Grid.Row="4" Grid.Column="1">
                     <Image DockPanel.Dock="Left" MaxWidth="{StaticResource CommonLargeIconSize}" Margin="{StaticResource All4Margin}"
                            Source="pack://application:,,,/Freengy.CommonResources;component/Images/EmailIcon.png"/>
-                    <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" 
-                               Foreground="#555555" FontWeight="Heavy" TextAlignment="Left"/>
+                    <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" FontWeight="Heavy" TextAlignment="Left"/>
                 </DockPanel>
 
                 <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 

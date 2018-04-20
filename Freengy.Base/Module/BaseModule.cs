@@ -18,6 +18,7 @@ namespace Freengy.Base.Module
     {
         public void Initialize() 
         {
+            ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
             ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();

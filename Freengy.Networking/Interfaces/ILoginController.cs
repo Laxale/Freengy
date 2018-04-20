@@ -43,7 +43,8 @@ namespace Freengy.Networking.Interfaces
         /// <summary>
         /// Attempts to log the user out.
         /// </summary>
-        AccountOnlineStatus LogOut();
+        /// <returns>Logout result.</returns>
+        Result<AccountState> LogOut();
 
         /// <summary>
         /// Attempts to log in the user asynchronously.

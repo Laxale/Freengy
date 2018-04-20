@@ -207,4 +207,13 @@
   <data name="Collapse" xml:space="preserve">
     <value>Collapse</value>
   </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>Privilege</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
 </root>

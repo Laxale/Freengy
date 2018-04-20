@@ -52,8 +52,8 @@ namespace Freengy.Common.Models
         public RegistrationStatus Status { get; set; }
 
         /// <summary>
-        /// Account is created by server in case of success.
+        /// Account model is created by server in case of success.
         /// </summary>
-        public UserAccount CreatedAccount { get; set; }
+        public UserAccountModel CreatedAccount { get; set; }
     }
 }

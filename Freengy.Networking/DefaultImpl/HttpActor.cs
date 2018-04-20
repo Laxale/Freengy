@@ -3,21 +3,13 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Common.Helpers;
-using Freengy.Common.Helpers.ErrorReason;
-using Freengy.Common.Helpers.Result;
-using Freengy.Common.Models;
-using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
-
-using Newtonsoft.Json;
 
 
 namespace Freengy.Networking.DefaultImpl 

@@ -8,10 +8,14 @@
                     
                     mc:Ignorable="d">
 
-    <Thickness x:Key="StdMargin" Left="2" Top="2"/>
-    <Thickness x:Key="4Left2TopMargin" Left="4" Top="2"/>
-    <Thickness x:Key="4Left4TopMargin" Left="4" Top="4"/>
-    <Thickness x:Key="All4Margin" Left="4" Top="4" Right="4" Bottom="4"/>
+    <system:Double x:Key="2">2</system:Double>
+    <system:Double x:Key="4">4</system:Double>
+
+    <Thickness x:Key="StdMargin" Left="{StaticResource 2}" Top="{StaticResource 2}"/>
+    <Thickness x:Key="4LeftMargin" Left="{StaticResource 4}"/>
+    <Thickness x:Key="4Left2TopMargin" Left="{StaticResource 4}" Top="{StaticResource 2}"/>
+    <Thickness x:Key="4Left4TopMargin" Left="{StaticResource 4}" Top="{StaticResource 4}"/>
+    <Thickness x:Key="All4Margin" Left="{StaticResource 4}" Top="{StaticResource 4}" Right="{StaticResource 4}" Bottom="{StaticResource 4}"/>
 
     <system:Double x:Key="CommonSmallIconSize">16</system:Double>
     <system:Double x:Key="CommonMediumIconSize">24</system:Double>

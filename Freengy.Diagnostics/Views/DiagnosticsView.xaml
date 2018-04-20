@@ -63,7 +63,7 @@
 
         <DockPanel Grid.Row="1" Grid.Column="1">
             <Button DockPanel.Dock="Top" Content="{x:Static diagnostics:Resources.RunUnitsText}" 
-                    Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Left" 
+                    Style="{StaticResource LinkButtonStyle}" HorizontalAlignment="Left" 
                     Command="{Binding Path=CommandRunUnits}" CommandParameter="{Binding ElementName=CategoriesList, Path=SelectedItem}"/>
 
             <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeavyTextBlockStyle}" Foreground="{StaticResource FirstMainBrush}"

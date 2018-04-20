@@ -22,7 +22,7 @@
         <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
     </Style>
 
-    <Style TargetType="Button" x:Key="HyperlinkButtonStyle" BasedOn="{StaticResource CommonButtonStyle}">
+    <Style TargetType="Button" x:Key="LinkButtonStyle" BasedOn="{StaticResource CommonButtonStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -47,6 +47,7 @@
     <Style TargetType="Button" x:Key="ImageButtonStyle">
         <Setter Property="Width" Value="26"/>
         <Setter Property="Height" Value="26"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="ClickMode" Value="Press"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>

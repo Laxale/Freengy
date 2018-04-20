@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Freengy.UI.Views"
         
         mc:Ignorable="d" 
-        KeyUp="Window_KeyUp"
+        KeyDown="Window_KeyDown"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
