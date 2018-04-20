@@ -3,38 +3,36 @@
 //
 
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Security;
+using System.ServiceModel.Security;
 
-using Catel.Data;
 
 using Freengy.Base.Helpers;
+
+using Catel.Data;
 
 using CommonRes = Freengy.CommonResources.StringResources;
 
 
 namespace Freengy.Base.ViewModels 
 {
-    public abstract class CredentialViewModel : WaitableViewModel 
+    public abstract class CredentialViewModel : WaitableViewModel, IDataErrorInfo  
     {
-        protected override void SetupCommands() { }
+        private string email;
+        private string userName;
+        private string password = string.Empty;
+        //private SecureString password;
 
-
-        protected override void ValidateFields(List<IFieldValidationResult> validationResults) 
-        {
-            base.ValidateFields(validationResults);
-
-            ValidateEmail(validationResults);
-            ValidateUserName(validationResults);
-            ValidatePassword(validationResults);
-        }
 
         /// <summary>
         /// Not all viewmodels are going to require email. They can override this switch
         /// </summary>
         protected virtual bool IsEmailMandatory => false;
 
-        protected virtual void ValidatePassword(List<IFieldValidationResult> validationResults) 
+        protected virtual string ValidatePassword() 
         {
-            if (Account.IsGoodPassword(Password)) return;
+            if (Account.IsGoodPassword(Password)) return null;
 
             string error =
                 string.Format
@@ -44,54 +42,96 @@ namespace Freengy.Base.ViewModels
                     CommonRes.PasswordRequirementsText
                 );
 
-            validationResults.Add(FieldValidationResult.CreateError(PasswordProperty, error));
+            return error;
         }
 
 
-        #region Properties
-
         public string Email 
         {
-            get => (string)GetValue(EmailProperty);
+            get => email;
 
-            set => SetValue(EmailProperty, value);
+            set
+            {
+                if (email == value) return;
+
+                email = value;
+
+                OnPropertyChanged();
+            }
         }
 
         public string UserName 
         {
-            get => (string)GetValue(UserNameProperty);
+            get => userName;
 
-            set => SetValue(UserNameProperty, value);
+            set
+            {
+                if (userName == value) return;
+
+                userName = value;
+
+                OnPropertyChanged();
+            }
         }
 
         public string Password 
         {
-            get => (string)GetValue(PasswordProperty);
+            get => password;
 
-            set => SetValue(PasswordProperty, value);
+            set
+            {
+                if (password == value) return;
+
+                password = value;
+
+                OnPropertyChanged();
+            }
         }
 
-        
-        public static readonly PropertyData EmailProperty =
-            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Email, () => string.Empty);
-        public static readonly PropertyData UserNameProperty =
-            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.UserName, () => string.Empty);
-        public static readonly PropertyData PasswordProperty =
-            RegisterProperty<CredentialViewModel, string>(credViewModel => credViewModel.Password, () => string.Empty);
+        /// <summary>Gets the error message for the property with the given name.</summary>
+        /// <returns>The error message for the property. The default is an empty string ("").</returns>
+        /// <param name="columnName">The name of the property whose error message to get. </param>
+        public string this[string columnName] 
+        {
+            get
+            {
+                string error = null;
 
-        #endregion Properties
+                switch (columnName)
+                {
+                    case nameof(UserName):
+                        error = ValidateUserName();
+                        break;
+
+                    case nameof(Password):
+                        error = ValidatePassword();
+                        break;
+
+                    case nameof(Email):
+                        error = ValidateEmail();
+                        break;
+                }
+
+                Error = error;
+
+                return Error;
+            }
+        }
+
+        /// <summary>Gets an error message indicating what is wrong with this object.</summary>
+        /// <returns>An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
+        public string Error { get; private set; }
 
 
-        private void ValidateEmail(List<IFieldValidationResult> validationResults) 
+        private string ValidateEmail() 
         {
             // empty email is okay
             if (string.IsNullOrWhiteSpace(Email) && IsEmailMandatory)
             {
                 string emptyError = string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.EmailText);
-                validationResults.Add(FieldValidationResult.CreateError(EmailProperty, emptyError));
             }
 
-            if (Account.IsValidEmail(Email)) return;
+            if (Account.IsValidEmail(Email)) return null;
 
             string error =
                 string.Format
@@ -101,21 +141,22 @@ namespace Freengy.Base.ViewModels
                     CommonRes.EmailRequirementsText
                 );
 
-            validationResults.Add(FieldValidationResult.CreateError(EmailProperty, error));
+            return error;
         }
 
-        private void ValidateUserName(List<IFieldValidationResult> validationResults) 
+        private string ValidateUserName() 
         {
             if (string.IsNullOrWhiteSpace(UserName))
             {
-                string error = string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText);
-                validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));
+                return string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText);
             }
-            else if (Helpers.Common.HasInvalidSymbols(UserName))
+
+            if (Helpers.Common.HasInvalidSymbols(UserName))
             {
-                string error = string.Format(CommonRes.ValuesContainsInvalidSymbols, CommonRes.UserNameText);
-                validationResults.Add(FieldValidationResult.CreateError(UserNameProperty, error));
+                return string.Format(CommonRes.ValuesContainsInvalidSymbols, CommonRes.UserNameText);
             }
+
+            return null;
         }
     }
 }

@@ -62,7 +62,7 @@
             </Image>
             <Image Grid.Row="0" Grid.Column="2" Style="{StaticResource InformativeButtonStyle}" 
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png" 
-                   Visibility="{Binding Path=IsSucceeded, Converter={StaticResource BoolToVisibilityConverter}}">
+                   Visibility="{Binding Path=Succeeded, Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <interactivity:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>

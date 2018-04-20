@@ -44,7 +44,7 @@ namespace Freengy.UI.Helpers
         public void Unregister()
         {
             throw new NotImplementedException();
-            //this.IsRegistered = false;
+            //this.Registered = false;
         }
     }
 }

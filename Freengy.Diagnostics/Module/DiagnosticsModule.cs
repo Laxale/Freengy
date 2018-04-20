@@ -2,21 +2,21 @@
 //
 //
 
+using System;
+
+using Freengy.Diagnostics.Views;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.Diagnostics.ViewModels;
+using Freengy.Diagnostics.DefaultImpl;
+
+using Catel.IoC;
+using Catel.Services;
+
+using Prism.Modularity;
+
 
 namespace Freengy.Diagnostics.Module
-{
-    using System;
-
-    using Catel.IoC;
-    using Catel.Services;
-
-    using Prism.Modularity;
-
-    using Freengy.Diagnostics.Views;
-    using Freengy.Diagnostics.Interfaces;
-    using Freengy.Diagnostics.ViewModels;
-    using Freengy.Diagnostics.DefaultImpl;
-    
+{   
 
     public sealed class DiagnosticsModule : IModule 
     {
@@ -39,8 +39,6 @@ namespace Freengy.Diagnostics.Module
         {
             ServiceLocator.Default.RegisterInstance(DiagnosticsController.Instance);
             ServiceLocator.Default.RegisterType<IDiagnosticsUnitFactory, DiagnosticsUnitFactory>(RegistrationType.Transient);
-
-            ServiceLocator.Default.ResolveType<IUIVisualizerService>().Register<DiagnosticsViewModel, DiagnosticsWindow>();
         }
     }
 }

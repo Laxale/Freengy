@@ -2,6 +2,7 @@
 //
 //
 
+using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Chat.Interfaces;
@@ -18,6 +19,9 @@ namespace Freengy.Base.Module
     {
         public void Initialize() 
         {
+            //just create singleton
+            var initializer = ViewModelInitializer.Instance;
+
             ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
             ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 

@@ -22,17 +22,11 @@ namespace Freengy.Settings.Module
     {
         public void Initialize() 
         {
-            // instantiate a singleton
-            var wut = Freengy.Settings.Helpers.DataContextSetter.Instance;
-
             string appDataFolderPath = Initializer.GetFolderPathInAppData(FreengyPaths.AppDataRootFolderName);
             Initializer.SetStorageDirectoryPath(appDataFolderPath);
             Initializer.SetDbFileName(SettingsConstants.SettingsDbFileName);
 
             ServiceLocator.Default.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
-
-            var vizualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
-            vizualizer.Register<SettingsViewModel, SettingsWindow>();
         }
     }
 }

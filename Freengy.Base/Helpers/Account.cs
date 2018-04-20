@@ -2,25 +2,24 @@
 //
 //
 
+using System;
+using System.Security;
+
 
 namespace Freengy.Base.Helpers 
 {
-    using System;
-
-
-    public static class Account
+    public static class Account 
     {
         private const string ForbiddenSymbol = " ";
-        private const int MinimumPasswordLength = 10;
+
+        public const int MinimumPasswordLength = 10;
 
 
         public static bool IsGoodPassword(string password) 
         {
-            if (string.IsNullOrWhiteSpace(password) ||
-                password.Length < MinimumPasswordLength ||
-                password.Contains(ForbiddenSymbol)) return false;
+            if(password == null) throw new ArgumentNullException(nameof(password));
 
-            return true;
+            return password.Length >= MinimumPasswordLength && !password.Contains(ForbiddenSymbol);
         }
 
         public static bool IsValidEmail(string email) 

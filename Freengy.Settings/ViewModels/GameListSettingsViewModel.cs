@@ -14,7 +14,7 @@ using Freengy.Settings.ModuleSettings;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Messaging;
-
+using Freengy.Base.Helpers;
 using LocalRes = Freengy.Settings.Properties.Resources;
 
 
@@ -27,13 +27,11 @@ namespace Freengy.Settings.ViewModels
 
         public GameListSettingsViewModel() 
         {
-            Task.Factory.StartNew(InitializeAsync);
-
-            messageMediator.Register<MessageSaveRequest>(this, MessageListener);
+            Mediator.Register<MessageSaveRequest>(this, MessageListener);
         }
         
 
-        public Command CommandSelectGamesFolder { get; private set; }
+        public MyCommand CommandSelectGamesFolder { get; private set; }
 
 
         #region override
@@ -45,61 +43,50 @@ namespace Freengy.Settings.ViewModels
 
         protected override void SetupCommands() 
         {
-            CommandSelectGamesFolder = new Command(SelectGamesFolderImpl);
+            CommandSelectGamesFolder = new MyCommand(SelectGamesFolderImpl);
         }
 
-        protected override async Task InitializeAsync() 
+        /// <inheritdoc />
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl()
         {
-            await Task.Factory
-                .StartNew(async () =>
-                {
-                    SetBusy("Initializing game list");
+            base.InitializeImpl();
 
-                    await base.InitializeAsync();
-                        
-                    gameListUnit = SettingsRepository.GetOrCreateUnit<GameListSettingsUnit>();
+            SetBusyState("Initializing game list");
 
-                    await FillPropertiesFromDatabase();
+            gameListUnit = SettingsRepository.GetOrCreateUnit<GameListSettingsUnit>();
 
-                    // call this in ctor if viewmodel is not created by catel
-                    //SetupCommands();
-                })
-                .ContinueWith(InitializationContinuator);
-        }
+            FillPropertiesFromDatabase().RunSynchronously();
 
-        protected override void InitializationContinuator(Task parentTask) 
-        {
             ClearBusyState();
-
-            if (parentTask.Exception != null)
-            {
-                System.Windows.MessageBox.Show(parentTask.Exception.GetReallyRootException().Message, "GameList");
-            }
         }
 
         #endregion override
 
 
-        #region properties
+
+        private string gamesFolderPath;
 
         public string GamesFolderPath 
         {
-            get { return (string)GetValue(GamesFolderPathProperty); }
-            private set
+            get => gamesFolderPath;
+
+            set
             {
-                SetValue(GamesFolderPathProperty, value);
+                if (gamesFolderPath == value) return;
+
+                gamesFolderPath = value;
+
+                OnPropertyChanged();
 
                 if (LoadedFromDatabase) gameListUnit.GamesFolderPath = value;
             }
         }
-
-        public static readonly PropertyData GamesFolderPathProperty =
-            RegisterProperty<GameListSettingsViewModel, string>(viewModel => viewModel.GamesFolderPath, () => string.Empty);
         
-        #endregion properties
-
-
-        protected override async Task FillPropertiesFromDatabase() 
+    
+        protected override Task FillPropertiesFromDatabase() 
         {
             void FillAction()
             {
@@ -108,11 +95,11 @@ namespace Freengy.Settings.ViewModels
                 LoadedFromDatabase = true;
             }
 
-            await taskWrapper.Wrap(FillAction, task => IsDirty = false);
+            return Task.Run(() => FillAction());
         }
 
 
-        private void SelectGamesFolderImpl() 
+        private void SelectGamesFolderImpl(object notUsed) 
         {
             var dialog = new FolderBrowserDialog
             {
@@ -131,11 +118,7 @@ namespace Freengy.Settings.ViewModels
         [MessageRecipient]
         private void MessageListener(MessageSaveRequest requestMessage) 
         {
-            if (!IsDirty) return;
-
             SettingsRepository.UpdateUnit(gameListUnit);
-
-            IsDirty = false;
         }
     }
 }

@@ -19,6 +19,8 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
+using Freengy.Base.Helpers;
+using Freengy.Settings.Views;
 
 
 namespace Freengy.UI.ViewModels 
@@ -27,39 +29,29 @@ namespace Freengy.UI.ViewModels
     {
         protected override void SetupCommands() 
         {
-            CommandLogOut = new Command(LogOutImpl);
-            CommandShowSettings = new Command(CommandShowSettingsImpl);
+            CommandLogOut = new MyCommand(LogOutImpl);
+            CommandShowSettings = new MyCommand(CommandShowSettingsImpl);
         }
 
         
         /// <summary>
         /// Command to log the user out.
         /// </summary>
-        public Command CommandLogOut { get; private set; }
+        public MyCommand CommandLogOut { get; private set; }
 
         /// <summary>
         /// Command to show app settings.
         /// </summary>
-        public Command CommandShowSettings { get; private set; }
+        public MyCommand CommandShowSettings { get; private set; }
 
 
-        public bool ShowVisualHints 
-        {
-            get => (bool)GetValue(ShowVisualHintsProperty);
-            private set => SetValue(ShowVisualHintsProperty, value);
-        }
-
-        public static readonly PropertyData ShowVisualHintsProperty =
-            RegisterProperty<ShellViewModel, bool>(viewModel => viewModel.ShowVisualHints, () => true);
-
-
-        private void LogOutImpl() 
+        private void LogOutImpl(object notUsed) 
         {
             void LogoutInvoker()
             {
                 SetBusySilent();
 
-                Result logoutResult = new LogOutController(serviceLocator).LogOut();
+                Result logoutResult = new LogOutController(ServiceLocatorProperty).LogOut();
 
                 if (logoutResult.Failure)
                 {
@@ -69,19 +61,15 @@ namespace Freengy.UI.ViewModels
                     }
                 }
 
-                messageMediator.SendMessage<MessageBase>(new MessageLogoutRequest());
+                Mediator.SendMessage<MessageBase>(new MessageLogoutRequest());
             }
 
-            taskWrapper.Wrap(LogoutInvoker, task => ClearBusyState());
+            TaskerWrapper.Wrap(LogoutInvoker, task => ClearBusyState());
         }
 
-        private async void CommandShowSettingsImpl() 
+        private void CommandShowSettingsImpl(object notUsed) 
         {
-            var settingsViewModel = serviceLocator.ResolveType<SettingsViewModel>();
-
-            bool? result = await uiVisualizer.ShowDialogAsync(settingsViewModel);
-
-            ShowVisualHints = false;
+            new SettingsWindow().ShowDialog();
         }
     }
 }

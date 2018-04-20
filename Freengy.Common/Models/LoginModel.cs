@@ -2,7 +2,11 @@
 //
 //
 
+using System.Security;
+
 using Freengy.Common.Enums;
+
+using Newtonsoft.Json;
 
 
 namespace Freengy.Common.Models 
@@ -26,6 +30,9 @@ namespace Freengy.Common.Models
         /// Hash of user password.
         /// </summary>
         public string PasswordHash { get; set; }
+
+        [JsonIgnore]
+        public string Password { get; set; }
 
         /// <summary>
         /// Status is set by server when processed request.

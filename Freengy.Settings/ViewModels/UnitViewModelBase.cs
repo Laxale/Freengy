@@ -36,9 +36,9 @@ namespace Freengy.Settings.ViewModels
         {
             if (!this.CanBroadcastDirtyState(args)) return;
 
-            var isDirtyMessage = new MessageSettingChanged(this.ToString(), base.IsDirty);
+            var isDirtyMessage = new MessageSettingChanged(this.ToString(), true);
             // inform Settings window that some of settings changed
-            base.messageMediator.SendMessage(isDirtyMessage);
+            base.Mediator.SendMessage(isDirtyMessage);
         }
 
         private bool CanBroadcastDirtyState(PropertyChangedEventArgs args) 
@@ -46,7 +46,7 @@ namespace Freengy.Settings.ViewModels
             bool mustBroadcastDirty =
                 // ignore inital settings properties in FillPropertiesFromDatabase()
                 this.LoadedFromDatabase && 
-                args.PropertyName == nameof(base.IsDirty);
+                args.PropertyName == "IsDirty";
 
             return mustBroadcastDirty;
         }

@@ -15,6 +15,7 @@ using Freengy.Networking.Interfaces;
 using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
+using Freengy.Base.Helpers;
 
 
 namespace Freengy.Chatter.ViewModels 
@@ -25,19 +26,22 @@ namespace Freengy.Chatter.ViewModels
         private readonly IChatMessageFactory chatMessageFactory;
         private readonly ObservableCollection<IChatMessageDecorator> sessionMessages = new ObservableCollection<IChatMessageDecorator>();
 
-        
+        private string messageText;
+
+
+
         public ChatSessionViewModel(IChatSession session) 
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
             Session.MessageAdded += OnMessageAdded;
 
-            loginController = serviceLocator.ResolveType<ILoginController>();
-            chatMessageFactory = serviceLocator.ResolveTypeUsingParameters<IChatMessageFactory>(new object[]{ loginController.CurrentAccount });
+            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
+            chatMessageFactory = ServiceLocatorProperty.ResolveTypeUsingParameters<IChatMessageFactory>(new object[]{ loginController.CurrentAccount });
 
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 
             // this viewmodel is not created by catel. need to init manually
-            CommandSendMessage = new Command(CommandSendMessageImpl, CanSendMessage);
+            CommandSendMessage = new MyCommand(CommandSendMessageImpl, CanSendMessage);
         }
 
 
@@ -57,7 +61,7 @@ namespace Freengy.Chatter.ViewModels
 
 
         #region commands
-        public Command CommandSendMessage { get; private set; }
+        public MyCommand CommandSendMessage { get; private set; }
 
         #endregion commands
         
@@ -66,16 +70,29 @@ namespace Freengy.Chatter.ViewModels
 
         public ICollectionView SessionMessages { get; private set; }
 
+
         public string MessageText 
         {
-            get { return (string) GetValue(MessageTextProperty); }
+            get => messageText;
 
-            set { SetValue(MessageTextProperty, value); }
+            set
+            {
+                if (messageText == value) return;
+
+                messageText = value;
+
+                OnPropertyChanged();
+            }
         }
-        public static readonly PropertyData MessageTextProperty = RegisterProperty(nameof(MessageText), typeof(string), () => string.Empty);
 
 
-        private void CommandSendMessageImpl() 
+        private bool CanSendMessage(object notUsed) 
+        {
+            //return true;
+            return !string.IsNullOrWhiteSpace(MessageText);
+        }
+
+        private void CommandSendMessageImpl(object notUsed) 
         {
             IChatMessageDecorator processedMessage;
 
@@ -84,11 +101,6 @@ namespace Freengy.Chatter.ViewModels
             Session.SendMessage(newMessage, out processedMessage);
 
             MessageText = string.Empty;
-        }
-        private bool CanSendMessage() 
-        {
-            //return true;
-            return !string.IsNullOrWhiteSpace(MessageText);
         }
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 

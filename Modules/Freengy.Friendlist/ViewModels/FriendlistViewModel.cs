@@ -19,6 +19,7 @@ using Freengy.Networking.Interfaces;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
+using Freengy.Base.Helpers;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -32,19 +33,23 @@ namespace Freengy.FriendList.ViewModels
         
         protected override void SetupCommands() 
         {
-            CommandSearchFriend = new Command(AddFriendImpl, CanAddFriend);
-            CommandRemoveFriend = new Command<UserAccount>(RemoveFriendImpl, CanRemoveFriend);
+            CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
+            CommandRemoveFriend = new MyCommand(RemoveFriendImpl, CanRemoveFriend);
         }
 
-        protected override async Task InitializeAsync() 
+        /// <inheritdoc />
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
         {
-            await base.InitializeAsync();
+            base.InitializeImpl();
 
             FillDebugFriendList();
 
             FriendList = CollectionViewSource.GetDefaultView(friendList);
 
-            myAccount = serviceLocator.ResolveType<ILoginController>().CurrentAccount;
+            myAccount = ServiceLocatorProperty.ResolveType<ILoginController>().CurrentAccount;
 
             IEnumerable<UserAccount> friends = SearchRealFriends();
 
@@ -58,12 +63,12 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Command to search for new friend.
         /// </summary>
-        public Command CommandSearchFriend { get; private set; }
+        public MyCommand CommandSearchFriend { get; private set; }
 
         /// <summary>
         /// Command to remove a friend.
         /// </summary>
-        public Command<UserAccount> CommandRemoveFriend { get; private set; }
+        public MyCommand CommandRemoveFriend { get; private set; }
 
         /// <summary>
         /// Friends of current user.
@@ -75,8 +80,8 @@ namespace Freengy.FriendList.ViewModels
 
         private void FillDebugFriendList() 
         {
-            var friendOne = serviceLocator.ResolveType<UserAccount>();
-            var friendTwo = serviceLocator.ResolveType<UserAccount>();
+            var friendOne = ServiceLocatorProperty.ResolveType<UserAccount>();
+            var friendTwo = ServiceLocatorProperty.ResolveType<UserAccount>();
             
             friendList.Add(friendOne);
             friendList.Add(friendTwo);
@@ -84,7 +89,7 @@ namespace Freengy.FriendList.ViewModels
 
         private IEnumerable<UserAccount> SearchRealFriends() 
         {
-            using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+            using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
                 httpActor.SetAddress(Url.Http.SearchUsersUrl);
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccount, string.Empty);
@@ -95,30 +100,27 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private async void AddFriendImpl() 
+        private void AddFriendImpl(object notUsed) 
         {
-            var viewModel = new AddNewFriendViewModel(myAccount);
-            var service = serviceLocator.ResolveType<IUIVisualizerService>();
-
-            await service.ShowDialogAsync(viewModel);
+            new AddNewFriendWindow().ShowDialog();
         }
 
-        private bool CanAddFriend() 
+        private bool CanAddFriend(object notUsed) 
         {
             // just a stub
             return true;
         }
 
-        private void RemoveFriendImpl(UserAccount friendAccount)
+        private void RemoveFriendImpl(object friendAccount) 
         {
             if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
 
-            friendList.Remove(friendAccount);
+            friendList.Remove((UserAccount)friendAccount);
         }
-        private bool CanRemoveFriend(UserAccount friendAccount) 
+        private bool CanRemoveFriend(object friendAccount) 
         {
             // check if friend is not null and exists
-            return friendAccount != null;
+            return (UserAccount)friendAccount != null;
         }
 
         #endregion privates

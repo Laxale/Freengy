@@ -5,11 +5,15 @@
 
 using System.Windows;
 using System.Windows.Input;
+
+using Freengy.Base.Attributes;
 using Freengy.Base.Helpers;
+using Freengy.Diagnostics.ViewModels;
 
 
 namespace Freengy.Diagnostics.Views 
 {
+    [HasViewModel(typeof(DiagnosticsViewModel))]
     public partial class DiagnosticsWindow : Window 
     {
         public DiagnosticsWindow() 

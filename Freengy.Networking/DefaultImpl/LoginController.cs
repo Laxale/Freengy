@@ -229,7 +229,7 @@ namespace Freengy.Networking.DefaultImpl
         {
             using (SHA512 keccak = SHA512.Create())
             {
-                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginModel.PasswordHash);
+                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginModel.Password);
 
                 byte[] hash = keccak.ComputeHash(passwordBytes);
 

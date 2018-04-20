@@ -1,145 +1,171 @@
-﻿// Created by Laxale 19.10.2016
+﻿// Created by Laxale 20.04.2018
 //
 //
 
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Freengy.Base.Interfaces;
-using Freengy.Base.Extensions;
-
-using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-using Catel.Services;
-using Catel.Messaging;
 
 using NLog;
+
+using Catel.IoC;
+using Catel.Messaging;
+using Catel.Services;
 
 
 namespace Freengy.Base.ViewModels 
 {
-    public abstract class WaitableViewModel : ViewModelBase, IRefreshable 
+    public abstract class WaitableViewModel : INotifyPropertyChanged 
     {
-        protected readonly ITaskWrapper taskWrapper;
-        protected readonly ITypeFactory typeFactory;
-        protected readonly IGuiDispatcher guiDispatcher;
-        protected readonly IUIVisualizerService uiVisualizer;
-        protected readonly Logger logger = LogManager.GetCurrentClassLogger();
-        protected readonly IServiceLocator serviceLocator = ServiceLocator.Default;
-        protected readonly IMessageMediator messageMediator = MessageMediator.Default;
+        private bool isWaiting;
+        private string information;
 
 
         protected WaitableViewModel() 
         {
-            typeFactory = this.GetTypeFactory();
-            taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
-            guiDispatcher = serviceLocator.ResolveType<IGuiDispatcher>();
-            uiVisualizer = serviceLocator.ResolveType<IUIVisualizerService>();
-
-            DeferValidationUntilFirstSaveCall = false;
+            Factory = this.GetTypeFactory();
+            TaskerWrapper = ServiceLocatorProperty.ResolveType<ITaskWrapper>();
+            GUIDispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
         }
 
 
-        public virtual void Refresh() { }
+        protected ITaskWrapper TaskerWrapper { get; }
 
-        public virtual void ReportMessage(string information) 
+        protected ITypeFactory Factory { get; }
+
+        protected IGuiDispatcher GUIDispatcher { get; }
+
+        protected Logger NLogger { get; } = LogManager.GetCurrentClassLogger();
+
+        protected IServiceLocator ServiceLocatorProperty { get; } = ServiceLocator.Default;
+
+        protected IMessageMediator Mediator { get; } = MessageMediator.Default;
+
+
+        /// <summary>
+        /// Событие изменения значения свойства.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        /// <summary>
+        /// Флаг, обратный флагу IsWaiting. Свободна ли вьюмодель от работы.
+        /// </summary>
+        public bool IsReady => !IsWaiting;
+
+        /// <summary>
+        /// Занята ли работой в данный момент вьюмодель.
+        /// </summary>
+        public bool IsWaiting 
         {
-            Information = information;
+            get => isWaiting;
+
+            private set
+            {
+                if (isWaiting == value) return;
+
+                isWaiting = value;
+
+                OnPropertyChanged(nameof(IsReady));
+                OnPropertyChanged(nameof(IsWaiting));
+            }
+        }
+
+        /// <summary>
+        /// Текст для отображения во время занятости вьюмодели работой или по результату работы.
+        /// </summary>
+        public string Information 
+        {
+            get => information;
+
+            private set
+            {
+                if (information == value) return;
+
+                information = value;
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasInformation));
+            }
+        }
+
+        /// <summary>
+        /// Returns true if Information property is not empty.
+        /// </summary>
+        public bool HasInformation => !string.IsNullOrWhiteSpace(Information);
+
+
+        /// <summary>
+        /// Инициализирует вьюмодель. Сюда должна быть вынесена вся длительная логика инициализации, дабы не загружать конструктор (и гуи-поток).
+        /// </summary>
+        public void Initialize(string initializingMessage) 
+        {
+            SetBusyState(initializingMessage);
+
+            SetupCommands();
+
+            try
+            {
+                InitializeImpl();
+            }
+            finally
+            {
+                ClearBusyState();
+            }
         }
 
 
         /// <summary>
-        /// Set the IsWaiting flag and report message.
+        /// Report some message. Can be used in GUI.
         /// </summary>
+        /// <param name="message">Some message to show in any way.</param>
+        protected void ReportMessage(string message) 
+        {
+            Information = message;
+        }
+
+        /// <summary>
+        /// Вызов события изменения значения свойства.
+        /// </summary>
+        /// <param name="propertyName">Название свойства.</param>
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) 
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         protected void SetBusySilent() 
         {
             IsWaiting = true;
         }
 
         /// <summary>
-        /// Set the IsWaiting flag and report message.
+        /// Установить флаг занятости вьюмодели работой с пояснением.
         /// </summary>
-        protected void SetBusy(string message) 
+        /// <param name="busyTemplateMessage">Пояснение, какой работой занята вьюмодель.</param>
+        protected void SetBusyState(string busyTemplateMessage) 
         {
             IsWaiting = true;
-            ReportMessage(message);
+            Information = busyTemplateMessage;
         }
 
         /// <summary>
-        /// Clear the IsWaiting flag.
+        /// Очистить флаг занятости работой.
         /// </summary>
         protected void ClearBusyState() 
         {
             IsWaiting = false;
+            Information = null;
         }
 
         /// <summary>
-        /// This is called in InitializeAsync - force coderast to not init commands manually
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
         /// </summary>
-        protected abstract void SetupCommands();
-
-        protected virtual void InitializationContinuator(Task parentTask) 
-        {
-            if (parentTask.Exception != null)
-            {
-                // show error dialog?
-                logger.Error(parentTask.Exception.GetReallyRootException(), $"{ GetType() } initialization failed");
-            }
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// To auto-initialize use Catel controls for viewmodels - they call InitializeAsync() internally
-        /// </summary>
-        /// <returns>Initializing <see cref="Task"/>.</returns>
-        protected override async Task InitializeAsync() 
-        {
-            await base.InitializeAsync();
-
-            SetupCommands();
-        }
-
-        public string Information 
-        {
-            get => (string)GetValue(InformationProperty);
-
-            protected set
-            {
-                SetValue(InformationProperty, value);
-
-                SetValue(HasInformationProperty, !string.IsNullOrWhiteSpace(value));
-            }
-        }
+        protected virtual void InitializeImpl() { }
 
         /// <summary>
-        /// Represents long-running task flag of the viewmodel.
+        /// Инициализировать команды вьюмодели.
         /// </summary>
-        public bool IsWaiting 
-        {
-            get => (bool)GetValue(IsWaitingProperty);
-
-            protected set => SetValue(IsWaitingProperty, value);
-        }
-
-        public bool HasInformation 
-        {
-            get => (bool)GetValue(HasInformationProperty);
-
-            protected set => SetValue(HasInformationProperty, value);
-        }
-
-
-        #region property data
-
-        public static readonly PropertyData IsWaitingProperty =
-            RegisterProperty<WaitableViewModel, bool>(waitViewModel => waitViewModel.IsWaiting, () => false);
-        
-        public static readonly PropertyData InformationProperty =
-            RegisterProperty<WaitableViewModel, string>(waitViewModel => waitViewModel.Information, () => string.Empty);
-
-        public static readonly PropertyData HasInformationProperty =
-            RegisterProperty<WaitableViewModel, bool>(waitViewModel => waitViewModel.HasInformation, () => false);
-
-        #endregion property data
+        protected virtual void SetupCommands() { }
     }
 }

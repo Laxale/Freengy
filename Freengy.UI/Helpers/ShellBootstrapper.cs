@@ -28,12 +28,15 @@ using Prism.Regions;
 using Prism.Modularity;
 
 using Microsoft.Practices.Unity;
+using Prism.Mvvm;
 
 
 namespace Freengy.UI.Helpers 
 {
     public class ShellBootstrapper : UnityBootstrapper 
     {
+        private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();
+
         private IRegionManager regionManager;
 
 
@@ -53,8 +56,6 @@ namespace Freengy.UI.Helpers
             ServiceLocator.Default.RegisterInstance(regionManager);
 
             TypeRegistrator.Instance.Register();
-
-            regionManager.RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
         }
         
         protected override DependencyObject CreateShell() 
@@ -62,6 +63,20 @@ namespace Freengy.UI.Helpers
             var mainWindow = ServiceLocator.Default.ResolveType<MainWindow>();
 
             return mainWindow;
+        }
+
+        /// <summary>
+        /// Configures the <see cref="T:Prism.Mvvm.ViewModelLocator" /> used by Prism.
+        /// </summary>
+        protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+
+            base.ConfigureViewModelLocator();
+
+            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewMappingCache.GetViewModelType);
+
+            ViewModelLocationProvider.SetDefaultViewModelFactory(type => Container.Resolve(type));
         }
 
         protected override IModuleCatalog CreateModuleCatalog() 

@@ -19,7 +19,7 @@ namespace Freengy.UI.ViewModels
     {
         public MyAccountVisitViewModel() 
         {
-            MyAccount = serviceLocator.ResolveType<ILoginController>().CurrentAccount;
+            MyAccount = ServiceLocatorProperty.ResolveType<ILoginController>().CurrentAccount;
         }
 
 

@@ -2,20 +2,20 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Collections.Generic;
 
-namespace Freengy.Settings.ViewModels
+using Freengy.Base.ViewModels;
+using Freengy.Settings.Messages;
+
+using Catel.MVVM;
+using Catel.Messaging;
+using Freengy.Base.Helpers;
+
+
+namespace Freengy.Settings.ViewModels 
 {
-    using System;
-    using System.Windows;
-    using System.Collections.Generic;
-
-    using Freengy.Base.ViewModels;
-    using Freengy.Settings.Messages;
-
-    using Catel.MVVM;
-    using Catel.Messaging;
-
-
     internal class ChangedSettings 
     {
         private static readonly object Locker = new object();
@@ -61,7 +61,7 @@ namespace Freengy.Settings.ViewModels
     }
 
 
-    public sealed class SettingsViewModel : WaitableViewModel
+    public sealed class SettingsViewModel : WaitableViewModel 
     {
         private bool canSave;
         private readonly ChangedSettings changedSettings = new ChangedSettings();
@@ -72,7 +72,7 @@ namespace Freengy.Settings.ViewModels
             this.changedSettings.HasChangedSettingsLeft += this.SetCanSaveState;
             this.changedSettings.NoChangedSettingsLeft  += this.SetCannotSaveState;
 
-            base.messageMediator.Register<MessageSettingChanged>(this, this.MessageListener);
+            base.Mediator.Register<MessageSettingChanged>(this, this.MessageListener);
 
             this.SetupCommands();
         }
@@ -80,24 +80,25 @@ namespace Freengy.Settings.ViewModels
 
         public bool ShowWindowTitle => false;
 
-        public Command CommandSave { get; private set; }
-        public Command<Window> CommandClose{ get; private set; }
+        public MyCommand CommandSave { get; private set; }
+
+        public MyCommand CommandClose{ get; private set; }
 
 
         protected override void SetupCommands() 
         {
-            this.CommandSave  = new Command(this.SaveImpl, this.CanSave);
-            this.CommandClose = new Command<Window>(window => window.Close());
+            this.CommandSave  = new MyCommand(SaveImpl, this.CanSave);
+            this.CommandClose = new MyCommand(window => ((Window)window).Close());
         }
 
 
-        private void SaveImpl() 
+        private void SaveImpl(object notUsed) 
         {
             var saveRequestMessage = new MessageSaveRequest();
 
-            base.messageMediator.SendMessage(saveRequestMessage);
+            base.Mediator.SendMessage(saveRequestMessage);
         }
-        private bool CanSave() 
+        private bool CanSave(object notUsed) 
         {
             return this.canSave;
         }

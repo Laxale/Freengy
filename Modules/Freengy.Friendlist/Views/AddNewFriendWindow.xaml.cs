@@ -3,9 +3,12 @@
 //
 
 
+using System.Windows;
 using System.Windows.Input;
 
+using Freengy.Base.Attributes;
 using Freengy.Base.Helpers;
+using Freengy.FriendList.ViewModels;
 
 
 namespace Freengy.FriendList.Views 
@@ -13,7 +16,8 @@ namespace Freengy.FriendList.Views
     /// <summary>
     /// Window to search users and interact with them.
     /// </summary>
-    public partial class AddNewFriendWindow : Catel.Windows.Window 
+    [HasViewModel(typeof(AddNewFriendViewModel))]
+    public partial class AddNewFriendWindow : Window 
     {
         /// <inheritdoc />
         /// <summary>

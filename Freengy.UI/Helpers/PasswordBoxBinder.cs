@@ -2,14 +2,13 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Windows.Controls;
+
 
 namespace Freengy.UI.Helpers 
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Controls;
-
-
     public static class PasswordBoxBinder 
     {
         #region dependency prop
@@ -48,6 +47,7 @@ namespace Freengy.UI.Helpers
         {
             return (bool)dp.GetValue(BindPasswordProperty);
         }
+
         public static string GetBoundPassword(DependencyObject dp) 
         {
             return (string)dp.GetValue(BoundPasswordProperty);
@@ -77,7 +77,6 @@ namespace Freengy.UI.Helpers
         private static void OnPasswordChanged(object sender, RoutedEventArgs e) 
         {
             var boxSender = sender as PasswordBox;
-
             if (boxSender == null) throw new ArgumentException("Not a passwordbox sender");
 
             // set a flag to indicate that we're updating the password

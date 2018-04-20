@@ -3,6 +3,8 @@
 //
 
 
+using Freengy.Base.Helpers;
+
 namespace Freengy.Diagnostics.ViewModels 
 {
     using System.Windows.Data;
@@ -10,31 +12,29 @@ namespace Freengy.Diagnostics.ViewModels
     using System.Threading.Tasks;
     using System.Collections.ObjectModel;
 
-    using Freengy.Base.ViewModels;
-    using Freengy.Diagnostics.Helpers;
-    using Freengy.Diagnostics.Interfaces;
+    using Base.ViewModels;
+    using Helpers;
+    using Interfaces;
 
     using Catel.IoC;
     using Catel.Data;
     using Catel.MVVM;
     
 
-    internal class DiagnosticsViewModel : WaitableViewModel
+    internal class DiagnosticsViewModel : WaitableViewModel 
     {
-        #region vars
-
         private readonly IDiagnosticsController diagnosticsController;
 
-        private readonly ObservableCollection<DiagnosticsCategoryDecorator> diagnosticsCategories = 
+        private readonly ObservableCollection<DiagnosticsCategoryDecorator> diagnosticsCategories =
             new ObservableCollection<DiagnosticsCategoryDecorator>();
 
-        #endregion vars
+        private string categoryFilter;
 
 
         public DiagnosticsViewModel() 
         {
-            this.diagnosticsController = base.serviceLocator.ResolveType<IDiagnosticsController>();
-            this.DiagnosticsCategories = CollectionViewSource.GetDefaultView(this.diagnosticsCategories);
+            diagnosticsController = ServiceLocatorProperty.ResolveType<IDiagnosticsController>();
+            DiagnosticsCategories = CollectionViewSource.GetDefaultView(diagnosticsCategories);
         }
 
 
@@ -42,15 +42,19 @@ namespace Freengy.Diagnostics.ViewModels
 
         protected override void SetupCommands() 
         {
-            this.CommandRaiseCanRunUnits = new Command(() => this.CommandRunUnits.RaiseCanExecuteChanged());
-            this.CommandRunUnits = new Command<DiagnosticsCategoryDecorator>(this.RunUnitsImpl, this.CanRunUnits);
+            CommandRaiseCanRunUnits = new MyCommand(arg => CommandRunUnits.RaiseCanExecuteChanged());
+            CommandRunUnits = new MyCommand(RunUnitsImpl, CanRunUnits);
         }
 
-        protected override async Task InitializeAsync() 
+        /// <inheritdoc />
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
         {
-            await base.InitializeAsync();
+            base.InitializeImpl();
 
-            this.FillCategories();
+            FillCategories();
         }
 
         #endregion override
@@ -58,24 +62,27 @@ namespace Freengy.Diagnostics.ViewModels
 
         #region commands
 
-        public Command CommandRaiseCanRunUnits { get; private set; }
+        public MyCommand CommandRaiseCanRunUnits { get; private set; }
 
-        public Command<DiagnosticsCategoryDecorator> CommandRunUnits { get; private set; }
+        public MyCommand CommandRunUnits { get; private set; }
 
         #endregion commands
 
-
+        
         public string CategoryFilter 
         {
-            get { return (string)this.GetValue(DiagnosticsViewModel.CategoryFilterProperty); }
+            get => categoryFilter;
 
             set
             {
-                this.SetValue(DiagnosticsViewModel.CategoryFilterProperty, value);
+                if (categoryFilter == value) return;
 
-                this.SetCategoryFilter(value);
+                categoryFilter = value;
 
-                this.RaisePropertyChanged(nameof(this.IsCategoryFilterEmpty));
+                SetCategoryFilter(value);
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsCategoryFilterEmpty));
             }
         }
 
@@ -83,7 +90,7 @@ namespace Freengy.Diagnostics.ViewModels
 
         public ICollectionView DiagnosticsCategories { get; }
 
-        public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(this.CategoryFilter);
+        public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(CategoryFilter);
 
 
         public static readonly PropertyData CategoryFilterProperty =
@@ -92,7 +99,7 @@ namespace Freengy.Diagnostics.ViewModels
 
         private void SetCategoryFilter(string value) 
         {
-            this.DiagnosticsCategories.Filter =
+            DiagnosticsCategories.Filter =
                 category =>
                 {
                     var decorator = category as DiagnosticsCategoryDecorator;
@@ -107,10 +114,9 @@ namespace Freengy.Diagnostics.ViewModels
 
         private void FillCategories() 
         {
-            var registeredCategories = this.diagnosticsController.GetAllCategories();
+            var registeredCategories = diagnosticsController.GetAllCategories();
 
-            base
-                .guiDispatcher
+            GUIDispatcher
                 .InvokeOnGuiThread
                 (
                     () =>
@@ -118,8 +124,8 @@ namespace Freengy.Diagnostics.ViewModels
                         foreach (var category in registeredCategories)
                         {
                             var categoryDecorator = new DiagnosticsCategoryDecorator(category);
-                            categoryDecorator.PropertyChanged += this.CategoryPropertyListener;
-                            this.diagnosticsCategories.Add(categoryDecorator);
+                            categoryDecorator.PropertyChanged += CategoryPropertyListener;
+                            diagnosticsCategories.Add(categoryDecorator);
                         }
                     }
                 );
@@ -130,19 +136,19 @@ namespace Freengy.Diagnostics.ViewModels
 
             if (args.PropertyName != nameof(senderDecorator.IsRunningUnits)) return;
 
-            this.CommandRunUnits.RaiseCanExecuteChanged();
+            CommandRunUnits.RaiseCanExecuteChanged();
         }
 
-        private void RunUnitsImpl(DiagnosticsCategoryDecorator categoryDecorator) 
+        private void RunUnitsImpl(object categoryDecorator) 
         {
-            foreach (DiagnosticsUnitViewModel testUnitViewModel in categoryDecorator.UnitViewModels)
+            foreach (DiagnosticsUnitViewModel testUnitViewModel in ((DiagnosticsCategoryDecorator)categoryDecorator).UnitViewModels)
             {
                 testUnitViewModel.Run();
             }
         }
-        private bool CanRunUnits(DiagnosticsCategoryDecorator category) 
+        private bool CanRunUnits(object category) 
         {
-            return category != null && !category.IsRunningUnits;
+            return category != null && !((DiagnosticsCategoryDecorator)category).IsRunningUnits;
         }
     }
 }

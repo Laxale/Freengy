@@ -26,7 +26,10 @@ using Catel.IoC;
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Services;
+using Freengy.Base.Helpers;
+using Freengy.Base.Messages;
 using Freengy.Common.Extensions;
+using Freengy.UI.Windows;
 using NLog;
 
 using Prism.Regions;
@@ -43,22 +46,31 @@ namespace Freengy.UI.ViewModels
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IPleaseWaitService waiter;
         private readonly IAccountManager accountManager;
         private readonly ILoginController loginController;
+
+        private bool mustSavePassword;
+        private bool isServerAvailable;
 
         private UserAccount CurrentAccount => loginController.CurrentAccount;
 
 
         public LoginViewModel() 
         {
-            // need to resolve it by interface to avoid knowledge about concrete implementer
-            waiter = serviceLocator.ResolveType<IPleaseWaitService>();
-            accountManager = serviceLocator.ResolveType<IAccountManager>();
-            loginController = serviceLocator.ResolveType<ILoginController>();
+            accountManager = ServiceLocatorProperty.ResolveType<IAccountManager>();
+            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
+
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading"));
 
             CheckServerAsync();
         }
+
+
+        public MyCommand CommandLogin { get; private set; }
+
+        public MyCommand CommandCreateAccount { get; private set; }
+
+        public MyCommand CommandRecoverPassword { get; private set; }
 
 
         #region INavigationAware
@@ -84,68 +96,54 @@ namespace Freengy.UI.ViewModels
         #endregion INavigationAware
 
 
-        #region Public properties
-
-        public bool SavePassword 
+        public bool MustSavePassword 
         {
-            get => (bool)GetValue(SavePasswordProperty);
+            get => mustSavePassword;
 
-            set => SetValue(SavePasswordProperty, value);
+            set
+            {
+                if (mustSavePassword == value) return;
+
+                mustSavePassword = value;
+
+                OnPropertyChanged();
+            }
         }
         
+        /// <summary>
+        /// Возвращает значение флага доступности сервера.
+        /// </summary>
         public bool IsServerAvailable 
         {
-            get => (bool)GetValue(IsServerAvailableProperty);
+            get => isServerAvailable;
 
-            private set => SetValue(IsServerAvailableProperty, value);
+            private set
+            {
+                if (isServerAvailable == value) return;
+
+                isServerAvailable = value;
+
+                OnPropertyChanged();
+            }
         }
 
-        #endregion Public properties
-
-
-        #region Commands
-
-        public Command CommandLogin { get; private set; }
-
-        public Command CommandCreateAccount { get; private set; }
-
-        public Command CommandRecoverPassword { get; private set; }
-        
-        #endregion Commands
-
-
-        #region Overrides
 
         protected override void SetupCommands() 
         {
-            CommandCreateAccount   = new Command(CreateAccountImpl);
-            CommandRecoverPassword = new Command(RecoverPasswordImpl);
-            CommandLogin = new Command(CommandLoginImpl, CanLogIn);
+            CommandCreateAccount = new MyCommand(CreateAccountImpl);
+            CommandRecoverPassword = new MyCommand(RecoverPasswordImpl);
+            CommandLogin = new MyCommand(CommandLoginImpl, CanLogIn);
         }
 
-        protected override async Task InitializeAsync() 
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
         {
-            await base.InitializeAsync();
+            base.InitializeImpl();
 
             LoadCredsFromSettings();
         }
-
-        protected override void InitializationContinuator(Task parentTask) 
-        {
-            base.InitializationContinuator(parentTask);
-
-            if (parentTask.Exception != null)
-            {
-                ReportMessage(parentTask.Exception.GetReallyRootException().Message);
-            }
-            else
-            {
-//                ((Action)this.LoadCredsFromSettings)
-//                    .ExecuteWithExceptionWrap(exception => this.ReportMessage(exception.GetReallyRootException().Message));
-            }
-        }
-
-        #endregion Overrides
 
 
         #region Privates
@@ -168,25 +166,27 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        private async void CreateAccountImpl() 
+        private void CreateAccountImpl(object notUSed) 
         {
-            var registrationViewModel = typeFactory.CreateInstance<RegistrationViewModel>();
+            var model = new RegistrationViewModel();
+            var win = new RegistrationWindow { DataContext = model };
 
-            await uiVisualizer.ShowDialogAsync(registrationViewModel);
+            win.ShowDialog();
         }
 
-        private async void RecoverPasswordImpl() 
+        private void RecoverPasswordImpl(object notUSed) 
         {
-            var recoverViewModel = typeFactory.CreateInstance<RecoverPasswordViewModel>();
+            var model = new RecoverPasswordViewModel();
+            var win = new RecoverPasswordWindow { DataContext = model };
 
-            await uiVisualizer.ShowDialogAsync(recoverViewModel);
+            win.ShowDialog();
         }
 
-        private bool CanLogIn() 
+        private bool CanLogIn(object notUSed) 
         {
             bool canLogin =
                 !string.IsNullOrWhiteSpace(UserName) &&
-                !string.IsNullOrWhiteSpace(Password);
+                Password?.Length >= Account.MinimumPasswordLength;
 
             return canLogin;
         }
@@ -201,28 +201,26 @@ namespace Freengy.UI.ViewModels
                 UserName = CurrentAccount?.Name ?? lastLoggedResult.Value.Name;
             }
 
-            SavePassword = settings.SavePassword;
+            MustSavePassword = settings.SavePassword;
 
-            if (!string.IsNullOrWhiteSpace(settings.LastUserSession) && SavePassword)
+            if (!string.IsNullOrWhiteSpace(settings.LastUserSession) && MustSavePassword)
             {
                 try
                 {
                     var userSession = Convert.FromBase64String(settings.LastUserSession);
                     var entropy = new byte[] { 0x50, 0x50, 0x52, 0x2d, 0x54, 0x68, 0x65, 0x42, 0x65, 0x73, 0x74 };
-                    Password = Encoding.Unicode.GetString(ProtectedData.Unprotect(userSession, entropy, DataProtectionScope.CurrentUser));
+                    //Password = Encoding.Unicode.GetString(ProtectedData.Unprotect(userSession, entropy, DataProtectionScope.CurrentUser));
                 }
                 catch
                 {
-                    Password = string.Empty;
-
                     ReportMessage("Failed to decrypt password");
                 }
             }
         }
 
-        private async void CommandLoginImpl() 
+        private async void CommandLoginImpl(object notUSed) 
         {
-            await taskWrapper.Wrap(LoginAction, LoginContinuator);
+            await TaskerWrapper.Wrap(LoginAction, LoginContinuator);
         }
 
         private void LoginAction() 
@@ -273,22 +271,11 @@ namespace Freengy.UI.ViewModels
                 parameters.Account = new UserAccountModel { Name = UserName };
             }
 
-            parameters.PasswordHash = Password; // TODO: waaaat?
+            parameters.Password = this.Password;
 
             return parameters;
         }
 
         #endregion Privates
-
-
-        #region properties data
-
-        public static readonly PropertyData SavePasswordProperty =
-            RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.SavePassword, () => false);
-
-        public static readonly PropertyData IsServerAvailableProperty =
-            RegisterProperty<LoginViewModel, bool>(loginViewModel => loginViewModel.IsServerAvailable, () => false);
-
-        #endregion properties data
     }
 }

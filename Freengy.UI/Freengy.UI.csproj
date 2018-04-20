@@ -101,6 +101,7 @@
     <Compile Include="Helpers\TypeRegistrator.cs" />
     <Compile Include="Helpers\UiDispatcher.cs" />
     <Compile Include="Helpers\UiNavigator.cs" />
+    <Compile Include="Helpers\ViewMappingCache.cs" />
     <Compile Include="Messages\MessageLogoutRequest.cs" />
     <Compile Include="Module\MainModule.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

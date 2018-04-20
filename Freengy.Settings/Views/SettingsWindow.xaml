@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
+        xmlns:prism="http://prismlibrary.com/"
+
         xmlns:vies="clr-namespace:Freengy.Settings.Views"
         xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
         xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
@@ -18,6 +20,7 @@
         Background="{StaticResource DarkGrayBrush}"
         Title="{x:Static properties:Resources.SettingsViewTitle}"
         MinHeight="400" MinWidth="600" Height="400" Width="600"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel}"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/SettingsIcon.png">
 

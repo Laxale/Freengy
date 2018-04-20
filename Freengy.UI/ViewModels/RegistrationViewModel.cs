@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using System.Data.Entity.ModelConfiguration.Configuration;
 using Freengy.Common.Enums;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Helpers;
@@ -31,8 +31,8 @@ namespace Freengy.UI.ViewModels
 
         public RegistrationViewModel() 
         {
-            waiter = serviceLocator.ResolveType<IPleaseWaitService>();
-            loginController = serviceLocator.ResolveType<ILoginController>();
+            waiter = ServiceLocatorProperty.ResolveType<IPleaseWaitService>();
+            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
         }
 
 
@@ -40,8 +40,8 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            CommandFinish   = new Command<Window>(CommandFinishImpl, CanFinish);
-            CommandRegister = new Command(CommandRegisterImpl, CanCallRegistration);
+            CommandFinish   = new MyCommand(CommandFinishImpl, CanFinish);
+            CommandRegister = new MyCommand(CommandRegisterImpl, CanCallRegistration);
         }
         
         #endregion override
@@ -49,39 +49,55 @@ namespace Freengy.UI.ViewModels
 
         #region commands
 
-        public Command CommandRegister { get; private set; }
+        public MyCommand CommandRegister { get; private set; }
 
-        public Command<Window> CommandFinish { get; private set; }
+        public MyCommand CommandFinish { get; private set; }
 
         #endregion commands
 
 
         #region properties
-        
+
+
+        private bool registered;
+
         public bool Registered 
         {
-            get { return (bool)GetValue(RegisteredProperty); }
+            get => registered;
 
-            private set { SetValue(RegisteredProperty, value); }
+            set
+            {
+                if (registered == value) return;
+
+                registered = value;
+
+                OnPropertyChanged();
+            }
         }
+
+
+        private bool isCodeSent;
+
         public bool IsCodeSent 
         {
-            get { return (bool)GetValue(IsCodeSentProperty); }
+            get => isCodeSent;
 
-            private set { SetValue(IsCodeSentProperty, value); }
+            set
+            {
+                if (isCodeSent == value) return;
+
+                isCodeSent = value;
+
+                OnPropertyChanged();
+            }
         }
-
-        public static readonly PropertyData RegisteredProperty =
-            RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.Registered, () => false);
-        public static readonly PropertyData IsCodeSentProperty =
-            RegisterProperty<RegistrationViewModel, bool>(regViewModel => regViewModel.IsCodeSent, () => false);
 
         #endregion properties
 
 
         #region privates
 
-        private void CommandRegisterImpl() 
+        private void CommandRegisterImpl(object notUsed) 
         {
             waiter.Show("Checking data");
 
@@ -98,24 +114,24 @@ namespace Freengy.UI.ViewModels
                 Registered = true;
             }
         }
-        private bool CanCallRegistration() 
+        private bool CanCallRegistration(object notUsed) 
         {
             if (Registered) return false;
 
             List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
-            ValidateFields(validationResults);
+            //ValidateFields(validationResults);
 
             bool canTryRegister = !validationResults.Any();
 
             return canTryRegister;
         }
 
-        private void CommandFinishImpl(Window registrationWindow)
+        private void CommandFinishImpl(object registrationWindow)
         {
             // send message
-            registrationWindow.Close();
+            ((Window)registrationWindow).Close();
         }
-        private bool CanFinish(Window registrationWindow) 
+        private bool CanFinish(object registrationWindow) 
         {
             return Registered;
         }

@@ -5,9 +5,12 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
+using Catel.IoC;
 using Freengy.UI.Helpers;
 
 using Catel.Logging;
+using Freengy.UI.Constants;
+using Prism.Regions;
 
 
 namespace Freengy.UI 
@@ -34,6 +37,7 @@ namespace Freengy.UI
             splasher.Close(TimeSpan.FromMilliseconds(100));
             if (MainWindow != null)
             {
+                ServiceLocator.Default.ResolveType<IRegionManager>().RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
                 MainWindow.Show();
                 MainWindow.Closed += OnMainWindowClosed;
             }

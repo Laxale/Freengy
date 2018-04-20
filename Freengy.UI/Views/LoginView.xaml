@@ -1,10 +1,10 @@
-﻿<catel:UserControl x:Class="Freengy.UI.Views.LoginView"
+﻿<UserControl x:Class="Freengy.UI.Views.LoginView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:catel="http://schemas.catelproject.com"
+                   xmlns:prism="http://prismlibrary.com/"
 
                    xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
                    xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
@@ -15,11 +15,11 @@
                    
                    mc:Ignorable="d"
                    Margin="60, 0, 60, 0"
-                   catel:CloseViewModelOnUnloaded="False"
+                   prism:ViewModelLocator.AutoWireViewModel="True"
                    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
     <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
 
-    <catel:UserControl.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
@@ -40,7 +40,7 @@
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
-    </catel:UserControl.Resources>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -96,6 +96,8 @@
                 <PasswordBox Grid.Row="1" Grid.Column="1" 
                              Loaded="PsswordBox_OnLoaded"
                              Margin="{StaticResource All4Margin}"
+                             
+                             PasswordChanged="PasswordBox_OnPasswordChanged"
                              helpers:PasswordBoxBinder.BindPassword="True"
                              helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
@@ -106,7 +108,7 @@
                         Content="{x:Static localprops:Resources.LogInText}" Margin="{StaticResource All4Margin}"/>
 
                 <CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" 
-                          Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=SavePassword}">
+                          Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=MustSavePassword}">
 
                     <CheckBox.Content>
                         <TextBlock Text="{x:Static commonres:StringResources.SavePasswordText}" Style="{x:Null}"/>
@@ -153,4 +155,4 @@
                        Text="{Binding Path=Information, Mode=OneWay}" TextWrapping="Wrap"/>
         </DockPanel>
     </Grid>
-</catel:UserControl>
+</UserControl>

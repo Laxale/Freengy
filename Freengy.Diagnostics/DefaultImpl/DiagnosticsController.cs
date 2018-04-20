@@ -13,6 +13,7 @@ using Freengy.Diagnostics.ViewModels;
 
 using Catel.IoC;
 using Catel.Services;
+using Freengy.Diagnostics.Views;
 
 
 namespace Freengy.Diagnostics.DefaultImpl 
@@ -46,16 +47,15 @@ namespace Freengy.Diagnostics.DefaultImpl
         public async Task ShowDialogAsync() 
         {
             await 
-                Task
-                .Factory
-                .StartNew
-                (
-                    () =>
-                    {
-                        this.guiDispatcher.InvokeOnGuiThread
-                        (
-                            () => this.uiVisualizer.ShowAsync<DiagnosticsViewModel>()
-                        );
+                Task.Factory.StartNew(() =>
+                {
+                    guiDispatcher.InvokeOnGuiThread
+                    (
+                        () =>
+                        {
+                            new DiagnosticsWindow().ShowDialog();
+                            //uiVisualizer.ShowAsync<DiagnosticsViewModel>();
+                        });
                     }
                 );
         }

@@ -22,6 +22,7 @@ using NLog;
 using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
+using Freengy.Base.Helpers;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -36,6 +37,8 @@ namespace Freengy.FriendList.ViewModels
         private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(400);
         private readonly ObservableCollection<UserAccount> foundUsers = new ObservableCollection<UserAccount>();
         private readonly ObservableCollection<FriendRequest> requestResults = new ObservableCollection<FriendRequest>();
+
+        private string searchFilter;
 
 
         public AddNewFriendViewModel(UserAccount myAccount) 
@@ -56,12 +59,12 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Command to search registered users on server.
         /// </summary>
-        public Command SearchUsersCommand { get; private set; }
+        public MyCommand SearchUsersCommand { get; private set; }
 
         /// <summary>
         /// Command to send a friendship request.
         /// </summary>
-        public Command<UserAccount> RequestFriendCommand { get; private set; }
+        public MyCommand RequestFriendCommand { get; private set; }
 
 
         /// <summary>
@@ -79,21 +82,21 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         public string SearchFilter 
         {
-            get => (string)GetValue(SearchFilterProperty);
+            get => searchFilter;
 
             set
             {
-                if ((string) GetValue(SearchFilterProperty) == value) return;
+                if (searchFilter == value) return;
 
-                SetValue(SearchFilterProperty, value);
+                searchFilter = value;
+
+                OnPropertyChanged();
 
                 delayedInvoker.RequestDelayedEvent();
             }
         }
 
-        public static readonly PropertyData SearchFilterProperty =
-            RegisterProperty<AddNewFriendViewModel, string>(model => model.SearchFilter, () => string.Empty);
-
+        
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -110,8 +113,8 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         protected override void SetupCommands() 
         {
-            SearchUsersCommand = new Command(SearchUsersImpl);
-            RequestFriendCommand = new Command<UserAccount>(RequestFriend);
+            SearchUsersCommand = new MyCommand(arg => SearchUsersImpl());
+            RequestFriendCommand = new MyCommand(accObject => RequestFriend((UserAccount)accObject));
         }
 
 
@@ -119,7 +122,7 @@ namespace Freengy.FriendList.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SearchFilter)) return;
 
-            var searcher = serviceLocator.ResolveType<IEntitySearcher>();
+            var searcher = ServiceLocatorProperty.ResolveType<IEntitySearcher>();
 
             var searchResult = await searcher.SearchUsersAsync(SearchFilter);
 
@@ -129,7 +132,7 @@ namespace Freengy.FriendList.ViewModels
             }
             else
             {
-                guiDispatcher.InvokeOnGuiThread(() =>
+                GUIDispatcher.InvokeOnGuiThread(() =>
                 {
                     foundUsers.Clear();
 
@@ -145,7 +148,7 @@ namespace Freengy.FriendList.ViewModels
         {
             try
             {
-                using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+                using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
                 {
                     httpActor.SetAddress(Url.Http.AddFriendUrl);
 

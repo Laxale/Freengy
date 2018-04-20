@@ -15,6 +15,7 @@ using Freengy.Base.Chat.Interfaces;
 
 using Catel.IoC;
 using Catel.MVVM;
+using Freengy.Base.Helpers;
 
 
 namespace Freengy.Chatter.ViewModels 
@@ -30,7 +31,7 @@ namespace Freengy.Chatter.ViewModels
 
         public ChatterViewModel() 
         {
-            chatSessionFactory = serviceLocator.ResolveType<IChatSessionFactory>();
+            chatSessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
 
             ChatSessions = CollectionViewSource.GetDefaultView(currentChatSessions);
 
@@ -42,19 +43,11 @@ namespace Freengy.Chatter.ViewModels
             
         }
 
-        protected override async Task InitializeAsync() 
-        {
-            await base.InitializeAsync();
-
-            // smth later
-
-        }
-
-
+        
         /// <summary>
         /// Command to create a new chat session.
         /// </summary>
-        public Command CommandCreateSession { get; private set; }
+        public MyCommand CommandCreateSession { get; private set; }
 
 
         /// <summary>

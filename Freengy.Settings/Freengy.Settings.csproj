@@ -82,8 +82,6 @@
   <ItemGroup>
     <Compile Include="Constants\SettingsConstants.cs" />
     <Compile Include="DefaultImpl\SettingsRepository.cs" />
-    <Compile Include="Helpers\DataContextSetter.cs" />
-    <Compile Include="Messages\MessageRequestContext.cs" />
     <Compile Include="Messages\MessageSaveRequest.cs" />
     <Compile Include="Messages\MessageSettingChanged.cs" />
     <Compile Include="ModuleSettings\FriendListSettingsUnit.cs" />

@@ -4,14 +4,12 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Catel.IoC;
-using Catel.Messaging;
 
-using Freengy.Base.Messages;
-using Freengy.Chatter.Views;
+using Freengy.Base.Attributes;
 using Freengy.Base.Messages.Collapse;
+using Freengy.UI.ViewModels;
 
-using CatelControl = Catel.Windows.Controls.UserControl;
+using Catel.Messaging;
 
 
 namespace Freengy.UI.Views 
@@ -19,7 +17,8 @@ namespace Freengy.UI.Views
     /// <summary>
     /// Main view for a program for logged in user.
     /// </summary>
-    public partial class ShellView : CatelControl 
+    [HasViewModel(typeof(ShellViewModel))]
+    public partial class ShellView 
     {
         private readonly IMessageMediator mediator = MessageMediator.Default;
 

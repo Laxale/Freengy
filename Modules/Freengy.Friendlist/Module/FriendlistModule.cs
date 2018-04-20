@@ -25,10 +25,6 @@ namespace Freengy.FriendList.Module
 
         public void Initialize() 
         {
-            var uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
-
-            uiVisualizer.Register<AddNewFriendViewModel, AddNewFriendWindow>();
-
             var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
             controller.RegisterCategory(new FriendListDiagnosticsCategory());
         }

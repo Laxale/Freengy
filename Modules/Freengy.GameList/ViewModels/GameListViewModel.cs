@@ -3,6 +3,8 @@
 //
 
 
+using Freengy.Base.Helpers;
+
 namespace Freengy.GameList.ViewModels 
 {
     using System;
@@ -12,11 +14,11 @@ namespace Freengy.GameList.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Freengy.Base.ViewModels;
-    using Freengy.Base.Interfaces;
-    using Freengy.GamePlugin.Messages;
-    using Freengy.GamePlugin.Interfaces;
-    using Freengy.GamePlugin.DefaultImpl;
+    using Base.ViewModels;
+    using Base.Interfaces;
+    using GamePlugin.Messages;
+    using GamePlugin.Interfaces;
+    using GamePlugin.DefaultImpl;
     using Freengy.Diagnostics.Interfaces;
     
     using Catel.IoC;
@@ -33,9 +35,11 @@ namespace Freengy.GameList.ViewModels
 
         public GameListViewModel() 
         {
-            this.gameListProvider = base.serviceLocator.ResolveType<IGameListProvider>();
-            base.messageMediator.Register<MessageGamesAdded>(this, this.MessageListener);
-            this.diagnosticsController = base.serviceLocator.ResolveType<IDiagnosticsController>();
+            GameList = CollectionViewSource.GetDefaultView(gameList);
+
+            gameListProvider = ServiceLocatorProperty.ResolveType<IGameListProvider>();
+            Mediator.Register<MessageGamesAdded>(this, MessageListener);
+            diagnosticsController = ServiceLocatorProperty.ResolveType<IDiagnosticsController>();
         }
 
 
@@ -44,89 +48,66 @@ namespace Freengy.GameList.ViewModels
 
         #region commands
 
-        public Command CommandResolveProblems { get; private set; }
+        public MyCommand CommandResolveProblems { get; private set; }
 
-        public Command<IGamePlugin> CommandRequestLoadGame { get; private set; }
+        public MyCommand CommandRequestLoadGame { get; private set; }
 
         #endregion commands
 
 
-        #region Override
-
         protected override void SetupCommands() 
         {
-            this.CommandResolveProblems = new Command(this.CommandResolveProblemsImpl, this.CanResolveProblems);
-            this.CommandRequestLoadGame = new Command<IGamePlugin>(this.CommandRequestLoadGameImpl, this.CanRequestLoadGame);
+            CommandResolveProblems = new MyCommand(CommandResolveProblemsImpl, CanResolveProblems);
+            CommandRequestLoadGame = new MyCommand(CommandRequestLoadGameImpl, CanRequestLoadGame);
         }
 
-        protected override async Task InitializeAsync() 
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
         {
-            await base.InitializeAsync();
+            base.InitializeImpl();
 
-            await this.FillGameList();
+            FillGameList().RunSynchronously();
         }
 
-        #endregion Override
-
-
-        private void CommandRequestLoadGameImpl(IGamePlugin gamePluginToLoad)
+        private void CommandRequestLoadGameImpl(object gamePluginToLoad) 
         {
-            MessageGameStateRequest loadRequest = new MessageLoadGameRequest(gamePluginToLoad, null);
+            MessageGameStateRequest loadRequest = new MessageLoadGameRequest((IGamePlugin)gamePluginToLoad, null);
 
-            base.messageMediator.SendMessage(loadRequest);
+            Mediator.SendMessage(loadRequest);
         }
-        private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
+        private bool CanRequestLoadGame(object gamePluginToLoad) 
         {
             return true;
-            bool canRequestLoad = (gamePluginToLoad != null) && this.gameList.Contains(gamePluginToLoad);
+            bool canRequestLoad = (gamePluginToLoad != null) && gameList.Contains((IGamePlugin)gamePluginToLoad);
 
             return canRequestLoad;
         }
 
-        private async void CommandResolveProblemsImpl() 
+        private async void CommandResolveProblemsImpl(object notUsed) 
         {
-            await this.diagnosticsController.ShowDialogAsync();
+            await diagnosticsController.ShowDialogAsync();
         }
-        private bool CanResolveProblems() 
+
+        private bool CanResolveProblems(object notUsed) 
         {
-            return this.GameList?.IsEmpty ?? true;
+            return GameList?.IsEmpty ?? true;
         }
 
         private async Task FillGameList() 
         {
-            Action fillAction =
-                () =>
-                {
-                    this.PutInstalledGamesToList();
-
-                    this.InitGameListOnUiThread();
-                };
-
-            await base.taskWrapper.Wrap(fillAction, this.OnFillGameListException);
+            await TaskerWrapper.Wrap(PutInstalledGamesToList, OnFillGameListException);
         }
 
         private void PutInstalledGamesToList() 
         {
-            IEnumerable<IGamePlugin> installedGameList = this.gameListProvider.GetInstalledGames();
+            IEnumerable<IGamePlugin> installedGameList = gameListProvider.GetInstalledGames();
 
             foreach (var installedGame in installedGameList)
             {
-                this.gameList.Add(installedGame);
+                gameList.Add(installedGame);
             }
-        }
-
-        private void InitGameListOnUiThread() 
-        {
-            base.guiDispatcher
-                .InvokeOnGuiThread
-                (
-                    () =>
-                    {
-                        this.GameList = CollectionViewSource.GetDefaultView(this.gameList);
-
-                        base.RaisePropertyChanged(() => this.GameList);
-                    }
-                );
         }
 
         private void OnFillGameListException(Task parentTask) 
@@ -140,7 +121,7 @@ namespace Freengy.GameList.ViewModels
         [MessageRecipient]
         private void MessageListener(MessageGamesAdded newGamesMessage)
         {
-            var uiDispatcher = base.serviceLocator.ResolveType<IGuiDispatcher>();
+            var uiDispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
 
             uiDispatcher
                 .InvokeOnGuiThread
@@ -149,7 +130,7 @@ namespace Freengy.GameList.ViewModels
                     {
                         foreach (IGamePlugin newGamePlugin in newGamesMessage.NewGames)
                         {
-                            this.gameList.Add(newGamePlugin);
+                            gameList.Add(newGamePlugin);
                         }
                     }
                 );

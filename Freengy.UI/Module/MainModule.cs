@@ -22,14 +22,10 @@ namespace Freengy.UI.Module
     {
         public void Initialize() 
         {
-            var uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
-
-            uiVisualizer.Register<RegistrationViewModel, RegistrationWindow>();
-            uiVisualizer.Register<RecoverPasswordViewModel, RecoverPasswordWindow>();
-
             ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, AccountManager>();
+            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
         }
     }
 }
