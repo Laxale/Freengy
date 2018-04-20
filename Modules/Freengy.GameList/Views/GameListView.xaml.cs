@@ -2,17 +2,18 @@
 //
 //
 
+using Freengy.Base.Attributes;
+using Freengy.GameList.ViewModels;
+
 
 namespace Freengy.GameList.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
-    public partial class GameListView : CatelControl 
+    [HasViewModel(typeof(GameListViewModel))]
+    public partial class GameListView 
     {
-        public GameListView()
+        public GameListView() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

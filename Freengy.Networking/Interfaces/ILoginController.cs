@@ -17,9 +17,9 @@ namespace Freengy.Networking.Interfaces
     public interface ILoginController 
     {
         /// <summary>
-        /// Returns true if user is logged in.
+        /// Password that user was logged in with.
         /// </summary>
-        bool IsLoggedIn { get; }
+        string LoggedInPassword { get; }
 
         /// <summary>
         /// Returns current user account in usage.

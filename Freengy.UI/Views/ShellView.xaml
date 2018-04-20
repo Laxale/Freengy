@@ -70,13 +70,13 @@
                     -->
 
                         <Button DockPanel.Dock="Right" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
-                            Command="{Binding Path=CommandShowSettings}" Style="{StaticResource ImageButtonStyle}" 
-                            HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="3, 2, 0, 0">
+                                Command="{Binding Path=CommandShowSettings}" Style="{StaticResource ImageButtonStyle}" 
+                                HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="4, 2, 0, 0">
                             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
                         </Button>
 
-                        <Button DockPanel.Dock="Left" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.LogOut}" Padding="2, 0, 0, 0"
-                            Command="{Binding Path=CommandLogOut}" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right">
+                        <Button DockPanel.Dock="Left" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.LogOut}" Padding="2, 1, 0, 0"
+                                Command="{Binding Path=CommandLogOut}" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right">
                             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource LevelUpIconGeometry}" Fill="{StaticResource PurpleBrush}">
                                 <Path.LayoutTransform>
                                     <TransformGroup>

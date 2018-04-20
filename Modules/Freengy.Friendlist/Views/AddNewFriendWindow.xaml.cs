@@ -21,11 +21,13 @@ namespace Freengy.FriendList.Views
     {
         /// <inheritdoc />
         /// <summary>
-        /// Construct new <see cref="T:Freengy.FriendList.Views.AddNewFriendWindow" />.
+        /// Construct new <see cref="AddNewFriendWindow"/>.
         /// </summary>
         public AddNewFriendWindow() 
         {
             InitializeComponent();
+
+            Owner = Application.Current?.MainWindow;
         }
 
 

@@ -42,17 +42,14 @@ namespace Freengy.Networking.DefaultImpl
     /// </summary>
     internal class LoginController : ILoginController 
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly IMessageMediator messageMediator = MessageMediator.Default;
 
-        private readonly MediaTypes mediaTypes = new MediaTypes();
-
-
+        
         #region Singleton
 
         private static LoginController instance;
@@ -69,14 +66,11 @@ namespace Freengy.Networking.DefaultImpl
 
         #endregion Singleton
 
-        
-        public bool IsLoggedIn 
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+
+        /// <summary>
+        /// Password that user was logged in with.
+        /// </summary>
+        public string LoggedInPassword { get; private set; }
 
         /// <inheritdoc />
         /// <summary>
@@ -208,6 +202,11 @@ namespace Freengy.Networking.DefaultImpl
         private AccountState LogInImpl(LoginModel loginModel) 
         {
             //X509Certificate2 certificate = GetMyX509Certificate();
+            if (string.IsNullOrWhiteSpace(loginModel.Password))
+            {
+                loginModel.Password = LoggedInPassword;
+            }
+
             HashThePassword(loginModel);
 
             using (var actor = serviceLocator.ResolveType<IHttpActor>())
@@ -218,6 +217,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 if (result.OnlineStatus == AccountOnlineStatus.Online)
                 {
+                    LoggedInPassword = loginModel.Password;
                     messageMediator.SendMessage(messageLoggedIn);
                 }
 

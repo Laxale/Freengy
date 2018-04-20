@@ -2,25 +2,53 @@
 //
 //
 
+using System.Windows;
+using System.ComponentModel;
+using System.Windows.Controls;
+
+using Freengy.Base.Helpers;
+using Freengy.Base.Attributes;
+using Freengy.UI.ViewModels;
+
 
 namespace Freengy.UI.Views 
 {
-    using System.Windows;
-    using System.Windows.Controls;
-
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
-    public partial class RegistrationView : CatelControl 
+    [HasViewModel(typeof(RegistrationViewModel))]
+    public partial class RegistrationView 
     {
+        private Button finishButton;
+
+
         public RegistrationView() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            new ViewModelWierer().Wire(this);
         }
+
 
         private void FocusBox_Loaded(object sender, RoutedEventArgs e) 
         {
             (sender as TextBox)?.Focus();
+        }
+
+
+        private void FinishButton_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            finishButton = (Button)sender;
+        }
+
+        private void RegisterButton_OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            FocusFinishButton(e);
+        }
+
+        private void FocusFinishButton(DependencyPropertyChangedEventArgs e) 
+        {
+            if ((bool)e.NewValue == false)
+            {
+                finishButton?.Focus();
+            }
         }
     }
 }

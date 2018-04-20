@@ -19,6 +19,7 @@ namespace Freengy.Base.ViewModels
     public abstract class WaitableViewModel : INotifyPropertyChanged 
     {
         private bool isWaiting;
+        private string busyMessage;
         private string information;
 
 
@@ -90,6 +91,21 @@ namespace Freengy.Base.ViewModels
             }
         }
 
+        public string BusyMessage 
+        {
+            get => busyMessage;
+
+            private set
+            {
+                if (busyMessage == value) return;
+
+                busyMessage = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+
         /// <summary>
         /// Returns true if Information property is not empty.
         /// </summary>
@@ -146,7 +162,7 @@ namespace Freengy.Base.ViewModels
         protected void SetBusyState(string busyTemplateMessage) 
         {
             IsWaiting = true;
-            Information = busyTemplateMessage;
+            BusyMessage = busyTemplateMessage;
         }
 
         /// <summary>
@@ -155,6 +171,14 @@ namespace Freengy.Base.ViewModels
         protected void ClearBusyState() 
         {
             IsWaiting = false;
+            BusyMessage = null;
+        }
+
+        /// <summary>
+        /// Очистить информационное сообщение вьюмодели.
+        /// </summary>
+        protected void ClearInformation() 
+        {
             Information = null;
         }
 

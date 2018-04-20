@@ -10,15 +10,18 @@ using System.ServiceModel.Security;
 
 using Freengy.Base.Helpers;
 
-using Catel.Data;
-
 using CommonRes = Freengy.CommonResources.StringResources;
 
 
 namespace Freengy.Base.ViewModels 
 {
+    using System.Linq;
+
+
     public abstract class CredentialViewModel : WaitableViewModel, IDataErrorInfo  
     {
+        private readonly Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
         private string email;
         private string userName;
         private string password = string.Empty;
@@ -45,6 +48,11 @@ namespace Freengy.Base.ViewModels
             return error;
         }
 
+
+        /// <summary>
+        /// Возвращает флаг наличия ошибок валидации вьюмодели.
+        /// </summary>
+        public bool HasValidationErrors => validationErrors.Any(pair => !string.IsNullOrWhiteSpace(pair.Value));
 
         public string Email 
         {
@@ -88,6 +96,7 @@ namespace Freengy.Base.ViewModels
             }
         }
 
+        /// <inheritdoc />
         /// <summary>Gets the error message for the property with the given name.</summary>
         /// <returns>The error message for the property. The default is an empty string ("").</returns>
         /// <param name="columnName">The name of the property whose error message to get. </param>
@@ -101,14 +110,17 @@ namespace Freengy.Base.ViewModels
                 {
                     case nameof(UserName):
                         error = ValidateUserName();
+                        validationErrors[nameof(UserName)] = error;
                         break;
 
                     case nameof(Password):
                         error = ValidatePassword();
+                        validationErrors[nameof(Password)] = error;
                         break;
 
                     case nameof(Email):
                         error = ValidateEmail();
+                        validationErrors[nameof(Email)] = error;
                         break;
                 }
 
@@ -118,17 +130,18 @@ namespace Freengy.Base.ViewModels
             }
         }
 
-        /// <summary>Gets an error message indicating what is wrong with this object.</summary>
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </summary>
         /// <returns>An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
         public string Error { get; private set; }
 
 
         private string ValidateEmail() 
         {
-            // empty email is okay
             if (string.IsNullOrWhiteSpace(Email) && IsEmailMandatory)
             {
-                string emptyError = string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.EmailText);
+                return string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.EmailText);
             }
 
             if (Account.IsValidEmail(Email)) return null;

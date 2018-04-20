@@ -74,6 +74,8 @@ namespace Freengy.Common.Helpers
             if (isDisposed) return;
 
             timer.Dispose();
+
+            isDisposed = true;
         }
     }
 }

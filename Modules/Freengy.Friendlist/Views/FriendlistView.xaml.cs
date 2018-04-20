@@ -2,35 +2,18 @@
 //
 //
 
+using Freengy.Base.Attributes;
+using Freengy.FriendList.ViewModels;
+
 
 namespace Freengy.FriendList.Views 
 {
-    using System.Windows.Controls;
-
-    using Freengy.FriendList.ViewModels;
-
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
-    public partial class FriendListView : CatelControl 
+    [HasViewModel(typeof(FriendListViewModel))]
+    public partial class FriendListView 
     {
         public FriendListView() 
         {
-            this.InitializeComponent();
-        }
-
-
-        private void FriendList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var friendListSender = sender as ListBox;
-
-            if (friendListSender == null) return;
-
-            var friendListViewModel = friendListSender.DataContext as FriendListViewModel;
-
-            if (friendListViewModel == null) return;
-
-            friendListViewModel.CommandRemoveFriend.RaiseCanExecuteChanged();
+            InitializeComponent();
         }
     }
 }

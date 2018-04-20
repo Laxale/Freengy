@@ -77,6 +77,7 @@
     <Compile Include="Helpers\KeyHandler.cs" />
     <Compile Include="Helpers\MyCommand.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
+    <Compile Include="Helpers\ViewModelWierer.cs" />
     <Compile Include="Interfaces\IAccountManager.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Chat\Interfaces\IChatMessage.cs" />

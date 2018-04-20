@@ -83,9 +83,9 @@ namespace Freengy.Networking.DefaultImpl
                     {
                         httpActor.SetAddress(Url.Http.SearchUsersUrl);
 
-                        var responce = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;
+                        var responce = httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest).Result;
 
-                        return Result<IEnumerable<UserAccount>>.Ok(responce.AsEnumerable());
+                        return Result<IEnumerable<UserAccount>>.Ok(responce.Select(model => new UserAccount(model)));
                     }
                 }
                 catch (Exception ex)

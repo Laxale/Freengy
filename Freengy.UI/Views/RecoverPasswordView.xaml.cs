@@ -2,24 +2,24 @@
 //
 //
 
+using System.Windows;
+
+using Freengy.UI.Helpers;
+using Freengy.UI.ViewModels;
+using Freengy.Base.Attributes;
+
 
 namespace Freengy.UI.Views 
 {
-    using System.Windows;
-
-    using Freengy.UI.Helpers;
-
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
-    public partial class RecoverPasswordView : CatelControl
+    [HasViewModel(typeof(RecoverPasswordViewModel))]
+    public partial class RecoverPasswordView 
     {
         private CommonResources.Controls.FlipPanel flipPanel;
 
 
         public RecoverPasswordView() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
 
@@ -27,17 +27,18 @@ namespace Freengy.UI.Views
         {
             // this bullshit is needed to 'bind' IsCodeSent property to IsFrontPanelActive
             // because normal binding doesnt work
-            this.flipPanel = (CommonResources.Controls.FlipPanel)sender;
+            flipPanel = (CommonResources.Controls.FlipPanel)sender;
 
-            var dataContext = this.DataContext as ViewModels.RecoverPasswordViewModel;
-
-            if (dataContext == null) return;
+            if (!(this.DataContext is RecoverPasswordViewModel dataContext))
+            {
+                return;
+            }
 
             dataContext.PropertyChanged += (propSender, args) =>
             {
                 if (args.PropertyName != nameof(dataContext.IsCodeSent)) return;
 
-                UiDispatcher.Invoke(() => this.flipPanel.IsFrontPanelActive = !dataContext.IsCodeSent);
+                UiDispatcher.Invoke(() => flipPanel.IsFrontPanelActive = !dataContext.IsCodeSent);
             };
         }
     }

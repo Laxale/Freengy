@@ -14,7 +14,7 @@
         Style="{StaticResource CommonWindowStyle}"
         Background="{StaticResource ThirdMainBrush}"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AccountIcon.png"
-        Width="400" Height="340" MinWidth="400" MinHeight="290" MaxWidth="500" MaxHeight="360">
+        Width="400" Height="290" MinWidth="400" MinHeight="290" MaxWidth="500" MaxHeight="360">
     
     <local:RegistrationView/>
 </Window>

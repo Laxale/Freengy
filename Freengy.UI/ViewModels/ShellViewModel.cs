@@ -2,23 +2,12 @@
 //
 //
 
-using System;
-using System.Threading.Tasks;
-using System.Windows;
-
 using Freengy.Base.ErrorReasons;
 using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Helpers.Result;
-using Freengy.Networking.Interfaces;
-using Freengy.Settings.ViewModels;
 using Freengy.UI.Helpers;
 using Freengy.UI.Messages;
-
-using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-using Catel.Services;
 using Freengy.Base.Helpers;
 using Freengy.Settings.Views;
 
@@ -27,6 +16,12 @@ namespace Freengy.UI.ViewModels
 {
     public class ShellViewModel : WaitableViewModel 
     {
+        public ShellViewModel() 
+        {
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading shell"));
+        }
+
+
         protected override void SetupCommands() 
         {
             CommandLogOut = new MyCommand(LogOutImpl);

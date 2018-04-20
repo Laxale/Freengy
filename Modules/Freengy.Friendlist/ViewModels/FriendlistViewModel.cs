@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
-using Freengy.Base.Interfaces;
+using Freengy.Base.Helpers;
+using Freengy.Base.Messages;
 using Freengy.Common.Models;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
@@ -19,16 +20,24 @@ using Freengy.Networking.Interfaces;
 using Catel.IoC;
 using Catel.MVVM;
 using Catel.Services;
-using Freengy.Base.Helpers;
 
 
 namespace Freengy.FriendList.ViewModels 
 {
+    /// <summary>
+    /// Viewmodel for a <see cref="FriendListView"/>.
+    /// </summary>
     public class FriendListViewModel : WaitableViewModel 
     {
         private readonly ObservableCollection<UserAccount> friendList = new ObservableCollection<UserAccount>();
 
         private UserAccount myAccount;
+
+
+        public FriendListViewModel() 
+        {
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading friends"));
+        }
 
         
         protected override void SetupCommands() 

@@ -20,6 +20,9 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.Chatter.ViewModels 
 {
+    using Freengy.Base.Messages;
+
+
     /// <summary>
     /// Viewmodel for <see cref="ChatterView"/>.
     /// </summary>
@@ -36,6 +39,8 @@ namespace Freengy.Chatter.ViewModels
             ChatSessions = CollectionViewSource.GetDefaultView(currentChatSessions);
 
             FillSomeSessions();
+
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading sessions"));
         }
 
         protected override void SetupCommands() 

@@ -30,6 +30,7 @@ using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Common.Extensions;
 using Freengy.UI.Windows;
+
 using NLog;
 
 using Prism.Regions;
@@ -38,7 +39,10 @@ using CommonRes = Freengy.CommonResources.StringResources;
 
 
 namespace Freengy.UI.ViewModels 
-{   
+{
+    using Prism.Commands;
+
+
     /// <summary>
     /// ViewModel for <see cref="LoginView"/>.
     /// </summary>
@@ -66,10 +70,19 @@ namespace Freengy.UI.ViewModels
         }
 
 
+        /// <summary>
+        /// Command to invoke login process.
+        /// </summary>
         public MyCommand CommandLogin { get; private set; }
 
+        /// <summary>
+        /// Create new user account command.
+        /// </summary>
         public MyCommand CommandCreateAccount { get; private set; }
 
+        /// <summary>
+        /// Recover user password command.
+        /// </summary>
         public MyCommand CommandRecoverPassword { get; private set; }
 
 
@@ -241,14 +254,14 @@ namespace Freengy.UI.ViewModels
             else
             {
                 accountManager.SaveLastLoggedIn(loginController.CurrentAccount);
-                ReportMessage(null);
+                ClearInformation();
             }
         }
 
         private void LoginContinuator(Task parentTask) 
         {
             ClearBusyState();
-
+            
             if (parentTask.Exception != null)
             {
                 ReportMessage(parentTask.Exception.GetReallyRootException().Message);

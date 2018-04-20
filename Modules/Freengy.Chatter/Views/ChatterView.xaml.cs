@@ -6,10 +6,10 @@ using System.Windows;
 
 using Freengy.Base.Messages;
 using Freengy.Base.Messages.Collapse;
+using Freengy.Base.Attributes;
+using Freengy.Chatter.ViewModels;
 
 using Catel.Messaging;
-
-using CatelControl = Catel.Windows.Controls.UserControl;
 
 
 namespace Freengy.Chatter.Views 
@@ -17,7 +17,8 @@ namespace Freengy.Chatter.Views
     /// <summary>
     /// View of a main chatter module panel.
     /// </summary>
-    public partial class ChatterView : CatelControl
+    [HasViewModel(typeof(ChatterViewModel))]
+    public partial class ChatterView 
     {
         public ChatterView() 
         {

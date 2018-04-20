@@ -27,6 +27,9 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.FriendList.ViewModels 
 {
+    using Freengy.Base.Messages;
+
+
     /// <summary>
     /// Viewmodel for <see cref="AddNewFriendWindow"/>.
     /// </summary>
@@ -41,13 +44,15 @@ namespace Freengy.FriendList.ViewModels
         private string searchFilter;
 
 
-        public AddNewFriendViewModel(UserAccount myAccount) 
+        public AddNewFriendViewModel() 
         {
-            this.myAccount = myAccount ?? throw new ArgumentNullException(nameof(myAccount));
+            myAccount = ServiceLocatorProperty.ResolveType<ILoginController>().CurrentAccount;
 
             delayedInvoker.DelayedEvent += SearchUsersImpl;
             FoundUsers = CollectionViewSource.GetDefaultView(foundUsers);
             SentRequestResults = CollectionViewSource.GetDefaultView(requestResults);
+
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading user search"));
         }
 
         ~AddNewFriendViewModel() 
@@ -97,7 +102,7 @@ namespace Freengy.FriendList.ViewModels
         }
 
         
-
+        /// <inheritdoc />
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
