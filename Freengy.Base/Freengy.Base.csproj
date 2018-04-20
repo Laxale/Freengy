@@ -104,7 +104,6 @@
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="ViewModels\CredentialViewModel.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
-    <Compile Include="ViewModels\_WaitableViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
