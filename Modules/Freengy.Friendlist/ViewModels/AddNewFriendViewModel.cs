@@ -27,6 +27,7 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.FriendList.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
     using Freengy.Base.Messages;
 
 
@@ -69,7 +70,7 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Command to send a friendship request.
         /// </summary>
-        public MyCommand RequestFriendCommand { get; private set; }
+        public MyCommand<UserAccount> RequestFriendCommand { get; private set; }
 
 
         /// <summary>
@@ -118,8 +119,8 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         protected override void SetupCommands() 
         {
-            SearchUsersCommand = new MyCommand(arg => SearchUsersImpl());
-            RequestFriendCommand = new MyCommand(accObject => RequestFriend((UserAccount)accObject));
+            SearchUsersCommand = new MyCommand(SearchUsersImpl);
+            RequestFriendCommand = new MyCommand<UserAccount>(RequestFriend);
         }
 
 

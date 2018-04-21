@@ -20,6 +20,7 @@ namespace Freengy.Networking.Constants
         private static readonly string usersAction;
         private static readonly string logInAction;
         private static readonly string registerAction;
+        private static readonly string friendRequestAction;
         private static readonly Configuration networkingConfig;
 
 
@@ -34,6 +35,8 @@ namespace Freengy.Networking.Constants
             searchAction = networkingConfig.AppSettings.Settings["SearchActionName"].Value;
             logInAction = networkingConfig.AppSettings.Settings["LogInActionName"].Value;
             registerAction = networkingConfig.AppSettings.Settings["RegistrationActionName"].Value;
+
+            friendRequestAction = $"{friendAction}{requestAction}";
         }
 
 
@@ -48,6 +51,8 @@ namespace Freengy.Networking.Constants
             public static string LogInUrl { get; } = $"{ RootUrl }/{ logInAction }";
 
             public static string SearchUsersUrl { get; } = $"{ RootUrl }/{ searchAction }/{ usersAction }";
+
+            public static string SearchFriendRequestsUrl { get; } = $"{ RootUrl }/{ searchAction }/{ friendRequestAction }";
 
             public static string AddFriendUrl { get; } = $"{ RootUrl }/{ requestAction }/{ friendAction }";
         }

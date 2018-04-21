@@ -13,6 +13,11 @@ namespace Freengy.Common.Models
     public class AccountState 
     {
         /// <summary>
+        /// Filled by server in responce to login request.
+        /// </summary>
+        public string SessionToken { get; set; }
+
+        /// <summary>
         /// User account model.
         /// </summary>
         public UserAccountModel Account { get; set; }

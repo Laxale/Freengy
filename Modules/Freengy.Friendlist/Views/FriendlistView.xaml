@@ -37,8 +37,10 @@
             <Button DockPanel.Dock="Left" Content="Remove" Command="{Binding Path=CommandRemoveFriend}" 
                     CommandParameter="{Binding ElementName=FriendList, Path=SelectedItem}"/>
 
-            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top" HorizontalAlignment="Right" 
-                    Background="{StaticResource SuccessBrush}" ToolTip="Wow! New friend request" Cursor="Hand">
+            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top" 
+                    Command="{Binding Path=CommandShowFriendRequests}" ToolTip="Wow! New friend request"
+                    HorizontalAlignment="Right" Background="{StaticResource SuccessBrush}" 
+                    Visibility="{Binding Path=FriendRequests.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
                 <Path Fill="{StaticResource BlackBrush}" Style="{StaticResource CommonPathStyle}" 
                       Data="{StaticResource UserIconGeometry}" Margin="2, 0, 0, 0"/>
             </Button>

@@ -2,25 +2,24 @@
 //
 //
 
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
-using Freengy.Base.Helpers;
+using Freengy.Base.ViewModels;
+using Freengy.Diagnostics.Helpers;
+using Freengy.Diagnostics.Interfaces;
+
+using Catel.IoC;
+using Catel.Data;
+using Catel.MVVM;
+
+using Freengy.Base.Helpers.Commands;
+
 
 namespace Freengy.Diagnostics.ViewModels 
 {
-    using System.Windows.Data;
-    using System.ComponentModel;
-    using System.Threading.Tasks;
-    using System.Collections.ObjectModel;
-
-    using Base.ViewModels;
-    using Helpers;
-    using Interfaces;
-
-    using Catel.IoC;
-    using Catel.Data;
-    using Catel.MVVM;
-    
-
     internal class DiagnosticsViewModel : WaitableViewModel 
     {
         private readonly IDiagnosticsController diagnosticsController;
@@ -42,8 +41,8 @@ namespace Freengy.Diagnostics.ViewModels
 
         protected override void SetupCommands() 
         {
-            CommandRaiseCanRunUnits = new MyCommand(arg => CommandRunUnits.RaiseCanExecuteChanged());
-            CommandRunUnits = new MyCommand(RunUnitsImpl, CanRunUnits);
+            CommandRaiseCanRunUnits = new MyCommand(() => CommandRunUnits.RaiseCanExecuteChanged());
+            CommandRunUnits = new MyCommand<DiagnosticsCategoryDecorator>(RunUnitsImpl, CanRunUnits);
         }
 
         /// <inheritdoc />
@@ -64,7 +63,7 @@ namespace Freengy.Diagnostics.ViewModels
 
         public MyCommand CommandRaiseCanRunUnits { get; private set; }
 
-        public MyCommand CommandRunUnits { get; private set; }
+        public MyCommand<DiagnosticsCategoryDecorator> CommandRunUnits { get; private set; }
 
         #endregion commands
 
@@ -117,18 +116,15 @@ namespace Freengy.Diagnostics.ViewModels
             var registeredCategories = diagnosticsController.GetAllCategories();
 
             GUIDispatcher
-                .InvokeOnGuiThread
-                (
-                    () =>
+                .InvokeOnGuiThread(() =>
+                {
+                    foreach (var category in registeredCategories)
                     {
-                        foreach (var category in registeredCategories)
-                        {
-                            var categoryDecorator = new DiagnosticsCategoryDecorator(category);
-                            categoryDecorator.PropertyChanged += CategoryPropertyListener;
-                            diagnosticsCategories.Add(categoryDecorator);
-                        }
+                        var categoryDecorator = new DiagnosticsCategoryDecorator(category);
+                        categoryDecorator.PropertyChanged += CategoryPropertyListener;
+                        diagnosticsCategories.Add(categoryDecorator);
                     }
-                );
+                });
         }
         private void CategoryPropertyListener(object sender, PropertyChangedEventArgs args) 
         {
@@ -139,16 +135,16 @@ namespace Freengy.Diagnostics.ViewModels
             CommandRunUnits.RaiseCanExecuteChanged();
         }
 
-        private void RunUnitsImpl(object categoryDecorator) 
+        private void RunUnitsImpl(DiagnosticsCategoryDecorator categoryDecorator) 
         {
-            foreach (DiagnosticsUnitViewModel testUnitViewModel in ((DiagnosticsCategoryDecorator)categoryDecorator).UnitViewModels)
+            foreach (DiagnosticsUnitViewModel testUnitViewModel in categoryDecorator.UnitViewModels)
             {
                 testUnitViewModel.Run();
             }
         }
-        private bool CanRunUnits(object category) 
+        private bool CanRunUnits(DiagnosticsCategoryDecorator category) 
         {
-            return category != null && !((DiagnosticsCategoryDecorator)category).IsRunningUnits;
+            return category != null && !category.IsRunningUnits;
         }
     }
 }

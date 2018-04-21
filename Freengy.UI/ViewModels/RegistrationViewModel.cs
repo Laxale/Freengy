@@ -19,6 +19,9 @@ using Catel.Services;
 
 namespace Freengy.UI.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     internal class RegistrationViewModel : CredentialViewModel 
     {
         private readonly ILoginController loginController;
@@ -37,7 +40,7 @@ namespace Freengy.UI.ViewModels
 
         public MyCommand CommandRegister { get; private set; }
 
-        public MyCommand CommandFinish { get; private set; }
+        public MyCommand<Window> CommandFinish { get; private set; }
 
 
         public bool Registered 
@@ -74,12 +77,12 @@ namespace Freengy.UI.ViewModels
 
         protected override void SetupCommands() 
         {
-            CommandFinish = new MyCommand(CommandFinishImpl, CanFinish);
+            CommandFinish = new MyCommand<Window>(win => win.Close(), CanFinish);
             CommandRegister = new MyCommand(CommandRegisterImpl, CanCallRegistration);
         }
 
 
-        private void CommandRegisterImpl(object notUsed)
+        private void CommandRegisterImpl() 
         {
             Result<UserAccount> result = null;
 
@@ -107,18 +110,12 @@ namespace Freengy.UI.ViewModels
             Task.Run(() => Method()).ContinueWith(task => Continuator());
         }
 
-        private bool CanCallRegistration(object notUsed) 
+        private bool CanCallRegistration() 
         {
             return !Registered && !HasValidationErrors;
         }
 
-        private void CommandFinishImpl(object registrationWindow) 
-        {
-            // send message
-            ((Window)registrationWindow).Close();
-        }
-
-        private bool CanFinish(object registrationWindow) 
+        private bool CanFinish(Window registrationWindow) 
         {
             return Registered;
         }

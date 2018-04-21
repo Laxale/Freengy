@@ -8,7 +8,6 @@
         
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-        xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
         mc:Ignorable="d"
         Style="{StaticResource CommonWindowStyle}"
@@ -22,13 +21,11 @@
                                        Opacity="0.2" Stretch="UniformToFill" IsAutoStart="True"/>
                     -->
     <Window.Background>
-
         <VisualBrush>
             <VisualBrush.Visual>
                 <Image Source="/Images/ShellBackground.jpg"/>
             </VisualBrush.Visual>
         </VisualBrush>
-        
     </Window.Background>
 
     <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>

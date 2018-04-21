@@ -8,18 +8,19 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 
 using Freengy.Base.Extensions;
+using Freengy.Base.Helpers.Commands;
 using Freengy.Settings.Messages;
 using Freengy.Settings.ModuleSettings;
 
 using Catel.Data;
 using Catel.MVVM;
 using Catel.Messaging;
-using Freengy.Base.Helpers;
+
 using LocalRes = Freengy.Settings.Properties.Resources;
 
 
 namespace Freengy.Settings.ViewModels 
-{   
+{
     internal sealed class GameListSettingsViewModel : UnitViewModelBase 
     {
         private GameListSettingsUnit gameListUnit;
@@ -99,7 +100,7 @@ namespace Freengy.Settings.ViewModels
         }
 
 
-        private void SelectGamesFolderImpl(object notUsed) 
+        private void SelectGamesFolderImpl() 
         {
             var dialog = new FolderBrowserDialog
             {

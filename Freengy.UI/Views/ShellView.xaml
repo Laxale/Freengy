@@ -101,8 +101,8 @@
                 <views:MyAccountVisitView DockPanel.Dock="Top" Margin="{StaticResource All4Margin}"/>
 
                 <!-- Friendlist region -->
-                <ContentControl Margin="{StaticResource All4Margin}" DockPanel.Dock="Top"
-                            HorizontalAlignment="Stretch" prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
+                <ContentControl Margin="{StaticResource All4Margin}" DockPanel.Dock="Top" HorizontalAlignment="Stretch" 
+                                prism:RegionManager.RegionName="{x:Static const:RegionNames.FriendListRegion}"/>
             </DockPanel>
 
             <!-- Game panel -->

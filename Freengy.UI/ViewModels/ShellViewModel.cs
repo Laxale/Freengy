@@ -14,6 +14,9 @@ using Freengy.Settings.Views;
 
 namespace Freengy.UI.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     public class ShellViewModel : WaitableViewModel 
     {
         public ShellViewModel() 
@@ -40,7 +43,7 @@ namespace Freengy.UI.ViewModels
         public MyCommand CommandShowSettings { get; private set; }
 
 
-        private void LogOutImpl(object notUsed) 
+        private void LogOutImpl() 
         {
             void LogoutInvoker()
             {
@@ -62,7 +65,7 @@ namespace Freengy.UI.ViewModels
             TaskerWrapper.Wrap(LogoutInvoker, task => ClearBusyState());
         }
 
-        private void CommandShowSettingsImpl(object notUsed) 
+        private void CommandShowSettingsImpl() 
         {
             new SettingsWindow().ShowDialog();
         }

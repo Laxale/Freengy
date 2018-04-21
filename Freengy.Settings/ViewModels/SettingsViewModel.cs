@@ -16,6 +16,9 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.Settings.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     internal class ChangedSettings 
     {
         private static readonly object Locker = new object();
@@ -82,23 +85,23 @@ namespace Freengy.Settings.ViewModels
 
         public MyCommand CommandSave { get; private set; }
 
-        public MyCommand CommandClose{ get; private set; }
+        public MyCommand<Window> CommandClose{ get; private set; }
 
 
         protected override void SetupCommands() 
         {
             this.CommandSave  = new MyCommand(SaveImpl, this.CanSave);
-            this.CommandClose = new MyCommand(window => ((Window)window).Close());
+            this.CommandClose = new MyCommand<Window>(window => window.Close());
         }
 
 
-        private void SaveImpl(object notUsed) 
+        private void SaveImpl() 
         {
             var saveRequestMessage = new MessageSaveRequest();
 
             base.Mediator.SendMessage(saveRequestMessage);
         }
-        private bool CanSave(object notUsed) 
+        private bool CanSave() 
         {
             return this.canSave;
         }

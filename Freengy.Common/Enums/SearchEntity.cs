@@ -28,6 +28,16 @@ namespace Freengy.Common.Enums
         /// <summary>
         /// Entity to search is game session(s).
         /// </summary>
-        GameSessions
+        GameSessions,
+
+        /// <summary>
+        /// Entity to search is an incoming friend request.
+        /// </summary>
+        IncomingFriendRequests,
+
+        /// <summary>
+        /// Entity to search is a sent out friend request.
+        /// </summary>
+        OutgoingFriendRequests
     }
 }

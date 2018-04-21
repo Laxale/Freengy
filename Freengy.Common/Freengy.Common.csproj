@@ -37,6 +37,7 @@
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
+    <Compile Include="Helpers\Hasher.cs" />
     <Compile Include="Helpers\Result\Result.cs" />
     <Compile Include="Helpers\Result\ResultExtensions.cs" />
     <Compile Include="Helpers\Result\ResultOfT.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountState.cs" />
+    <Compile Include="Models\AuthorizedRequest.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\UserAccount.cs" />

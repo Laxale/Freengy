@@ -33,6 +33,11 @@ using Prism.Mvvm;
 
 namespace Freengy.UI.Helpers 
 {
+    using System.Linq;
+
+    using Prism.Regions.Behaviors;
+
+
     public class ShellBootstrapper : UnityBootstrapper 
     {
         private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();

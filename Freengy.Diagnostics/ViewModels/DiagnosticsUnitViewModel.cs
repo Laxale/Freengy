@@ -17,6 +17,9 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.Diagnostics.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     public class DiagnosticsUnitViewModel : WaitableViewModel 
     {
         private readonly IDiagnosticsUnit diagnosticsUnit;
@@ -30,7 +33,7 @@ namespace Freengy.Diagnostics.ViewModels
             this.diagnosticsUnit = diagnosticsUnit;
 
             // viewmodel is not created by Catel, so init in ctor. I stuck here wondering why command is not working
-            CommandShowDetails = new MyCommand(arg => IsShowingDetails = !IsShowingDetails);
+            CommandShowDetails = new MyCommand(() => IsShowingDetails = !IsShowingDetails);
         }
 
 

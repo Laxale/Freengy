@@ -60,13 +60,9 @@ namespace Freengy.Networking.DefaultImpl
         /// <typeparam name="TResponce">Type of expected request to deserialize.</typeparam>
         /// <param name="request"><see cref="!:TRequest" /> instance.</param>
         /// <returns><see cref="!:TResponce" /> deserialized instance.</returns>
-        public Task<TResponce> PostAsync<TRequest, TResponce>(TRequest request) where TRequest : class, new() where TResponce : class, new()
+        public Task<TResponce> PostAsync<TRequest, TResponce>(TRequest request) where TRequest : class, new() where TResponce : class, new() 
         {
-            //await Task.Run(async () => { });
-            //Task.Factory.StartNew()
-
             return Task.Factory.StartNew(() =>
-            //return await Task.Run(async () =>
             {
                 using (HttpClientHandler handler = CreateHandler())
                 using (var client = new HttpClient(handler))
@@ -90,7 +86,7 @@ namespace Freengy.Networking.DefaultImpl
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public void Dispose() 
         {
 
         }

@@ -68,6 +68,7 @@
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\Account.cs" />
+    <Compile Include="Helpers\Commands\MyCommandOf{T}.cs" />
     <Compile Include="Helpers\Common.cs" />
     <Compile Include="Helpers\DataContextProxy.cs" />
     <Compile Include="Helpers\DllFileSearchFilter.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
     <Compile Include="Helpers\KeyHandler.cs" />
-    <Compile Include="Helpers\MyCommand.cs" />
+    <Compile Include="Helpers\Commands\MyCommand.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Helpers\ViewModelWierer.cs" />
     <Compile Include="Interfaces\IAccountManager.cs" />
@@ -103,7 +104,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="ViewModels\CredentialViewModel.cs" />
+    <Compile Include="ViewModels\UserAccountViewModel.cs" />
     <Compile Include="ViewModels\WaitableViewModel.cs" />
+    <Compile Include="Views\UserAccountView.xaml.cs">
+      <DependentUpon>UserAccountView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
@@ -118,6 +123,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\UserAccountView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

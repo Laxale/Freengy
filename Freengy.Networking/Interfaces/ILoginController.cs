@@ -17,6 +17,11 @@ namespace Freengy.Networking.Interfaces
     public interface ILoginController 
     {
         /// <summary>
+        /// The unique token obtained from server in login result.
+        /// </summary>
+        string SessionToken { get; }
+
+        /// <summary>
         /// Password that user was logged in with.
         /// </summary>
         string LoggedInPassword { get; }

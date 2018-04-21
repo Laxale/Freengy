@@ -40,6 +40,8 @@ using CommonRes = Freengy.CommonResources.StringResources;
 
 namespace Freengy.UI.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
     using Prism.Commands;
 
 
@@ -179,7 +181,7 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        private void CreateAccountImpl(object notUSed) 
+        private void CreateAccountImpl() 
         {
             var model = new RegistrationViewModel();
             var win = new RegistrationWindow { DataContext = model };
@@ -187,7 +189,7 @@ namespace Freengy.UI.ViewModels
             win.ShowDialog();
         }
 
-        private void RecoverPasswordImpl(object notUSed) 
+        private void RecoverPasswordImpl() 
         {
             var model = new RecoverPasswordViewModel();
             var win = new RecoverPasswordWindow { DataContext = model };
@@ -195,7 +197,7 @@ namespace Freengy.UI.ViewModels
             win.ShowDialog();
         }
 
-        private bool CanLogIn(object notUSed) 
+        private bool CanLogIn() 
         {
             bool canLogin =
                 !string.IsNullOrWhiteSpace(UserName) &&
@@ -231,7 +233,7 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        private async void CommandLoginImpl(object notUSed) 
+        private async void CommandLoginImpl() 
         {
             await TaskerWrapper.Wrap(LoginAction, LoginContinuator);
         }

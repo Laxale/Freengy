@@ -68,6 +68,11 @@ namespace Freengy.Networking.DefaultImpl
 
 
         /// <summary>
+        /// The unique token obtained from server in login result.
+        /// </summary>
+        public string SessionToken { get; private set; }
+
+        /// <summary>
         /// Password that user was logged in with.
         /// </summary>
         public string LoggedInPassword { get; private set; }
@@ -217,6 +222,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 if (result.OnlineStatus == AccountOnlineStatus.Online)
                 {
+                    SessionToken = result.SessionToken;
                     LoggedInPassword = loginModel.Password;
                     messageMediator.SendMessage(messageLoggedIn);
                 }
@@ -227,14 +233,7 @@ namespace Freengy.Networking.DefaultImpl
 
         private void HashThePassword(LoginModel loginModel) 
         {
-            using (SHA512 keccak = SHA512.Create())
-            {
-                byte[] passwordBytes = Encoding.ASCII.GetBytes(loginModel.Password);
-
-                byte[] hash = keccak.ComputeHash(passwordBytes);
-
-                loginModel.PasswordHash = Convert.ToBase64String(hash);
-            }
+            loginModel.PasswordHash = new Hasher().GetHash(loginModel.Password);
         }
     }
 }

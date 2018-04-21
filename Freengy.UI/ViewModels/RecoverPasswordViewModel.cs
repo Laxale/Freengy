@@ -24,6 +24,9 @@ using CommonRes = Freengy.CommonResources.StringResources;
 
 namespace Freengy.UI.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     public class RecoverPasswordViewModel : CredentialViewModel 
     {
         private const int ValidationCodeMinimum = 10000;
@@ -35,7 +38,7 @@ namespace Freengy.UI.ViewModels
 
         public MyCommand CommandChangePassword { get; private set; }
 
-        public MyCommand CommandFinish { get; private set; }
+        public MyCommand<Window> CommandFinish { get; private set; }
 
 
         protected override bool IsEmailMandatory => true;
@@ -43,7 +46,7 @@ namespace Freengy.UI.ViewModels
         protected override void SetupCommands() 
         {
             CommandSendCode = new MyCommand(SendCodeImpl, CanSendCode);
-            CommandFinish = new MyCommand(CommandFinishImpl, CanFinish);
+            CommandFinish = new MyCommand<Window>(window => window.Close(), CanFinish);
             CommandChangePassword = new MyCommand(ChangePasswordImpl, CanChangePassword);
         }
 
@@ -141,7 +144,7 @@ namespace Freengy.UI.ViewModels
         #endregion properties
 
 
-        private async void SendCodeImpl(object notUsed) 
+        private async void SendCodeImpl() 
         {
             void SendAction()
             {
@@ -183,7 +186,7 @@ namespace Freengy.UI.ViewModels
 
             message.DirectSend();
         }
-        private bool CanSendCode(object notUsed) 
+        private bool CanSendCode() 
         {
             List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
             //base.ValidateFields(validationResults);
@@ -193,11 +196,11 @@ namespace Freengy.UI.ViewModels
             return canTryRegister;
         }
 
-        private void ChangePasswordImpl(object notUsed) 
+        private void ChangePasswordImpl() 
         {
             IsPasswordChanged = true;
         }
-        private bool CanChangePassword(object notUsed) 
+        private bool CanChangePassword() 
         {
             return 
                 IsCodeValid && 
@@ -209,12 +212,7 @@ namespace Freengy.UI.ViewModels
                 Account.IsGoodPassword(Password);
         }
 
-        private void CommandFinishImpl(object registrationWindow) 
-        {
-            // send message
-            ((Window)registrationWindow).Close();
-        }
-        private bool CanFinish(object registrationWindow) 
+        private bool CanFinish(Window registrationWindow) 
         {
             return IsPasswordChanged;
         }

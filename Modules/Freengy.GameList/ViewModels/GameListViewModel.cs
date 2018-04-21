@@ -25,6 +25,8 @@ namespace Freengy.GameList.ViewModels
     using Catel.MVVM;
     using Catel.Messaging;
 
+    using Freengy.Base.Helpers.Commands;
+
 
     public class GameListViewModel : WaitableViewModel 
     {
@@ -50,7 +52,7 @@ namespace Freengy.GameList.ViewModels
 
         public MyCommand CommandResolveProblems { get; private set; }
 
-        public MyCommand CommandRequestLoadGame { get; private set; }
+        public MyCommand<IGamePlugin> CommandRequestLoadGame { get; private set; }
 
         #endregion commands
 
@@ -58,7 +60,7 @@ namespace Freengy.GameList.ViewModels
         protected override void SetupCommands() 
         {
             CommandResolveProblems = new MyCommand(CommandResolveProblemsImpl, CanResolveProblems);
-            CommandRequestLoadGame = new MyCommand(CommandRequestLoadGameImpl, CanRequestLoadGame);
+            CommandRequestLoadGame = new MyCommand<IGamePlugin>(CommandRequestLoadGameImpl, CanRequestLoadGame);
         }
 
         /// <summary>
@@ -71,13 +73,13 @@ namespace Freengy.GameList.ViewModels
             FillGameList().RunSynchronously();
         }
 
-        private void CommandRequestLoadGameImpl(object gamePluginToLoad) 
+        private void CommandRequestLoadGameImpl(IGamePlugin gamePluginToLoad) 
         {
-            MessageGameStateRequest loadRequest = new MessageLoadGameRequest((IGamePlugin)gamePluginToLoad, null);
+            MessageGameStateRequest loadRequest = new MessageLoadGameRequest(gamePluginToLoad, null);
 
             Mediator.SendMessage(loadRequest);
         }
-        private bool CanRequestLoadGame(object gamePluginToLoad) 
+        private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
         {
             return true;
             bool canRequestLoad = (gamePluginToLoad != null) && gameList.Contains((IGamePlugin)gamePluginToLoad);
@@ -85,12 +87,12 @@ namespace Freengy.GameList.ViewModels
             return canRequestLoad;
         }
 
-        private async void CommandResolveProblemsImpl(object notUsed) 
+        private async void CommandResolveProblemsImpl() 
         {
             await diagnosticsController.ShowDialogAsync();
         }
 
-        private bool CanResolveProblems(object notUsed) 
+        private bool CanResolveProblems() 
         {
             return GameList?.IsEmpty ?? true;
         }

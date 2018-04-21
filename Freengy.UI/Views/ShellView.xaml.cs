@@ -14,9 +14,13 @@ using Catel.Messaging;
 
 namespace Freengy.UI.Views 
 {
+    using Prism.Regions;
+
+
     /// <summary>
     /// Main view for a program for logged in user.
     /// </summary>
+    [RegionMemberLifetime(KeepAlive = false)]
     [HasViewModel(typeof(ShellViewModel))]
     public partial class ShellView 
     {

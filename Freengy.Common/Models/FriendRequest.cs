@@ -16,7 +16,7 @@ namespace Freengy.Common.Models
     /// <summary>
     /// A friend request model.
     /// </summary>
-    public class FriendRequest : DbObject 
+    public class FriendRequest : AuthorizedRequest 
     {
         /// <summary>
         /// Account that user wants to be friends with.

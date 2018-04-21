@@ -20,6 +20,9 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.Chatter.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
+
+
     public class ChatSessionViewModel : WaitableViewModel 
     {
         private readonly ILoginController loginController;
@@ -86,13 +89,13 @@ namespace Freengy.Chatter.ViewModels
         }
 
 
-        private bool CanSendMessage(object notUsed) 
+        private bool CanSendMessage() 
         {
             //return true;
             return !string.IsNullOrWhiteSpace(MessageText);
         }
 
-        private void CommandSendMessageImpl(object notUsed) 
+        private void CommandSendMessageImpl() 
         {
             IChatMessageDecorator processedMessage;
 

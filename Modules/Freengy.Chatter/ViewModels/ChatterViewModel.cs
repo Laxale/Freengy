@@ -20,6 +20,7 @@ using Freengy.Base.Helpers;
 
 namespace Freengy.Chatter.ViewModels 
 {
+    using Freengy.Base.Helpers.Commands;
     using Freengy.Base.Messages;
 
 

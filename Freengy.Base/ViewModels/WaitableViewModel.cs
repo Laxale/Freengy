@@ -16,7 +16,7 @@ using Catel.Services;
 
 namespace Freengy.Base.ViewModels 
 {
-    public abstract class WaitableViewModel : INotifyPropertyChanged 
+    public abstract class WaitableViewModel : IRefreshable, INotifyPropertyChanged 
     {
         private bool isWaiting;
         private string busyMessage;
@@ -130,6 +130,9 @@ namespace Freengy.Base.ViewModels
                 ClearBusyState();
             }
         }
+        
+        /// <inheritdoc />
+        public virtual void Refresh() { }
 
 
         /// <summary>
