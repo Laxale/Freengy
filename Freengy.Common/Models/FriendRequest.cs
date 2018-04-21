@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Database;
@@ -20,11 +21,13 @@ namespace Freengy.Common.Models
         /// <summary>
         /// Account that user wants to be friends with.
         /// </summary>
+        [NotMapped]
         public UserAccountModel TargetAccount { get; set; }
 
         /// <summary>
         /// User account that wants to be friends.
         /// </summary>
+        [NotMapped]
         public UserAccountModel RequesterAccount { get; set; }
 
         /// <summary>
