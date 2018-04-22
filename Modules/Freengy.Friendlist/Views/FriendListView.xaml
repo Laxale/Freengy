@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Freengy.FriendList.Views.FriendListView" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+
+             xmlns:viewmodels="clr-namespace:Freengy.FriendList.ViewModels"
+             xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="200"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance Type=viewmodels:FriendListViewModel}">
+    
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary 
+                        Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Buttons panel -->
+        <DockPanel Grid.Row="0">
+            <Button DockPanel.Dock="Left" Content="Add" Command="{Binding Path=CommandSearchFriend}"/>
+
+            <Button DockPanel.Dock="Left" Content="Remove" Command="{Binding Path=CommandRemoveFriend}" 
+                    CommandParameter="{Binding ElementName=FriendList, Path=SelectedItem}"/>
+
+            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top" 
+                    Command="{Binding Path=CommandShowFriendRequests}" ToolTip="Wow! New friend request"
+                    HorizontalAlignment="Right" Background="{StaticResource SuccessBrush}" 
+                    Visibility="{Binding Path=FriendRequests.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+                <Path Fill="{StaticResource BlackBrush}" Style="{StaticResource CommonPathStyle}" 
+                      Data="{StaticResource UserIconGeometry}" Margin="2, 0, 0, 0"/>
+            </Button>
+        </DockPanel>
+
+        <!-- Friends list -->
+        <Grid Grid.Row="1">
+            <Border Background="{StaticResource FirstMainBrush}" Opacity="0.5" CornerRadius="4">
+                <Border.Effect>
+                    <DropShadowEffect Color="{StaticResource ThirdMainColor}" Opacity="0.5" Direction="220"/>
+                </Border.Effect>
+            </Border>
+
+            <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" IsSynchronizedWithCurrentItem="True">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:UserAccount}">
+                        <Grid>
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Chat"/>
+                                    <MenuItem Header="Remove this faggot!"/>
+                                    <Separator/>
+                                    <MenuItem Header="See info"/>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Friend:" FontWeight="DemiBold" FontSize="16"/>
+
+                            <TextBlock Grid.Row="1" Text="{Binding Path=Name}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>
