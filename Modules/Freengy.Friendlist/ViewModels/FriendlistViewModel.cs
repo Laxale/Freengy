@@ -47,6 +47,9 @@ namespace Freengy.FriendList.ViewModels
 
         public FriendListViewModel() 
         {
+            FriendList = (ListCollectionView)CollectionViewSource.GetDefaultView(friends);
+            FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
+
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading friends"));
         }
 
@@ -106,47 +109,20 @@ namespace Freengy.FriendList.ViewModels
         {
             base.InitializeImpl();
 
-            Dispatcher current = Dispatcher.CurrentDispatcher;
-            FriendList = (ListCollectionView)CollectionViewSource.GetDefaultView(friends);
-            FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
-            FillDebugFriendList();
-
             var dispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
-            dispatcher.BeginInvokeOnGuiThread(() =>
-                                         {
-                                             
-                                         });
-
-            
-
             var loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
             myAccount = loginController.CurrentAccount;
             mySessionToken = loginController.SessionToken;
 
-            //friends.Add(new UserAccount(new UserAccountModel() { Name = "tost fuk" }));
-
             IEnumerable<UserAccount> realFriends = await SearchRealFriends();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();
-            //dispatcher.InvokeOnGuiThread(() => friends.Add(new UserAccount(new UserAccountModel() { Name = "tost 123" })));
-            //friends.Add(new UserAccount(new UserAccountModel(){ Name = "tost"}));
-            //FriendList.Dispatcher.Invoke(() => friends.Add(new UserAccount(new UserAccountModel(){ Name = "tost"})));
-            await current.BeginInvoke((Action)delegate
-                                              {
-                                                  try
-                                                  {
-                                                      friends.Add(new UserAccount(new UserAccountModel() { Name = "tost" }));
-                                                  }
-                                                  catch (Exception e)
-                                                  {
-                                                      MessageBox.Show(e.Message);
-                                                  }
-                                              });
             
+            dispatcher.InvokeOnGuiThread(FillDebugFriendList);
+
             foreach (UserAccount friend in realFriends)
             {
                 try
                 {
-                    friends.Add(friend);
                     dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
                 }
                 catch (Exception ex)
@@ -155,8 +131,6 @@ namespace Freengy.FriendList.ViewModels
                     //ignore fail exception
                 }
             }
-
-            FriendList.Refresh();
 
             foreach (FriendRequest friendRequest in requests)
             {
