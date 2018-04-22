@@ -67,9 +67,6 @@
     <Compile Include="Views\AddNewFriendWindow.xaml.cs">
       <DependentUpon>AddNewFriendWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FriendListView.xaml.cs">
-      <DependentUpon>FriendListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\FriendRequestsView.xaml.cs">
       <DependentUpon>FriendRequestsView.xaml</DependentUpon>
     </Compile>
@@ -98,10 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AddNewFriendWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FriendListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
