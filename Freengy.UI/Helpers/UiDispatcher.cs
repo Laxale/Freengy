@@ -45,11 +45,18 @@ namespace Freengy.UI.Helpers
             Invoke(method);
         }
 
+        /// <inheritdoc />
+        public void BeginInvokeOnGuiThread(Action method) 
+        {
+            uiDispatcher.BeginInvoke(method);
+        }
+
         internal static void Invoke(Action method) 
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
 
-            uiDispatcher.BeginInvoke(method);
+            //uiDispatcher.BeginInvoke(method);
+            uiDispatcher.Invoke(method);
         }
     }
 }

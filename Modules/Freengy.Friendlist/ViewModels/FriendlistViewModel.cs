@@ -10,10 +10,9 @@ using System.Windows;
 using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
-using Freengy.Base.Helpers;
+using Freengy.Base.Windows;
 using Freengy.Base.Messages;
 using Freengy.Base.Helpers.Commands;
-using Freengy.CommonResources.Windows;
 using Freengy.Common.Models;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
@@ -26,7 +25,14 @@ using Prism.Regions;
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using Prism;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Threading.Tasks;
+    using System.Windows.Threading;
+
+    using Freengy.Base.Interfaces;
+
+
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
@@ -64,7 +70,8 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Gets teh collection of a friends of current user.
         /// </summary>
-        public ICollectionView FriendList { get; private set; }
+        //public ICollectionView FriendList { get; private set; }
+        public ListCollectionView FriendList { get; private set; }
 
         /// <summary>
         /// Gets the collection of a friendrequests to current user.
@@ -95,30 +102,72 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в Initialize().
         /// </summary>
-        protected override void InitializeImpl() 
+        protected override async void InitializeImpl() 
         {
             base.InitializeImpl();
 
+            Dispatcher current = Dispatcher.CurrentDispatcher;
+            FriendList = (ListCollectionView)CollectionViewSource.GetDefaultView(friends);
+            FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
             FillDebugFriendList();
 
-            FriendList = CollectionViewSource.GetDefaultView(friends);
-            FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
+            var dispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
+            dispatcher.BeginInvokeOnGuiThread(() =>
+                                         {
+                                             
+                                         });
+
+            
 
             var loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
             myAccount = loginController.CurrentAccount;
             mySessionToken = loginController.SessionToken;
 
-            IEnumerable<UserAccount> realFriends = SearchRealFriends();
-            IEnumerable<FriendRequest> requests = SearchFriendRequests();
+            //friends.Add(new UserAccount(new UserAccountModel() { Name = "tost fuk" }));
 
+            IEnumerable<UserAccount> realFriends = await SearchRealFriends();
+            IEnumerable<FriendRequest> requests = await SearchFriendRequests();
+            //dispatcher.InvokeOnGuiThread(() => friends.Add(new UserAccount(new UserAccountModel() { Name = "tost 123" })));
+            //friends.Add(new UserAccount(new UserAccountModel(){ Name = "tost"}));
+            //FriendList.Dispatcher.Invoke(() => friends.Add(new UserAccount(new UserAccountModel(){ Name = "tost"})));
+            await current.BeginInvoke((Action)delegate
+                                              {
+                                                  try
+                                                  {
+                                                      friends.Add(new UserAccount(new UserAccountModel() { Name = "tost" }));
+                                                  }
+                                                  catch (Exception e)
+                                                  {
+                                                      MessageBox.Show(e.Message);
+                                                  }
+                                              });
+            
             foreach (UserAccount friend in realFriends)
             {
-                friends.Add(friend);
+                try
+                {
+                    friends.Add(friend);
+                    dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    //ignore fail exception
+                }
             }
+
+            FriendList.Refresh();
 
             foreach (FriendRequest friendRequest in requests)
             {
-                friendRequests.Add(friendRequest);
+                try
+                {
+                    friendRequests.Add(friendRequest);
+                }
+                catch (Exception ex)
+                {
+                    //ignore
+                }
             }
         }
 
@@ -127,34 +176,31 @@ namespace Freengy.FriendList.ViewModels
 
         private void FillDebugFriendList() 
         {
-            var friendOne = ServiceLocatorProperty.ResolveType<UserAccount>();
-            var friendTwo = ServiceLocatorProperty.ResolveType<UserAccount>();
-            
-            friends.Add(friendOne);
-            friends.Add(friendTwo);
+            friends.Add(new UserAccount(new UserAccountModel() { Name = "Friend 1", Level = 10}));
+            friends.Add(new UserAccount(new UserAccountModel() { Name = "Friend 2", Level = 20}));
         }
 
-        private IEnumerable<UserAccount> SearchRealFriends() 
+        private async Task<IEnumerable<UserAccount>> SearchRealFriends() 
         {
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
                 httpActor.SetAddress(Url.Http.SearchUsersUrl);
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccount, string.Empty, mySessionToken);
 
-                List<UserAccount> result = httpActor.PostAsync<SearchRequest, List<UserAccount>>(searchRequest).Result;
-
-                return result;
+                var result = await httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest);
+                
+                return result.Select(model => new UserAccount(model));
             }
         }
 
-        private IEnumerable<FriendRequest> SearchFriendRequests() 
+        private async Task<IEnumerable<FriendRequest>> SearchFriendRequests() 
         {
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
                 httpActor.SetAddress(Url.Http.SearchFriendRequestsUrl);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount, mySessionToken);
 
-                var result = httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest).Result;
+                var result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
 
                 return result;
             }

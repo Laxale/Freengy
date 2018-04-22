@@ -63,9 +63,6 @@
     <Compile Include="Controls\WaitableDecorator.xaml.cs">
       <DependentUpon>WaitableDecorator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EmptyCustomToolWindow.xaml.cs">
-      <DependentUpon>EmptyCustomToolWindow.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="StringResources.resx">
@@ -158,10 +155,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\EmptyCustomToolWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AppIcon.png" />
@@ -223,7 +216,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Windows\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

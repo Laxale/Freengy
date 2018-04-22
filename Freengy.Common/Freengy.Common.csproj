@@ -30,6 +30,7 @@
     <Compile Include="Database\RelationalContextAttribute.cs" />
     <Compile Include="Enums\AccountOnlineStatus.cs" />
     <Compile Include="Enums\AccountPrivilege.cs" />
+    <Compile Include="Enums\FriendRequestReaction.cs" />
     <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Models\AccountState.cs" />
     <Compile Include="Models\AuthorizedRequest.cs" />
     <Compile Include="Models\FriendRequest.cs" />
+    <Compile Include="Models\FriendRequestReply.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />

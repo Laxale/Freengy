@@ -109,6 +109,9 @@
     <Compile Include="Views\UserAccountView.xaml.cs">
       <DependentUpon>UserAccountView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EmptyCustomToolWindow.xaml.cs">
+      <DependentUpon>EmptyCustomToolWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.CommonResources\Freengy.CommonResources.csproj">
@@ -126,6 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\UserAccountView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\EmptyCustomToolWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -2,15 +2,16 @@
 //
 //
 
+using System;
+
 
 namespace Freengy.Base.Interfaces 
 {
-    using System;
-
-
     public interface IGuiDispatcher 
     {
         void InvokeOnGuiThread(Action method);
+
+        void BeginInvokeOnGuiThread(Action method);
 
         // doesnt contain Func<T> overload due to problems with Dispatcher deadlock
         // when calling Dispatcher.Invoke(Func<T>)

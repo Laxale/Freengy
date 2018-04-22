@@ -5,8 +5,13 @@
 using System.Windows;
 
 
-namespace Freengy.CommonResources.Windows 
+namespace Freengy.Base.Windows 
 {
+    using System.Windows.Input;
+
+    using Freengy.Base.Helpers;
+
+
     /// <summary>
     /// Interaction logic for EmptyCustomToolWindow.xaml
     /// </summary>
@@ -29,6 +34,12 @@ namespace Freengy.CommonResources.Windows
         {
             get => (object)GetValue(MainContentProperty);
             set => SetValue(MainContentProperty, value);
+        }
+
+
+        private void EmptyCustomToolWindow_OnKeyDown(object sender, KeyEventArgs e) 
+        {
+            new KeyHandler(e).ExecuteOnEscapePressed(Close);
         }
     }
 }
