@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Freengy.Common.Enums;
 using Freengy.Common.Database;
 using Freengy.Common.Extensions;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Common.Models 

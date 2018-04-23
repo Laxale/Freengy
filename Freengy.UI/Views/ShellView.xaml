@@ -71,7 +71,7 @@
 
                         <Button DockPanel.Dock="Right" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
                                 Command="{Binding Path=CommandShowSettings}" Style="{StaticResource ImageButtonStyle}" 
-                                HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="4, 2, 0, 0">
+                                HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="3, 2, 0, 0">
                             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
                         </Button>
 

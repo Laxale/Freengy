@@ -56,7 +56,7 @@ namespace Freengy.UI.Helpers
             }
             
             // check if can close activities
-            Result<AccountState> logoutResult = serviceLocator.ResolveType<ILoginController>().LogOut();
+            Result<AccountStateModel> logoutResult = serviceLocator.ResolveType<ILoginController>().LogOut();
 
             if (logoutResult.Failure)
             {

@@ -15,6 +15,7 @@ using Freengy.Base.Messages;
 
 using Catel.IoC;
 using Catel.Services;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.UI.ViewModels 

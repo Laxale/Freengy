@@ -17,6 +17,7 @@ using Freengy.Networking.Interfaces;
 using NLog;
 
 using Catel.IoC;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -42,7 +43,7 @@ namespace Freengy.Networking.DefaultImpl
                 {
                     using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
                     {
-                        httpActor.SetAddress(Url.Http.AddFriendUrl);
+                        httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 
                         var responce = httpActor.PostAsync<SearchRequest, TResponce>(searchRequest).Result;
 
@@ -81,7 +82,7 @@ namespace Freengy.Networking.DefaultImpl
 
                     using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
                     {
-                        httpActor.SetAddress(Url.Http.SearchUsersUrl);
+                        httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
 
                         var responce = httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest).Result;
 

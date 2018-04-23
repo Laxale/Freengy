@@ -10,6 +10,7 @@ using Freengy.Common.Constants;
 using Freengy.Common.Database;
 using Freengy.Common.Enums;
 using Freengy.Common.Interfaces;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Common.Models 

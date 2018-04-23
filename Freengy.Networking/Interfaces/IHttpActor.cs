@@ -11,14 +11,29 @@ namespace Freengy.Networking.Interfaces
     /// <summary>
     /// Interface to hide HTTP actions implementation.
     /// </summary>
-    public interface IHttpActor : IDisposable 
+    public interface IHttpActor : IDisposable
     {
+        /// <summary>
+        /// Add HTTP header to sender.
+        /// </summary>
+        /// <param name="headerName">Header name.</param>
+        /// <param name="headerValue">Header value.</param>
+        /// <returns>this.</returns>
+        IHttpActor AddHeader(string headerName, string headerValue);
+
         /// <summary>
         /// Set the HTTP address to send request to.
         /// </summary>
         /// <param name="requestAddress">HTTP address to send request to.</param>
         /// <returns>this.</returns>
-        IHttpActor SetAddress(string requestAddress);
+        IHttpActor SetRequestAddress(string requestAddress);
+
+        /// <summary>
+        /// Set the HTTP client address for server to send messages to.
+        /// </summary>
+        /// <param name="clientAddress">HTTP address of a client.</param>
+        /// <returns>this.</returns>
+        IHttpActor SetClientAddress(string clientAddress);
 
         /// <summary>
         /// Execute GET method with a given message payload.

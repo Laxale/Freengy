@@ -13,6 +13,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
         xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
+        xmlns:readonly="clr-namespace:Freengy.Common.Models.Readonly;assembly=Freengy.Common"
 
         mc:Ignorable="d" 
         Height="400"
@@ -54,7 +55,7 @@
                 </ItemsControl.Resources>
 
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="models:UserAccount">
+                    <DataTemplate DataType="readonly:UserAccount">
                         <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>

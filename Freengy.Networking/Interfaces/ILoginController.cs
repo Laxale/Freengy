@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Freengy.Common.Enums;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Networking.Interfaces 
@@ -43,19 +44,19 @@ namespace Freengy.Networking.Interfaces
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Login result.</returns>
-        Result<AccountState> LogIn(LoginModel loginModel);
+        Result<AccountStateModel> LogIn(LoginModel loginModel);
 
         /// <summary>
         /// Attempts to log the user out.
         /// </summary>
         /// <returns>Logout result.</returns>
-        Result<AccountState> LogOut();
+        Result<AccountStateModel> LogOut();
 
         /// <summary>
         /// Attempts to log in the user asynchronously.
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Logging user in <see cref="Task"/>.</returns>
-        Task<Result<AccountState>> LogInAsync(LoginModel loginModel);
+        Task<Result<AccountStateModel>> LogInAsync(LoginModel loginModel);
     }
 }

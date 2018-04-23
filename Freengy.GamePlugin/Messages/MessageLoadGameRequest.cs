@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 
 using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 using Freengy.GamePlugin.Interfaces;
 
 

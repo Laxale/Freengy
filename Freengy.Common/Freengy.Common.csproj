@@ -23,6 +23,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\FreengyHeaders.cs" />
     <Compile Include="Constants\FreengyPaths.cs" />
     <Compile Include="Database\ChildComplexDbObject.cs" />
     <Compile Include="Database\ComplexDbObject.cs" />
@@ -45,12 +46,13 @@
     <Compile Include="Helpers\SerializeHelper.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
-    <Compile Include="Models\AccountState.cs" />
+    <Compile Include="Models\AccountStateModel.cs" />
     <Compile Include="Models\AuthorizedRequest.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\Readonly\AccountState.cs" />
+    <Compile Include="Models\Readonly\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />
     <Compile Include="Models\UserAccountModel.cs" />

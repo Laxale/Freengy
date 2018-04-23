@@ -8,6 +8,7 @@ using Freengy.Base.ViewModels;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.UI.ViewModels 

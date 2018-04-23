@@ -19,7 +19,7 @@ using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
-
+using Freengy.Common.Models.Readonly;
 using Prism.Regions;
 
 
@@ -38,7 +38,7 @@ namespace Freengy.FriendList.ViewModels
     /// </summary>
     public class FriendListViewModel : WaitableViewModel 
     {
-        private readonly ObservableCollection<UserAccount> friends = new ObservableCollection<UserAccount>();
+        private readonly ObservableCollection<AccountState> friends = new ObservableCollection<AccountState>();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
 
         private string mySessionToken;
@@ -67,7 +67,7 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Command to remove a friend.
         /// </summary>
-        public MyCommand<UserAccount> CommandRemoveFriend { get; private set; }
+        public MyCommand<AccountState> CommandRemoveFriend { get; private set; }
 
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Freengy.FriendList.ViewModels
         protected override void SetupCommands() 
         {
             CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
-            CommandRemoveFriend = new MyCommand<UserAccount>(RemoveFriendImpl, CanRemoveFriend);
+            CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
         }
 
@@ -114,10 +114,10 @@ namespace Freengy.FriendList.ViewModels
             myAccount = loginController.CurrentAccount;
             mySessionToken = loginController.SessionToken;
 
-            IEnumerable<UserAccount> realFriends = await SearchRealFriends();
+            IEnumerable<AccountState> realFriends = await SearchRealFriends();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();
             
-            foreach (UserAccount friend in realFriends)
+            foreach (AccountState friend in realFriends)
             {
                 dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
             }
@@ -131,16 +131,16 @@ namespace Freengy.FriendList.ViewModels
 
         #region privates
 
-        private async Task<IEnumerable<UserAccount>> SearchRealFriends() 
+        private async Task<IEnumerable<AccountState>> SearchRealFriends() 
         {
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
-                httpActor.SetAddress(Url.Http.SearchUsersUrl);
+                httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccount, string.Empty, mySessionToken);
 
-                var result = await httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest);
-                
-                return result.Select(model => new UserAccount(model));
+                var result = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);
+
+                return result.Select(stateModel => new AccountState(stateModel));
             }
         }
 
@@ -148,7 +148,7 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
-                httpActor.SetAddress(Url.Http.SearchFriendRequestsUrl);
+                httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount, mySessionToken);
 
                 var result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
@@ -168,14 +168,14 @@ namespace Freengy.FriendList.ViewModels
             return true;
         }
 
-        private void RemoveFriendImpl(UserAccount friendAccount) 
+        private void RemoveFriendImpl(AccountState friendAccount) 
         {
             if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
 
             friends.Remove(friendAccount);
         }
 
-        private bool CanRemoveFriend(UserAccount friendAccount) 
+        private bool CanRemoveFriend(AccountState friendAccount) 
         {
             // check if friend is not null and exists
             return friendAccount != null;

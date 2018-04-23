@@ -5,6 +5,7 @@
 using System;
 
 using Freengy.Common.Enums;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Common.Models 

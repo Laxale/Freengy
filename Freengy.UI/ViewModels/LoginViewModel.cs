@@ -5,31 +5,26 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
+using Freengy.Common.Extensions;
+using Freengy.Common.Helpers.Result;
+using Freengy.Common.Models.Readonly;
+using Freengy.Base.Helpers;
 using Freengy.Base.Settings;
+using Freengy.Base.Messages;
 using Freengy.Base.Extensions;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
-using Freengy.UI.Views;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
-using Freengy.Common.Helpers.Result;
+using Freengy.UI.Windows;
 
 using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-using Catel.Services;
-using Freengy.Base.Helpers;
-using Freengy.Base.Messages;
-using Freengy.Common.Extensions;
-using Freengy.UI.Windows;
 
 using NLog;
 
@@ -243,7 +238,7 @@ namespace Freengy.UI.ViewModels
             SetBusySilent();
 
             LoginModel loginModel = GetCurrentLoginParameters();
-            Result<AccountState> result = loginController.LogIn(loginModel);
+            Result<AccountStateModel> result = loginController.LogIn(loginModel);
 
             if (result.Failure)
             {

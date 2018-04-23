@@ -3,22 +3,13 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Runtime;
-using System.Net.Http;
 using System.Threading;
-using System.Configuration;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
+using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages;
@@ -31,8 +22,7 @@ using NLog;
 
 using Catel.IoC;
 using Catel.Messaging;
-using Freengy.Common.Extensions;
-using Newtonsoft.Json;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -40,8 +30,9 @@ namespace Freengy.Networking.DefaultImpl
     /// <summary>
     /// <see cref="ILoginController"/> implementer.
     /// </summary>
-    internal class LoginController : ILoginController 
+    internal class LoginController : ILoginController
     {
+        private readonly string clientAddress;
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
@@ -60,6 +51,7 @@ namespace Freengy.Networking.DefaultImpl
             messageLogInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
+            clientAddress = serviceLocator.ResolveType<IHttpClientParametersProvider>().ClientAddress;
         }
 
         public static LoginController Instance => instance ?? (instance = new LoginController());
@@ -103,7 +95,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
-                    httpActor.SetAddress(Url.Http.RegisterUrl);
+                    httpActor.SetRequestAddress(Url.Http.RegisterUrl);
 
                     request = httpActor.PostAsync<RegistrationRequest, RegistrationRequest>(request).Result;
 
@@ -134,11 +126,11 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Login result.</returns>
-        public Result<AccountState> LogIn(LoginModel loginModel) 
+        public Result<AccountStateModel> LogIn(LoginModel loginModel) 
         {
             if (loginModel?.Account == null)
             {
-                return Result<AccountState>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
+                return Result<AccountStateModel>.Fail(new UnexpectedErrorReason("Logging empty account is denied"));
             }
 
             loginModel.IsLoggingIn = true;
@@ -149,7 +141,7 @@ namespace Freengy.Networking.DefaultImpl
         /// <summary>
         /// Attempts to log the user out.
         /// </summary>
-        public Result<AccountState> LogOut() 
+        public Result<AccountStateModel> LogOut() 
         {
             var loginModel = new LoginModel
             {
@@ -167,13 +159,13 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         /// <param name="loginModel">User account data to log in.</param>
         /// <returns>Logging user in <see cref="T:System.Threading.Tasks.Task" />.</returns>
-        public async Task<Result<AccountState>> LogInAsync(LoginModel loginModel) 
+        public async Task<Result<AccountStateModel>> LogInAsync(LoginModel loginModel) 
         {
             return await Task.Run(() => LogIn(loginModel));
         }
 
 
-        private Result<AccountState> InvokeLogInOrOut(LoginModel loginModel)
+        private Result<AccountStateModel> InvokeLogInOrOut(LoginModel loginModel) 
         {
             AccountOnlineStatus targetStatus = loginModel.IsLoggingIn ? AccountOnlineStatus.Online : AccountOnlineStatus.Offline;
 
@@ -181,17 +173,17 @@ namespace Freengy.Networking.DefaultImpl
             {
                 messageMediator.SendMessage(messageLogInAttempt);
 
-                Thread.Sleep(500);
+                Thread.Sleep(300);
 
-                AccountState state = LogInImpl(loginModel);
+                AccountStateModel stateModel = LogInImpl(loginModel);
 
-                if (state.OnlineStatus != targetStatus)
+                if (stateModel.OnlineStatus != targetStatus)
                 {
-                    return Result<AccountState>.Fail(new UnexpectedErrorReason(state.OnlineStatus.ToString()));
+                    return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(stateModel.OnlineStatus.ToString()));
                 }
 
-                CurrentAccount = new UserAccount(state.Account);
-                return Result<AccountState>.Ok(state);
+                CurrentAccount = new UserAccount(stateModel.Account);
+                return Result<AccountStateModel>.Ok(stateModel);
             }
             catch (Exception ex)
             {
@@ -199,12 +191,12 @@ namespace Freengy.Networking.DefaultImpl
                 string message = $"Failed to log '{loginModel?.Account?.Name}' {direction}";
                 logger.Error(ex, message);
 
-                return Result<AccountState>.Fail(new UnexpectedErrorReason(message));
+                return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(message));
             }
         }
 
 
-        private AccountState LogInImpl(LoginModel loginModel) 
+        private AccountStateModel LogInImpl(LoginModel loginModel) 
         {
             //X509Certificate2 certificate = GetMyX509Certificate();
             if (string.IsNullOrWhiteSpace(loginModel.Password))
@@ -216,9 +208,9 @@ namespace Freengy.Networking.DefaultImpl
 
             using (var actor = serviceLocator.ResolveType<IHttpActor>())
             {
-                actor.SetAddress(Url.Http.LogInUrl);
+                actor.SetClientAddress(clientAddress).SetRequestAddress(Url.Http.LogInUrl);
 
-                AccountState result = actor.PostAsync<LoginModel, AccountState>(loginModel).Result;
+                AccountStateModel result = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
 
                 if (result.OnlineStatus == AccountOnlineStatus.Online)
                 {

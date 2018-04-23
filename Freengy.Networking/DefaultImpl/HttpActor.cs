@@ -3,11 +3,13 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
+using Freengy.Common.Constants;
 using Freengy.Common.Helpers;
 using Freengy.Networking.Interfaces;
 
@@ -20,9 +22,29 @@ namespace Freengy.Networking.DefaultImpl
     internal class HttpActor : IHttpActor 
     {
         private readonly MediaTypes mediaTypes = new MediaTypes();
+        private readonly Dictionary<string, string> addedHeaders = new Dictionary<string, string>();
 
         private string address;
 
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Add HTTP header to sender.
+        /// </summary>
+        /// <param name="headerName">Header name.</param>
+        /// <param name="headerValue">Header value.</param>
+        /// <returns>this.</returns>
+        public IHttpActor AddHeader(string headerName, string headerValue) 
+        {
+            if (string.IsNullOrWhiteSpace(headerName)) throw new ArgumentNullException(nameof(headerName));
+
+            if (!addedHeaders.ContainsKey(headerName))
+            {
+                addedHeaders.Add(headerName, headerValue);
+            }
+
+            return this;
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -30,11 +52,31 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         /// <param name="requestAddress">HTTP address to send request to.</param>
         /// <returns>this.</returns>
-        public IHttpActor SetAddress(string requestAddress) 
+        public IHttpActor SetRequestAddress(string requestAddress) 
         {
-            //if (string.IsNullOrWhiteSpace(requestAddress)) throw new ArgumentNullException(nameof(requestAddress));
+            if (string.IsNullOrWhiteSpace(requestAddress)) throw new ArgumentNullException(nameof(requestAddress));
 
             address = requestAddress;
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Set the HTTP client address for server to send messages to.
+        /// </summary>
+        /// <param name="clientAddress">HTTP address of a client.</param>
+        /// <returns>this.</returns>
+        public IHttpActor SetClientAddress(string clientAddress) 
+        {
+            if (string.IsNullOrWhiteSpace(clientAddress)) throw new ArgumentNullException(nameof(clientAddress));
+
+            const string fromHeaderName = FreengyHeaders.ClientAddressHeaderName;
+
+            if (!addedHeaders.ContainsKey(fromHeaderName))
+            {
+                addedHeaders.Add(fromHeaderName, clientAddress);
+            }
 
             return this;
         }
@@ -67,6 +109,8 @@ namespace Freengy.Networking.DefaultImpl
                 using (HttpClientHandler handler = CreateHandler())
                 using (var client = new HttpClient(handler))
                 {
+                    AttachHeadersTo(client);
+
                     var serializeHelper = new SerializeHelper();
                     string jsonRequest = serializeHelper.Serialize(request);
                     string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
@@ -100,6 +144,14 @@ namespace Freengy.Networking.DefaultImpl
             };
 
             return handler;
+        }
+
+        private void AttachHeadersTo(HttpClient client) 
+        {
+            foreach (KeyValuePair<string, string> pair in addedHeaders)
+            {
+                client.DefaultRequestHeaders.Add(pair.Key, pair.Value);
+            }
         }
     }
 }

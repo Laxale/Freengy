@@ -9,16 +9,16 @@ using Freengy.Common.Enums;
 using Freengy.Common.Interfaces;
 
 
-namespace Freengy.Common.Models 
+namespace Freengy.Common.Models.Readonly 
 {
     /// <summary>
     /// Read-only wrapper other fragile <see cref="UserAccountModel" /> that must not be used in client code.
     /// </summary>
-    public class UserAccount : DbObject, INamedObject, IObjectWithId 
+    public class UserAccount : DbObject, INamedObject 
     {
         public UserAccount(UserAccountModel accountModel)
         {
-            base.Id = accountModel.Id;
+            Id = accountModel.Id;
             Name = accountModel.Name;
             //Id = accountModel.UniqueId;
             LastLogInTime = accountModel.LastLogInTime;

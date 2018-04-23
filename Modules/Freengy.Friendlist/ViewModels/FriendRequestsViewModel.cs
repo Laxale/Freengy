@@ -19,6 +19,7 @@ using Freengy.FriendList.Views;
 
 using Catel.IoC;
 using Freengy.Common.Database;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -76,14 +77,8 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
-                actor.SetAddress(Url.Http.ReplyFriendRequestUrl);
-                var reply = new FriendRequestReply
-                {
-                    Id = myId,
-                    UserToken = sessionToken,
-                    Request = requestPairs[userAccount],
-                    Reaction = FriendRequestReaction.Accept
-                };
+                actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl);
+                FriendRequestReply reply = CreateReplyTo(userAccount);
 
                 FriendRequestReply result;
                 try
@@ -95,9 +90,31 @@ namespace Freengy.FriendList.ViewModels
                     ReportMessage(ex.Message);
                     return;
                 }
-                
-                ReportMessage(result.EstablishedDate != DateTime.MinValue ? "Friend accepted. Yey!" : "Failed to send reply");
+
+                if (result.Reaction == FriendRequestReaction.Accept)
+                {
+                    requestAccounts.Remove(userAccount);
+                    ReportMessage($"{ result.Request.TargetAccount.Name } is now your friend. Yey!");
+
+                }
+                else
+                {
+                    ReportMessage($"Failed to send reply to { userAccount.Account.Name }: { result.Reaction }");
+                }
             }
+        }
+
+        private FriendRequestReply CreateReplyTo(UserAccountViewModel userAccount) 
+        {
+            var reply = new FriendRequestReply
+            {
+                Id = myId,
+                UserToken = sessionToken,
+                Request = requestPairs[userAccount],
+                Reaction = FriendRequestReaction.Accept
+            };
+
+            return reply;
         }
     }
 }

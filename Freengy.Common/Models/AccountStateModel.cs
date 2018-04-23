@@ -10,8 +10,13 @@ namespace Freengy.Common.Models
     /// <summary>
     /// User account state model.
     /// </summary>
-    public class AccountState 
+    public class AccountStateModel 
     {
+        /// <summary>
+        /// User's current address is set by server.
+        /// </summary>
+        public string Address { get; set; }
+
         /// <summary>
         /// Filled by server in responce to login request.
         /// </summary>

@@ -7,6 +7,7 @@ using System;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 

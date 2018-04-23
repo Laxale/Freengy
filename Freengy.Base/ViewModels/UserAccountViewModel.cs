@@ -6,6 +6,7 @@ using System;
 
 using Freengy.Base.Views;
 using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.ViewModels 
