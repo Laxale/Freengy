@@ -57,7 +57,7 @@
 
             <Grid Grid.Column="1">
                 <!-- Поле ввода текста для поиска -->
-                <TextBox Style="{StaticResource FilterTextStyle}"
+                <TextBox Style="{StaticResource FilterTextStyle}" Name="InputBox"
                          Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Filter},
                                         Path=FilterText,
                                         Mode=TwoWay,

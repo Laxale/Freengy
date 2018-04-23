@@ -18,9 +18,9 @@ namespace Freengy.Common.Models
     {
         public UserAccount(UserAccountModel accountModel)
         {
-            Id = accountModel.Id;
+            base.Id = accountModel.Id;
             Name = accountModel.Name;
-            UniqueId = accountModel.UniqueId;
+            //Id = accountModel.UniqueId;
             LastLogInTime = accountModel.LastLogInTime;
             RegistrationTime = accountModel.RegistrationTime;
             Level = accountModel.Level;
@@ -43,11 +43,6 @@ namespace Freengy.Common.Models
         /// </summary>
         public AccountPrivilege Privilege { get; }
         
-        /// <summary>
-        /// Returns unique identifier of an implementer object.
-        /// </summary>
-        public Guid UniqueId { get; }
-
         /// <summary>
         /// Account last login time.
         /// </summary>

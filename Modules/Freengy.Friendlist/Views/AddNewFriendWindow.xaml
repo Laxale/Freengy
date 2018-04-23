@@ -40,7 +40,7 @@
     <DockPanel>
         <DockPanel Margin="10">
             <!-- Search users name filter -->
-            <controls:Filter DockPanel.Dock="Top" WatermarkText="Search for new awesome friends!" 
+            <controls:Filter DockPanel.Dock="Top" WatermarkText="Search for new awesome friends!" MustFocusOnLoaded="True"
                              FilterText="{Binding Path=SearchFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             
             <TextBlock DockPanel.Dock="Top" Text="Input some user name"

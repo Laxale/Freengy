@@ -2,6 +2,7 @@
 //
 //
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,7 +19,7 @@ namespace Freengy.Common.Database
         /// Внешний ключ для связи с родительским объектом <see cref="TComplexParent"/>.
         /// </summary>
         [Required]
-        public string ParentId { get; set; }
+        public Guid ParentId { get; set; }
 
         /// <summary>
         /// Навигационное свойство - родительский объект <see cref="TComplexParent"/>.

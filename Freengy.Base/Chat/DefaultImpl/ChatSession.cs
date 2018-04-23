@@ -39,11 +39,11 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         internal ChatSession(Guid id) 
         {
-            this.UniqueId = id;
+            this.Id = id;
         }
 
 
-        public Guid UniqueId { get; }
+        public Guid Id { get; }
         public string Name { get; internal set; }
         public string DisplayedName { get; internal set; }
 

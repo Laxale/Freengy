@@ -40,7 +40,7 @@ namespace Base.Tests.Chat
         [Test]
         public void CreateInstance_TestNotEmptyId() 
         {
-            Assert.AreNotEqual(this.session.UniqueId, Guid.Empty);
+            Assert.AreNotEqual(this.session.Id, Guid.Empty);
         }
 
         [Test]

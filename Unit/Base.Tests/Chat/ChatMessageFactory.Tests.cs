@@ -22,7 +22,7 @@ namespace Base.Tests.Chat
     public class ChatMessageFactoryTests 
     {
         private IChatMessageFactory messageFactory;
-        private readonly UserAccount author = new UserAccount(new UserAccountModel { Name = "Awesome Author", UniqueId = Guid.NewGuid() });
+        private readonly UserAccount author = new UserAccount(new UserAccountModel { Name = "Awesome Author" });
 
 
         [SetUp]

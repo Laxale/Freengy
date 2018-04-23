@@ -76,7 +76,7 @@ namespace Freengy.Networking.DefaultImpl
                     {
                         Entity = SearchEntity.Users,
                         SearchFilter = nameFilter,
-                        SenderId = currentAccount.UniqueId
+                        SenderId = currentAccount.Id
                     };
 
                     using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())

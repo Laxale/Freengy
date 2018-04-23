@@ -18,6 +18,7 @@ using Freengy.Networking.Interfaces;
 using Freengy.FriendList.Views;
 
 using Catel.IoC;
+using Freengy.Common.Database;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -27,7 +28,7 @@ namespace Freengy.FriendList.ViewModels
     /// </summary>
     internal class FriendRequestsViewModel : WaitableViewModel
     {
-        private readonly string myId;
+        private readonly Guid myId;
         private readonly string sessionToken;
         private readonly ObservableCollection<UserAccountViewModel> requestAccounts = new ObservableCollection<UserAccountViewModel>();
         private readonly Dictionary<UserAccountViewModel, FriendRequest> requestPairs = new Dictionary<UserAccountViewModel, FriendRequest>();

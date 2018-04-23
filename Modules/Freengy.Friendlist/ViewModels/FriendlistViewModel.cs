@@ -117,42 +117,19 @@ namespace Freengy.FriendList.ViewModels
             IEnumerable<UserAccount> realFriends = await SearchRealFriends();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();
             
-            dispatcher.InvokeOnGuiThread(FillDebugFriendList);
-
             foreach (UserAccount friend in realFriends)
             {
-                try
-                {
-                    dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    //ignore fail exception
-                }
+                dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
             }
 
             foreach (FriendRequest friendRequest in requests)
             {
-                try
-                {
-                    friendRequests.Add(friendRequest);
-                }
-                catch (Exception ex)
-                {
-                    //ignore
-                }
+                dispatcher.InvokeOnGuiThread(() => friendRequests.Add(friendRequest));
             }
         }
 
 
         #region privates
-
-        private void FillDebugFriendList() 
-        {
-            friends.Add(new UserAccount(new UserAccountModel() { Name = "Friend 1", Level = 10}));
-            friends.Add(new UserAccount(new UserAccountModel() { Name = "Friend 2", Level = 20}));
-        }
 
         private async Task<IEnumerable<UserAccount>> SearchRealFriends() 
         {

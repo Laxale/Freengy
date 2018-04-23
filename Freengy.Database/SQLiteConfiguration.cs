@@ -17,7 +17,7 @@ namespace Freengy.Database
         /// <summary>
         /// Конструктор <see cref="SQLiteConfiguration"/>.
         /// </summary>
-        public SQLiteConfiguration()
+        public SQLiteConfiguration() 
         {
             SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
             SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);

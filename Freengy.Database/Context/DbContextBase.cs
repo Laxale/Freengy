@@ -119,7 +119,7 @@ namespace Freengy.Database.Context
                 );
         }
 
-        protected void CreateTable(DbModelBuilder modelBuilder)
+        protected void CreateTable(DbModelBuilder modelBuilder) 
         {
             try
             {
@@ -141,6 +141,7 @@ namespace Freengy.Database.Context
         {
             var builder = new SQLiteConnectionStringBuilder
             {
+                BinaryGUID = false,
                 DataSource = dbFilePath
             };
 

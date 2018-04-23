@@ -51,7 +51,7 @@ namespace Freengy.Common.Restrictions
                 Id = account.Id,
                 Name = account.Name,
                 Level = account.Level,
-                UniqueId = account.UniqueId,
+                //UniqueId = account.UniqueId,
                 Privilege = account.Privilege,
                 RegistrationTime = account.RegistrationTime,
             };
@@ -76,22 +76,22 @@ namespace Freengy.Common.Restrictions
                 trimmedAccount.Privilege = AccountPrivilege.UltramarineImperator;
             }
 
-            if (string.IsNullOrWhiteSpace(trimmedAccount.Id))
-            {
-                if (trimmedAccount.UniqueId == Guid.Empty)
-                {
-                    trimmedAccount.UniqueId = Guid.NewGuid();
-                }
-
-                trimmedAccount.Id = trimmedAccount.UniqueId.ToString();
-            }
-            else
-            {
-                if (trimmedAccount.UniqueId == Guid.Empty)
-                {
-                    trimmedAccount.UniqueId = Guid.Parse(trimmedAccount.Id);
-                }
-            }
+//            if (string.IsNullOrWhiteSpace(trimmedAccount.Id))
+//            {
+//                if (trimmedAccount.UniqueId == Guid.Empty)
+//                {
+//                    trimmedAccount.UniqueId = Guid.NewGuid();
+//                }
+//
+//                trimmedAccount.Id = trimmedAccount.UniqueId.ToString();
+//            }
+//            else
+//            {
+//                if (trimmedAccount.UniqueId == Guid.Empty)
+//                {
+//                    trimmedAccount.UniqueId = Guid.Parse(trimmedAccount.Id);
+//                }
+//            }
 
             return trimmedAccount;
         }
@@ -110,7 +110,8 @@ namespace Freengy.Common.Restrictions
 
         private bool AreIdentifiersValid() 
         {
-            return !string.IsNullOrWhiteSpace(account.Id) && account.UniqueId != Guid.Empty;
+            //return !string.IsNullOrWhiteSpace(account.Id) && account.UniqueId != Guid.Empty;
+            return account.Id != Guid.Empty;
         }
 
         private bool IsNameValid() 

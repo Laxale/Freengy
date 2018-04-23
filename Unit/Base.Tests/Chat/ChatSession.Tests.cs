@@ -152,7 +152,7 @@ namespace Base.Tests.Chat
 
             bool sentMessage = this.chatSession.SendMessage(testMessage, out processedMessage);
 
-            Assert.AreNotEqual(processedMessage.UniqueId, Guid.Empty);
+            Assert.AreNotEqual(processedMessage.Id, Guid.Empty);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace Base.Tests.Chat
             bool sessionHasNewMessage = 
                 this
                 .chatSession
-                .GetMessages(message => message.UniqueId == processedMessage.UniqueId)
+                .GetMessages(message => message.Id == processedMessage.Id)
                 .First() != null;
 
             Assert.IsTrue(sessionHasNewMessage);
@@ -281,12 +281,12 @@ namespace Base.Tests.Chat
 
         private static UserAccountModel CreateAccountModel() 
         {
-            var id = Guid.NewGuid();
+            //var id = Guid.NewGuid();
 
             return new UserAccountModel
             {
-                Id = id.ToString(),
-                UniqueId = id,
+                //Id = id.ToString(),
+                //UniqueId = id,
                 Name = "Wow a test name"
             };
         }

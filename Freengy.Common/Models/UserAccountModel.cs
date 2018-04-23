@@ -20,19 +20,6 @@ namespace Freengy.Common.Models
     [Table(nameof(UserAccount) + "s")]
     public class UserAccountModel : ComplexDbObject, INamedObject, IObjectWithId 
     {
-        public UserAccountModel() 
-        {
-            UniqueId = Guid.Parse(Id);
-        }
-
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Gets or sets unique user identifier.
-        /// </summary>
-        [NotMapped]
-        public Guid UniqueId { get ; set; }
-
         /// <summary>
         /// Gets or sets level of a user account.
         /// </summary>
@@ -60,14 +47,6 @@ namespace Freengy.Common.Models
         public DateTime LastLogInTime { get; set; }
 
 
-        /// <summary>
-        /// Set <see cref="UserAccountModel.UniqueId"/> equal to main <see cref="UserAccountModel.Id"/> property.
-        /// </summary>
-        public void SyncUniqueIdToId() 
-        {
-            UniqueId = Guid.Parse(Id);
-        }
-
         /// <inheritdoc />
         public override string ToString()
         {
@@ -84,15 +63,17 @@ namespace Freengy.Common.Models
             return (UserAccountModel) dbProxy;
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
+        /// Заполнить актуальными данными зависимые свойства типа public <see cref="T:System.Collections.Generic.List`1" /> MyList { get; set; }.
         /// </summary>
-        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
-        public override ComplexDbObject PrepareMappedProps()
+        /// <returns>Ссылка на сам <see cref="T:Freengy.Common.Database.ComplexDbObject" /> с заполненными мап-пропертями.</returns>
+        public override ComplexDbObject PrepareMappedProps() 
         {
             return this;
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>

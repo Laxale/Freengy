@@ -2,8 +2,10 @@
 //
 //
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 
 namespace Freengy.CommonResources.Controls 
@@ -19,6 +21,8 @@ namespace Freengy.CommonResources.Controls
         public Filter() 
         {
             InitializeComponent();
+
+            Loaded += OnLoaded;
         }
 
 
@@ -28,6 +32,19 @@ namespace Freengy.CommonResources.Controls
         public static readonly DependencyProperty FilterTextProperty = 
             DependencyProperty.Register(nameof(FilterText), typeof(string), typeof(Filter));
 
+
+        public static readonly DependencyProperty MustFocusOnLoadedProperty = 
+            DependencyProperty.Register(nameof(MustFocusOnLoaded), typeof(bool), typeof(Filter));
+
+
+        /// <summary>
+        /// Задаёт или возвращает значение флага - будет ли фильтр фокусироваться на своём поле ввода автоматически.
+        /// </summary>
+        public bool MustFocusOnLoaded 
+        {
+            get => (bool) GetValue(MustFocusOnLoadedProperty);
+            set => SetValue(MustFocusOnLoadedProperty, value);
+        }
 
         /// <summary>
         /// Получает или задаёт текст поиска.
@@ -52,6 +69,14 @@ namespace Freengy.CommonResources.Controls
         private void ClearButton_OnClick(object sender, RoutedEventArgs e) 
         {
             FilterText = string.Empty;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
+        {
+            if (MustFocusOnLoaded)
+            {
+                Keyboard.Focus(InputBox);
+            }
         }
     }
 }

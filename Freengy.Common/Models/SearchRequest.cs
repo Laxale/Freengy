@@ -44,7 +44,7 @@ namespace Freengy.Common.Models
             return new SearchRequest
             {
                 Entity = SearchEntity.Friends,
-                SenderId = account.UniqueId,
+                SenderId = account.Id,
                 SearchFilter = nameFilter,
                 UserToken = sessionToken
             };
@@ -78,7 +78,7 @@ namespace Freengy.Common.Models
             return new SearchRequest
             {
                 Entity = incoming ? SearchEntity.IncomingFriendRequests : SearchEntity.OutgoingFriendRequests,
-                SenderId = account.UniqueId,
+                SenderId = account.Id,
                 UserToken = sessionToken
             };
         }

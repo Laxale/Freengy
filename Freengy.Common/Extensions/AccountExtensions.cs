@@ -2,6 +2,7 @@
 //
 //
 
+using Freengy.Common.Database;
 using Freengy.Common.Models;
 
 
@@ -21,8 +22,8 @@ namespace Freengy.Common.Extensions
         {
             var model = new UserAccountModel
             {
-                Id = account.Id,
-                UniqueId = account.UniqueId,
+                Id = ((DbObject) account).Id,
+                //UniqueId = account.Id,
                 Name = account.Name,
                 Level = account.Level,
                 Privilege = account.Privilege,

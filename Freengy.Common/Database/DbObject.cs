@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Freengy.Common.Interfaces;
 
 
 namespace Freengy.Common.Database 
@@ -12,14 +13,15 @@ namespace Freengy.Common.Database
     /// <summary>
     /// Базовый класс для хранящихся в базе объектов.
     /// </summary>
-    public abstract class DbObject 
+    public abstract class DbObject : IObjectWithId 
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         protected DbObject() 
         {
-            Id = Guid.NewGuid().ToString();
+            //Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
         }
 
 
@@ -29,6 +31,7 @@ namespace Freengy.Common.Database
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; }
+        //public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

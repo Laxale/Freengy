@@ -21,7 +21,7 @@ namespace Freengy.SampleGame.Plugin
     /// </summary>
     public class SampleGamePlugin : IGamePlugin 
     {
-        public Guid UniqueId { get; } = Guid.NewGuid();
+        public Guid Id { get; } = Guid.NewGuid();
 
         public string Name { get; } = Res.DefaultGameName;
 

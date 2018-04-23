@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             MouseDown="RegistrationView_OnMouseDown"
              xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
              xmlns:localprops="clr-namespace:Freengy.UI.Properties" 
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
@@ -85,11 +86,10 @@
                            HorizontalAlignment="Stretch" Fill="{StaticResource DarkGrayBrush}" Margin="4" />
 
                 <DockPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4, 8">
-                    <Button DockPanel.Dock="Right" IsEnabled="{Binding Path=Registered}"
+                    <Button DockPanel.Dock="Right" 
                             Content="{x:Static commonres:StringResources.FinishText}" 
                             Command="{Binding Path=CommandFinish}" 
-                            Loaded="FinishButton_OnLoaded"
-                            IsDefault="{Binding ElementName=RegisterButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"
+                            IsDefault="{Binding Path=Registered}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{x:Static commonres:StringResources.RegisterText}"

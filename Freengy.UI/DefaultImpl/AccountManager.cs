@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Freengy.Base.Interfaces;
+using Freengy.Common.Database;
 using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Models;
@@ -70,8 +71,6 @@ namespace Freengy.UI.DefaultImpl
                         return Result<UserAccount>.Fail(new UnexpectedErrorReason("No saved accounts found"));
                     }
 
-                    lastLogged.SyncUniqueIdToId();
-
                     return Result<UserAccount>.Ok(new UserAccount(lastLogged));
                 }
             }
@@ -95,7 +94,7 @@ namespace Freengy.UI.DefaultImpl
             {
                 using (var context = new SimpleDbContext<UserAccountModel>())
                 {
-                    var savedAcc = context.Objects.FirstOrDefault(acc => acc.Id == account.Id);
+                    var savedAcc = context.Objects.FirstOrDefault(acc => acc.Id == ((DbObject) account).Id);
 
                     if (savedAcc != null)
                     {

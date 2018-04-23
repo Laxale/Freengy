@@ -15,6 +15,6 @@ namespace Freengy.Common.Interfaces
         /// <summary>
         /// Returns unique identifier of an implementer object.
         /// </summary>
-        Guid UniqueId { get; }
+        Guid Id { get; }
     }
 }
