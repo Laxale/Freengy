@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 using Freengy.Base.Chat.Interfaces;
 
+using Catel.IoC;
+using Catel.Messaging;
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
+    using Freengy.Base.Messages;
+
+
     /// <summary>
     /// An <see cref="IChatHub"/> implementer.
     /// </summary>
@@ -20,6 +25,7 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         private static ChatHub instance;
 
+        private readonly IMessageMediator mediator = MessageMediator.Default;
         private readonly Dictionary<Guid, IChatSession> chatSessions = new Dictionary<Guid, IChatSession>();
 
 
@@ -52,7 +58,10 @@ namespace Freengy.Base.Chat.DefaultImpl
         /// <returns>Chat session or null.</returns>
         public IChatSession GetSession(Guid sessionId) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                return chatSessions.ContainsKey(sessionId) ? chatSessions[sessionId] : null;
+            }
         }
 
         /// <inheritdoc />
@@ -62,7 +71,18 @@ namespace Freengy.Base.Chat.DefaultImpl
         /// <param name="session">Chat session to add.</param>
         public void AddSession(IChatSession session) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                if (chatSessions.ContainsKey(session?.Id ?? throw new ArgumentNullException(nameof(session))))
+                {
+                    return;
+                }
+
+                chatSessions.Add(session.Id, session);                  
+
+                var message = new MessageChatSessionChanged(session, true);
+                mediator.SendMessage(message);
+            }
         }
 
         /// <inheritdoc />
@@ -72,7 +92,18 @@ namespace Freengy.Base.Chat.DefaultImpl
         /// <param name="session">Chat session to remove.</param>
         public void RemoveSession(IChatSession session) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                if (!chatSessions.ContainsKey(session?.Id ?? throw new ArgumentNullException(nameof(session))))
+                {
+                    return;
+                }
+
+                chatSessions.Remove(session.Id);
+
+                var message = new MessageChatSessionChanged(session, false);
+                mediator.SendMessage(message);
+            }
         }
     }
 }

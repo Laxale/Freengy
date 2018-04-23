@@ -2,14 +2,17 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Freengy.Base.Chat.Interfaces;
+using Freengy.Common.Models.Readonly;
+
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    
-    using Freengy.Base.Chat.Interfaces;
+    using System.Windows;
 
 
     internal sealed class ChatMessageComparer : IComparer<IChatMessageDecorator> 
@@ -25,26 +28,40 @@ namespace Freengy.Base.Chat.DefaultImpl
     }
 
 
+    /// <summary>
+    /// <see cref="IChatSession"/> implementer.
+    /// </summary>
     internal class ChatSession : IChatSession 
     {
-        #region vars
-
         private static readonly object Locker = new object();
+
+        private readonly Action<IChatMessageDecorator, AccountState> messageSender;
+        private readonly List<AccountState> sessionUsers = new List<AccountState>();
         // for unknown reason SortedSet sometimes does not pass add-message->check-message-exists unit test
         //private readonly ISet<IChatMessageDecorator> sessionMessages = new SortedSet<IChatMessageDecorator>(new ChatMessageComparer());
         private readonly IList<IChatMessageDecorator> sessionMessages = new List<IChatMessageDecorator>();
 
-        #endregion vars
 
-
-        internal ChatSession(Guid id) 
+        public ChatSession(Guid id, Action<IChatMessageDecorator, AccountState> messageSender) 
         {
-            this.Id = id;
+            this.messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
+            Id = id;
         }
 
 
+        /// <summary>
+        /// Unique session identifier.
+        /// </summary>
         public Guid Id { get; }
+
+        /// <summary>
+        /// Session name.
+        /// </summary>
         public string Name { get; internal set; }
+
+        /// <summary>
+        /// Displayed session name.
+        /// </summary>
         public string DisplayedName { get; internal set; }
 
 
@@ -53,29 +70,49 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         public IEnumerable<IChatMessageDecorator> GetMessages(Func<IChatMessageDecorator, bool> predicate) 
         {
-            lock (ChatSession.Locker)
+            lock (Locker)
             {
                 IEnumerable<IChatMessageDecorator> result = 
                     predicate == null ? 
-                        this.sessionMessages.ToArray() : 
-                        this.sessionMessages.Where(predicate);
+                        sessionMessages.ToArray() : 
+                        sessionMessages.Where(predicate);
 
                 return result;
             }
         }
-        
+
+        /// <inheritdoc />
+        public void AddToChat(AccountState account) 
+        {
+            if (sessionUsers.Contains(account)) return;
+
+            sessionUsers.Add(account);
+        }
+
         public bool SendMessage(IChatMessage message, out IChatMessageDecorator processedMesage) 
         {
-            this.ThrowIfInvalidMessage(message);
+            ThrowIfInvalidMessage(message);
             
             processedMesage = new ChatMessageDecorator(message, this);
 
-            lock (ChatSession.Locker)
+            lock (Locker)
             {
-                this.sessionMessages.Add(processedMesage);
+                sessionMessages.Add(processedMesage);
+
+                foreach (AccountState sessionUser in sessionUsers)
+                {
+                    try
+                    {
+                        messageSender(processedMesage, sessionUser);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Oops. { ex.Message }");
+                    }
+                }
             }
 
-            this.MessageAdded?.Invoke(this, processedMesage);
+            MessageAdded?.Invoke(this, processedMesage);
             
             return true;
         }

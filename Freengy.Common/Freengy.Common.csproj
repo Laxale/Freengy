@@ -48,6 +48,7 @@
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountStateModel.cs" />
     <Compile Include="Models\AuthorizedRequest.cs" />
+    <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
     <Compile Include="Models\LoginModel.cs" />

@@ -28,7 +28,7 @@ namespace Base.Tests.Chat
         [SetUp]
         public void Setup() 
         {
-            this.messageFactory = new ChatMessageFactory(this.author);
+            this.messageFactory = new ChatMessageFactory { Author = author };
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Base.Tests.Chat
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var factory = new ChatMessageFactory(null);
+                var factory = new ChatMessageFactory { Author = null };
             });
         }
 

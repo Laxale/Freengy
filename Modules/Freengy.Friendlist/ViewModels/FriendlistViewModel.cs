@@ -28,6 +28,9 @@ using Catel.IoC;
 
 namespace Freengy.FriendList.ViewModels 
 {
+    using Freengy.Base.Extensions;
+
+
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
@@ -97,9 +100,9 @@ namespace Freengy.FriendList.ViewModels
 
         protected override void SetupCommands() 
         {
+            CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
             CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
-            CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
             CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
         }
 
@@ -138,24 +141,20 @@ namespace Freengy.FriendList.ViewModels
         {
             var chatHub = ServiceLocatorProperty.ResolveType<IChatHub>();
             var messageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
-            var sessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
-
-            IChatSession AddNewSession()
-            {
-                IChatSession chatSession = sessionFactory.CreateInstance(targetAccountState.Account.Name, targetAccountState.Account.Name);
-                chatHub.AddSession(chatSession);
-
-                return chatSession;
-            }
-
+            
+            messageFactory.Author = myAccount;
+            
             IChatSession session;
             if (startedChatSessions.ContainsKey(targetAccountState))
             {
-                session = chatHub.GetSession(startedChatSessions[targetAccountState].Id) ?? AddNewSession();
+                session = 
+                    chatHub.GetSession(startedChatSessions[targetAccountState].Id) 
+                    ?? 
+                    AddNewSession(chatHub, targetAccountState);
             }
             else
             {
-                session = AddNewSession();
+                session = AddNewSession(chatHub, targetAccountState);
             }
 
             messageFactory.Author = myAccount;
@@ -164,6 +163,18 @@ namespace Freengy.FriendList.ViewModels
 
             IChatMessageDecorator processedMessage;
             session.SendMessage(testMessage, out processedMessage);
+        }
+
+        private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
+        {
+            var sessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
+            sessionFactory.SetNetworkInterface(SendMessageTo);
+
+            IChatSession chatSession = sessionFactory.CreateInstance(targetAccountState.Account.Name, targetAccountState.Account.Name);
+            chatHub.AddSession(chatSession);
+            chatSession.AddToChat(targetAccountState);
+
+            return chatSession;
         }
 
         private async Task<IEnumerable<AccountState>> SearchRealFriends() 
@@ -230,6 +241,19 @@ namespace Freengy.FriendList.ViewModels
             };
 
             window.ShowDialog();
+        }
+
+        private void SendMessageTo(IChatMessageDecorator messageDecorator, AccountState account) 
+        {
+            using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
+            {
+                string chatAddress = $"{ account.UserAddress }{ Url.Http.Chat.ChatSubRoute }";
+                actor.SetRequestAddress(chatAddress);
+
+                ChatMessageModel messageModel = messageDecorator.ToModel();
+
+                var result = actor.PostAsync<ChatMessageModel, ChatMessageModel>(messageModel).Result;
+            }
         }
 
         #endregion privates

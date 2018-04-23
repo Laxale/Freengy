@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 using Freengy.Base.Interfaces;
 using Freengy.Common.Interfaces;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.Interfaces 
@@ -17,6 +18,13 @@ namespace Freengy.Base.Chat.Interfaces
     public interface IChatSession : IObjectWithId, INamedObject 
     {
         event EventHandler<IChatMessageDecorator> MessageAdded;
+
+
+        /// <summary>
+        /// Add user to chat session.
+        /// </summary>
+        /// <param name="account">User account to add to session.</param>
+        void AddToChat(AccountState account);
 
         /// <summary>
         /// Send a message to the chat session.

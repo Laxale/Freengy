@@ -9,10 +9,19 @@ using Freengy.Common.Models.Readonly;
 
 namespace Freengy.Base.Chat.Interfaces 
 {
+    /// <summary>
+    /// Interface of a chat message.
+    /// </summary>
     public interface IChatMessage 
     {
+        /// <summary>
+        /// Gets message text.
+        /// </summary>
         string Text { get; }
 
+        /// <summary>
+        /// Gets message author account.
+        /// </summary>
         UserAccount Author { get; }
     }
 }

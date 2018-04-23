@@ -10,6 +10,7 @@
              xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
              xmlns:readonly="clr-namespace:Freengy.Common.Models.Readonly;assembly=Freengy.Common"
              xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
+             xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="200"
@@ -23,6 +24,8 @@
                     <ResourceDictionary 
                         Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
+                
+                <helpers:DataContextProxy x:Key="ContextProxy" Data="{Binding}"/>
             </ResourceDictionary>
         </Grid.Resources>
         
@@ -59,7 +62,9 @@
                         <DockPanel Background="{StaticResource AlmostTransparent}">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Chat"/>
+                                    <MenuItem Header="Chat" 
+                                              CommandParameter="{Binding}"
+                                              Command="{Binding Source={StaticResource ContextProxy}, Path=Data.CommandStartChat}"/>
                                     <MenuItem Header="Remove this faggot!"/>
                                     <Separator/>
                                     <MenuItem Header="See info"/>

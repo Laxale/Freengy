@@ -13,6 +13,7 @@ namespace Freengy.Networking.Constants
     /// </summary>
     public static class Url 
     {
+        private static readonly string chatAction;
         private static readonly string helloAction;
         private static readonly string replyAction;
         private static readonly string friendAction;
@@ -29,6 +30,7 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            chatAction = networkingConfig.AppSettings.Settings["ChatActionName"].Value;
             replyAction = networkingConfig.AppSettings.Settings["ReplyActionName"].Value;
             requestAction = networkingConfig.AppSettings.Settings["RequestActionName"].Value;
             friendAction = networkingConfig.AppSettings.Settings["FriendActionName"].Value;
@@ -59,6 +61,12 @@ namespace Freengy.Networking.Constants
             public static string AddFriendUrl { get; } = $"{ RootUrl }/{ requestAction }/{ friendAction }";
 
             public static string ReplyFriendRequestUrl { get; } = $"{ RootUrl }/{ replyAction}/{ friendAction }{ requestAction }";
+
+
+            public static class Chat
+            {
+                public static readonly string ChatSubRoute = $"/{chatAction}";
+            }
         }
 
         public static class Https 

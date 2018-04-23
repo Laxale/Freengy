@@ -2,6 +2,10 @@
 //
 //
 
+using System;
+
+using Freengy.Common.Models.Readonly;
+
 
 namespace Freengy.Base.Chat.Interfaces 
 {
@@ -17,5 +21,11 @@ namespace Freengy.Base.Chat.Interfaces
         /// <param name="displayedName">Displayed name of the new chat session.</param>
         /// <returns><see cref="IChatSession"/> instance.</returns>
         IChatSession CreateInstance(string name, string displayedName);
+
+        /// <summary>
+        /// Set an implementation for sending message to a user.
+        /// </summary>
+        /// <param name="messageSender">Network sending message implementation.</param>
+        void SetNetworkInterface(Action<IChatMessageDecorator, AccountState> messageSender);
     }
 }

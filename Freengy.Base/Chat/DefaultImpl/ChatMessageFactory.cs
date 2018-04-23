@@ -17,13 +17,6 @@ namespace Freengy.Base.Chat.DefaultImpl
     {
         private UserAccount author;
 
-
-        public ChatMessageFactory(UserAccount author) 
-        {
-            Author = author ?? throw new ArgumentNullException(nameof(author));
-        }
-
-
         
         public UserAccount Author 
         {

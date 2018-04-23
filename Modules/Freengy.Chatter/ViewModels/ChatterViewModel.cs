@@ -2,6 +2,7 @@
 //
 //
 
+using System;
 using System.Linq;
 using System.Windows.Data;
 using System.ComponentModel;
@@ -25,56 +26,73 @@ namespace Freengy.Chatter.ViewModels
     public class ChatterViewModel : WaitableViewModel 
     {
         private readonly IChatSessionFactory chatSessionFactory;
-        private readonly ObservableCollection<ChatSessionViewModel> currentChatSessions = new ObservableCollection<ChatSessionViewModel>();
+        private readonly ObservableCollection<ChatSessionViewModel> chatSessions = new ObservableCollection<ChatSessionViewModel>();
 
 
         public ChatterViewModel() 
         {
             chatSessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
 
-            ChatSessions = CollectionViewSource.GetDefaultView(currentChatSessions);
+            ChatSessions = CollectionViewSource.GetDefaultView(chatSessions);
 
             FillSomeSessions();
 
+            Mediator.Register<MessageChatSessionChanged>(this, OnChatSessionChanged);
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading sessions"));
-        }
-
-        protected override void SetupCommands() 
-        {
-            
         }
 
         
         /// <summary>
         /// Command to create a new chat session.
         /// </summary>
-        public MyCommand CommandCreateSession { get; private set; }
+        public MyCommand CommandCreateSession { get; }
 
 
         /// <summary>
         /// CuUrrent chat sessions collection.
         /// </summary>
-        public ICollectionView ChatSessions { get; private set; }
+        public ICollectionView ChatSessions { get; }
 
-
-        private void FillSomeSessions() 
-        {
-            var firstSession = chatSessionFactory.CreateInstance("First test session", "First test session");
-            var seconSession = chatSessionFactory.CreateInstance("Secon test session", "Secon test session");
-
-            var firstViewModel = new ChatSessionViewModel(firstSession);
-            var seconViewModel = new ChatSessionViewModel(seconSession);
-
-            currentChatSessions.Add(firstViewModel);
-            currentChatSessions.Add(seconViewModel);
-        }
 
         private bool CanCreateSession => true;
 
 
+        private void FillSomeSessions() 
+        {
+            chatSessionFactory.SetNetworkInterface((msg, acc) => { });
+            var firstSession = chatSessionFactory.CreateInstance("First test session", "First test session");
+            var seconSession = chatSessionFactory.CreateInstance("Secon test session", "Secon test session");
+            
+            var firstViewModel = new ChatSessionViewModel(firstSession);
+            var seconViewModel = new ChatSessionViewModel(seconSession);
+
+            chatSessions.Add(firstViewModel);
+            chatSessions.Add(seconViewModel);
+        }
+
         private void CommandCreateSessionImpl() 
         {
             // create new!
+        }
+
+        private void OnChatSessionChanged(MessageChatSessionChanged message) 
+        {
+            if (message.IsCreated)
+            {
+                if (chatSessions.All(viewModel => viewModel.Session.Id != message.Session.Id))
+                {
+                    chatSessions.Add(new ChatSessionViewModel(message.Session));
+                }
+            }
+            else
+            {
+                ChatSessionViewModel viewModelToRemove = chatSessions.FirstOrDefault(viewModel => viewModel.Session.Id == message.Session.Id);
+
+                if (viewModelToRemove != null)
+                {
+                    chatSessions.Remove(viewModelToRemove);
+                }
+            }
         }
     }
 }

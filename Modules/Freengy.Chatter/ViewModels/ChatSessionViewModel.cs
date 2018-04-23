@@ -39,7 +39,8 @@ namespace Freengy.Chatter.ViewModels
             Session.MessageAdded += OnMessageAdded;
 
             loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
-            chatMessageFactory = ServiceLocatorProperty.ResolveTypeUsingParameters<IChatMessageFactory>(new object[]{ loginController.CurrentAccount });
+            chatMessageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
+            chatMessageFactory.Author = loginController.CurrentAccount;
 
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 

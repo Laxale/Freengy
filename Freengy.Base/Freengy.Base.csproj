@@ -65,6 +65,7 @@
     <Compile Include="ErrorReasons\UserCancelledReason.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
+    <Compile Include="Extensions\ChatMessageExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Messages\MessageActivityChanged.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
-    <Compile Include="Messages\MessageChatSessionAdded.cs" />
+    <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
