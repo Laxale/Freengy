@@ -22,6 +22,7 @@ namespace Freengy.Base.Module
             //just create singleton
             var initializer = ViewModelInitializer.Instance;
 
+            ServiceLocator.Default.RegisterInstance(ChatHub.Instance);
             ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
             ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 

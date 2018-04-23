@@ -8,22 +8,17 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
+using Freengy.Base.Messages;
+using Freengy.Base.Helpers.Commands;
 using Freengy.Chatter.Views;
 using Freengy.Base.ViewModels;
-using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 
 using Catel.IoC;
-using Catel.MVVM;
-using Freengy.Base.Helpers;
 
 
 namespace Freengy.Chatter.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// Viewmodel for <see cref="ChatterView"/>.
     /// </summary>

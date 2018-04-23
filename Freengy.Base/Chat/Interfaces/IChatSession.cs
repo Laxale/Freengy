@@ -11,10 +11,19 @@ using Freengy.Common.Interfaces;
 
 namespace Freengy.Base.Chat.Interfaces 
 {
+    /// <summary>
+    /// Interface for the chat session.
+    /// </summary>
     public interface IChatSession : IObjectWithId, INamedObject 
     {
         event EventHandler<IChatMessageDecorator> MessageAdded;
 
+        /// <summary>
+        /// Send a message to the chat session.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        /// <param name="processedMesage">Processed message decorator.</param>
+        /// <returns></returns>
         bool SendMessage(IChatMessage message, out IChatMessageDecorator processedMesage);
 
         /// <summary>

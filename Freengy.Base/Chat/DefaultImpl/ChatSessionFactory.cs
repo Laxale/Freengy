@@ -2,14 +2,13 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Chat.Interfaces;
+
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using System;
-
-    using Freengy.Base.Chat.Interfaces;
-    
-
     internal class ChatSessionFactory : IChatSessionFactory 
     {
         #region Singleton
@@ -21,13 +20,16 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         }
 
-        public static IChatSessionFactory Instance => 
-            ChatSessionFactory.instance ?? (ChatSessionFactory.instance = new ChatSessionFactory());
+
+        /// <summary>
+        /// Единственный инстанс <see cref="ChatSessionFactory"/>.
+        /// </summary>
+        public static IChatSessionFactory Instance => instance ?? (instance = new ChatSessionFactory());
 
         #endregion Singleton
 
 
-        public IChatSession CreateInstance(string name, string displayedName)
+        public IChatSession CreateInstance(string name, string displayedName) 
         {
             if (string.IsNullOrWhiteSpace(name)) name = "Unnamed session";
             if (string.IsNullOrWhiteSpace(displayedName)) displayedName = "Unnamed session";

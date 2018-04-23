@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\HasViewModelAttribute.cs" />
+    <Compile Include="Chat\DefaultImpl\ChatHub.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessage.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageFactory.cs" />
     <Compile Include="Constants\Numeric.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Chat\Interfaces\IChatMessageDecorator.cs" />
     <Compile Include="Chat\Interfaces\IChatSession.cs" />
     <Compile Include="Chat\Interfaces\IChatSessionFactory.cs" />
+    <Compile Include="Chat\Interfaces\IChatHub.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Messages\MessageActivityChanged.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
+    <Compile Include="Messages\MessageChatSessionAdded.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />

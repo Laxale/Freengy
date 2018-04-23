@@ -7,32 +7,27 @@ using System.Collections.Generic;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Windows;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
 using Freengy.Base.Windows;
 using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
-using Freengy.Common.Models.Readonly;
-using Prism.Regions;
 
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Threading.Tasks;
-    using System.Windows.Threading;
-
-    using Freengy.Base.Interfaces;
-
-
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
@@ -43,6 +38,7 @@ namespace Freengy.FriendList.ViewModels
 
         private string mySessionToken;
         private UserAccount myAccount;
+        private Dictionary<AccountState, IChatSession> startedChatSessions = new Dictionary<AccountState, IChatSession>();
 
 
         public FriendListViewModel() 
@@ -68,6 +64,11 @@ namespace Freengy.FriendList.ViewModels
         /// Command to remove a friend.
         /// </summary>
         public MyCommand<AccountState> CommandRemoveFriend { get; private set; }
+
+        /// <summary>
+        /// Command to start a chat with friend.
+        /// </summary>
+        public MyCommand<AccountState> CommandStartChat { get; private set; }
 
 
         /// <summary>
@@ -97,9 +98,11 @@ namespace Freengy.FriendList.ViewModels
         protected override void SetupCommands() 
         {
             CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
-            CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
+            CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
+            CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
         }
+
 
         /// <inheritdoc />
         /// <summary>
@@ -130,6 +133,38 @@ namespace Freengy.FriendList.ViewModels
 
 
         #region privates
+
+        private void StartChatImpl(AccountState targetAccountState) 
+        {
+            var chatHub = ServiceLocatorProperty.ResolveType<IChatHub>();
+            var messageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
+            var sessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
+
+            IChatSession AddNewSession()
+            {
+                IChatSession chatSession = sessionFactory.CreateInstance(targetAccountState.Account.Name, targetAccountState.Account.Name);
+                chatHub.AddSession(chatSession);
+
+                return chatSession;
+            }
+
+            IChatSession session;
+            if (startedChatSessions.ContainsKey(targetAccountState))
+            {
+                session = chatHub.GetSession(startedChatSessions[targetAccountState].Id) ?? AddNewSession();
+            }
+            else
+            {
+                session = AddNewSession();
+            }
+
+            messageFactory.Author = myAccount;
+
+            var testMessage = messageFactory.CreateMessage("Lets chat!");
+
+            IChatMessageDecorator processedMessage;
+            session.SendMessage(testMessage, out processedMessage);
+        }
 
         private async Task<IEnumerable<AccountState>> SearchRealFriends() 
         {
