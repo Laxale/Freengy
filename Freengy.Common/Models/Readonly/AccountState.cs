@@ -33,7 +33,7 @@ namespace Freengy.Common.Models.Readonly
         /// <summary>
         /// User's current IP address.
         /// </summary>
-        public string UserAddress { get; }
+        public string UserAddress { get; set; }
 
         /// <summary>
         /// User account.
@@ -43,6 +43,6 @@ namespace Freengy.Common.Models.Readonly
         /// <summary>
         /// User online status.
         /// </summary>
-        public AccountOnlineStatus AccountStatus { get; }
+        public AccountOnlineStatus AccountStatus { get; set; }
     }
 }

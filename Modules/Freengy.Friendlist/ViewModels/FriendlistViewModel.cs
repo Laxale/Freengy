@@ -22,6 +22,7 @@ using Freengy.Common.Models.Readonly;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
+using Freengy.Networking.DefaultImpl;
 
 using Catel.IoC;
 
@@ -36,12 +37,13 @@ namespace Freengy.FriendList.ViewModels
     /// </summary>
     public class FriendListViewModel : WaitableViewModel 
     {
+        private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<AccountState> friends = new ObservableCollection<AccountState>();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
+        private readonly Dictionary<AccountState, IChatSession> startedChatSessions = new Dictionary<AccountState, IChatSession>();
 
         private string mySessionToken;
         private UserAccount myAccount;
-        private Dictionary<AccountState, IChatSession> startedChatSessions = new Dictionary<AccountState, IChatSession>();
 
 
         public FriendListViewModel() 
@@ -77,13 +79,12 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Gets teh collection of a friends of current user.
         /// </summary>
-        //public ICollectionView FriendList { get; private set; }
-        public ListCollectionView FriendList { get; private set; }
+        public ICollectionView FriendList { get; }
 
         /// <summary>
         /// Gets the collection of a friendrequests to current user.
         /// </summary>
-        public ICollectionView FriendRequests { get; private set; }
+        public ICollectionView FriendRequests { get; }
 
 
         /// <inheritdoc />
@@ -105,8 +106,7 @@ namespace Freengy.FriendList.ViewModels
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
             CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
         }
-
-
+        
         /// <inheritdoc />
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в Initialize().
@@ -117,10 +117,12 @@ namespace Freengy.FriendList.ViewModels
 
             var dispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
             var loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
-            myAccount = loginController.CurrentAccount;
+            var friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
+
+            myAccount = loginController.MyAccountState.Account;
             mySessionToken = loginController.SessionToken;
 
-            IEnumerable<AccountState> realFriends = await SearchRealFriends();
+            IEnumerable<AccountState> realFriends = await friendStateController.GetFriendStatesAsync();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();
             
             foreach (AccountState friend in realFriends)
@@ -168,26 +170,14 @@ namespace Freengy.FriendList.ViewModels
         private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
         {
             var sessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
-            sessionFactory.SetNetworkInterface(SendMessageTo);
+            sessionFactory.SetNetworkInterface(messageSender.SendMessageToFriend);
 
             IChatSession chatSession = sessionFactory.CreateInstance(targetAccountState.Account.Name, targetAccountState.Account.Name);
             chatHub.AddSession(chatSession);
+            startedChatSessions.Add(targetAccountState, chatSession);
             chatSession.AddToChat(targetAccountState);
 
             return chatSession;
-        }
-
-        private async Task<IEnumerable<AccountState>> SearchRealFriends() 
-        {
-            using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
-            {
-                httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
-                SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccount, string.Empty, mySessionToken);
-
-                var result = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);
-
-                return result.Select(stateModel => new AccountState(stateModel));
-            }
         }
 
         private async Task<IEnumerable<FriendRequest>> SearchFriendRequests() 
@@ -243,18 +233,7 @@ namespace Freengy.FriendList.ViewModels
             window.ShowDialog();
         }
 
-        private void SendMessageTo(IChatMessageDecorator messageDecorator, AccountState account) 
-        {
-            using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
-            {
-                string chatAddress = $"{ account.UserAddress }{ Url.Http.Chat.ChatSubRoute }";
-                actor.SetRequestAddress(chatAddress);
 
-                ChatMessageModel messageModel = messageDecorator.ToModel();
-
-                var result = actor.PostAsync<ChatMessageModel, ChatMessageModel>(messageModel).Result;
-            }
-        }
 
         #endregion privates
     }

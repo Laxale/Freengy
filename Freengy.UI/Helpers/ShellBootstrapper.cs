@@ -89,13 +89,13 @@ namespace Freengy.UI.Helpers
             var catalog = new ModuleCatalog();
 
             catalog.AddModule(typeof(BaseModule))
+                   .AddModule(typeof(NetworkingModule))
                    .AddModule(typeof(SettingsModule))
                    .AddModule(typeof(MainModule))
                    .AddModule(typeof(DiagnosticsModule))
                    .AddModule(typeof(GameListModule))
                    .AddModule(typeof(GamePluginModule))
-                   .AddModule(typeof(FriendListModule))
-                   .AddModule(typeof(NetworkingModule));
+                   .AddModule(typeof(FriendListModule));
 
             return catalog;
         }

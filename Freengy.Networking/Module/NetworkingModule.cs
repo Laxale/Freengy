@@ -10,7 +10,6 @@ using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
 
 using Catel.IoC;
-
 using Prism.Modularity;
 
 
@@ -31,8 +30,11 @@ namespace Freengy.Networking.Module
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IEntitySearcher, EntitySearcher>(RegistrationType.Transient);
             // login controller uses task wrapper, so must register them this order
-            ServiceLocator.Default.RegisterInstance<IHttpClientParametersProvider>(ServerListener.Instance);
-            ServiceLocator.Default.RegisterInstance<ILoginController>(LoginController.Instance);
+            ServiceLocator.Default.RegisterInstance(FriendStateController.ExposedInstance);
+            ServiceLocator.Default.RegisterInstance(ServerListener.ExposedInstance);
+            ServiceLocator.Default.RegisterInstance(LoginController.Instance);
+
+            FriendStateController.InternalInstance.InitInternal();
         }
     }
 }

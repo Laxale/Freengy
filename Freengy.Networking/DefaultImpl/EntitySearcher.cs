@@ -71,7 +71,7 @@ namespace Freengy.Networking.DefaultImpl
             {
                 try
                 {
-                    UserAccount currentAccount = ServiceLocator.Default.ResolveType<ILoginController>().CurrentAccount;
+                    UserAccount currentAccount = ServiceLocator.Default.ResolveType<ILoginController>().MyAccountState.Account;
 
                     var searchRequest = new SearchRequest
                     {

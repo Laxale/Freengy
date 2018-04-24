@@ -20,13 +20,15 @@ using Freengy.Base.Messages;
 using Freengy.Base.Extensions;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
+using Freengy.Base.Helpers.Commands;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
+using Freengy.UI.Views;
 using Freengy.UI.Windows;
 
-using Catel.IoC;
-
 using NLog;
+
+using Catel.IoC;
 
 using Prism.Regions;
 
@@ -35,11 +37,6 @@ using CommonRes = Freengy.CommonResources.StringResources;
 
 namespace Freengy.UI.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-
-    using Prism.Commands;
-
-
     /// <summary>
     /// ViewModel for <see cref="LoginView"/>.
     /// </summary>
@@ -53,7 +50,7 @@ namespace Freengy.UI.ViewModels
         private bool mustSavePassword;
         private bool isServerAvailable;
 
-        private UserAccount CurrentAccount => loginController.CurrentAccount;
+        private UserAccount CurrentAccount => loginController.MyAccountState?.Account;
 
 
         public LoginViewModel() 
@@ -250,7 +247,7 @@ namespace Freengy.UI.ViewModels
             }
             else
             {
-                accountManager.SaveLastLoggedIn(loginController.CurrentAccount);
+                accountManager.SaveLastLoggedIn(loginController.MyAccountState.Account);
                 ClearInformation();
             }
         }

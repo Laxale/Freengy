@@ -56,7 +56,7 @@ namespace Freengy.FriendList.ViewModels
             CommandAcceptFriend = new MyCommand<UserAccountViewModel>(AcceptFriendImpl);
 
             var controller = ServiceLocatorProperty.ResolveType<ILoginController>();
-            myId = controller.CurrentAccount.Id;
+            myId = controller.MyAccountState.Account.Id;
             sessionToken = controller.SessionToken;
         }
 

@@ -6,16 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Freengy.Base.Messages;
 using Freengy.Base.Chat.Interfaces;
 
 using Catel.IoC;
 using Catel.Messaging;
 
+
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// An <see cref="IChatHub"/> implementer.
     /// </summary>

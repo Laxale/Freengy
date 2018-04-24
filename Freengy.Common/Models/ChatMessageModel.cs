@@ -31,8 +31,8 @@ namespace Freengy.Common.Models
         public DateTime TimeStamp { get; set; }
 
         /// <summary>
-        /// Account of a message author.
+        /// Model of a message author account.
         /// </summary>
-        public UserAccount AuthorAccount { get; set; }
+        public UserAccountModel AuthorAccount { get; set; }
     }
 }

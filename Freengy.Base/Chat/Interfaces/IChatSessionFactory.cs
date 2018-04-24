@@ -12,8 +12,15 @@ namespace Freengy.Base.Chat.Interfaces
     /// <summary>
     /// Interface for the <see cref="IChatSession"/> factory.
     /// </summary>
-    public interface IChatSessionFactory 
+    public interface IChatSessionFactory
     {
+        /// <summary>
+        /// Set the generated session identifier. Used for synchronizing sessions on clients.
+        /// </summary>
+        /// <param name="sessionId">Desired generated session id. If null, random id will be used.</param>
+        /// <returns>this.</returns>
+        IChatSessionFactory SetSessionId(Guid? sessionId);
+
         /// <summary>
         /// Create a new <see cref="IChatSession"/> instance.
         /// </summary>

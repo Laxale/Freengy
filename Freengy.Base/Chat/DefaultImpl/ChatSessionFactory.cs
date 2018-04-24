@@ -5,15 +5,17 @@
 using System;
 
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using Freengy.Common.Models.Readonly;
-
-
+    /// <summary>
+    /// <see cref="IChatSessionFactory"/> implementer.
+    /// </summary>
     internal class ChatSessionFactory : IChatSessionFactory
     {
+        private Guid? outerSessionId;
         private Action<IChatMessageDecorator, AccountState> messageSender;
 
 
@@ -35,13 +37,26 @@ namespace Freengy.Base.Chat.DefaultImpl
         #endregion Singleton
 
 
+        /// <summary>
+        /// Set the generated session identifier. Used for synchronizing sessions on clients.
+        /// </summary>
+        /// <param name="sessionId">Desired generated session id. If null, random id will be used.</param>
+        /// <returns>this.</returns>
+        public IChatSessionFactory SetSessionId(Guid? sessionId) 
+        {
+            outerSessionId = sessionId;
+
+            return this;
+        }
+
         public IChatSession CreateInstance(string name, string displayedName) 
         {
             if (string.IsNullOrWhiteSpace(name)) name = "Unnamed session";
             if (string.IsNullOrWhiteSpace(displayedName)) displayedName = "Unnamed session";
 
+            Guid sessionId = outerSessionId ?? Guid.NewGuid();
             var newSession = 
-                new ChatSession(Guid.NewGuid(), messageSender)
+                new ChatSession(sessionId, messageSender)
                 {
                     Name = name, 
                     DisplayedName = displayedName

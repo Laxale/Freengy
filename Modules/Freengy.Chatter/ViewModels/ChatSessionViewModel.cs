@@ -40,7 +40,7 @@ namespace Freengy.Chatter.ViewModels
 
             loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
             chatMessageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
-            chatMessageFactory.Author = loginController.CurrentAccount;
+            chatMessageFactory.Author = loginController.MyAccountState.Account;
 
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 
@@ -109,7 +109,7 @@ namespace Freengy.Chatter.ViewModels
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 
         {
-            sessionMessages.Add(addedMessage);
+            GUIDispatcher.InvokeOnGuiThread(() => sessionMessages.Add(addedMessage));
         }
     }
 }

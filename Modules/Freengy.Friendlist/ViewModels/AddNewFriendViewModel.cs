@@ -48,7 +48,7 @@ namespace Freengy.FriendList.ViewModels
 
         public AddNewFriendViewModel() 
         {
-            myAccount = ServiceLocatorProperty.ResolveType<ILoginController>().CurrentAccount;
+            myAccount = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState.Account;
 
             delayedInvoker.DelayedEvent += SearchUsersImpl;
             FoundUsers = CollectionViewSource.GetDefaultView(foundUsers);

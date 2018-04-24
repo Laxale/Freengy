@@ -52,16 +52,16 @@
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Url.cs" />
     <Compile Include="DefaultImpl\EntitySearcher.cs" />
+    <Compile Include="DefaultImpl\FriendStateController.cs" />
     <Compile Include="DefaultImpl\HttpActor.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
     <Compile Include="DefaultImpl\MediaTypes.cs" />
+    <Compile Include="DefaultImpl\ChatMessageSender.cs" />
     <Compile Include="DefaultImpl\ServerListener.cs" />
     <Compile Include="Interfaces\IEntitySearcher.cs" />
     <Compile Include="Interfaces\IHttpActor.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Messages\MessageLogInSuccess.cs" />
     <Compile Include="Messages\MessageLogInAttempt.cs" />
     <Compile Include="Messages\MessageLogInBase.cs" />
+    <Compile Include="Modules\ChatModule.cs" />
     <Compile Include="Module\NetworkingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

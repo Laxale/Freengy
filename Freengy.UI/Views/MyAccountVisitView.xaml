@@ -27,6 +27,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -43,15 +44,18 @@
         </Path>
 
         <!-- Account name -->
-        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource LinkButtonStyle}" Content="{Binding Path=MyAccount.Name}"
+        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource LinkButtonStyle}" Content="{Binding Path=MyAccountState.Account.Name}"
                 VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
         <!-- Account level -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonResources:StringResources.Level}"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccount.Level}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Level}"/>
 
         <!-- Account privilege -->
         <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonResources:StringResources.Privilege}"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccount.Privilege}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Privilege}"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Address"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Path=MyAccountState.UserAddress}"/>
     </Grid>
 </UserControl>

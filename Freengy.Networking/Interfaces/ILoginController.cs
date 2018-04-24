@@ -28,9 +28,9 @@ namespace Freengy.Networking.Interfaces
         string LoggedInPassword { get; }
 
         /// <summary>
-        /// Returns current user account in usage.
+        /// Returns current user account state in usage.
         /// </summary>
-        UserAccount CurrentAccount { get; }
+        AccountState MyAccountState { get; }
 
         /// <summary>
         /// Attempts to register new user.

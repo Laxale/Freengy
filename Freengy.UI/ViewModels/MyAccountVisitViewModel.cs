@@ -20,13 +20,17 @@ namespace Freengy.UI.ViewModels
     {
         public MyAccountVisitViewModel() 
         {
-            MyAccount = ServiceLocatorProperty.ResolveType<ILoginController>().CurrentAccount;
+            MyAccountState = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState;
         }
 
 
-        public UserAccount MyAccount { get; set; }
+        /// <summary>
+        /// State of my account.
+        /// </summary>
+        public AccountState MyAccountState { get; }
 
 
+        /// <inheritdoc />
         /// <summary>
         /// This is called in InitializeAsync - force coderast to not init commands manually
         /// </summary>

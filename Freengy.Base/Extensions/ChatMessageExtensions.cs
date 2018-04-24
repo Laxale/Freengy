@@ -4,6 +4,7 @@
 
 using Freengy.Common.Models;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Common.Extensions;
 
 
 namespace Freengy.Base.Extensions 
@@ -26,7 +27,7 @@ namespace Freengy.Base.Extensions
                 TimeStamp = messageDecorator.TimeStamp,
                 SessionId = messageDecorator.ChatSession.Id,
                 MessageText = messageDecorator.OriginalMessage.Text,
-                AuthorAccount = messageDecorator.OriginalMessage.Author
+                AuthorAccount = messageDecorator.OriginalMessage.Author.ToModel()
             };
 
             return model;

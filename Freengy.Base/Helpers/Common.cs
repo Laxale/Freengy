@@ -2,14 +2,13 @@
 //
 //
 
+using System;
+using System.IO;
+using System.Linq;
+
 
 namespace Freengy.Base.Helpers 
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
-
     public static class Common 
     {
         public static void ThrowIfArgumentsHasNull(params object[] args) 

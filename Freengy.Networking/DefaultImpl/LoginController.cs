@@ -54,7 +54,7 @@ namespace Freengy.Networking.DefaultImpl
             clientAddress = serviceLocator.ResolveType<IHttpClientParametersProvider>().ClientAddress;
         }
 
-        public static LoginController Instance => instance ?? (instance = new LoginController());
+        public static ILoginController Instance => instance ?? (instance = new LoginController());
 
         #endregion Singleton
 
@@ -73,7 +73,7 @@ namespace Freengy.Networking.DefaultImpl
         /// <summary>
         /// Returns current user account in usage.
         /// </summary>
-        public UserAccount CurrentAccount { get; private set; }
+        public AccountState MyAccountState { get; private set; }
 
 
         /// <inheritdoc />
@@ -104,9 +104,7 @@ namespace Freengy.Networking.DefaultImpl
                         return Result<UserAccount>.Fail(new UnexpectedErrorReason(request.Status.ToString()));
                     }
 
-                    CurrentAccount = new UserAccount(request.CreatedAccount);
-
-                    return Result<UserAccount>.Ok(CurrentAccount);
+                    return Result<UserAccount>.Ok(null);
                 }
 
                 
@@ -146,7 +144,7 @@ namespace Freengy.Networking.DefaultImpl
             var loginModel = new LoginModel
             {
                 IsLoggingIn = false,
-                Account = CurrentAccount.ToModel(),
+                Account = MyAccountState.Account.ToModel(),
                 PasswordHash = "fffuuuu"
             };
             
@@ -182,7 +180,7 @@ namespace Freengy.Networking.DefaultImpl
                     return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(stateModel.OnlineStatus.ToString()));
                 }
 
-                CurrentAccount = new UserAccount(stateModel.Account);
+                MyAccountState = new AccountState(stateModel);
                 return Result<AccountStateModel>.Ok(stateModel);
             }
             catch (Exception ex)

@@ -9,7 +9,6 @@ using Freengy.FriendList.Views;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.FriendList.Diagnostics;
 using Freengy.FriendList.ViewModels;
-
 using Prism.Modularity;
 
 using Catel.IoC;
@@ -27,6 +26,8 @@ namespace Freengy.FriendList.Module
         {
             var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
             controller.RegisterCategory(new FriendListDiagnosticsCategory());
+
+            //ServiceLocator.Default.RegisterInstance(FriendStateController.Instance);
         }
     }
 }

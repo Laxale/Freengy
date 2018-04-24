@@ -3,12 +3,18 @@
 //
 
 using System;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.Chat.Interfaces;
+using Freengy.Common.Constants;
+using Freengy.Common.Helpers;
+using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
+
 using NLog;
 
-using Nancy;
-using Nancy.Bootstrapper;
-using Nancy.Hosting.Self;
+using Catel.IoC;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -18,34 +24,48 @@ namespace Freengy.Networking.DefaultImpl
     /// </summary>
     internal class ServerListener : IHttpClientParametersProvider 
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static readonly string httpAddressNoPort = "http://localhost:";
+        private static readonly string httpAddressNoPort = "localhost";
         private static readonly object Locker = new object();
-        private static readonly int portSelectStep = 100;
-        private static readonly int maxStartTrials = 50;
-
-        private static NancyHost host;
+        private static readonly ushort maxStartTrials = 50;
+        
         private static ServerListener instance;
 
-        private int initialPort = 12345;
+        private readonly IChatHub chatHub = ServiceLocator.Default.ResolveType<IChatHub>();
+        private readonly IChatSessionFactory sessionFactory = ServiceLocator.Default.ResolveType<IChatSessionFactory>();
+        private readonly IChatMessageFactory messageFactory = ServiceLocator.Default.ResolveType<IChatMessageFactory>();
+        private readonly IFriendStateController friendController = ServiceLocator.Default.ResolveType<IFriendStateController>();
 
 
         private ServerListener() 
         {
-            StartClient();
+            ClientAddress = 
+                new ServerStartupBuilder()
+                .SetBaseAddress(httpAddressNoPort)
+                .SetInitialPort(StartupConst.InitialClientPort)
+                .SetPortStep(StartupConst.PortCheckingStep)
+                .SetTrialsCount(maxStartTrials)
+                .UseHttps(false)
+                .Build();
         }
 
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the client socket address.
         /// </summary>
-        public string ClientAddress { get; private set; }
+        public string ClientAddress { get; }
 
 
         /// <summary>
         /// Единственный инстанс <see cref="ServerListener"/>.
         /// </summary>
-        public static IHttpClientParametersProvider Instance 
+        public static IHttpClientParametersProvider ExposedInstance => InternalInstance;
+        
+
+        /// <summary>
+        /// Internal instance for nonclient usage.
+        /// </summary>
+        internal static ServerListener InternalInstance 
         {
             get
             {
@@ -57,79 +77,32 @@ namespace Freengy.Networking.DefaultImpl
         }
 
 
-        private void StartClient() 
+        public void InformOfANewMessage(ChatMessageModel messageModel) 
         {
-            int trialsCount = 0;
-            var baseUri = new Uri(GetCurrentClientAddress());
-            INancyBootstrapper booter = CreateBootstrapper();
-            HostConfiguration configuration = CreateConfiguration();
-
-            bool started = TryStartHost(booter, configuration, baseUri);
-            while (!started)
+            AccountState friendState = friendController.GetFriendState(messageModel.AuthorAccount.Id);
+            if (friendState == null)
             {
-                trialsCount++;
-
-                if (trialsCount > maxStartTrials)
-                {
-                    throw new InvalidOperationException($"Failed to start client host after { maxStartTrials } retries");
-                }
-
-                initialPort += portSelectStep;
-                string newAddress = GetCurrentClientAddress();
-                baseUri = new Uri(newAddress);
-                started = TryStartHost(booter, configuration, baseUri);
+                throw new InvalidOperationException($"Friend '{ messageModel.AuthorAccount.Id }' state is not found");
             }
-        }
-        
-        private string GetCurrentClientAddress() 
-        {
-            return $"{ httpAddressNoPort }{ initialPort }";
-        }
 
+            Guid sessionId = messageModel.SessionId;
+            IChatSession session = chatHub.GetSession(sessionId);
 
-        private HostConfiguration CreateConfiguration() 
-        {
-            var config = new HostConfiguration
+            if (session == null)
             {
-                EnableClientCertificates = true,
-                UrlReservations = new UrlReservations
-                {
-                    CreateAutomatically = true
-                }
-            };
+                string sessionName = messageModel.AuthorAccount.Name;
+                session = 
+                    sessionFactory
+                        .SetSessionId(messageModel.SessionId)
+                        .CreateInstance(sessionName, sessionName);
 
-            config.UnhandledExceptionCallback = ex =>
-            {
-                logger.Error(ex.GetRootException(), "Unhandled exception in client host");
-            };
-
-            return config;
-        }
-
-        private INancyBootstrapper CreateBootstrapper() 
-        {
-            return new DefaultNancyBootstrapper();
-        }
-
-        private bool TryStartHost(INancyBootstrapper booter, HostConfiguration configuration, Uri baseUri)
-        {
-            string address = baseUri.AbsoluteUri;
-            try
-            {
-                host = new NancyHost(booter, configuration, baseUri);
-                host.Start();
-                logger.Info($"Started client host on { address }");
-
-                ClientAddress = address;
-
-                return true;
+                chatHub.AddSession(session);
             }
-            catch (Exception ex)
-            {
-                host.Dispose();
-                logger.Error(ex, $"Failed to start client host on { address }");
-                return false;
-            }
+
+            session.AddToChat(friendState);
+            messageFactory.Author = friendState.Account;
+            IChatMessage message = messageFactory.CreateMessage(messageModel.MessageText);
+            session.SendMessage(message, out _);
         }
     }
 }

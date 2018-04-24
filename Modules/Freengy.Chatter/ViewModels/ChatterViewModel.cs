@@ -11,9 +11,10 @@ using System.Collections.ObjectModel;
 
 using Freengy.Base.Messages;
 using Freengy.Base.Helpers.Commands;
-using Freengy.Chatter.Views;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Chatter.Views;
+using Freengy.Networking.DefaultImpl;
 
 using Catel.IoC;
 
@@ -26,6 +27,7 @@ namespace Freengy.Chatter.ViewModels
     public class ChatterViewModel : WaitableViewModel 
     {
         private readonly IChatSessionFactory chatSessionFactory;
+        private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<ChatSessionViewModel> chatSessions = new ObservableCollection<ChatSessionViewModel>();
 
 
@@ -62,7 +64,8 @@ namespace Freengy.Chatter.ViewModels
             chatSessionFactory.SetNetworkInterface((msg, acc) => { });
             var firstSession = chatSessionFactory.CreateInstance("First test session", "First test session");
             var seconSession = chatSessionFactory.CreateInstance("Secon test session", "Secon test session");
-            
+            chatSessionFactory.SetNetworkInterface(messageSender.SendMessageToFriend);
+
             var firstViewModel = new ChatSessionViewModel(firstSession);
             var seconViewModel = new ChatSessionViewModel(seconSession);
 
@@ -81,7 +84,7 @@ namespace Freengy.Chatter.ViewModels
             {
                 if (chatSessions.All(viewModel => viewModel.Session.Id != message.Session.Id))
                 {
-                    chatSessions.Add(new ChatSessionViewModel(message.Session));
+                    GUIDispatcher.InvokeOnGuiThread(() => chatSessions.Add(new ChatSessionViewModel(message.Session)));
                 }
             }
             else
@@ -90,7 +93,7 @@ namespace Freengy.Chatter.ViewModels
 
                 if (viewModelToRemove != null)
                 {
-                    chatSessions.Remove(viewModelToRemove);
+                    GUIDispatcher.InvokeOnGuiThread(() => chatSessions.Remove(viewModelToRemove));
                 }
             }
         }

@@ -88,6 +88,7 @@
     <Compile Include="Chat\Interfaces\IChatSession.cs" />
     <Compile Include="Chat\Interfaces\IChatSessionFactory.cs" />
     <Compile Include="Chat\Interfaces\IChatHub.cs" />
+    <Compile Include="Interfaces\IFriendStateController.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
