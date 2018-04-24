@@ -12,6 +12,7 @@ using Freengy.Common.Helpers;
 using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Helpers.Result;
+using Freengy.Common.Models.Readonly;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 using Freengy.Networking.Messages;
@@ -22,7 +23,6 @@ using NLog;
 
 using Catel.IoC;
 using Catel.Messaging;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -62,7 +62,12 @@ namespace Freengy.Networking.DefaultImpl
         /// <summary>
         /// The unique token obtained from server in login result.
         /// </summary>
-        public string SessionToken { get; private set; }
+        public string MySessionToken { get; private set; }
+
+        /// <summary>
+        /// The unique token obtained from server. Used to authorize server messages on client.
+        /// </summary>
+        public string ServerSessionToken { get; private set; }
 
         /// <summary>
         /// Password that user was logged in with.
@@ -208,16 +213,17 @@ namespace Freengy.Networking.DefaultImpl
             {
                 actor.SetClientAddress(clientAddress).SetRequestAddress(Url.Http.LogInUrl);
 
-                AccountStateModel result = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
+                AccountStateModel stateModel = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
 
-                if (result.OnlineStatus == AccountOnlineStatus.Online)
+                if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
-                    SessionToken = result.SessionToken;
+                    ServerSessionToken = stateModel.ServerSessionToken;
+                    MySessionToken = stateModel.ClientSessionToken;
                     LoggedInPassword = loginModel.Password;
                     messageMediator.SendMessage(messageLoggedIn);
                 }
 
-                return result;
+                return stateModel;
             }
         }
 

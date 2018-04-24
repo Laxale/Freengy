@@ -67,11 +67,13 @@
     <Compile Include="Interfaces\IHttpActor.cs" />
     <Compile Include="Interfaces\IHttpClientParametersProvider.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
+    <Compile Include="Messages\MessageFriendStateUpdate.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />
     <Compile Include="Messages\MessageLogInAttempt.cs" />
     <Compile Include="Messages\MessageLogInBase.cs" />
     <Compile Include="Modules\ChatModule.cs" />
+    <Compile Include="Modules\FromServerModule.cs" />
     <Compile Include="Module\NetworkingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

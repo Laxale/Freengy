@@ -15,6 +15,8 @@ using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
+using Catel.Messaging;
+using Freengy.Networking.Messages;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -28,9 +30,11 @@ namespace Freengy.Networking.DefaultImpl
 
         private static FriendStateController instance;
 
+        private readonly IMessageMediator mediator = MessageMediator.Default;
         private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
         private readonly List<AccountState> friendStates = new List<AccountState>();
 
+        private bool inited;
         private Func<string> sessionTokenGetter;
         private Func<UserAccount> myAccountGetter;
         private ILoginController loginController;
@@ -38,7 +42,7 @@ namespace Freengy.Networking.DefaultImpl
 
         private FriendStateController() { }
 
-
+        
         /// <summary>
         /// Единственный инстанс <see cref="FriendStateController"/>.
         /// </summary>
@@ -108,10 +112,14 @@ namespace Freengy.Networking.DefaultImpl
 
         internal void InitInternal() 
         {
+            if (inited) return;
+
             loginController = serviceLocator.ResolveType<ILoginController>();
 
             myAccountGetter = () => loginController.MyAccountState.Account;
-            sessionTokenGetter = () => loginController.SessionToken;
+            sessionTokenGetter = () => loginController.MySessionToken;
+
+            inited = true;
         }
 
 
@@ -119,6 +127,23 @@ namespace Freengy.Networking.DefaultImpl
         {
             cached.UserAddress = fromServer.Address;
             cached.AccountStatus = fromServer.OnlineStatus;
+        }
+
+        private void OnFriendStateChanged(MessageFriendStateUpdate message) 
+        {
+            lock (Locker)
+            {
+                var savedState = friendStates.FirstOrDefault(state => state.Account.Id == message.FriendState.Account.Id);
+
+                if (savedState == null)
+                {
+                    friendStates.Add(message.FriendState);
+                }
+                else
+                {
+                    
+                }
+            }
         }
     }
 }

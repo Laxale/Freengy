@@ -20,7 +20,12 @@ namespace Freengy.Common.Models
         /// <summary>
         /// Filled by server in responce to login request.
         /// </summary>
-        public string SessionToken { get; set; }
+        public string ClientSessionToken { get; set; }
+
+        /// <summary>
+        /// Filled by server. Used in client to authorize messages that must be accepted from server only.
+        /// </summary>
+        public string ServerSessionToken { get; set; }
 
         /// <summary>
         /// User account model.

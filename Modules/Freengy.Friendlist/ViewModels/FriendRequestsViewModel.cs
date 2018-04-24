@@ -57,7 +57,7 @@ namespace Freengy.FriendList.ViewModels
 
             var controller = ServiceLocatorProperty.ResolveType<ILoginController>();
             myId = controller.MyAccountState.Account.Id;
-            sessionToken = controller.SessionToken;
+            sessionToken = controller.MySessionToken;
         }
 
 

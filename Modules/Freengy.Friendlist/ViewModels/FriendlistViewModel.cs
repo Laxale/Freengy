@@ -120,7 +120,7 @@ namespace Freengy.FriendList.ViewModels
             var friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
 
             myAccount = loginController.MyAccountState.Account;
-            mySessionToken = loginController.SessionToken;
+            mySessionToken = loginController.MySessionToken;
 
             IEnumerable<AccountState> realFriends = await friendStateController.GetFriendStatesAsync();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();

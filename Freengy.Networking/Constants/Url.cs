@@ -2,8 +2,8 @@
 //
 //
 
-using System.Configuration;
 using System.Reflection;
+using System.Configuration;
 
 
 namespace Freengy.Networking.Constants 
@@ -13,6 +13,9 @@ namespace Freengy.Networking.Constants
     /// </summary>
     public static class Url 
     {
+        private static readonly string stateAction;
+        private static readonly string fromServerAction;
+        private static readonly string informAction;
         private static readonly string chatAction;
         private static readonly string helloAction;
         private static readonly string replyAction;
@@ -30,6 +33,9 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            stateAction = networkingConfig.AppSettings.Settings["StateActionName"].Value;
+            fromServerAction = networkingConfig.AppSettings.Settings["FromServerActionName"].Value;
+            informAction = networkingConfig.AppSettings.Settings["InformActionName"].Value;
             chatAction = networkingConfig.AppSettings.Settings["ChatActionName"].Value;
             replyAction = networkingConfig.AppSettings.Settings["ReplyActionName"].Value;
             requestAction = networkingConfig.AppSettings.Settings["RequestActionName"].Value;
@@ -63,9 +69,18 @@ namespace Freengy.Networking.Constants
             public static string ReplyFriendRequestUrl { get; } = $"{ RootUrl }/{ replyAction}/{ friendAction }{ requestAction }";
 
 
-            public static class Chat
+            public static class Chat 
             {
-                public static readonly string ChatSubRoute = $"/{chatAction}";
+                public static string ChatSubRoute { get; }= $"/{chatAction}";
+            }
+
+            public static class FromServer 
+            {
+                public static string Root { get; } = $"/{fromServerAction}";
+
+                public static string Inform { get; } = $"/{fromServerAction}/{ informAction }";
+
+                public static string InformFriendState { get; } = $"/{fromServerAction}/{ informAction }/{ friendAction}{ stateAction }";
             }
         }
 

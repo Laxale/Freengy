@@ -23,7 +23,7 @@ namespace Freengy.Networking.DefaultImpl
         {
             using (var actor = ServiceLocator.Default.ResolveType<IHttpActor>())
             {
-                string chatAddress = $"{ account.UserAddress }{ Url.Http.Chat.ChatSubRoute }";
+                string chatAddress = $"{ account.UserAddress.TrimEnd('/') }{ Url.Http.Chat.ChatSubRoute }";
                 actor.SetRequestAddress(chatAddress);
 
                 ChatMessageModel messageModel = messageDecorator.ToModel();
