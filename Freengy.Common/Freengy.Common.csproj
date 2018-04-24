@@ -48,8 +48,10 @@
     <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
+    <Compile Include="Extensions\HttpMessageExtensions.cs" />
     <Compile Include="Exceptions\ServerNotAuthorizedException.cs" />
     <Compile Include="Extensions\AccountExtensions.cs" />
+    <Compile Include="Extensions\NancyHttpMessageExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
@@ -62,7 +64,6 @@
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountStateModel.cs" />
-    <Compile Include="Models\AuthorizedRequest.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Models\Readonly\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />
+    <Compile Include="Models\SessionAuth.cs" />
     <Compile Include="Models\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Restrictions\AccountValidator.cs" />

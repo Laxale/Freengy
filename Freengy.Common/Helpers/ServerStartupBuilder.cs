@@ -13,6 +13,10 @@ using Nancy.Hosting.Self;
 
 namespace Freengy.Common.Helpers 
 {
+    using System.Net;
+    using System.Net.Sockets;
+
+
     /// <summary>
     /// Web host startup builder.
     /// </summary>
@@ -172,6 +176,8 @@ namespace Freengy.Common.Helpers
             try
             {
                 logger.Info($"Trying to start host on { address }");
+                if (CheckPortIsOpened(address)) return string.Empty;
+                
                 host = new NancyHost(booter, configuration, baseUri);
                 host.Start();
                 logger.Info($"Started host on { address }");
@@ -180,9 +186,29 @@ namespace Freengy.Common.Helpers
             }
             catch (Exception ex)
             {
-                host.Dispose();
+                host?.Dispose();
                 logger.Error(ex, $"Failed to start host on { address }");
                 return string.Empty;
+            }
+        }
+
+        private bool CheckPortIsOpened(string address) 
+        {
+            try
+            {
+                using (var testerClient = new TcpClient())
+                {
+                    string[] split = address.Split(':');
+                    string ip = split[split.Length - 2].Trim('/');
+                    int port = int.Parse(split[split.Length - 1].Trim('/'));
+                    testerClient.Connect(ip, port);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

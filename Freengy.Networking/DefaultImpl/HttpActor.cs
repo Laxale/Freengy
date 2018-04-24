@@ -13,6 +13,8 @@ using Freengy.Common.Constants;
 using Freengy.Common.Helpers;
 using Freengy.Networking.Interfaces;
 
+using Catel.IoC;
+
 
 namespace Freengy.Networking.DefaultImpl 
 {
@@ -21,10 +23,17 @@ namespace Freengy.Networking.DefaultImpl
     /// </summary>
     internal class HttpActor : IHttpActor 
     {
+        private static readonly ILoginController loginController = ServiceLocator.Default.ResolveType<ILoginController>();
+
         private readonly MediaTypes mediaTypes = new MediaTypes();
+        private readonly Func<string> sessionTokenGetter = () => loginController.MySessionToken;
         private readonly Dictionary<string, string> addedHeaders = new Dictionary<string, string>();
 
         private string address;
+
+
+        /// <inheritdoc />
+        public HttpResponseMessage ResponceMessage { get; private set; }
 
 
         /// <inheritdoc />
@@ -116,9 +125,9 @@ namespace Freengy.Networking.DefaultImpl
                     string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
                     var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
 
-                    HttpResponseMessage responseMessage = client.PostAsync(address, httpRequest).Result;
+                    ResponceMessage = client.PostAsync(address, httpRequest).Result;
 
-                    Stream responceStream = responseMessage.Content.ReadAsStreamAsync().Result;
+                    Stream responceStream = ResponceMessage.Content.ReadAsStreamAsync().Result;
 
                     var responce = serializeHelper.DeserializeObject<TResponce>(responceStream);
 
@@ -148,6 +157,9 @@ namespace Freengy.Networking.DefaultImpl
 
         private void AttachHeadersTo(HttpClient client) 
         {
+            string myToken = sessionTokenGetter();
+            addedHeaders.Add(FreengyHeaders.ClientSessionTokenHeaderName, myToken);
+
             foreach (KeyValuePair<string, string> pair in addedHeaders)
             {
                 client.DefaultRequestHeaders.Add(pair.Key, pair.Value);

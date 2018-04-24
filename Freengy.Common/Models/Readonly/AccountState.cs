@@ -44,5 +44,21 @@ namespace Freengy.Common.Models.Readonly
         /// User online status.
         /// </summary>
         public AccountOnlineStatus AccountStatus { get; set; }
+
+
+        /// <summary>
+        /// Update properties from state model.
+        /// </summary>
+        /// <param name="stateModel">State model to update properties from.</param>
+        public void UpdateFromModel(AccountStateModel stateModel) 
+        {
+            if(stateModel == null) throw new ArgumentNullException(nameof(stateModel));
+            if(stateModel.Account.Id != Account.Id) throw new InvalidOperationException("Account id mismatch");
+
+            UserAddress = stateModel.Address;
+            AccountStatus = stateModel.OnlineStatus;
+
+            Account.UpdateFromModel(stateModel.Account);
+        }
     }
 }

@@ -5,6 +5,7 @@
 using System;
 
 using Freengy.Common.Enums;
+using Freengy.Common.Database;
 
 
 namespace Freengy.Common.Models 
@@ -12,7 +13,7 @@ namespace Freengy.Common.Models
     /// <summary>
     /// User friend-request-reply model.
     /// </summary>
-    public class FriendRequestReply : AuthorizedRequest 
+    public class FriendRequestReply : DbObject 
     {
         /// <summary>
         /// Friendship establishing timestamp is set by server.

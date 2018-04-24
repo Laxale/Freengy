@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 
@@ -13,6 +14,11 @@ namespace Freengy.Networking.Interfaces
     /// </summary>
     public interface IHttpActor : IDisposable
     {
+        /// <summary>
+        /// Gets the last responce message.
+        /// </summary>
+        HttpResponseMessage ResponceMessage { get; }
+
         /// <summary>
         /// Add HTTP header to sender.
         /// </summary>

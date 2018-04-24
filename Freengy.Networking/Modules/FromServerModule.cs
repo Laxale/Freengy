@@ -7,6 +7,12 @@ using System;
 
 using Freengy.Common.Exceptions;
 using Freengy.Networking.Interfaces;
+using Freengy.Common.Helpers;
+using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
+using Freengy.Networking.Messages;
+using Freengy.Common.Extensions;
+using Freengy.Networking.DefaultImpl;
 
 using NLog;
 
@@ -14,10 +20,7 @@ using Nancy;
 
 using Catel.IoC;
 using Catel.Messaging;
-using Freengy.Common.Helpers;
-using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
-using Freengy.Networking.Messages;
+
 using Url = Freengy.Networking.Constants.Url;
 
 
@@ -30,7 +33,8 @@ namespace Freengy.Networking.Modules
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly IMessageMediator mediator = MessageMediator.Default;
-        private static readonly ILoginController loginController = ServiceLocator.Default.ResolveType<ILoginController>();
+        
+        private static ILoginController loginController;
 
 
         public FromServerModule() 
@@ -42,15 +46,17 @@ namespace Freengy.Networking.Modules
 
         private Response ValidateRequest(NancyContext nancyContext) 
         {
-            string serverToken = nancyContext.Request.Headers.Authorization;
+            loginController = loginController ?? ServiceLocator.Default.ResolveType<ILoginController>();
 
-            if (serverToken != loginController.ServerSessionToken)
+            SessionAuth serverAuth = nancyContext.Request.Headers.GetSessionAuth();
+
+            if (serverAuth.ServerToken != loginController.ServerSessionToken)
             {
                 string message = 
                     $"Got request on server module. Request token mismatch found" +
                     Environment.NewLine +
                     $"Cached token: { loginController.ServerSessionToken }" +
-                    $"Actual token: { serverToken }";
+                    $"Actual token: { serverAuth.ServerToken }";
 
                 logger.Warn(message);
 
@@ -64,8 +70,7 @@ namespace Freengy.Networking.Modules
         {
             var stateModel = new SerializeHelper().DeserializeObject<AccountStateModel>(Request.Body);
 
-            var state = new AccountState(stateModel);
-            mediator.SendMessage(new MessageFriendStateUpdate(state));
+            FriendStateController.InternalInstance.UpdateFriendState(stateModel);
 
             return HttpStatusCode.OK;
         }

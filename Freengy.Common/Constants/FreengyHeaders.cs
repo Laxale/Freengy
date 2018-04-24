@@ -14,5 +14,15 @@ namespace Freengy.Common.Constants
         /// The name of a custom ClientAddress header.
         /// </summary>
         public const string ClientAddressHeaderName = "ClientAddress";
+
+        /// <summary>
+        /// The name of custom ClientSessionToken header.
+        /// </summary>
+        public const string ClientSessionTokenHeaderName = "ClientSessionToken";
+
+        /// <summary>
+        /// The name of custom ServerSessionToken header.
+        /// </summary>
+        public const string ServerSessionTokenHeaderName = "ServerSessionToken";
     }
 }

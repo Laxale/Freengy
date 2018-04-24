@@ -109,7 +109,6 @@ namespace Freengy.FriendList.ViewModels
             var reply = new FriendRequestReply
             {
                 Id = myId,
-                UserToken = sessionToken,
                 Request = requestPairs[userAccount],
                 Reaction = FriendRequestReaction.Accept
             };

@@ -31,17 +31,17 @@ namespace Freengy.Common.Models.Readonly
         /// <summary>
         /// Account name.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Account level.
         /// </summary>
-        public int Level { get; }
+        public int Level { get; private set; }
 
         /// <summary>
         /// Account privilege.
         /// </summary>
-        public AccountPrivilege Privilege { get; }
+        public AccountPrivilege Privilege { get; private set; }
         
         /// <summary>
         /// Account last login time.
@@ -61,6 +61,20 @@ namespace Freengy.Common.Models.Readonly
         public override string ToString()
         {
             return $"{Name} [Level {Level} | {Privilege}]";
+        }
+
+        /// <summary>
+        /// Update properties from account model.
+        /// </summary>
+        /// <param name="model">Account model to update properties from.</param>
+        public void UpdateFromModel(UserAccountModel model) 
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (Id != model.Id) throw new InvalidOperationException("Account id mismatch");
+
+            Name = model.Name;
+            Level = model.Level;
+            Privilege = model.Privilege;
         }
     }
 }

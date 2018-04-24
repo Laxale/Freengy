@@ -211,14 +211,17 @@ namespace Freengy.Networking.DefaultImpl
 
             using (var actor = serviceLocator.ResolveType<IHttpActor>())
             {
-                actor.SetClientAddress(clientAddress).SetRequestAddress(Url.Http.LogInUrl);
+                actor.SetClientAddress(clientAddress)
+                     .SetRequestAddress(Url.Http.LogInUrl);
 
                 AccountStateModel stateModel = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
+                var responceMessage = actor.ResponceMessage;
+                SessionAuth auth = responceMessage.Headers.GetSessionAuth();
 
                 if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
-                    ServerSessionToken = stateModel.ServerSessionToken;
-                    MySessionToken = stateModel.ClientSessionToken;
+                    MySessionToken = auth.ClientToken;
+                    ServerSessionToken = auth.ServerToken;
                     LoggedInPassword = loginModel.Password;
                     messageMediator.SendMessage(messageLoggedIn);
                 }

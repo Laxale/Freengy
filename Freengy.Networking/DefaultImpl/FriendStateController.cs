@@ -102,7 +102,7 @@ namespace Freengy.Networking.DefaultImpl
                 }
                 else
                 {
-                    UpdateFriendState(fromServer, savedState);
+                    savedState.UpdateFromModel(fromServer);
                 }
             }
 
@@ -122,27 +122,26 @@ namespace Freengy.Networking.DefaultImpl
             inited = true;
         }
 
-
-        private void UpdateFriendState(AccountStateModel fromServer, AccountState cached) 
-        {
-            cached.UserAddress = fromServer.Address;
-            cached.AccountStatus = fromServer.OnlineStatus;
-        }
-
-        private void OnFriendStateChanged(MessageFriendStateUpdate message) 
+        /// <summary>
+        /// Update cached friend account state by server message.
+        /// </summary>
+        /// <param name="stateModel">Account model to update from.</param>
+        internal void UpdateFriendState(AccountStateModel stateModel) 
         {
             lock (Locker)
             {
-                var savedState = friendStates.FirstOrDefault(state => state.Account.Id == message.FriendState.Account.Id);
+                var savedState = friendStates.FirstOrDefault(state => state.Account.Id == stateModel.Account.Id);
 
                 if (savedState == null)
                 {
-                    friendStates.Add(message.FriendState);
+                    friendStates.Add(new AccountState(stateModel));
                 }
                 else
                 {
-                    
+                    savedState.UpdateFromModel(stateModel);
                 }
+
+                mediator.SendMessage(new MessageFriendStateUpdate(savedState));
             }
         }
     }

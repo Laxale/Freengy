@@ -13,7 +13,7 @@ namespace Freengy.Common.Models
     /// <summary>
     /// Search request model.
     /// </summary>
-    public class SearchRequest : AuthorizedRequest 
+    public class SearchRequest 
     {
         /// <summary>
         /// Identifier of a request sender.
@@ -46,8 +46,7 @@ namespace Freengy.Common.Models
             {
                 Entity = SearchEntity.Friends,
                 SenderId = account.Id,
-                SearchFilter = nameFilter,
-                UserToken = sessionToken
+                SearchFilter = nameFilter
             };
         }
 
@@ -55,32 +54,29 @@ namespace Freengy.Common.Models
         /// Create a request to search for user's outgoing friend requests.
         /// </summary>
         /// <param name="account">User account.</param>
-        /// <param name="sessionToken">User token session.</param>
         /// <returns>Ready to use search request instance.</returns>
-        public static SearchRequest CreateUserFriendRequestSearch(UserAccount account, string sessionToken) 
+        public static SearchRequest CreateUserFriendRequestSearch(UserAccount account) 
         {
-            return CreateFriendRequestSearch(account, sessionToken, false);
+            return CreateFriendRequestSearch(account, false);
         }
 
         /// <summary>
         /// Create a request to search for user's incoming friend requests.
         /// </summary>
         /// <param name="account">User account.</param>
-        /// <param name="sessionToken">User token session.</param>
         /// <returns>Ready to use search request instance.</returns>
-        public static SearchRequest CreateAlienFriendRequestSearch(UserAccount account, string sessionToken) 
+        public static SearchRequest CreateAlienFriendRequestSearch(UserAccount account) 
         {
-            return CreateFriendRequestSearch(account, sessionToken, true);
+            return CreateFriendRequestSearch(account, true);
         }
 
 
-        private static SearchRequest CreateFriendRequestSearch(UserAccount account, string sessionToken, bool incoming) 
+        private static SearchRequest CreateFriendRequestSearch(UserAccount account, bool incoming) 
         {
             return new SearchRequest
             {
-                Entity = incoming ? SearchEntity.IncomingFriendRequests : SearchEntity.OutgoingFriendRequests,
                 SenderId = account.Id,
-                UserToken = sessionToken
+                Entity = incoming ? SearchEntity.IncomingFriendRequests : SearchEntity.OutgoingFriendRequests
             };
         }
     }

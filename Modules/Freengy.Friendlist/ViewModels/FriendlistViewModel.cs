@@ -23,15 +23,13 @@ using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
+using Freengy.Networking.Messages;
 
 using Catel.IoC;
 
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using Freengy.Base.Extensions;
-
-
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
@@ -51,7 +49,13 @@ namespace Freengy.FriendList.ViewModels
             FriendList = (ListCollectionView)CollectionViewSource.GetDefaultView(friends);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
+            Mediator.Register<MessageFriendStateUpdate>(this, OnFriendStateUpdated);
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading friends"));
+        }
+
+        ~FriendListViewModel() 
+        {
+            Mediator.UnregisterRecipient(this);
         }
 
         
@@ -185,7 +189,7 @@ namespace Freengy.FriendList.ViewModels
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
                 httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl);
-                SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount, mySessionToken);
+                SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
 
                 var result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
 
@@ -233,7 +237,14 @@ namespace Freengy.FriendList.ViewModels
             window.ShowDialog();
         }
 
+        private void OnFriendStateUpdated(MessageFriendStateUpdate message) 
+        {
+            var targetState = friends.FirstOrDefault(state => state.Account.Id == message.FriendState.Account.Id);
 
+            if(targetState == null) throw new InvalidOperationException($"Friend account { message.FriendState.Account.Name } not found");
+
+            targetState.UpdateFromModel(null);
+        }
 
         #endregion privates
     }

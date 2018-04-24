@@ -13,11 +13,10 @@ using Freengy.Common.Models.Readonly;
 
 namespace Freengy.Common.Models 
 {
-    /// <inheritdoc />
     /// <summary>
     /// A friend request model.
     /// </summary>
-    public class FriendRequest : AuthorizedRequest 
+    public class FriendRequest : DbObject 
     {
         /// <summary>
         /// Account that user wants to be friends with.
