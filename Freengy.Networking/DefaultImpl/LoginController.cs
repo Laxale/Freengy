@@ -27,6 +27,9 @@ using Catel.Messaging;
 
 namespace Freengy.Networking.DefaultImpl 
 {
+    using Freengy.Networking.Modules;
+
+
     /// <summary>
     /// <see cref="ILoginController"/> implementer.
     /// </summary>
@@ -225,6 +228,14 @@ namespace Freengy.Networking.DefaultImpl
                     LoggedInPassword = loginModel.Password;
                     messageMediator.SendMessage(messageLoggedIn);
                 }
+                else if(stateModel.OnlineStatus == AccountOnlineStatus.Offline)
+                {
+                    MySessionToken = string.Empty;
+                    ServerSessionToken = string.Empty;
+                    LoggedInPassword = string.Empty;
+                }
+
+                FromServerModule.SetClientSessionToken(MySessionToken);
 
                 return stateModel;
             }

@@ -33,14 +33,33 @@ namespace Freengy.Networking.Modules
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly IMessageMediator mediator = MessageMediator.Default;
-        
+
+        private static string clientToken;
         private static ILoginController loginController;
 
 
         public FromServerModule() 
         {
+            // only work when logged in
+            if (string.IsNullOrWhiteSpace(clientToken))
+            {
+                return;
+            }
+
             Before.AddItemToStartOfPipeline(ValidateRequest);
-            Post[Url.Http.FromServer.InformFriendState] = OnFriendStateInform;
+
+            string sessionChannel = $"{Url.Http.FromServer.InformFriendState}/{clientToken}";
+            Post[sessionChannel] = OnFriendStateInform;
+        }
+
+
+        /// <summary>
+        /// Set the client session token to create a private client-server channel.
+        /// </summary>
+        /// <param name="token">Client session token.</param>
+        internal static void SetClientSessionToken(string token) 
+        {
+            clientToken = token;
         }
 
 
