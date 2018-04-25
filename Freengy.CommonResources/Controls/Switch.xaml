@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Freengy.CommonResources.Controls.Switch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls"
+
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=Command}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=CommandParameter}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Canvas Width="28" Height="16">
+        <Path Fill="{StaticResource AlmostTransparent}">
+            <Path.Data>
+                <PathGeometry Figures="M8 0h12c4.418 0 8 3.582 8 8l0 0c0 4.418-3.582 8-8 8H8c-4.418 0-8-3.582-8-8l0 0C0 3.582 3.582 0 8 0z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+
+        <Path Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=Foreground}">
+            <Path.Data>
+                <PathGeometry Figures="M20 2c3.314 0 6 2.686 6 6s-2.686 6-6 6H8c-3.314 0-6-2.686-6-6s2.686-6 6-6H20 M20 0H8 C3.587 0.013 0.013 
+                              3.587 0 8l0 0c0.013 4.413 3.587 7.987 8 8h12c4.413-0.013 7.987-3.587 8-8l0 0C27.987 3.587 24.413 0.013 20 0z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+
+        <Ellipse Canvas.Left="16" Canvas.Top="4" Width="8" Height="8" 
+                 Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=Foreground}"
+                 Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, 
+                                      Path=IsOn,
+                                      Converter={StaticResource BoolToVisibilityConverter}}">
+
+        </Ellipse>
+
+        <Path Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=Foreground}"
+              Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, 
+                                      Path=IsOn,
+                                      Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+            <Path.Data>
+                <PathGeometry Figures="M8 6c1.105 0 2 0.895 2 2s-0.895 2-2 2S6 9.105 6 8S6.895 6 8 6 M8 4C5.791 4 4 5.791 4 8s1.791 4 4 4  s4-1.791 4-4S10.209 4 8 4z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+</UserControl>
