@@ -19,6 +19,9 @@ using Catel.IoC;
 
 namespace Freengy.Networking.DefaultImpl 
 {
+    using System.Threading.Tasks;
+
+
     /// <summary>
     /// Client-side Freengy server listener.
     /// </summary>
@@ -36,24 +39,14 @@ namespace Freengy.Networking.DefaultImpl
         private readonly IFriendStateController friendController = ServiceLocator.Default.ResolveType<IFriendStateController>();
 
 
-        private ServerListener() 
-        {
-            ClientAddress = 
-                new ServerStartupBuilder()
-                .SetBaseAddress(httpAddressNoPort)
-                .SetInitialPort(StartupConst.InitialClientPort)
-                .SetPortStep(StartupConst.PortCheckingStep)
-                .SetTrialsCount(maxStartTrials)
-                .UseHttps(false)
-                .Build();
-        }
+        private ServerListener() { }
 
 
         /// <inheritdoc />
         /// <summary>
         /// Gets the client socket address.
         /// </summary>
-        public string ClientAddress { get; }
+        public string ClientAddress { get; private set; }
 
 
         /// <summary>
@@ -77,7 +70,22 @@ namespace Freengy.Networking.DefaultImpl
         }
 
 
-        public void InformOfANewMessage(ChatMessageModel messageModel) 
+        internal async Task InitInternalAsync() 
+        {
+            await Task.Run(() =>
+                           {
+                               ClientAddress =
+                                   new ServerStartupBuilder()
+                                       .SetBaseAddress(httpAddressNoPort)
+                                       .SetInitialPort(StartupConst.InitialClientPort)
+                                       .SetPortStep(StartupConst.PortCheckingStep)
+                                       .SetTrialsCount(maxStartTrials)
+                                       .UseHttps(false)
+                                       .Build();
+                           });
+        }
+
+        internal void InformOfANewMessage(ChatMessageModel messageModel) 
         {
             AccountState friendState = friendController.GetFriendState(messageModel.AuthorAccount.Id);
             if (friendState == null)
@@ -102,7 +110,7 @@ namespace Freengy.Networking.DefaultImpl
             session.AddToChat(friendState);
             messageFactory.Author = friendState.Account;
             IChatMessage message = messageFactory.CreateMessage(messageModel.MessageText);
-            session.SendMessage(message, out _);
+            session.AcceptMessage(message);
         }
     }
 }

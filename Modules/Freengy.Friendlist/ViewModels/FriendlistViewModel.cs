@@ -24,10 +24,10 @@ using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
 using Freengy.Networking.Messages;
-
-using Catel.IoC;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
+
+using Catel.IoC;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -38,8 +38,8 @@ namespace Freengy.FriendList.ViewModels
     public class FriendListViewModel : WaitableViewModel 
     {
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
-        private readonly ObservableCollection<AccountState> friends = new ObservableCollection<AccountState>();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
+        private readonly ObservableCollection<AccountStateViewModel> friendViewModels = new ObservableCollection<AccountStateViewModel>();
         private readonly Dictionary<AccountState, IChatSession> startedChatSessions = new Dictionary<AccountState, IChatSession>();
 
         private string mySessionToken;
@@ -48,7 +48,7 @@ namespace Freengy.FriendList.ViewModels
 
         public FriendListViewModel() 
         {
-            FriendList = (ListCollectionView)CollectionViewSource.GetDefaultView(friends);
+            FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
             Mediator.Register<MessageFriendStateUpdate>(this, OnFriendStateUpdated);
@@ -74,7 +74,7 @@ namespace Freengy.FriendList.ViewModels
         /// <summary>
         /// Command to remove a friend.
         /// </summary>
-        public MyCommand<AccountState> CommandRemoveFriend { get; private set; }
+        public MyCommand<AccountStateViewModel> CommandRemoveFriend { get; private set; }
 
         /// <summary>
         /// Command to start a chat with friend.
@@ -98,7 +98,7 @@ namespace Freengy.FriendList.ViewModels
         {
             base.Refresh();
 
-            friends.Clear();
+            friendViewModels.Clear();
             friendRequests.Clear();
 
             InitializeImpl();
@@ -110,7 +110,7 @@ namespace Freengy.FriendList.ViewModels
             CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
             CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
-            CommandRemoveFriend = new MyCommand<AccountState>(RemoveFriendImpl, CanRemoveFriend);
+            CommandRemoveFriend = new MyCommand<AccountStateViewModel>(RemoveFriendImpl, CanRemoveFriend);
         }
         
         /// <inheritdoc />
@@ -131,9 +131,9 @@ namespace Freengy.FriendList.ViewModels
             IEnumerable<AccountState> realFriends = await friendStateController.GetFriendStatesAsync();
             IEnumerable<FriendRequest> requests = await SearchFriendRequests();
             
-            foreach (AccountState friend in realFriends)
+            foreach (AccountState friendState in realFriends)
             {
-                dispatcher.InvokeOnGuiThread(() => friends.Add(friend));
+                dispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
             }
 
             foreach (FriendRequest friendRequest in requests)
@@ -210,14 +210,14 @@ namespace Freengy.FriendList.ViewModels
             return true;
         }
 
-        private void RemoveFriendImpl(AccountState friendAccount) 
+        private void RemoveFriendImpl(AccountStateViewModel viewModel) 
         {
-            if (friendAccount == null) throw new ArgumentNullException(nameof(friendAccount));
+            if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-            friends.Remove(friendAccount);
+            friendViewModels.Remove(viewModel);
         }
 
-        private bool CanRemoveFriend(AccountState friendAccount) 
+        private bool CanRemoveFriend(AccountStateViewModel friendAccount) 
         {
             // check if friend is not null and exists
             return friendAccount != null;
@@ -241,11 +241,13 @@ namespace Freengy.FriendList.ViewModels
 
         private void OnFriendStateUpdated(MessageFriendStateUpdate message) 
         {
-            var targetState = friends.FirstOrDefault(state => state.Account.Id == message.FriendState.Account.Id);
+            var targetStateViewModel = friendViewModels.FirstOrDefault(viewModel => viewModel.AccountState.Account.Id == message.FriendState.Account.Id);
 
-            if(targetState == null) throw new InvalidOperationException($"Friend account { message.FriendState.Account.Name } not found");
+            if(targetStateViewModel == null) throw new InvalidOperationException($"Friend account { message.FriendState.Account.Name } not found");
 
-            targetState.UpdateFromModel(null);
+            // dont update anything. Account object already updated. Just raise propertychanged
+            //targetState.UpdateFromModel(null);
+            targetStateViewModel.RaiseAccountPropertyCahnged();
         }
 
         #endregion privates

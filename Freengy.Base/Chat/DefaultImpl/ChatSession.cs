@@ -5,6 +5,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Data;
 
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Common.Models.Readonly;
@@ -12,7 +16,9 @@ using Freengy.Common.Models.Readonly;
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using System.Windows;
+    using Catel.IoC;
+
+    using Freengy.Base.Interfaces;
 
 
     internal sealed class ChatMessageComparer : IComparer<IChatMessageDecorator> 
@@ -34,9 +40,11 @@ namespace Freengy.Base.Chat.DefaultImpl
     internal class ChatSession : IChatSession 
     {
         private static readonly object Locker = new object();
+        private static readonly IGuiDispatcher guiDispatcher = ServiceLocator.Default.ResolveType<IGuiDispatcher>();
 
         private readonly Action<IChatMessageDecorator, AccountState> messageSender;
         private readonly List<AccountState> sessionUsers = new List<AccountState>();
+        
         // for unknown reason SortedSet sometimes does not pass add-message->check-message-exists unit test
         //private readonly ISet<IChatMessageDecorator> sessionMessages = new SortedSet<IChatMessageDecorator>(new ChatMessageComparer());
         private readonly IList<IChatMessageDecorator> sessionMessages = new List<IChatMessageDecorator>();
@@ -67,6 +75,18 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         public event EventHandler<IChatMessageDecorator> MessageAdded;
 
+
+        /// <inheritdoc />
+        public void AcceptMessage(IChatMessage message) 
+        {
+            lock (Locker)
+            {
+                var processedMesage = new ChatMessageDecorator(message, this);
+
+                sessionMessages.Add(processedMesage);
+                MessageAdded?.Invoke(this, processedMesage);
+            }
+        }
 
         public IEnumerable<IChatMessageDecorator> GetMessages(Func<IChatMessageDecorator, bool> predicate) 
         {

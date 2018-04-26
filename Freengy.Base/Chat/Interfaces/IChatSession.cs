@@ -35,6 +35,12 @@ namespace Freengy.Base.Chat.Interfaces
         bool SendMessage(IChatMessage message, out IChatMessageDecorator processedMesage);
 
         /// <summary>
+        /// Accept foreign message - one that was received from web.
+        /// </summary>
+        /// <param name="message">Incoming message.</param>
+        void AcceptMessage(IChatMessage message);
+
+        /// <summary>
         /// Gets messages from this session by specified criteria
         /// </summary>
         /// <param name="predicate">Predicate to filter messages</param>

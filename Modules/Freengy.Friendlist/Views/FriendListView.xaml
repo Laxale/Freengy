@@ -7,8 +7,6 @@
              xmlns:prism="http://prismlibrary.com/"
 
              xmlns:viewmodels="clr-namespace:Freengy.FriendList.ViewModels"
-             xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
-             xmlns:readonly="clr-namespace:Freengy.Common.Models.Readonly;assembly=Freengy.Common"
              xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
              xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
 
@@ -58,12 +56,12 @@
 
             <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" IsSynchronizedWithCurrentItem="True">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type readonly:AccountState}">
+                    <DataTemplate DataType="{x:Type viewmodels:AccountStateViewModel}">
                         <DockPanel Background="{StaticResource AlmostTransparent}">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Chat" 
-                                              CommandParameter="{Binding}"
+                                              CommandParameter="{Binding Path=AccountState}"
                                               Command="{Binding Source={StaticResource ContextProxy}, Path=Data.CommandStartChat}"/>
                                     <MenuItem Header="Remove this faggot!"/>
                                     <Separator/>
@@ -76,11 +74,11 @@
                                     <Path.Style>
                                         <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Online}">
+                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Online}">
                                                     <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
                                                 </DataTrigger>
 
-                                                <DataTrigger Binding="{Binding Path=AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
+                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
                                                     <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -88,12 +86,12 @@
                                     </Path.Style>
                                 </Path>
 
-                                <TextBlock DockPanel.Dock="Top" Text="{Binding Path=Account.Name}" Margin="{StaticResource 4LeftMargin}"/>
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding Path=AccountState.Account.Name}" Margin="{StaticResource 4LeftMargin}"/>
                             </DockPanel>
                             
                             <DockPanel DockPanel.Dock="Top">
                                 <TextBlock DockPanel.Dock="Left" Text="Level"/>
-                                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=Account.Level}"/>
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=AccountState.Account.Level}"/>
                             </DockPanel>
                         </DockPanel>
                     </DataTemplate>

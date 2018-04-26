@@ -35,9 +35,9 @@ namespace Freengy.Networking.DefaultImpl
     /// <summary>
     /// <see cref="ILoginController"/> implementer.
     /// </summary>
-    internal class LoginController : ILoginController
+    internal class LoginController : ILoginController 
     {
-        private readonly string clientAddress;
+        private readonly Func<string> clientAddressGetter;
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
@@ -56,7 +56,7 @@ namespace Freengy.Networking.DefaultImpl
             messageLogInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
-            clientAddress = serviceLocator.ResolveType<IHttpClientParametersProvider>().ClientAddress;
+            clientAddressGetter = () => serviceLocator.ResolveType<IHttpClientParametersProvider>().ClientAddress;
         }
 
         public static ILoginController Instance => instance ?? (instance = new LoginController());
@@ -216,7 +216,7 @@ namespace Freengy.Networking.DefaultImpl
 
             using (var actor = serviceLocator.ResolveType<IHttpActor>())
             {
-                actor.SetClientAddress(clientAddress)
+                actor.SetClientAddress(clientAddressGetter())
                      .SetRequestAddress(Url.Http.LogInUrl);
 
                 AccountStateModel stateModel = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
@@ -236,8 +236,6 @@ namespace Freengy.Networking.DefaultImpl
                     ServerSessionToken = string.Empty;
                     LoggedInPassword = string.Empty;
                 }
-
-                FromServerModule.SetClientSessionToken(MySessionToken);
 
                 return stateModel;
             }

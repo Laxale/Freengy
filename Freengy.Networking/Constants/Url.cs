@@ -80,7 +80,7 @@ namespace Freengy.Networking.Constants
 
                 public static string Inform { get; } = $"/{fromServerAction}/{ informAction }";
 
-                public static string InformFriendState { get; } = $"/{fromServerAction}/{ informAction }/{ friendAction}{ stateAction }";
+                public static string InformFriendState { get; } = $"/{fromServerAction}/{ informAction }/{ friendAction}/{ stateAction }";
             }
         }
 

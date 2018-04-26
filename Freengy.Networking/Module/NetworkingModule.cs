@@ -28,7 +28,7 @@ namespace Freengy.Networking.Module
         /// Registers networking internal types to service locator.
         /// TODO: may be need implement <see cref="IRegistrator"/> ?
         /// </summary>
-        public void Initialize() 
+        public async void Initialize() 
         {
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IHttpActor, HttpActor>(RegistrationType.Transient);
             ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
@@ -37,6 +37,8 @@ namespace Freengy.Networking.Module
             ServiceLocator.Default.RegisterInstance(FriendStateController.ExposedInstance);
             ServiceLocator.Default.RegisterInstance(ServerListener.ExposedInstance);
             ServiceLocator.Default.RegisterInstance(LoginController.Instance);
+
+            await ServerListener.InternalInstance.InitInternalAsync();
 
             FriendStateController.InternalInstance.InitInternal();
         }

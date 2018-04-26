@@ -62,6 +62,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ViewModels\AccountStateViewModel.cs" />
     <Compile Include="ViewModels\AddNewFriendViewModel.cs" />
     <Compile Include="ViewModels\FriendlistViewModel.cs" />
     <Compile Include="ViewModels\FriendRequestsViewModel.cs" />

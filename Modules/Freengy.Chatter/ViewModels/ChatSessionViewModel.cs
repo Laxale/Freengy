@@ -9,20 +9,15 @@ using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-using Freengy.Base.Helpers;
 
 
 namespace Freengy.Chatter.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-
-
     public class ChatSessionViewModel : WaitableViewModel 
     {
         private readonly ILoginController loginController;
