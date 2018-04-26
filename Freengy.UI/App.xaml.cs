@@ -5,16 +5,25 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
-using Catel.IoC;
-using Freengy.UI.Helpers;
 
-using Catel.Logging;
+using Freengy.UI.Helpers;
 using Freengy.UI.Constants;
+
+using Catel.IoC;
+using Catel.Logging;
+
 using Prism.Regions;
 
 
 namespace Freengy.UI 
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Freengy.Base.Helpers;
+    using Freengy.Base.Models;
+
+
     public partial class App : Application 
     {
         protected override void OnStartup(StartupEventArgs e) 
@@ -24,16 +33,25 @@ namespace Freengy.UI
 
             base.OnStartup(e);
 
-            this.DispatcherUnhandledException += OnUnhandledException;
+            DispatcherUnhandledException += OnUnhandledException;
 
 #if DEBUG
             LogManager.AddDebugListener();
 #endif
-            var bootstrapper = new ShellBootstrapper();
-            // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
-            // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
-            bootstrapper.Run();
+            UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
+            StatisticsCollector.Instance.Configure(FlushStatistics);
+
+            using (new StatisticsDeployer("Booter.Run"))
+            {
+                var bootstrapper = new ShellBootstrapper();
+                // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
+                // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
+                bootstrapper.Run();
+            }
+
+            StatisticsCollector.Instance.FlushStatistics();
+            
             splasher.Close(TimeSpan.FromMilliseconds(100));
             if (MainWindow != null)
             {
@@ -45,6 +63,19 @@ namespace Freengy.UI
             {
                 MessageBox.Show("Wow. Main window is not found");
             }
+        }
+
+
+        private void FlushStatistics(IEnumerable<StatisticsUnit> units) 
+        {
+            string log =
+                string.Join
+                (
+                    Environment.NewLine,
+                    units.Select(unit => $"{unit.UnitName} started '{unit.Started}'; finished '{unit.Finished}'")
+                );
+
+            MessageBox.Show(log);
         }
 
 

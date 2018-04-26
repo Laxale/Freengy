@@ -19,17 +19,20 @@ namespace Freengy.Base.Module
     {
         public void Initialize() 
         {
-            //just create singleton
-            var initializer = ViewModelInitializer.Instance;
+            using (new StatisticsDeployer(nameof(BaseModule)))
+            {
+                //just create singleton
+                var initializer = ViewModelInitializer.Instance;
 
-            ServiceLocator.Default.RegisterInstance(ChatHub.Instance);
-            ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
-            ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
+                ServiceLocator.Default.RegisterInstance(ChatHub.Instance);
+                ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
+                ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessage, ChatMessage>(RegistrationType.Transient);
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessageFactory, ChatMessageFactory>(RegistrationType.Transient);
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessage, ChatMessage>(RegistrationType.Transient);
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessageFactory, ChatMessageFactory>(RegistrationType.Transient);
+            }
         }
     }
 }

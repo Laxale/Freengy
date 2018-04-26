@@ -20,24 +20,20 @@ using Freengy.FriendList.Module;
 using Freengy.Diagnostics.Module;
 
 using Catel.IoC;
-using Catel.Messaging;
 
-using Prism;
+using Prism.Mvvm;
 using Prism.Unity;
 using Prism.Regions;
 using Prism.Modularity;
 
 using Microsoft.Practices.Unity;
-using Prism.Mvvm;
 
 
 namespace Freengy.UI.Helpers 
 {
-    using System.Linq;
-
-    using Prism.Regions.Behaviors;
-
-
+    /// <summary>
+    /// Main application prism bootstrapper.
+    /// </summary>
     public class ShellBootstrapper : UnityBootstrapper 
     {
         private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();
@@ -51,8 +47,6 @@ namespace Freengy.UI.Helpers
             Application.Current.MainWindow = (Window)Shell;
             //Application.Current.MainWindow.Show();
             
-            UiDispatcher.Invoke(() => { }); // initialize him with static ctor
-
             regionManager = Container.TryResolve<IRegionManager>();
 
             Register();

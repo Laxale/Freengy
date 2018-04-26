@@ -79,6 +79,8 @@
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
     <Compile Include="Helpers\KeyHandler.cs" />
     <Compile Include="Helpers\Commands\MyCommand.cs" />
+    <Compile Include="Helpers\StatisticsCollector.cs" />
+    <Compile Include="Helpers\StatisticsDeployer.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Helpers\ViewModelWierer.cs" />
     <Compile Include="Interfaces\IAccountManager.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
     <Compile Include="Interfaces\IResponsibilityChainer.cs" />
+    <Compile Include="Interfaces\IStatisticsCollector.cs" />
     <Compile Include="Interfaces\ITaskWrapper.cs" />
     <Compile Include="Interfaces\IUiModule.cs" />
     <Compile Include="Interfaces\IUserActivity.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
+    <Compile Include="Models\StatisticsUnit.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />

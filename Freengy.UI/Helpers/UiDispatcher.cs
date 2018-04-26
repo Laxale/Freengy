@@ -27,13 +27,10 @@ namespace Freengy.UI.Helpers
 
         static UiDispatcher() 
         {
-            uiDispatcher = Application.Current.MainWindow.Dispatcher;
+            uiDispatcher = Application.Current.Dispatcher;
         }
 
-        private UiDispatcher() 
-        {
-
-        }
+        private UiDispatcher() { }
 
         public static UiDispatcher Instance => instance ?? (instance = new UiDispatcher());
 
