@@ -23,6 +23,7 @@ using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
 using Freengy.Base.Helpers;
+using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
 

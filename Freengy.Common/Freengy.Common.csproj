@@ -56,11 +56,14 @@
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
     <Compile Include="Helpers\Hasher.cs" />
+    <Compile Include="Helpers\HttpActor.cs" />
+    <Compile Include="Helpers\MediaTypes.cs" />
     <Compile Include="Helpers\Result\Result.cs" />
     <Compile Include="Helpers\Result\ResultExtensions.cs" />
     <Compile Include="Helpers\Result\ResultOfT.cs" />
     <Compile Include="Helpers\SerializeHelper.cs" />
     <Compile Include="Helpers\ServerStartupBuilder.cs" />
+    <Compile Include="Interfaces\IHttpActor.cs" />
     <Compile Include="Interfaces\INamedObject.cs" />
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Models\AccountStateModel.cs" />

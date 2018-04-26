@@ -17,6 +17,7 @@ using Freengy.Networking.Interfaces;
 using NLog;
 
 using Catel.IoC;
+using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
 

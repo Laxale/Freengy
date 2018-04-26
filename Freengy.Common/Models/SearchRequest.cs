@@ -36,12 +36,9 @@ namespace Freengy.Common.Models
         /// </summary>
         /// <param name="account">Account to search it's friends.</param>
         /// <param name="nameFilter">Friends name filter.</param>
-        /// <param name="sessionToken">User session token.</param>
         /// <returns>Ready for use <see cref="SearchRequest"/> instance.</returns>
-        public static SearchRequest CreateFriendSearch(UserAccount account, string nameFilter, string sessionToken) 
+        public static SearchRequest CreateFriendSearch(UserAccount account, string nameFilter) 
         {
-            if (string.IsNullOrWhiteSpace(sessionToken)) throw new ArgumentNullException(nameof(sessionToken));
-
             return new SearchRequest
             {
                 Entity = SearchEntity.Friends,

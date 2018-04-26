@@ -19,6 +19,7 @@ using Freengy.FriendList.Views;
 
 using Catel.IoC;
 using Freengy.Common.Database;
+using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
 

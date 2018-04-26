@@ -9,7 +9,11 @@ using Freengy.Base.DefaultImpl;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
 
+using Freengy.Common.Helpers;
+using Freengy.Common.Interfaces;
+
 using Catel.IoC;
+
 using Prism.Modularity;
 
 

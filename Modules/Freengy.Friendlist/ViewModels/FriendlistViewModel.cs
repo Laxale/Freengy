@@ -26,6 +26,8 @@ using Freengy.Networking.DefaultImpl;
 using Freengy.Networking.Messages;
 
 using Catel.IoC;
+using Freengy.Common.Interfaces;
+using Freengy.Networking.Helpers;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -188,7 +190,7 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
-                httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl);
+                httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
 
                 var result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);

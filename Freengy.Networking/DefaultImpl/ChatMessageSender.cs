@@ -10,6 +10,7 @@ using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
+using Freengy.Common.Interfaces;
 
 
 namespace Freengy.Networking.DefaultImpl 

@@ -58,13 +58,11 @@
     <Compile Include="Constants\Url.cs" />
     <Compile Include="DefaultImpl\EntitySearcher.cs" />
     <Compile Include="DefaultImpl\FriendStateController.cs" />
-    <Compile Include="DefaultImpl\HttpActor.cs" />
     <Compile Include="DefaultImpl\LoginController.cs" />
-    <Compile Include="DefaultImpl\MediaTypes.cs" />
     <Compile Include="DefaultImpl\ChatMessageSender.cs" />
     <Compile Include="DefaultImpl\ServerListener.cs" />
+    <Compile Include="Helpers\HttpActorExtensions.cs" />
     <Compile Include="Interfaces\IEntitySearcher.cs" />
-    <Compile Include="Interfaces\IHttpActor.cs" />
     <Compile Include="Interfaces\IHttpClientParametersProvider.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageFriendStateUpdate.cs" />

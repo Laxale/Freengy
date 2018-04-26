@@ -23,6 +23,8 @@ using NLog;
 
 using Catel.IoC;
 using Catel.Messaging;
+using Freengy.Common.Interfaces;
+using Freengy.Networking.Helpers;
 
 
 namespace Freengy.Networking.DefaultImpl 

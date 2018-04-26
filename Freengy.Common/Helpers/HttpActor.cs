@@ -10,23 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Common.Constants;
-using Freengy.Common.Helpers;
-using Freengy.Networking.Interfaces;
-
-using Catel.IoC;
+using Freengy.Common.Interfaces;
+using Freengy.Networking.DefaultImpl;
 
 
-namespace Freengy.Networking.DefaultImpl 
+namespace Freengy.Common.Helpers 
 {
     /// <summary>
     /// <see cref="IHttpActor"/> implementer.
     /// </summary>
-    internal class HttpActor : IHttpActor 
+    public class HttpActor : IHttpActor 
     {
-        private static readonly ILoginController loginController = ServiceLocator.Default.ResolveType<ILoginController>();
-
         private readonly MediaTypes mediaTypes = new MediaTypes();
-        private readonly Func<string> sessionTokenGetter = () => loginController.MySessionToken;
         private readonly Dictionary<string, string> addedHeaders = new Dictionary<string, string>();
 
         private string address;
@@ -66,26 +61,6 @@ namespace Freengy.Networking.DefaultImpl
             if (string.IsNullOrWhiteSpace(requestAddress)) throw new ArgumentNullException(nameof(requestAddress));
 
             address = requestAddress;
-
-            return this;
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Set the HTTP client address for server to send messages to.
-        /// </summary>
-        /// <param name="clientAddress">HTTP address of a client.</param>
-        /// <returns>this.</returns>
-        public IHttpActor SetClientAddress(string clientAddress) 
-        {
-            if (string.IsNullOrWhiteSpace(clientAddress)) throw new ArgumentNullException(nameof(clientAddress));
-
-            const string fromHeaderName = FreengyHeaders.ClientAddressHeaderName;
-
-            if (!addedHeaders.ContainsKey(fromHeaderName))
-            {
-                addedHeaders.Add(fromHeaderName, clientAddress);
-            }
 
             return this;
         }
@@ -157,9 +132,6 @@ namespace Freengy.Networking.DefaultImpl
 
         private void AttachHeadersTo(HttpClient client) 
         {
-            string myToken = sessionTokenGetter();
-            addedHeaders.Add(FreengyHeaders.ClientSessionTokenHeaderName, myToken);
-
             foreach (KeyValuePair<string, string> pair in addedHeaders)
             {
                 client.DefaultRequestHeaders.Add(pair.Key, pair.Value);
