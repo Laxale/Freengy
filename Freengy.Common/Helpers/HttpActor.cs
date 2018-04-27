@@ -64,6 +64,26 @@ namespace Freengy.Common.Helpers
             return this;
         }
 
+        /// <summary>
+        /// Execute HTTP GET and return responce message asynchronously.
+        /// </summary>
+        /// <returns>Responce message.</returns>
+        public Task<HttpResponseMessage> GetAsync() 
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                using (HttpClientHandler handler = CreateHandler())
+                using (var client = new HttpClient(handler))
+                {
+                    AttachHeadersTo(client);
+
+                    ResponceMessage = client.GetAsync(address).Result;
+
+                    return ResponceMessage;
+                }
+            });
+        }
+
         /// <inheritdoc />
         /// <summary>
         /// Execute GET method with a given message payload.

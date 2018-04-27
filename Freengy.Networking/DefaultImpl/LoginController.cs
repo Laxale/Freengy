@@ -29,9 +29,6 @@ using Freengy.Networking.Helpers;
 
 namespace Freengy.Networking.DefaultImpl 
 {
-    using Freengy.Networking.Modules;
-
-
     /// <summary>
     /// <see cref="ILoginController"/> implementer.
     /// </summary>

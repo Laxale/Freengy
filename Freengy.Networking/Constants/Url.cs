@@ -78,9 +78,17 @@ namespace Freengy.Networking.Constants
             {
                 public static string Root { get; } = $"/{fromServerAction}";
 
-                public static string Inform { get; } = $"/{fromServerAction}/{ informAction }";
+                /// <summary>
+                /// Subroute on wich server requests client availability.
+                /// </summary>
+                public static string ReplyState { get; } = $"{ Root }/{ replyAction }{ stateAction }";
+                
+                public static string Inform { get; } = $"{ Root }/{ informAction }";
 
-                public static string InformFriendState { get; } = $"/{fromServerAction}/{ informAction }/{ friendAction}/{ stateAction }";
+                /// <summary>
+                /// Subroute on which server posts client's friends status updates.
+                /// </summary>
+                public static string InformFriendState { get; } = $"{ Root }/{ informAction }/{ friendAction}/{ stateAction }";
             }
         }
 

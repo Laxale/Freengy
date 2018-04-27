@@ -63,7 +63,7 @@ namespace Freengy.UI
                 }
 
                 // show loading results
-                StatisticsCollector.Instance.FlushStatistics();
+                //StatisticsCollector.Instance.FlushStatistics();
 
                 MainWindow.Closed += OnMainWindowClosed;
             }

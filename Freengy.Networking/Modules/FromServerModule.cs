@@ -41,10 +41,11 @@ namespace Freengy.Networking.Modules
         {
             Before.AddItemToStartOfPipeline(ValidateRequest);
 
+            Get[Url.Http.FromServer.ReplyState] = OnStateReplyRequest;
             Post[Url.Http.FromServer.InformFriendState] = OnFriendStateInform;
         }
 
-
+        
         private Response ValidateRequest(NancyContext nancyContext) 
         {
             loginController = loginController ?? ServiceLocator.Default.ResolveType<ILoginController>();
@@ -66,13 +67,18 @@ namespace Freengy.Networking.Modules
 
             return nancyContext.Response;
         }
-        
+
         private dynamic OnFriendStateInform(dynamic arg) 
         {
             var stateModel = new SerializeHelper().DeserializeObject<AccountStateModel>(Request.Body);
 
             FriendStateController.InternalInstance.UpdateFriendState(stateModel);
 
+            return HttpStatusCode.OK;
+        }
+
+        private static dynamic OnStateReplyRequest(dynamic arg) 
+        {
             return HttpStatusCode.OK;
         }
     }

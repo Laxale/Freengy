@@ -20,6 +20,12 @@ namespace Freengy.Common.Interfaces
         HttpResponseMessage ResponceMessage { get; }
 
         /// <summary>
+        /// Execute HTTP GET and return responce message asynchronously.
+        /// </summary>
+        /// <returns>Responce message.</returns>
+        Task<HttpResponseMessage> GetAsync();
+
+        /// <summary>
         /// Add HTTP header to sender.
         /// </summary>
         /// <param name="headerName">Header name.</param>
