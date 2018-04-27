@@ -3,11 +3,10 @@
 //
 
 using System;
+using Freengy.Common.Helpers.Statistics;
+using Freengy.Common.Models;
 
-using Freengy.Base.Models;
-
-
-namespace Freengy.Base.Helpers 
+namespace Freengy.Common.Helpers 
 {
     /// <summary>
     /// Allows to send code execution timestamps to <see cref="StatisticsCollector"/>.

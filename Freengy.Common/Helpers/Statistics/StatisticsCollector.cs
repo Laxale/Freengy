@@ -4,12 +4,10 @@
 
 using System;
 using System.Collections.Generic;
+using Freengy.Common.Interfaces;
+using Freengy.Common.Models;
 
-using Freengy.Base.Models;
-using Freengy.Base.Interfaces;
-
-
-namespace Freengy.Base.Helpers 
+namespace Freengy.Common.Helpers.Statistics 
 {
     /// <summary>
     /// <see cref="IStatisticsCollector"/> implementer.
@@ -31,7 +29,7 @@ namespace Freengy.Base.Helpers
         /// <summary>
         /// Единственный инстанс <see cref="StatisticsCollector"/>.
         /// </summary>
-        public static StatisticsCollector Instance 
+        public static IStatisticsCollector Instance 
         {
             get
             {
@@ -43,19 +41,19 @@ namespace Freengy.Base.Helpers
         }
 
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Write down all currently collected statistics using a provided Flush action.
+        /// </summary>
         public void FlushStatistics() 
         {
-            flushImpl(units);
+            flushImpl?.Invoke(units);
         }
 
-        /// <inheritdoc />
         public void AddUnit(StatisticsUnit unit) 
         {
             units.Add(unit);
         }
 
-        /// <inheritdoc />
         public void Configure(Action<IEnumerable<StatisticsUnit>> flushAction) 
         {
             flushImpl = flushAction ?? throw new ArgumentNullException(nameof(flushAction));

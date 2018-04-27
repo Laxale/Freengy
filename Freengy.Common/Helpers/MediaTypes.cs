@@ -4,8 +4,7 @@
 
 using System.Collections.Generic;
 
-
-namespace Freengy.Networking.DefaultImpl 
+namespace Freengy.Common.Helpers 
 {
     internal enum MediaTypesEnum 
     {

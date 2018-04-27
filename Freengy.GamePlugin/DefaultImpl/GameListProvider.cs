@@ -107,18 +107,15 @@ namespace Freengy.GamePlugin.DefaultImpl
         }
     }
 
+
     internal class GameListProvider : IGameListProvider 
     {
-        #region vars
-
         private readonly ITypeFactory typeFactory;
         private readonly ISettingsRepository settingsRepository;
         private readonly IAppDirectoryInspector directoryInspector;
         private readonly PluginsCache pluginsCache = new PluginsCache();
         private readonly GameDirectoryFilterStrategyBase gameFolderStrategy;
         private readonly IMessageMediator messageMediator = MessageMediator.Default;
-
-        #endregion vars
 
 
         #region Singleton
@@ -136,8 +133,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             TryCreateDefaultGamesFolder();
         }
 
-        public static GameListProvider Instance
-            => instance ?? (instance = new GameListProvider());
+        public static GameListProvider Instance => instance ?? (instance = new GameListProvider());
 
         #endregion Singleton
 

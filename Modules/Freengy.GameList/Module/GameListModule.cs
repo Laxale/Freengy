@@ -2,31 +2,33 @@
 //
 //
 
+using System;
+
+using Freengy.Base.Helpers;
+using Freengy.Base.Interfaces;
+using Freengy.Common.Helpers;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.GameList.Views;
+using Freengy.GameList.Diagnostics;
+
+using Catel.IoC;
+using Prism.Modularity;
+
 
 namespace Freengy.GameList.Module 
 {
-    using System;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Diagnostics.Interfaces;
-
-    using Freengy.GameList.Views;
-    using Freengy.Settings.Interfaces;
-    using Freengy.GameList.Diagnostics;
-    
-    using Prism.Modularity;
-
-    using Catel.IoC;
-
-
     public class GameListModule : IUiModule, IModule 
     {
         public Type ExportedViewType { get; } = typeof (GameListView);
 
+
         public void Initialize() 
         {
-            var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
-            controller.RegisterCategory(new GameListDiagnosticsCategory());
+            using (new StatisticsDeployer(nameof(GameListModule)))
+            {
+                var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
+                controller.RegisterCategory(new GameListDiagnosticsCategory());
+            }
         }
     }
 }

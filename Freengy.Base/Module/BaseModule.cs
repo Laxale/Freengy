@@ -9,7 +9,7 @@ using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
 
 using Catel.IoC;
-
+using Freengy.Common.Helpers;
 using Prism.Modularity;
 
 

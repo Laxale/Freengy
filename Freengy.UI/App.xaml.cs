@@ -3,27 +3,25 @@
 //
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
-
+using System.Collections.Generic;
+using System.Windows.Controls;
+using Freengy.Base.Helpers;
 using Freengy.UI.Helpers;
 using Freengy.UI.Constants;
 
 using Catel.IoC;
 using Catel.Logging;
-
+using Freengy.Common.Helpers;
+using Freengy.Common.Helpers.Statistics;
+using Freengy.Common.Models;
 using Prism.Regions;
 
 
 namespace Freengy.UI 
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Freengy.Base.Helpers;
-    using Freengy.Base.Models;
-
-
     public partial class App : Application 
     {
         protected override void OnStartup(StartupEventArgs e) 
@@ -48,15 +46,25 @@ namespace Freengy.UI
                 // из-за бутера к главному окну не применяются автостили, лежащие или подключённые в App.xaml.
                 // нарушен порядок загрузки, видимо. Потому что к другим чилдовым окнам главного окна стили уже будут готовы
                 bootstrapper.Run();
+
+                splasher.Close(TimeSpan.FromMilliseconds(100));
             }
 
-            StatisticsCollector.Instance.FlushStatistics();
-            
-            splasher.Close(TimeSpan.FromMilliseconds(100));
             if (MainWindow != null)
             {
-                ServiceLocator.Default.ResolveType<IRegionManager>().RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
-                MainWindow.Show();
+                using (new StatisticsDeployer("Navigate main window"))
+                {
+                    ServiceLocator.Default.ResolveType<IRegionManager>().RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
+                }
+
+                using (new StatisticsDeployer("Show main window"))
+                {
+                    MainWindow.Show();
+                }
+
+                // show loading results
+                StatisticsCollector.Instance.FlushStatistics();
+
                 MainWindow.Closed += OnMainWindowClosed;
             }
             else
@@ -68,14 +76,24 @@ namespace Freengy.UI
 
         private void FlushStatistics(IEnumerable<StatisticsUnit> units) 
         {
-            string log =
-                string.Join
-                (
-                    Environment.NewLine,
-                    units.Select(unit => $"{unit.UnitName} started '{unit.Started}'; finished '{unit.Finished}'")
-                );
+            var list = new ListBox
+            {
+                ItemsSource = units.ToList()
+            };
+            
+            ScrollViewer.SetVerticalScrollBarVisibility(list, ScrollBarVisibility.Visible);
 
-            MessageBox.Show(log);
+            var logWin = new Window
+            {
+                MaxHeight = 500,
+                MaxWidth = 800,
+                Title = "Statistics",
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Content = list
+            };
+
+            logWin.ShowDialog();
         }
 
 

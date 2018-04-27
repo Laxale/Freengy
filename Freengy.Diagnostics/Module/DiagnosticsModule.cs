@@ -11,7 +11,8 @@ using Freengy.Diagnostics.DefaultImpl;
 
 using Catel.IoC;
 using Catel.Services;
-
+using Freengy.Base.Helpers;
+using Freengy.Common.Helpers;
 using Prism.Modularity;
 
 
@@ -37,8 +38,11 @@ namespace Freengy.Diagnostics.Module
         
         public void Initialize() 
         {
-            ServiceLocator.Default.RegisterInstance(DiagnosticsController.Instance);
-            ServiceLocator.Default.RegisterType<IDiagnosticsUnitFactory, DiagnosticsUnitFactory>(RegistrationType.Transient);
+            using (new StatisticsDeployer(nameof(DiagnosticsModule)))
+            {
+                ServiceLocator.Default.RegisterInstance(DiagnosticsController.Instance);
+                ServiceLocator.Default.RegisterType<IDiagnosticsUnitFactory, DiagnosticsUnitFactory>(RegistrationType.Transient);
+            }
         }
     }
 }

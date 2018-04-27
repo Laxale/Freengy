@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 
 using Freengy.Common.Database;
+using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Database.Context;
 using Freengy.Database.Object;
@@ -140,21 +141,28 @@ namespace Freengy.Database
             }
         }
 
-        private DbContextBase<TObject> CreateContext<TObject>(Type contextType) where TObject : DbObject, new()
+        private DbContextBase<TObject> CreateContext<TObject>(Type contextType) where TObject : DbObject, new() 
         {
             var ctors = contextType.GetConstructors();
             var defaultCtor = ctors.FirstOrDefault(ctor => ctor.IsPublic && !ctor.GetParameters().Any());
 
-            var context = defaultCtor.Invoke(null);
+            object context;
+            using (new StatisticsDeployer("Create context ctor"))
+            {
+                context = defaultCtor.Invoke(null);
+            }
 
             return (DbContextBase<TObject>)context;
         }
 
-        private Result<TObject> GetDbObjectSynchronized<TObject>() where TObject : DbObject, new()
+        private Result<TObject> GetDbObjectSynchronized<TObject>() where TObject : DbObject, new() 
         {
             lock (Locker)
             {
-                return TryGetDbObject<TObject>();
+                using (new StatisticsDeployer("TryGetDbObject"))
+                {
+                    return TryGetDbObject<TObject>();
+                }
             }
         }
 
@@ -169,9 +177,12 @@ namespace Freengy.Database
                     //var logs = new List<string>();
                     //dbContext.Database.Log = logs.Add;
 
-                    var foundProxy =
-                        dbContext.Objects.Local.SingleOrDefault() ??
-                        dbContext.Objects.SingleOrDefault();
+                    TObject foundProxy;
+
+                    using (new StatisticsDeployer("TryGetDbObject.FindProxy"))
+                    {
+                        foundProxy = dbContext.Objects.Local.SingleOrDefault() ?? dbContext.Objects.SingleOrDefault();
+                    }
 
                     TObject foundObject =
                         (TObject)((foundProxy as ComplexDbObject)?.CreateFromProxy(foundProxy) ?? foundProxy);

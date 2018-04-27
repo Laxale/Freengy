@@ -4,15 +4,15 @@
 
 using System;
 
+using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.FriendList.Views;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.FriendList.Diagnostics;
-using Freengy.FriendList.ViewModels;
-using Prism.Modularity;
 
 using Catel.IoC;
-using Catel.Services;
+using Freengy.Common.Helpers;
+using Prism.Modularity;
 
 
 namespace Freengy.FriendList.Module 
@@ -24,10 +24,13 @@ namespace Freengy.FriendList.Module
 
         public void Initialize() 
         {
-            var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
-            controller.RegisterCategory(new FriendListDiagnosticsCategory());
+            using (new StatisticsDeployer(nameof(FriendListModule)))
+            {
+                var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
+                controller.RegisterCategory(new FriendListDiagnosticsCategory());
 
-            //ServiceLocator.Default.RegisterInstance(FriendStateController.Instance);
+                //ServiceLocator.Default.RegisterInstance(FriendStateController.Instance);
+            }
         }
     }
 }

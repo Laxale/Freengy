@@ -49,7 +49,7 @@ namespace Freengy.UI.DefaultImpl
     /// <summary>
     /// <see cref="IAccountManager"/> implementer.
     /// </summary>
-    public class AccountManager : IAccountManager 
+    public class DbAccountManager : IAccountManager 
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 

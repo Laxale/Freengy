@@ -12,6 +12,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using Freengy.Common.Database;
+using Freengy.Common.Helpers;
 using Freengy.Database.Object;
 
 using NLog;
@@ -39,7 +40,7 @@ namespace Freengy.Database.Context
         {
             dbFilePath = Initializer.DbFilePath;
 
-            DbInterception.Add(new EfCommandInterceptor());
+            //DbInterception.Add(new EfCommandInterceptor());
         }
 
         /// <summary>
@@ -184,9 +185,8 @@ namespace Freengy.Database.Context
         {
             var member = entry.Member(memberName);
             //var reference = member as DbReferenceEntry;
-            var property = member as DbPropertyEntry;
 
-            return property != null && !property.IsModified;
+            return member is DbPropertyEntry property && !property.IsModified;
         }
 
         private void CreateTableIfNotExists(DbModelBuilder modelBuilder) 
@@ -195,13 +195,14 @@ namespace Freengy.Database.Context
             {
                 var generator = new SqliteSqlGenerator();
 
-                var model = modelBuilder.Build(Database.Connection);
-                var sql = generator.Generate(model.StoreModel).Insert(12, " IF NOT EXISTS ");
+                DbModel model = modelBuilder.Build(Database.Connection);
+                string sql = generator.Generate(model.StoreModel).Insert(12, " IF NOT EXISTS ");
 
                 creationCommand.CommandText = sql;
                 creationCommand.CommandTimeout = commandTimeoutInSeconds;
 
                 TryOpenConnection();
+
                 creationCommand.ExecuteNonQuery();
             }
         }

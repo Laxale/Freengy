@@ -3,22 +3,18 @@
 //
 
 using System;
+using System.Collections.Generic;
+using Freengy.Common.Models;
 
-using Freengy.Base.Models;
-
-
-namespace Freengy.Base.Interfaces 
+namespace Freengy.Common.Interfaces 
 {
-    using System.Collections.Generic;
-
-
     /// <summary>
     /// Interface for a statistics collector.
     /// </summary>
     public interface IStatisticsCollector 
     {
         /// <summary>
-        /// Write down
+        /// Write down all currently collected statistics using a provided Flush action.
         /// </summary>
         void FlushStatistics();
 

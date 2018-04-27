@@ -3,9 +3,9 @@
 //
 
 using System;
+using System.Linq;
 
-
-namespace Freengy.Base.Models 
+namespace Freengy.Common.Models 
 {
     public class StatisticsUnit 
     {
@@ -32,5 +32,16 @@ namespace Freengy.Base.Models
         /// Statistics unit finished timestamp.
         /// </summary>
         public DateTime Finished { get; set; }
+
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString() 
+        {
+            string started = Started.ToString("O").Split('T').Last();
+            string finished = Finished.ToString("O").Split('T').Last();
+
+            return $"Work {UnitName} started '{ started }' finished '{ finished }'";
+        }
     }
 }

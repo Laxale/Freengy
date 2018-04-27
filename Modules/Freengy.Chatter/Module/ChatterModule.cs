@@ -2,33 +2,29 @@
 //
 //
 
+using System;
+
+using Freengy.Chatter.Views;
+using Freengy.Base.Helpers;
+using Freengy.Base.Interfaces;
+
+using Prism.Modularity;
+
+using Catel.IoC;
+using Freengy.Common.Helpers;
+
 
 namespace Freengy.Chatter.Module 
 {
-    using System;
-
-    using Freengy.Chatter.Views;
-    using Freengy.Base.Interfaces;
-    
-    using Prism.Modularity;
-
-    using Catel.IoC;
-    
-
     public class ChatterModule : IUiModule, IModule 
     {
-        #region Singleton
-
         private static ChatterModule instance;
 
-        private ChatterModule() 
-        {
 
-        }
+        private ChatterModule() { }
 
-        public static ChatterModule Instance => ChatterModule.instance ?? (ChatterModule.instance = new ChatterModule());
 
-        #endregion Singleton
+        public static ChatterModule Instance => instance ?? (instance = new ChatterModule());
 
 
         public Type ExportedViewType { get; } = typeof(ChatterView);
@@ -36,7 +32,10 @@ namespace Freengy.Chatter.Module
 
         public void Initialize() 
         {
-            //ServiceLocator.Default.RegisterType<i>
+            using (new StatisticsDeployer(nameof(ChatterModule)))
+            {
+                
+            }
         }
     }
 }

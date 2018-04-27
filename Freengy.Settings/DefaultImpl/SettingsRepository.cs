@@ -5,7 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Freengy.Base.Helpers;
+using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Database;
 using Freengy.Database.Context;
@@ -28,10 +29,7 @@ namespace Freengy.Settings.DefaultImpl
         private static SettingsRepository instance;
 
 
-        private SettingsRepository() 
-        {
-
-        }
+        private SettingsRepository() { }
 
 
         /// <summary>
@@ -92,7 +90,12 @@ namespace Freengy.Settings.DefaultImpl
             try
             {
                 var storage = new DbObjectStorage();
-                Result<TUnitType> result = storage.GetSingleSimple<TUnitType>();
+
+                Result<TUnitType> result;
+                using (new StatisticsDeployer("Get single from db"))
+                {
+                    result = storage.GetSingleSimple<TUnitType>();
+                }
 
                 if (result.Value == null)
                 {

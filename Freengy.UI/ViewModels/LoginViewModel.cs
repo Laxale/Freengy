@@ -29,7 +29,7 @@ using Freengy.UI.Windows;
 using NLog;
 
 using Catel.IoC;
-
+using Freengy.Common.Helpers;
 using Prism.Regions;
 
 using CommonRes = Freengy.CommonResources.StringResources;
@@ -200,7 +200,12 @@ namespace Freengy.UI.ViewModels
 
         private void LoadCredsFromSettings() 
         {
-            var lastLoggedResult = accountManager.GetLastLoggedIn();
+            Result<UserAccount> lastLoggedResult;
+            using (new StatisticsDeployer("Get last account"))
+            {
+                lastLoggedResult = accountManager.GetLastLoggedIn();
+            }
+
             var settings = AppSettings.Instance;
 
             if (lastLoggedResult.Success && lastLoggedResult.Value != null)

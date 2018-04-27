@@ -2,16 +2,13 @@
 //
 //
 
-using Freengy.UI.Views;
 using Freengy.UI.Helpers;
-using Freengy.UI.Windows;
-using Freengy.UI.ViewModels;
 using Freengy.UI.DefaultImpl;
+using Freengy.Common.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
 
 using Catel.IoC;
-using Catel.Services;
 
 using Prism.Modularity;
 
@@ -22,10 +19,14 @@ namespace Freengy.UI.Module
     {
         public void Initialize() 
         {
-            ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
+            using (new StatisticsDeployer(nameof(MainModule)))
+            {
+                ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
 
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, AccountManager>();
-            ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+                //ServiceLocator.Default.RegisterType<IAccountManager, DbAccountManager>(RegistrationType.Transient);
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, ConfigFileAccountManager>();
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+            }
         }
     }
 }
