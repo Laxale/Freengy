@@ -6,11 +6,11 @@ using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Extensions;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
+using Freengy.Common.Interfaces;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
-using Freengy.Common.Interfaces;
 
 
 namespace Freengy.Networking.DefaultImpl 

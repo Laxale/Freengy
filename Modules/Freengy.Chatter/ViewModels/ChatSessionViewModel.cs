@@ -26,6 +26,11 @@ namespace Freengy.Chatter.ViewModels
 
         private string messageText;
 
+        /// <summary>
+        /// Event is fired to scroll the message list to end.
+        /// </summary>
+        internal event Action<IChatMessageDecorator> MessageAdded = decoratpr => { };
+
 
 
         public ChatSessionViewModel(IChatSession session) 
@@ -43,33 +48,27 @@ namespace Freengy.Chatter.ViewModels
             CommandSendMessage = new MyCommand(CommandSendMessageImpl, CanSendMessage);
         }
 
-
-        #region override
-
-        protected override void SetupCommands()
-        {
-
-        }
-
-        public override string ToString() 
-        {
-            return Session.Name;
-        }
-
-        #endregion override
-
-
-        #region commands
-        public MyCommand CommandSendMessage { get; private set; }
-
-        #endregion commands
         
+        /// <summary>
+        /// Command to send current message.
+        /// </summary>
+        public MyCommand CommandSendMessage { get; }
 
+
+        /// <summary>
+        /// Gets current chat session object.
+        /// </summary>
         public IChatSession Session { get; }
 
-        public ICollectionView SessionMessages { get; private set; }
+        /// <summary>
+        /// Get the collection of messages for current session.
+        /// </summary>
+        public ICollectionView SessionMessages { get; }
 
 
+        /// <summary>
+        /// Gets or sets current user message ready to post to session.
+        /// </summary>
         public string MessageText 
         {
             get => messageText;
@@ -82,6 +81,12 @@ namespace Freengy.Chatter.ViewModels
 
                 OnPropertyChanged();
             }
+        }
+
+
+        public override string ToString() 
+        {
+            return Session.Name;
         }
 
 
@@ -104,7 +109,12 @@ namespace Freengy.Chatter.ViewModels
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 
         {
-            GUIDispatcher.InvokeOnGuiThread(() => sessionMessages.Add(addedMessage));
+            GUIDispatcher.InvokeOnGuiThread(() =>
+            {
+                sessionMessages.Add(addedMessage);
+                SessionMessages.MoveCurrentToLast();
+                MessageAdded.Invoke(addedMessage);
+            });
         }
     }
 }

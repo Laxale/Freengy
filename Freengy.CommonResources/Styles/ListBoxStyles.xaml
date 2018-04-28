@@ -3,58 +3,43 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="BorderStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type ListBoxItem}" x:Key="CoolListBoxItemStyle">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="BorderThickness" Value="2, 0, 0, 0"/>
+        <Setter Property="OverridesDefaultStyle" Value="False"/>
+        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}">
-
+                            BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}" Name="Bord">
                         <ContentPresenter/>
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="ListBoxItem.IsSelected" Value="True">
-                            <Setter Property="ListBoxItem.Background" Value="Black"/>
+                            <Setter TargetName="Bord" Property="Background" Value="{StaticResource FirstMainBrush}"/>
                         </Trigger>
 
                         <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
-                            <Setter Property="ListBoxItem.Background" Value="Orange"/>
+                            <Setter TargetName="Bord" Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="Black"/>
-                <Setter Property="Foreground" Value="Yellow"/>
-            </Trigger>
-
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="Green"/>
-                <Setter Property="Background" Value="Orange"/>
-                <!--                            <Setter Property="BorderThickness" Value="5"/>-->
-            </Trigger>
-        </Style.Triggers>
     </Style>
     
     <Style TargetType="ListBox" x:Key="CommonListBoxStyle">
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
         <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource CoolListBoxItemStyle}"/>
     </Style>
 
-    <Style TargetType="ListBox" BasedOn="{StaticResource CommonListBoxStyle}">
-        
-    </Style>
+    <Style TargetType="ListBox" BasedOn="{StaticResource CommonListBoxStyle}"/>
 </ResourceDictionary>

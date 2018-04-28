@@ -2,6 +2,8 @@
 //
 //
 
+using System.Threading.Tasks;
+
 
 namespace Freengy.Networking.Interfaces 
 {
@@ -11,8 +13,8 @@ namespace Freengy.Networking.Interfaces
     public interface IHttpClientParametersProvider 
     {
         /// <summary>
-        /// Gets the client socket address.
+        /// Get the client socket address asynchronously.
         /// </summary>
-        string ClientAddress { get; }
+        Task<string> GetClientAddressAsync();
     }
 }

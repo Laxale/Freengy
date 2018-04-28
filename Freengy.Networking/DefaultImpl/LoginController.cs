@@ -6,6 +6,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
@@ -13,8 +15,8 @@ using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models.Readonly;
-using Freengy.Base.Messages;
-using Freengy.Base.Interfaces;
+using Freengy.Common.Interfaces;
+using Freengy.Networking.Helpers;
 using Freengy.Networking.Messages;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
@@ -23,8 +25,6 @@ using NLog;
 
 using Catel.IoC;
 using Catel.Messaging;
-using Freengy.Common.Interfaces;
-using Freengy.Networking.Helpers;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -53,7 +53,7 @@ namespace Freengy.Networking.DefaultImpl
             messageLogInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
-            clientAddressGetter = () => serviceLocator.ResolveType<IHttpClientParametersProvider>().ClientAddress;
+            clientAddressGetter = () => serviceLocator.ResolveType<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
         }
 
         public static ILoginController Instance => instance ?? (instance = new LoginController());
@@ -178,7 +178,7 @@ namespace Freengy.Networking.DefaultImpl
             {
                 messageMediator.SendMessage(messageLogInAttempt);
 
-                Thread.Sleep(300);
+                //Thread.Sleep(300);
 
                 AccountStateModel stateModel = LogInImpl(loginModel);
 

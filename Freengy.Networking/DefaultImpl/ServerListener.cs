@@ -38,16 +38,12 @@ namespace Freengy.Networking.DefaultImpl
         private readonly IChatMessageFactory messageFactory = ServiceLocator.Default.ResolveType<IChatMessageFactory>();
         private readonly IFriendStateController friendController = ServiceLocator.Default.ResolveType<IFriendStateController>();
 
+        private Task startupTask;
+        private string clientAddress;
+
 
         private ServerListener() { }
-
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Gets the client socket address.
-        /// </summary>
-        public string ClientAddress { get; private set; }
-
+     
 
         /// <summary>
         /// Единственный инстанс <see cref="ServerListener"/>.
@@ -70,19 +66,38 @@ namespace Freengy.Networking.DefaultImpl
         }
 
 
+        /// <summary>
+        /// Gets the client socket address.
+        /// </summary>
+        public async Task<string> GetClientAddressAsync() 
+        {
+            return await Task.Run(() =>
+            {
+                if (clientAddress == null)
+                {
+                    startupTask.Wait();
+                }
+
+                return clientAddress;
+            });
+        }
+
+
         internal async Task InitInternalAsync() 
         {
-            await Task.Run(() =>
-                           {
-                               ClientAddress =
-                                   new ServerStartupBuilder()
-                                       .SetBaseAddress(httpAddressNoPort)
-                                       .SetInitialPort(StartupConst.InitialClientPort)
-                                       .SetPortStep(StartupConst.PortCheckingStep)
-                                       .SetTrialsCount(maxStartTrials)
-                                       .UseHttps(false)
-                                       .Build();
-                           });
+            startupTask = Task.Run(() =>
+            {
+                clientAddress =
+                    new ServerStartupBuilder()
+                        .SetBaseAddress(httpAddressNoPort)
+                        .SetInitialPort(StartupConst.InitialClientPort)
+                        .SetPortStep(StartupConst.PortCheckingStep)
+                        .SetTrialsCount(maxStartTrials)
+                        .UseHttps(false)
+                        .Build();
+            });
+
+            await startupTask;
         }
 
         internal void InformOfANewMessage(ChatMessageModel messageModel) 

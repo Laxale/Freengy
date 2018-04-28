@@ -28,22 +28,21 @@
         </Grid.RowDefinitions>
 
         <!-- Chat messages list -->
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <ListBox VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="interfaces:IChatMessageDecorator">
-                        <DockPanel>
-                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=TimeStamp}" Foreground="Blue"/>
-                                <TextBlock Text="{Binding Path=OriginalMessage.Author.Name}" Foreground="{StaticResource PurpleBrush}"/>
-                            </StackPanel>
+        <ListBox Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}" IsSynchronizedWithCurrentItem="True" Name="MessageList"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.ScrollUnit="Pixel">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="interfaces:IChatMessageDecorator">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=TimeStamp}" Foreground="Blue"/>
+                            <TextBlock Text="{Binding Path=OriginalMessage.Author.Name}" Foreground="{StaticResource PurpleBrush}"/>
+                        </StackPanel>
 
-                            <TextBlock DockPanel.Dock="Top" Text="{Binding Path=OriginalMessage.Text}"/>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=OriginalMessage.Text}"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <GridSplitter Grid.Row="1" Height="6" Width="Auto" ResizeBehavior="PreviousAndNext" Background="{StaticResource DarkGrayBrush}" 
                       Margin="{StaticResource All4Margin}" HorizontalAlignment="Stretch"/>
