@@ -213,7 +213,13 @@ namespace Freengy.Networking.DefaultImpl
 
             using (var actor = serviceLocator.ResolveType<IHttpActor>())
             {
-                actor.SetClientAddress(clientAddressGetter())
+                string myAddress = clientAddressGetter();
+                if (string.IsNullOrWhiteSpace(myAddress))
+                {
+                    throw new InvalidOperationException("My address is empty!");
+                }
+
+                actor.SetClientAddress(myAddress)
                      .SetRequestAddress(Url.Http.LogInUrl);
 
                 AccountStateModel stateModel = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
@@ -222,20 +228,30 @@ namespace Freengy.Networking.DefaultImpl
 
                 if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
-                    MySessionToken = auth.ClientToken;
-                    ServerSessionToken = auth.ServerToken;
-                    LoggedInPassword = loginModel.Password;
+                    SaveOnlineState(loginModel, auth);
                     messageMediator.SendMessage(messageLoggedIn);
                 }
                 else if(stateModel.OnlineStatus == AccountOnlineStatus.Offline)
                 {
-                    MySessionToken = string.Empty;
-                    ServerSessionToken = string.Empty;
-                    LoggedInPassword = string.Empty;
+                    SaveOfflineState();
                 }
 
                 return stateModel;
             }
+        }
+
+        private void SaveOnlineState(LoginModel loginModel, SessionAuth auth) 
+        {
+            MySessionToken = auth.ClientToken;
+            ServerSessionToken = auth.ServerToken;
+            LoggedInPassword = loginModel.Password;
+        }
+
+        private void SaveOfflineState() 
+        {
+            MySessionToken = string.Empty;
+            ServerSessionToken = string.Empty;
+            LoggedInPassword = string.Empty;
         }
 
         private void HashThePassword(LoginModel loginModel) 
