@@ -48,9 +48,11 @@
     <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\HttpMessageExtensions.cs" />
     <Compile Include="Exceptions\ServerNotAuthorizedException.cs" />
     <Compile Include="Extensions\AccountExtensions.cs" />
+    <Compile Include="Extensions\IpAddressExtensions.cs" />
     <Compile Include="Extensions\NancyHttpMessageExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />

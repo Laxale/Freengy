@@ -3,6 +3,8 @@
 //
 
 
+using Freengy.Common.Extensions;
+
 namespace Base.Tests.Extensions 
 {
     using System;

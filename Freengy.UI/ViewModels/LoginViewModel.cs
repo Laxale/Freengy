@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
+using Freengy.Common.Helpers;
 using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models.Readonly;
@@ -29,8 +30,9 @@ using Freengy.UI.Windows;
 using NLog;
 
 using Catel.IoC;
-using Freengy.Common.Helpers;
+
 using Prism.Regions;
+
 
 using CommonRes = Freengy.CommonResources.StringResources;
 

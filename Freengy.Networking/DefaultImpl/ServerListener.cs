@@ -3,6 +3,10 @@
 //
 
 using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
@@ -15,19 +19,17 @@ using Freengy.Networking.Interfaces;
 using NLog;
 
 using Catel.IoC;
+using Freengy.Common.Extensions;
 
 
 namespace Freengy.Networking.DefaultImpl 
 {
-    using System.Threading.Tasks;
-
-
     /// <summary>
     /// Client-side Freengy server listener.
     /// </summary>
     internal class ServerListener : IHttpClientParametersProvider 
     {
-        private static readonly string httpAddressNoPort = "localhost";
+        //private static readonly string httpAddressNoPort = "localhost";
         private static readonly object Locker = new object();
         private static readonly ushort maxStartTrials = 50;
         
@@ -85,11 +87,21 @@ namespace Freengy.Networking.DefaultImpl
 
         internal async Task InitInternalAsync() 
         {
-            startupTask = Task.Run(() =>
+            startupTask = Task.Run(async () =>
             {
+                IPAddress[] ipAddresses = await Dns.GetHostAddressesAsync(Environment.MachineName);
+
+                var machineAddress = 
+                    ipAddresses
+                        .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork) // Internetwork is IPv4
+                        //.Skip(1)
+                        .First(ip => ip.IsLocal()) // for debugging local server
+                        //.First(ip => !ip.IsLocal()) // for real remote server
+                        .ToString();
+
                 clientAddress =
                     new ServerStartupBuilder()
-                        .SetBaseAddress(httpAddressNoPort)
+                        .SetBaseAddress(machineAddress)
                         .SetInitialPort(StartupConst.InitialClientPort)
                         .SetPortStep(StartupConst.PortCheckingStep)
                         .SetTrialsCount(maxStartTrials)

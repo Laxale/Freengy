@@ -12,12 +12,12 @@ using Freengy.Unsafe;
 using Freengy.Base.Helpers;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Extensions;
+using Freengy.Common.Extensions;
 
 using Catel.Data;
 using Catel.MVVM;
 
 using ActiveUp.Net.Mail;
-
 using LocalRes = Freengy.UI.Properties.Resources;
 using CommonRes = Freengy.CommonResources.StringResources;
 

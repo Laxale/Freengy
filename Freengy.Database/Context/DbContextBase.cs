@@ -128,7 +128,7 @@ namespace Freengy.Database.Context
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Не удалось создать таблицу для типа '{ typeof(T).Name} '");
+                //logger.Error(ex, $"Не удалось создать таблицу для типа '{ typeof(T).Name} '");
                 //throw;
             }
             finally

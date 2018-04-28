@@ -5,8 +5,11 @@
 using System;
 
 
-namespace Freengy.Base.Extensions 
+namespace Freengy.Common.Extensions 
 {
+    /// <summary>
+    /// Contains extension methods for <see cref="Exception"/>.
+    /// </summary>
     public static class ExceptionExtensions 
     {
         /// <summary>
