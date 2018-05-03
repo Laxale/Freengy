@@ -7,9 +7,10 @@ using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
+using Freengy.Common.Helpers;
 
 using Catel.IoC;
-using Freengy.Common.Helpers;
+
 using Prism.Modularity;
 
 
@@ -26,6 +27,7 @@ namespace Freengy.Base.Module
 
                 ServiceLocator.Default.RegisterInstance(ChatHub.Instance);
                 ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
+                ServiceLocator.Default.RegisterInstance(CurtainedExecutor.Instance);
                 ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();

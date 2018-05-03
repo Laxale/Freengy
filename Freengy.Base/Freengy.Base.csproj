@@ -59,6 +59,7 @@
     <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSession.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
+    <Compile Include="DefaultImpl\CurtainedExecutor.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
     <Compile Include="DefaultImpl\UserActivityHub.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
     <Compile Include="Helpers\KeyHandler.cs" />
     <Compile Include="Helpers\Commands\MyCommand.cs" />
+    <Compile Include="Helpers\KnownCurtainedIds.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Helpers\ViewModelWierer.cs" />
     <Compile Include="Interfaces\IAccountManager.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Chat\Interfaces\IChatSession.cs" />
     <Compile Include="Chat\Interfaces\IChatSessionFactory.cs" />
     <Compile Include="Chat\Interfaces\IChatHub.cs" />
+    <Compile Include="Interfaces\ICurtainedExecutor.cs" />
     <Compile Include="Interfaces\IFriendStateController.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
+    <Compile Include="Messages\MessageCurtainRequest.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
@@ -141,9 +145,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
