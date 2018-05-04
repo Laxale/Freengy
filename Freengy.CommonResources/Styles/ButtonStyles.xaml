@@ -12,13 +12,14 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Button -->
-    <Style TargetType="Button" x:Key="CommonButtonStyle">
-        <Setter Property="Padding"             Value="-2"/>
+    <Style TargetType="ButtonBase" x:Key="CommonButtonStyle">
+        <Setter Property="Padding"             Value="0, 2"/>
         <Setter Property="UseLayoutRounding"   Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="Margin"              Value="{StaticResource All4Margin}"/>
-        <Setter Property="MinWidth"            Value="{StaticResource MinButtonWidth}"/>
+        <Setter Property="MinWidth"            Value="{StaticResource MinButtonHeight}"/>
         <Setter Property="MinHeight"           Value="{StaticResource MinButtonHeight}"/>
     </Style>
 
@@ -30,7 +31,9 @@
                                Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" 
                                Background="Transparent" Foreground="{TemplateBinding Button.Foreground}"
                                FontSize="{TemplateBinding Button.FontSize}" Visibility="{TemplateBinding Visibility}"
-                               Margin="{TemplateBinding Margin}" Cursor="Hand" ToolTip="{TemplateBinding ToolTip}"/>
+                               Margin="{TemplateBinding Padding}" Cursor="Hand" ToolTip="{TemplateBinding ToolTip}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -44,7 +47,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Button" x:Key="ImageButtonStyle">
+    <Style TargetType="ButtonBase" x:Key="ImageButtonStyle">
         <Setter Property="Width" Value="26"/>
         <Setter Property="Height" Value="26"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -55,7 +58,7 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="ButtonBase">
                     <Border Name="Bord" Width="{TemplateBinding Width}" 
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -74,6 +77,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="ToggleButton" x:Key="ImageToggleButtonStyle" BasedOn="{StaticResource ImageButtonStyle}"/>
 
     <Style TargetType="Button" BasedOn="{StaticResource CommonButtonStyle}"/>
 </ResourceDictionary>

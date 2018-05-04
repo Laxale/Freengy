@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Freengy.Base.Views.AlbumCoverView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:Freengy.Base.Views"
+             xmlns:viewModels="clr-namespace:Freengy.Base.ViewModels"
+
+             mc:Ignorable="d" 
+             Background="{StaticResource AlmostTransparent}"
+             d:DataContext="{d:DesignInstance viewModels:AlbumViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Button DockPanel.Dock="Top" Style="{StaticResource LinkButtonStyle}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                Content="{Binding Path=PhotoAlbum.OwnerAccount.Name}" Foreground="{StaticResource PurpleBrush}"/>
+
+        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=PhotoAlbum.Name}"/>
+
+        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=PhotoAlbum.CreationTime}"/>
+    </DockPanel>
+</UserControl>

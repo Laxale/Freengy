@@ -75,7 +75,7 @@
                                 Background="{TemplateBinding Background}" BorderBrush="{StaticResource CommonWindowBorderBrush}">
 
                             <Border.Effect>
-                                <DropShadowEffect Color="{StaticResource BlacColor}" Opacity="0.7" BlurRadius="7" ShadowDepth="2" Direction="315"/>
+                                <DropShadowEffect Color="{StaticResource BlackColor}" Opacity="0.7" BlurRadius="7" ShadowDepth="2" Direction="315"/>
                             </Border.Effect>
 
                             <Grid Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

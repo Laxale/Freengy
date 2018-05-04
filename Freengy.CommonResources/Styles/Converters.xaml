@@ -18,5 +18,6 @@
     <converters:ResizeModeToVisibilityConverter x:Key="ResizeModeToVisibilityConverter"/>
     <converters:StringUriToImageSourceConverter x:Key="StringUriToImageSourceConverter"/>
     <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <converters:ReversedNullToVisibilityConverter x:Key="ReversedNullToVisibilityConverter"/>
 </ResourceDictionary>

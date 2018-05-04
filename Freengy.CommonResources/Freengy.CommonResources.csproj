@@ -38,6 +38,9 @@
       <DependentUpon>Filter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GifDecorator.cs" />
+    <Compile Include="Controls\InvisibleFocuser.xaml.cs">
+      <DependentUpon>InvisibleFocuser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Switch.xaml.cs">
       <DependentUpon>Switch.xaml</DependentUpon>
     </Compile>
@@ -51,6 +54,7 @@
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ReverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\IsNullToBoolConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\StringToBoolConverter.cs" />
     <Compile Include="Converters\StringUriToImageSourceConverter.cs" />
@@ -78,6 +82,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Filter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\InvisibleFocuser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

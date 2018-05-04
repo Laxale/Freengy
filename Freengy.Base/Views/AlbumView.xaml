@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Freengy.Base.Views.AlbumView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism    ="http://prismlibrary.com/"
+             xmlns:viewModels="clr-namespace:Freengy.Base.ViewModels"
+             xmlns:models="clr-namespace:Freengy.Common.Models;assembly=Freengy.Common"
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+
+             mc:Ignorable="d" 
+             KeyDown="AlbumView_OnKeyDown"
+             d:DesignHeight="400" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance viewModels:AlbumViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel Margin="{StaticResource All4Margin}">
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding Path=PhotoAlbum.Name}" Margin="{StaticResource All4Margin}" Foreground="{StaticResource PurpleBrush}"/>
+
+            <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowDownIconGeometry}" Fill="{StaticResource DarkGrayBrush}" Margin="{StaticResource All4Margin}"/>
+
+            <TextBlock DockPanel.Dock="Left" Text="Press Ctrl+V to add image by URL or drag and drop local image here" Margin="{StaticResource All4Margin}" />
+        </DockPanel>
+
+        <ItemsControl ItemsSource="{Binding Path=ImageModels}" HorizontalAlignment="Stretch">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="models:ImageModel">
+                    <Image Loaded="Image_OnLoaded"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <controls:InvisibleFocuser/>
+    </DockPanel>
+</UserControl>

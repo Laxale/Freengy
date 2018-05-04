@@ -57,6 +57,7 @@
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
+    <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Helpers\Hasher.cs" />
     <Compile Include="Helpers\HttpActor.cs" />
     <Compile Include="Helpers\MediaTypes.cs" />
@@ -72,11 +73,14 @@
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IStatisticsCollector.cs" />
     <Compile Include="Models\AccountStateModel.cs" />
+    <Compile Include="Models\AlbumModel.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Readonly\AccountState.cs" />
+    <Compile Include="Models\Readonly\Album.cs" />
     <Compile Include="Models\Readonly\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />

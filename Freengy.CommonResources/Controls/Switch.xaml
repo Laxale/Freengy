@@ -48,8 +48,8 @@
 
         <Path Fill="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, Path=Foreground}"
               Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:Switch}, 
-                                      Path=IsOn,
-                                      Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+                                   Path=IsOn,
+                                   Converter={StaticResource ReverseBoolToVisibilityConverter}}">
             <Path.Data>
                 <PathGeometry Figures="M8 6c1.105 0 2 0.895 2 2s-0.895 2-2 2S6 9.105 6 8S6.895 6 8 6 M8 4C5.791 4 4 5.791 4 8s1.791 4 4 4  s4-1.791 4-4S10.209 4 8 4z" FillRule="NonZero"/>
             </Path.Data>

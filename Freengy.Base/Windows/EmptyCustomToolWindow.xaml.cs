@@ -2,16 +2,15 @@
 //
 //
 
+using System;
 using System.Windows;
+using System.Windows.Input;
+
+using Freengy.Base.Helpers;
 
 
 namespace Freengy.Base.Windows 
 {
-    using System.Windows.Input;
-
-    using Freengy.Base.Helpers;
-
-
     /// <summary>
     /// Interaction logic for EmptyCustomToolWindow.xaml
     /// </summary>
@@ -20,6 +19,8 @@ namespace Freengy.Base.Windows
         public EmptyCustomToolWindow() 
         {
             InitializeComponent();
+
+            Owner = Application.Current.MainWindow;
         }
 
 

@@ -36,16 +36,8 @@
             </Grid>
 
             <ControlTemplate.Triggers>
-                <DataTrigger Value="True">
-                    <DataTrigger.Binding>
-                        <Binding Path="IsMouseOver">
-                            <Binding.RelativeSource>
-                                <RelativeSource Mode="Self"/>
-                            </Binding.RelativeSource>
-                        </Binding>
-                    </DataTrigger.Binding>
-                    
-                    <Setter TargetName="WaterMark" Property="Visibility" Value="Collapsed"/>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True">
+                    <Setter TargetName="WaterMark" Property="Opacity" Value="0.5"/>
                     <Setter TargetName="PART_ContentHost" Property="Background" Value="Transparent"/>
                 </DataTrigger>
 

@@ -7,14 +7,14 @@
                     mc:Ignorable="d">
 
     <Color x:Key="OrangeColor">Orange</Color>
-    <Color x:Key="BlacColor">Black</Color>
+    <Color x:Key="BlackColor">Black</Color>
     <Color x:Key="FirstMainColor" A="255" R="255" G="160" B="0"/>
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
     <Color x:Key="ThirdMainColor" A="255" R="169" G="169" B="169"/>
 
     <SolidColorBrush x:Key="ErrorBrush" Color="Red"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
-    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlacColor}"/>
+    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70"/>
     <SolidColorBrush x:Key="LightGrayBrush" Color="#FFEEEEEE"/>
     <SolidColorBrush x:Key="ThirdMainBrush" Color="DarkGray" />
