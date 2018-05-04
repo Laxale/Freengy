@@ -32,10 +32,17 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="My albums" VerticalAlignment="Top" Margin="{StaticResource All4Margin}"/>
+    <Grid Margin="{StaticResource All4Margin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <DockPanel DockPanel.Dock="Top" Margin="{StaticResource All4Margin}">
+        <DockPanel Grid.Row="1" DockPanel.Dock="Top" Margin="{StaticResource All4Margin}">
             <TextBlock DockPanel.Dock="Left" Text="Nothin found"
                        Visibility="{Binding Path=AlbumViewModels.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
             
@@ -61,7 +68,7 @@
         </DockPanel>
         
         <!-- Скрываемая панель создания нового альбома -->
-        <Grid DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" 
+        <Grid Grid.Row="2" DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" 
               Visibility="{Binding Path=IsCreatingNewAlbum, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -69,7 +76,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Поле ввода названия нового альбома -->
-            <controls:Filter WatermarkText="Input new album name or search existing" FilterText="{Binding Path=NewAlbumName, Mode=TwoWay}"/>
+            <controls:Filter WatermarkText="Input new album name or search existing" FilterText="{Binding Path=AlbumName, Mode=TwoWay}"/>
 
             <!-- Кнопка создания нового альбома -->
             <Button Grid.Column="1" DockPanel.Dock="Right" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right" 
@@ -79,34 +86,38 @@
             </Button>
         </Grid>
 
+        <VirtualizingStackPanel Grid.Row="3" ScrollUnit="Pixel" Visibility="Collapsed"/>
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" Visibility="Collapsed"/>
         <!-- Список обложек альбомов -->
-        <ItemsControl DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" ItemsSource="{Binding Path=AlbumViewModels}"
-                      Visibility="{Binding Path=IsViewingAlbum, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="baseViewModels:AlbumViewModel">
-                    <Border CornerRadius="6" Background="{StaticResource LightGrayBrush}" Margin="{StaticResource All4Margin}">
-                        <views:AlbumCoverView Margin="{StaticResource All4Margin}" Cursor="Hand">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseDown">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}, 
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VirtualizingStackPanel.ScrollUnit="Pixel">
+            <ItemsControl DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" ItemsSource="{Binding Path=AlbumViewModels}"
+                          Visibility="{Binding Path=IsViewingAlbum, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="baseViewModels:AlbumViewModel">
+                        <Border CornerRadius="6" Background="{StaticResource LightGrayBrush}" Margin="{StaticResource All4Margin}">
+                            <views:AlbumCoverView Margin="{StaticResource All4Margin}" Cursor="Hand">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDown">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}, 
                                                                              Path=DataContext.CommandViewAlbum}"
-                                                           CommandParameter="{Binding}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </views:AlbumCoverView>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ItemHeight="Auto" ItemWidth="Auto"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+                                                               CommandParameter="{Binding}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </views:AlbumCoverView>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemHeight="Auto" ItemWidth="Auto"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
 
         <!-- Панелька обзора выбранного альбома -->
-        <DockPanel DockPanel.Dock="Top" Visibility="{Binding Path=IsViewingAlbum, Converter={StaticResource BoolToVisibilityConverter}}">
+        <DockPanel Grid.Row="4" DockPanel.Dock="Top" Visibility="{Binding Path=IsViewingAlbum, Converter={StaticResource BoolToVisibilityConverter}}">
             <Button DockPanel.Dock="Top" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top" 
                     HorizontalAlignment="Left" Margin="{StaticResource All4Margin}"
                     Command="{Binding Path=CommandViewAlbum}"
@@ -120,5 +131,14 @@
             
             <views:AlbumView DataContext="{Binding Source={StaticResource ContextProxy}, Path=Data}" Loaded="AlbumView_OnLoaded"/>
         </DockPanel>
-    </DockPanel>
+
+        <!-- Панель информации -->
+        <DockPanel Grid.Row="5" DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" VerticalAlignment="Bottom"
+                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" Data="{StaticResource WarningIconGeometry}" 
+                  Margin="{StaticResource All4Margin}" Fill="{StaticResource DarkGrayBrush}"/>
+            
+            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource ErrorBrush}" Text="{Binding Path=Information}"/>
+        </DockPanel>
+    </Grid>
 </UserControl>

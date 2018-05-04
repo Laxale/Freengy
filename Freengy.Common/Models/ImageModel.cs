@@ -43,7 +43,7 @@ namespace Freengy.Common.Models
         /// Обнулить навигационные свойства.
         /// </summary>
         /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями и обнулёнными навигационными.</returns>
-        public override ComplexDbObject PrepareMappedProps()
+        public override ComplexDbObject PrepareMappedProps() 
         {
             NavigationParent = null;
 

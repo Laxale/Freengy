@@ -11,16 +11,17 @@ using System.Windows.Data;
 
 using Freengy.Base.Helpers.Commands;
 using Freengy.UI.Views;
+using Freengy.Common.Helpers;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Extensions;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
-
-using Catel.IoC;
 using Freengy.Base.Messages;
 using Freengy.Common.Helpers.Result;
+
+using Catel.IoC;
 
 
 namespace Freengy.UI.ViewModels 
@@ -30,11 +31,13 @@ namespace Freengy.UI.ViewModels
     /// </summary>
     internal class AlbumsViewModel : WaitableViewModel, IDisposable
     {
+        private readonly int searchDelayInMs = 300;
         private readonly IAlbumManager albumManager;
+        private readonly DelayedEventInvoker delayedInvoker;
         private readonly ObservableCollection<AlbumViewModel> albumViewModels = new ObservableCollection<AlbumViewModel>();
 
         private bool isDisposed;
-        private string newAlbumName;
+        private string albumName;
         private bool isViewingAlbum;
         private bool isCreatingNewAlbum;
         private AlbumViewModel selectedAlbumViewModel;
@@ -46,22 +49,23 @@ namespace Freengy.UI.ViewModels
 
             AlbumViewModels = CollectionViewSource.GetDefaultView(albumViewModels);
 
-            CommandViewAlbum = new MyCommand<AlbumViewModel>(ViewAlbumImpl);
-            CommandAddAlbum = new MyCommand(AddAlbumImpl, () => !string.IsNullOrWhiteSpace(NewAlbumName));
+            delayedInvoker = new DelayedEventInvoker(searchDelayInMs);
+            delayedInvoker.DelayedEvent += OnDelayedSearchEvent;
+            AlbumViewModels.Filter = FilterAlbums;
 
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading albums"));
         }
 
-
+        
         /// <summary>
         /// Command to create a new album.
         /// </summary>
-        public MyCommand CommandAddAlbum { get; }
+        public MyCommand CommandAddAlbum { get; private set; }
 
         /// <summary>
         /// Command to view selected album.
         /// </summary>
-        public MyCommand<AlbumViewModel> CommandViewAlbum { get; }
+        public MyCommand<AlbumViewModel> CommandViewAlbum { get; private set; }
 
 
         /// <summary>
@@ -82,17 +86,18 @@ namespace Freengy.UI.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets new album name to create.
+        /// Gets or sets new album name to create or search.
         /// </summary>
-        public string NewAlbumName 
+        public string AlbumName 
         {
-            get => newAlbumName;
+            get => albumName;
 
             set
             {
-                if (newAlbumName == value) return;
+                if (albumName == value) return;
 
-                newAlbumName = value;
+                albumName = value;
+                delayedInvoker.RequestDelayedEvent();
                 CommandAddAlbum.RaiseCanExecuteChanged();
 
                 OnPropertyChanged();
@@ -143,6 +148,8 @@ namespace Freengy.UI.ViewModels
         {
             if (isDisposed) return;
 
+            delayedInvoker.Dispose();
+
             foreach (AlbumViewModel viewModel in albumViewModels)
             {
                 viewModel.Dispose();
@@ -153,6 +160,21 @@ namespace Freengy.UI.ViewModels
 
             isDisposed = true;
         }
+
+        /// <summary>
+        /// Сохранить изменения в изменённых альбомах.
+        /// </summary>
+        public void SaveChangedAlbums() 
+        {
+            var changedViewModels = albumViewModels.Where(viewModel => viewModel.IsChanged);
+
+            foreach (AlbumViewModel changedViewModel in changedViewModels)
+            {
+                changedViewModel.SaveModel();
+                albumManager.SaveAlbum(changedViewModel.PhotoAlbum);
+            }
+        }
+
 
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в Initialize().
@@ -166,7 +188,8 @@ namespace Freengy.UI.ViewModels
             if (myAlbumsResult.Success)
             {
                 var viewModels = myAlbumsResult.Value.Select(album => new AlbumViewModel(album));
-                albumViewModels.AddRange(viewModels);
+
+                GUIDispatcher.BeginInvokeOnGuiThread(() => albumViewModels.AddRange(viewModels));
             }
             else
             {
@@ -174,15 +197,51 @@ namespace Freengy.UI.ViewModels
             }
         }
 
+        /// <inheritdoc />
+        protected override void SetupCommands() 
+        {
+            CommandViewAlbum = new MyCommand<AlbumViewModel>(ViewAlbumImpl);
+            CommandAddAlbum = new MyCommand(AddAlbumImpl, () => !string.IsNullOrWhiteSpace(AlbumName));
+
+            OnPropertyChanged(nameof(CommandAddAlbum));
+            OnPropertyChanged(nameof(CommandViewAlbum));
+        }
+
+
+        private void OnDelayedSearchEvent() 
+        {
+            AlbumViewModels.Refresh();
+        }
+
+        private bool FilterAlbums(object albumObject) 
+        {
+            if (string.IsNullOrWhiteSpace(AlbumName))
+            {
+                return true;
+            }
+
+            bool isAcceptable = ((AlbumViewModel)albumObject)
+                                .PhotoAlbum.Name.ToLowerInvariant().Contains(AlbumName.ToLowerInvariant());
+
+            return isAcceptable;
+        }
 
         private void AddAlbumImpl() 
         {
+            if (albumViewModels.Any(viewModel => viewModel.PhotoAlbum.Name == AlbumName))
+            {
+                ReportMessage($"Album { AlbumName } already exists");
+                return;
+            }
+
+            ClearInformation();
+
             AccountState myAccountState = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState;
 
             var albumModel = new AlbumModel
             {
                 CreationTime = DateTime.Now,
-                Name = NewAlbumName,
+                Name = AlbumName,
                 OwnerAccountModel = myAccountState.Account.ToModel()
             };
 
@@ -198,6 +257,13 @@ namespace Freengy.UI.ViewModels
         {
             if (albumViewModel == null)
             {
+                // сохраняем альбом при возвращении из вью содержимого альбома
+                if (SelectedAlbumViewModel?.IsChanged ?? false)
+                {
+                    SelectedAlbumViewModel.SaveModel();
+                    albumManager.SaveAlbum(SelectedAlbumViewModel.PhotoAlbum);
+                }
+
                 IsViewingAlbum = false;
                 SelectedAlbumViewModel = null;
             }

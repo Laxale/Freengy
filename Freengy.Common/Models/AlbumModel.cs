@@ -53,7 +53,20 @@ namespace Freengy.Common.Models
         /// <returns>Реальный объект <see cref="DbObject"/>.</returns>
         public override DbObject CreateFromProxy(DbObject dbProxy) 
         {
-            return dbProxy as AlbumModel;
+            var proxyModel = (AlbumModel)dbProxy;
+
+            var realModel = new AlbumModel
+            {
+                CreationTime = proxyModel.CreationTime,
+                Name = proxyModel.Name,
+                OwnerAccountId = proxyModel.OwnerAccountId,
+                OwnerAccountModel = proxyModel.OwnerAccountModel,
+                Id = proxyModel.Id,
+            };
+
+            proxyModel.Images.ForEach(realModel.Images.Add);
+
+            return realModel;
         }
 
         /// <summary>

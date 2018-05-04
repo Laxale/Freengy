@@ -15,6 +15,9 @@ using Freengy.Common.Models.Readonly;
 
 namespace Freengy.Base.ViewModels 
 {
+    using Freengy.Base.Extensions;
+
+
     /// <summary>
     /// Вьюмодель для работы с <see cref="Album"/>.
     /// </summary>
@@ -51,6 +54,11 @@ namespace Freengy.Base.ViewModels
 
 
         /// <summary>
+        /// Возвращает значение флага - изменился ли альбом.
+        /// </summary>
+        public bool IsChanged { get; private set; }
+
+        /// <summary>
         /// Возвращает ссылку на данный альбом изображений.
         /// </summary>
         public Album PhotoAlbum { get; }
@@ -59,23 +67,6 @@ namespace Freengy.Base.ViewModels
         /// Gets the collection of album images.
         /// </summary>
         public ICollectionView ImageModels { get; }
-
-
-        
-        private void AddImageImpl(string imageUri) 
-        {
-            var imageModel = new ImageModel
-            {
-                RemoteUrl = imageUri
-            };
-
-            imageModels.Add(imageModel);
-        }
-
-        private void OnAddImageRequest(MessageAddImageRequest request) 
-        {
-            AddImageImpl(request.ImageUri);
-        }
 
 
         /// <summary>
@@ -88,6 +79,47 @@ namespace Freengy.Base.ViewModels
             Mediator.UnregisterRecipient(this);
 
             isDisposed = true;
+        }
+
+        /// <summary>
+        /// Сохранить изменения модели альбома.
+        /// </summary>
+        public void SaveModel() 
+        {
+            PhotoAlbum.Images.Clear();
+
+            foreach (ImageModel imageModel in imageModels)
+            {
+                PhotoAlbum.Images.Add(imageModel);
+            }
+
+            IsChanged = false;
+        }
+
+
+        private void AddImageImpl(string imageUri) 
+        {
+            if (!AlbumExtensions.IsImagePath(imageUri))
+            {
+                ReportMessage("Clipboard doesnt contain an image path");
+                return;
+            }
+
+            ClearInformation();
+
+            var imageModel = new ImageModel
+            {
+                RemoteUrl = imageUri
+            };
+
+            imageModels.Add(imageModel);
+
+            IsChanged = true;
+        }
+
+        private void OnAddImageRequest(MessageAddImageRequest request) 
+        {
+            AddImageImpl(request.ImageUri);
         }
     }
 }

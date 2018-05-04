@@ -58,6 +58,8 @@ namespace Freengy.UI.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs) 
         {
+            (DataContext as AlbumsViewModel)?.SaveChangedAlbums();
+
             Dispose();
         }
     }

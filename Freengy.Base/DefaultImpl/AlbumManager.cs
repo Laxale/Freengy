@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 using Freengy.Base.DbContext;
@@ -46,12 +47,21 @@ namespace Freengy.Base.DefaultImpl
                     if (existingAlbum == null)
                     {
                         var model = album.ToModel();
+                        model.PrepareMappedProps();
                         context.Objects.Add(model);
                     }
                     else
                     {
-                        // TODO update props
+                        existingAlbum.PrepareMappedProps();
+                        for(int index = 0; index < existingAlbum.Images.Count; index++)
+                        {
+                            context.Entry(existingAlbum.Images[index]).State = EntityState.Deleted;
+                        }
+                        
+                        existingAlbum.AcceptPropertiesFrom(album);
                     }
+
+                    context.SaveChanges();
 
                     return Result.Ok();
                 }
@@ -76,9 +86,14 @@ namespace Freengy.Base.DefaultImpl
                 {
                     using (var context = new ComplexAlbumContext())
                     {
-                        var albums = context.Objects.ToList().Select(model => new Album(model));
+                        var albumsProxies = context.Objects.Include(album => album.OwnerAccountModel).ToList();
+                        var realModels = 
+                                albumsProxies
+                                    .Select(proxy => proxy.CreateFromProxy(proxy))
+                                    .Select(model => new Album((AlbumModel)model))
+                                    .ToList();
 
-                        return Result<IEnumerable<Album>>.Ok(albums);
+                        return Result<IEnumerable<Album>>.Ok(realModels);
                     }
                 }
                 catch (Exception ex)

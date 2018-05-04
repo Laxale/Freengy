@@ -11,7 +11,7 @@
 
              mc:Ignorable="d" 
              KeyDown="AlbumView_OnKeyDown"
-             d:DesignHeight="400" d:DesignWidth="600"
+             d:DesignHeight="300"
              d:DataContext="{d:DesignInstance viewModels:AlbumViewModel}">
 
     <UserControl.Resources>
@@ -27,8 +27,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel Margin="{StaticResource All4Margin}">
-        <DockPanel DockPanel.Dock="Top">
+    <Grid Margin="{StaticResource All4Margin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" DockPanel.Dock="Top">
             <TextBlock DockPanel.Dock="Left" Text="{Binding Path=PhotoAlbum.Name}" Margin="{StaticResource All4Margin}" Foreground="{StaticResource PurpleBrush}"/>
 
             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowDownIconGeometry}" Fill="{StaticResource DarkGrayBrush}" Margin="{StaticResource All4Margin}"/>
@@ -36,24 +42,35 @@
             <TextBlock DockPanel.Dock="Left" Text="Press Ctrl+V to add image by URL or drag and drop local image here" Margin="{StaticResource All4Margin}" />
         </DockPanel>
 
-        <ItemsControl ItemsSource="{Binding Path=ImageModels}" HorizontalAlignment="Stretch">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="models:ImageModel">
-                    <Border MaxHeight="360">
-                        <Image Loaded="Image_OnLoaded"/>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <!-- ItemHeight="160" ItemWidth="160"
-                    -->
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+        <ScrollViewer Grid.Row="1" CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" 
+                      VerticalScrollBarVisibility="Auto" VirtualizingStackPanel.ScrollUnit="Pixel">
+            <!-- Список изображений альбома -->
+            <ItemsControl ItemsSource="{Binding Path=ImageModels}" HorizontalAlignment="Stretch" Margin="{StaticResource All4Margin}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="models:ImageModel">
+                        <Border MinHeight="160" MaxHeight="360" MinWidth="160" MaxWidth="360">
+                            <Image Loaded="Image_OnLoaded"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
 
-        <controls:InvisibleFocuser/>
-    </DockPanel>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Панель информации -->
+        <DockPanel Grid.Row="2" DockPanel.Dock="Bottom" Margin="{StaticResource All4Margin}" VerticalAlignment="Bottom"
+                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" Data="{StaticResource WarningIconGeometry}" 
+                  Margin="{StaticResource 4LeftMargin}" Fill="{StaticResource DarkGrayBrush}"/>
+
+            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource ErrorBrush}" Text="{Binding Path=Information}" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <controls:InvisibleFocuser Grid.Row="2" />
+    </Grid>
 </UserControl>
