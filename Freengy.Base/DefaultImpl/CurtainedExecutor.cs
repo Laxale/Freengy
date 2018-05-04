@@ -52,7 +52,7 @@ namespace Freengy.Base.DefaultImpl
             lock (Locker)
             {
                 var request = new MessageCurtainRequest(acceptorId);
-                MessageMediator.Default.Register(this, )
+                
                 try
                 {
                     mediator.SendMessage(request);

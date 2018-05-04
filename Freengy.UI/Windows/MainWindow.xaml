@@ -28,5 +28,10 @@
         </VisualBrush>
     </Window.Background>
 
-    <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
+    <Grid>
+        <ContentControl prism:RegionManager.RegionName="{x:Static const:RegionNames.MainWindowRegion}"/>
+
+        <!-- Вызываемая занавеска -->
+        <Border Name="CurtainBorder" Background="{StaticResource DarkGrayBrush}" Opacity="0.6" Visibility="Collapsed"/>
+    </Grid>
 </Window>

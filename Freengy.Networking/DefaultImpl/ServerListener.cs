@@ -29,7 +29,7 @@ namespace Freengy.Networking.DefaultImpl
     /// </summary>
     internal class ServerListener : IHttpClientParametersProvider 
     {
-        //private static readonly string httpAddressNoPort = "localhost";
+        private static readonly string httpAddressNoPort = "localhost";
         private static readonly object Locker = new object();
         private static readonly ushort maxStartTrials = 50;
         
@@ -87,17 +87,9 @@ namespace Freengy.Networking.DefaultImpl
 
         internal async Task InitInternalAsync() 
         {
-            startupTask = Task.Run(async () =>
+            startupTask = Task.Run(() =>
             {
-                IPAddress[] ipAddresses = await Dns.GetHostAddressesAsync(Environment.MachineName);
-
-                var machineAddress = 
-                    ipAddresses
-                        .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork) // Internetwork is IPv4
-                        //.Skip(1)
-                        .First(ip => ip.IsLocal()) // for debugging local server
-                        //.First(ip => !ip.IsLocal()) // for real remote server
-                        .ToString();
+                string machineAddress = GetMachineAddress();
 
                 clientAddress =
                     new ServerStartupBuilder()
@@ -110,6 +102,29 @@ namespace Freengy.Networking.DefaultImpl
             });
 
             await startupTask;
+        }
+
+        private static string GetMachineAddress() 
+        {
+            //string machineAddress = GetMachineIpAddress();
+            string machineAddress = httpAddressNoPort;
+
+            return machineAddress;
+        }
+
+        private static string GetMachineIpAddress()
+        {
+            IPAddress[] ipAddresses = Dns.GetHostAddressesAsync(Environment.MachineName).Result;
+
+            var machineAddress =
+                ipAddresses
+                    .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork) // Internetwork is IPv4
+                    //.Skip(1)
+                    .First(ip => ip.IsLocal()) // for debugging local server
+                    //.First(ip => !ip.IsLocal()) // for real remote server
+                    .ToString();
+
+            return machineAddress;
         }
 
         internal void InformOfANewMessage(ChatMessageModel messageModel) 

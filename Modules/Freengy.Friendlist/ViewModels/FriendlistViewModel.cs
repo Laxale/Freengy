@@ -16,6 +16,7 @@ using Freengy.Base.Windows;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Helpers;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
@@ -35,8 +36,9 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
-    public class FriendListViewModel : WaitableViewModel 
+    public class FriendListViewModel : WaitableViewModel
     {
+        private readonly ICurtainedExecutor curtainedExecutor;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
         private readonly ObservableCollection<AccountStateViewModel> friendViewModels = new ObservableCollection<AccountStateViewModel>();
@@ -46,8 +48,10 @@ namespace Freengy.FriendList.ViewModels
         private UserAccount myAccount;
 
 
-        public FriendListViewModel() 
+        public FriendListViewModel()
         {
+            curtainedExecutor = ServiceLocatorProperty.ResolveType<ICurtainedExecutor>();
+
             FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
@@ -201,7 +205,11 @@ namespace Freengy.FriendList.ViewModels
 
         private void AddFriendImpl() 
         {
-            new AddNewFriendWindow().ShowDialog();
+            curtainedExecutor.ExecuteWithCurtain
+            (
+                KnownCurtainedIds.MainWindowId,
+                () => new AddNewFriendWindow().ShowDialog()
+            );
         }
 
         private bool CanAddFriend() 

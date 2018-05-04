@@ -13,7 +13,7 @@ using Freengy.Base.Interfaces;
 namespace Freengy.UI.Helpers 
 {
     /// <summary>
-    /// Do not add dispatcher.Invoke() - hangs in deadlock
+    /// Allows to invoke methods on main thread.
     /// </summary>
     internal sealed class UiDispatcher : IGuiDispatcher 
     {
