@@ -3,19 +3,24 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 
 using Freengy.Base.Helpers.Commands;
 using Freengy.UI.Views;
 using Freengy.Base.ViewModels;
+using Freengy.Base.Interfaces;
 using Freengy.Common.Extensions;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
+using Freengy.Base.Messages;
+using Freengy.Common.Helpers.Result;
 
 
 namespace Freengy.UI.ViewModels 
@@ -23,10 +28,12 @@ namespace Freengy.UI.ViewModels
     /// <summary>
     /// Вьюмодель для <see cref="AlbumsView"/>.
     /// </summary>
-    internal class AlbumsViewModel : WaitableViewModel 
+    internal class AlbumsViewModel : WaitableViewModel, IDisposable
     {
+        private readonly IAlbumManager albumManager;
         private readonly ObservableCollection<AlbumViewModel> albumViewModels = new ObservableCollection<AlbumViewModel>();
 
+        private bool isDisposed;
         private string newAlbumName;
         private bool isViewingAlbum;
         private bool isCreatingNewAlbum;
@@ -35,10 +42,14 @@ namespace Freengy.UI.ViewModels
 
         public AlbumsViewModel() 
         {
+            albumManager = ServiceLocatorProperty.ResolveType<IAlbumManager>();
+
             AlbumViewModels = CollectionViewSource.GetDefaultView(albumViewModels);
 
-            CommandAddAlbum = new MyCommand(AddAlbumImpl);
             CommandViewAlbum = new MyCommand<AlbumViewModel>(ViewAlbumImpl);
+            CommandAddAlbum = new MyCommand(AddAlbumImpl, () => !string.IsNullOrWhiteSpace(NewAlbumName));
+
+            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading albums"));
         }
 
 
@@ -51,12 +62,6 @@ namespace Freengy.UI.ViewModels
         /// Command to view selected album.
         /// </summary>
         public MyCommand<AlbumViewModel> CommandViewAlbum { get; }
-
-
-        /// <summary>
-        /// Gets the collection of current albums.
-        /// </summary>
-        public ICollectionView AlbumViewModels { get; }
 
 
         /// <summary>
@@ -88,6 +93,7 @@ namespace Freengy.UI.ViewModels
                 if (newAlbumName == value) return;
 
                 newAlbumName = value;
+                CommandAddAlbum.RaiseCanExecuteChanged();
 
                 OnPropertyChanged();
             }
@@ -127,10 +133,45 @@ namespace Freengy.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the collection of current albums.
+        /// </summary>
+        public ICollectionView AlbumViewModels { get; }
 
-        public void LoadAlbumsOf(Guid userId) 
+
+        public void Dispose() 
         {
+            if (isDisposed) return;
 
+            foreach (AlbumViewModel viewModel in albumViewModels)
+            {
+                viewModel.Dispose();
+            }
+
+            //not registered for now
+            //Mediator.UnregisterRecipient(this);
+
+            isDisposed = true;
+        }
+
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
+        {
+            base.InitializeImpl();
+
+            Result<IEnumerable<Album>> myAlbumsResult = albumManager.GetMyAlbums().Result;
+
+            if (myAlbumsResult.Success)
+            {
+                var viewModels = myAlbumsResult.Value.Select(album => new AlbumViewModel(album));
+                albumViewModels.AddRange(viewModels);
+            }
+            else
+            {
+                ReportMessage(myAlbumsResult.Error.Message);
+            }
         }
 
 
@@ -149,6 +190,8 @@ namespace Freengy.UI.ViewModels
             var newAlbumViewModel = new AlbumViewModel(newAlbum);
 
             albumViewModels.Add(newAlbumViewModel);
+
+            albumManager.SaveAlbum(newAlbum);
         }
 
         private void ViewAlbumImpl(AlbumViewModel albumViewModel) 

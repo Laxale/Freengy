@@ -69,15 +69,13 @@
             </Grid.ColumnDefinitions>
 
             <!-- Поле ввода названия нового альбома -->
-            <controls:WatermarkTextBox Grid.Column="0" DockPanel.Dock="Left" WatermarkText="Input new album name" 
-                                       Text="{Binding Path=NewAlbumName, Mode=TwoWay}"
-                                       HorizontalAlignment="Stretch" MouseOverBrush="{StaticResource LightGrayBrush}"/>
+            <controls:Filter WatermarkText="Input new album name or search existing" FilterText="{Binding Path=NewAlbumName, Mode=TwoWay}"/>
 
             <!-- Кнопка создания нового альбома -->
             <Button Grid.Column="1" DockPanel.Dock="Right" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right" 
                     ToolTip="Add" Command="{Binding Path=CommandAddAlbum}">
                 <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource CircleWithCrossIconGeometry}"
-                      Fill="{StaticResource DarkGrayBrush}" Margin="1, 1, 0, 0"/>
+                      Fill="{StaticResource PurpleBrush}" Margin="1, 1, 0, 0"/>
             </Button>
         </Grid>
 
@@ -120,7 +118,7 @@
                 <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowUpIconGeometry}" Fill="{StaticResource DarkGrayBrush}"/>
             </Button>
             
-            <views:AlbumView DataContext="{Binding Source={StaticResource ContextProxy}, Path=Data}"/>
+            <views:AlbumView DataContext="{Binding Source={StaticResource ContextProxy}, Path=Data}" Loaded="AlbumView_OnLoaded"/>
         </DockPanel>
     </DockPanel>
 </UserControl>

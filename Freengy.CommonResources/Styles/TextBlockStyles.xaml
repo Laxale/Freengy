@@ -7,6 +7,7 @@
                     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Variables.xaml"/>
         <ResourceDictionary Source="Animations.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -71,6 +72,6 @@
     <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}" x:Key="HeavyTextBlockStyle">
         <Setter Property="FontWeight" Value="Heavy"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="Foreground" Value="#606060"/>
+        <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
     </Style>
 </ResourceDictionary>

@@ -16,23 +16,52 @@ using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Models;
-
-using Catel.Messaging;
 using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
+
+using Catel.Messaging;
 
 
 namespace Freengy.Base.Views 
 {
     /// <summary>
-    /// Interaction logic for AlbumView.xaml
+    /// Вью содержимого альбома.
     /// </summary>
     [HasViewModel(typeof(AlbumViewModel))]
-    public partial class AlbumView : UserControl 
+    public partial class AlbumView : UserControl, IDisposable
     {
+        private readonly double inputEventTimeout = 100;
+
+        private bool isDisposed;
+        private Window parentWindow;
+        private DateTime lastInputTimestamp = DateTime.MinValue;
+
+
         public AlbumView() 
         {
             InitializeComponent();
+
+            Loaded += OnLoaded;
+
+            MessageMediator.Default.Register<MessageParentWindowKeyDown>(this, OnParentWindowKeyDown);
+        }
+
+        ~AlbumView() 
+        {
+            Dispose();
+        }
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() 
+        {
+            if (isDisposed) return;
+
+            MessageMediator.Default.UnregisterRecipient(this);
+
+            isDisposed = true;
         }
 
 
@@ -82,8 +111,21 @@ namespace Freengy.Base.Views
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
+                var now = DateTime.Now;
+                // если от родительского окна пришло дублирующее событие, обрабатывать его не нужно
+                if ((now - lastInputTimestamp).TotalMilliseconds < inputEventTimeout)
+                {
+                    return;
+                }
+
+                lastInputTimestamp = now;
                 new KeyHandler(e).ExecuteOnKeyPressed(Key.V, HandleImageInput);
             }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
+        {
+            parentWindow = new VisualTreeSearcher().FindParentOfType<Window>(this);
         }
 
 
@@ -108,6 +150,15 @@ namespace Freengy.Base.Views
                 bitmapImage.Freeze(); // just in case you want to load the image in another thread
 
                 return bitmapImage;
+            }
+        }
+
+
+        private void OnParentWindowKeyDown(MessageParentWindowKeyDown messageParentWindowKeyDown) 
+        {
+            if (messageParentWindowKeyDown.Window == parentWindow)
+            {
+                AlbumView_OnKeyDown(messageParentWindowKeyDown.Window, messageParentWindowKeyDown.Args);
             }
         }
     }

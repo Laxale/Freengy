@@ -19,7 +19,7 @@ namespace Freengy.Common.Models
     /// Data model of a user account.
     /// </summary>
     [Table(nameof(UserAccount) + "s")]
-    public class UserAccountModel : ComplexDbObject, INamedObject, IObjectWithId 
+    public class UserAccountModel : ComplexDbObject, INamedObject 
     {
         /// <summary>
         /// Gets or sets level of a user account.
@@ -47,9 +47,14 @@ namespace Freengy.Common.Models
         /// </summary>
         public DateTime LastLogInTime { get; set; }
 
+        /// <summary>
+        /// Gets or sets user albums list.
+        /// </summary>
+        public virtual List<AlbumModel> Albums { get; set; } = new List<AlbumModel>();
+
 
         /// <inheritdoc />
-        public override string ToString()
+        public override string ToString() 
         {
             return $"{Name} [Level {Level} {Privilege}]";
         }

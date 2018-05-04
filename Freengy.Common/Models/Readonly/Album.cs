@@ -11,7 +11,10 @@ using Freengy.Common.Interfaces;
 
 namespace Freengy.Common.Models.Readonly 
 {
-    public class Album : IObjectWithId, INamedObject  
+    /// <summary>
+    /// Представляет собой readonly обёртку над моделью данных <see cref="AlbumModel"/>.
+    /// </summary>
+    public class Album : INamedObject, IObjectWithId 
     {
         private readonly AlbumModel model;
 

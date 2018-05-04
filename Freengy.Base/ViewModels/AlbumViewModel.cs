@@ -18,9 +18,11 @@ namespace Freengy.Base.ViewModels
     /// <summary>
     /// Вьюмодель для работы с <see cref="Album"/>.
     /// </summary>
-    public class AlbumViewModel : WaitableViewModel 
+    public class AlbumViewModel : WaitableViewModel, IDisposable 
     {
         private readonly ObservableCollection<ImageModel> imageModels = new ObservableCollection<ImageModel>();
+
+        private bool isDisposed;
 
 
         public AlbumViewModel(Album album) 
@@ -38,7 +40,7 @@ namespace Freengy.Base.ViewModels
 
         ~AlbumViewModel() 
         {
-            Mediator.UnregisterRecipient(this);
+            Dispose();
         }
 
 
@@ -73,6 +75,19 @@ namespace Freengy.Base.ViewModels
         private void OnAddImageRequest(MessageAddImageRequest request) 
         {
             AddImageImpl(request.ImageUri);
+        }
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() 
+        {
+            if (isDisposed) return;
+
+            Mediator.UnregisterRecipient(this);
+
+            isDisposed = true;
         }
     }
 }

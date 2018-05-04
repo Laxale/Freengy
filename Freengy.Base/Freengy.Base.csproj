@@ -10,6 +10,12 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Catel.Core, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Catel.Core.5.3.0\lib\net45\Catel.Core.dll</HintPath>
     </Reference>
@@ -38,7 +44,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -56,6 +61,10 @@
     <Compile Include="Chat\DefaultImpl\ChatMessage.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageFactory.cs" />
     <Compile Include="Constants\Numeric.cs" />
+    <Compile Include="DbConfiguration\ComplexImageConfiguration.cs" />
+    <Compile Include="DbConfiguration\ComplexAlbumConfiguration.cs" />
+    <Compile Include="DbContext\ComplexAlbumContext.cs" />
+    <Compile Include="DefaultImpl\AlbumManager.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSession.cs" />
@@ -67,6 +76,7 @@
     <Compile Include="ErrorReasons\UserCancelledReason.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
+    <Compile Include="Extensions\AlbumExtensions.cs" />
     <Compile Include="Extensions\ChatMessageExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -84,7 +94,9 @@
     <Compile Include="Helpers\KnownCurtainedIds.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Helpers\ViewModelWierer.cs" />
+    <Compile Include="Helpers\VisualTreeSearcher.cs" />
     <Compile Include="Interfaces\IAccountManager.cs" />
+    <Compile Include="Interfaces\IAlbumManager.cs" />
     <Compile Include="Interfaces\IAppDirectoryInspector.cs" />
     <Compile Include="Chat\Interfaces\IChatMessage.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageDecorator.cs" />
@@ -110,6 +122,7 @@
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageCurtainRequest.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
+    <Compile Include="Messages\MessageParentWindowKeyDown.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,6 +152,10 @@
     <ProjectReference Include="..\Freengy.Common\Freengy.Common.csproj">
       <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
       <Name>Freengy.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Freengy.Database\Freengy.Database.csproj">
+      <Project>{edc70343-7369-4ab5-8bd9-60cb7478e0a2}</Project>
+      <Name>Freengy.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -39,9 +39,19 @@
         <ItemsControl ItemsSource="{Binding Path=ImageModels}" HorizontalAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="models:ImageModel">
-                    <Image Loaded="Image_OnLoaded"/>
+                    <Border MaxHeight="360">
+                        <Image Loaded="Image_OnLoaded"/>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
+            
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <!-- ItemHeight="160" ItemWidth="160"
+                    -->
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
         </ItemsControl>
 
         <controls:InvisibleFocuser/>

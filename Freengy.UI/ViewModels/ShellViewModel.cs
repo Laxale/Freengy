@@ -4,7 +4,8 @@
 
 using System;
 using System.Diagnostics;
-
+using System.Windows;
+using System.Windows.Forms;
 using Freengy.Base.ErrorReasons;
 using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
@@ -19,6 +20,7 @@ using Freengy.Settings.Views;
 using Freengy.UI.Views;
 
 using Catel.IoC;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 
 namespace Freengy.UI.ViewModels 
@@ -95,13 +97,30 @@ namespace Freengy.UI.ViewModels
 
         private void ShowAlbumsImpl() 
         {
-            var hostWindow = new EmptyCustomToolWindow();
             var content = new AlbumsView();
-            hostWindow.MainContent = content;
-            hostWindow.Height = 400;
-            hostWindow.Width = 600;
-            hostWindow.MaxHeight = 800;
-            hostWindow.MaxWidth = 1000;
+            var hostWindow = new EmptyCustomToolWindow
+            {
+                MainContent = content,
+                Height = 400,
+                Width = 600,
+                MaxHeight = 800,
+                MaxWidth = 1000
+            };
+
+            void OnClosed(object sender, EventArgs args)
+            {
+                hostWindow.Closed -= OnClosed;
+                hostWindow.KeyDown -= OnWindowKeyPressed;
+                (content.DataContext as IDisposable)?.Dispose();
+            }
+
+            void OnWindowKeyPressed(object sender, KeyEventArgs args)
+            {
+                Mediator.SendMessage(new MessageParentWindowKeyDown((Window) sender, args));
+            }
+
+            hostWindow.Closed += OnClosed;
+            hostWindow.KeyDown += OnWindowKeyPressed;
 
             curtainedExecutor.ExecuteWithCurtain
             (

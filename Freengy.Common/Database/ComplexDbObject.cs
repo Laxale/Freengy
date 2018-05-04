@@ -31,8 +31,9 @@ namespace Freengy.Common.Database
 
         /// <summary>
         /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
+        /// Обнулить навигационные свойства.
         /// </summary>
-        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
+        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями и обнулёнными навигационными.</returns>
         public abstract ComplexDbObject PrepareMappedProps();
 
 
