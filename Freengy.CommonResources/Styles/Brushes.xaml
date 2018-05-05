@@ -15,7 +15,7 @@
     <SolidColorBrush x:Key="ErrorBrush" Color="Red"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>
-    <SolidColorBrush x:Key="SuccessBrush" Color="#60EE70"/>
+    <SolidColorBrush x:Key="GreenBrush" Color="#60EE70"/>
     <SolidColorBrush x:Key="LightGrayBrush" Color="#FFEEEEEE"/>
     <SolidColorBrush x:Key="ThirdMainBrush" Color="DarkGray" />
     <SolidColorBrush x:Key="DarkGrayBrush" Color="#777777" />

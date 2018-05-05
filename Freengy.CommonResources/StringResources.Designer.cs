@@ -304,6 +304,24 @@ namespace Freengy.CommonResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server offline.
+        /// </summary>
+        public static string ServerOffline {
+            get {
+                return ResourceManager.GetString("ServerOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server online.
+        /// </summary>
+        public static string ServerOnline {
+            get {
+                return ResourceManager.GetString("ServerOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SettingsText {

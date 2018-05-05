@@ -4,10 +4,13 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
+using Freengy.UI.Views;
 using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Common.Interfaces;
+using Freengy.CommonResources.Styles;
 
 using Catel.Messaging;
 
@@ -17,8 +20,11 @@ namespace Freengy.UI.Windows
     /// <summary>
     /// Main application window.
     /// </summary>
-    public partial class MainWindow : Window, IObjectWithId 
+    public partial class MainWindow : Window, IObjectWithId
     {
+        private bool isToolbarLoaded;
+
+
         public MainWindow() 
         {
             InitializeComponent();
@@ -28,6 +34,8 @@ namespace Freengy.UI.Windows
             Title = $"{ Title } | { asmVersion }";
 
             Id = KnownCurtainedIds.MainWindowId;
+
+            StylishWindowStyle.ToolbarRegionLoadedEvent += OnHeaderToolbarHostLoaded;
 
             MessageMediator.Default.Register<MessageCurtainRequest>(this, OnCurtainRequest);
         }
@@ -57,6 +65,15 @@ namespace Freengy.UI.Windows
                         Visibility.Collapsed :
                         Visibility.Visible;
             });
+        }
+
+        private void OnHeaderToolbarHostLoaded(ContentControl contentControl) 
+        {
+            if (isToolbarLoaded) return;
+
+            contentControl.Content = new HeaderToolbarView();
+
+            isToolbarLoaded = true;
         }
     }
 }

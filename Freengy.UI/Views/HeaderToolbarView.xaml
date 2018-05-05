@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Freengy.UI.Views.HeaderToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+
+             xmlns:local="clr-namespace:Freengy.UI.Views"
+             xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+             xmlns:commonResources="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+             xmlns:properties="clr-namespace:Freengy.UI.Properties"
+
+             mc:Ignorable="d" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:HeaderToolbarViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                    Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Margin="0, 2, 0, 0" Cursor="Help">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
+                            <Setter Property="ToolTip" Value="{x:Static commonResources:StringResources.ServerOnline}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
+                            <Setter Property="ToolTip" Value="{x:Static commonResources:StringResources.ServerOffline}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Path Data="{StaticResource ServerIconGeometry}">
+                <Path.LayoutTransform>
+                    <ScaleTransform ScaleX="0.04" ScaleY="0.04"/>
+                </Path.LayoutTransform>
+
+                <Path.Style>
+                    <Style TargetType="Path" >
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
+                                <Setter Property="Fill" Value="{StaticResource GreenBrush}"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
+                                <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+        </Border>
+    </DockPanel>
+</UserControl>

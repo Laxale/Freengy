@@ -2,15 +2,18 @@
 //
 //
 
+using System;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
+
 
 namespace Freengy.CommonResources.Styles 
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Media;
-    using System.Windows.Input;
-    using System.Windows.Interop;
-    using System.Runtime.InteropServices;
+    using System.Windows.Controls;
+
 
     public static class LocalExtensions 
     {
@@ -38,8 +41,12 @@ namespace Freengy.CommonResources.Styles
         }
     }
 
+
     public partial class StylishWindowStyle 
     {
+        public static event Action<ContentControl> ToolbarRegionLoadedEvent = hostControl => { };
+
+
         #region sizing event handlers
 
         private void OnSizeSouth(object sender, MouseButtonEventArgs e) { this.OnSize(sender, SizingAction.South); }
@@ -55,16 +62,13 @@ namespace Freengy.CommonResources.Styles
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                sender.ForWindowFromTemplate
-                (
-                    w =>
+                sender.ForWindowFromTemplate(w =>
+                {
+                    if (w.WindowState == WindowState.Normal)
                     {
-                        if (w.WindowState == WindowState.Normal)
-                        {
-                            StylishWindowStyle.DragSize(w.GetWindowHandle(), action);
-                        }
+                        StylishWindowStyle.DragSize(w.GetWindowHandle(), action);
                     }
-                );
+                });
             }
         }
 
@@ -92,14 +96,10 @@ namespace Freengy.CommonResources.Styles
 
         private void MaxButtonClick(object sender, RoutedEventArgs e) 
         {
-            sender
-                .ForWindowFromTemplate
-                (
-                    w => 
-                        w.WindowState = 
-                            w.WindowState == WindowState.Maximized ? 
-                                WindowState.Normal : WindowState.Maximized
-                );
+            sender.ForWindowFromTemplate(w =>
+            {
+                w.WindowState = w.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            });
         }
 
         private void TitleBarMouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
@@ -139,13 +139,12 @@ namespace Freengy.CommonResources.Styles
 
         #endregion
 
-        #region P/Invoke
 
         private const int ScSize = 0xF000;
         private const int ScKeymenu = 0xF100;
         private const int WmSyscommand = 0x112;
 
-        public enum SizingAction 
+        public enum SizingAction
         {
             North = 3,
             South = 6,
@@ -160,12 +159,18 @@ namespace Freengy.CommonResources.Styles
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        private static void DragSize(IntPtr handle, SizingAction sizingAction)  
+        private static void DragSize(IntPtr handle, SizingAction sizingAction)
         {
             StylishWindowStyle.SendMessage(handle, StylishWindowStyle.WmSyscommand, (IntPtr)(StylishWindowStyle.ScSize + sizingAction), IntPtr.Zero);
             StylishWindowStyle.SendMessage(handle, 514, IntPtr.Zero, IntPtr.Zero);
         }
-        
-        #endregion P/Invoke
+
+
+        private void ToolbarHost_OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            var control = (ContentControl)sender;
+
+            ToolbarRegionLoadedEvent.Invoke(control);
+        }
     }
 }

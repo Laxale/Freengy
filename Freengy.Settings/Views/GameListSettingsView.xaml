@@ -81,7 +81,7 @@
                                             <Binding Path="GamesFolderPath" Converter="{StaticResource IsNullToBoolConverter}"/>
                                         </DataTrigger.Binding>
 
-                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

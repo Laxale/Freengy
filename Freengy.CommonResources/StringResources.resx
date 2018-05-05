@@ -216,4 +216,10 @@
   <data name="LogOut" xml:space="preserve">
     <value>Log out</value>
   </data>
+  <data name="ServerOnline" xml:space="preserve">
+    <value>Server online</value>
+  </data>
+  <data name="ServerOffline" xml:space="preserve">
+    <value>Server offline</value>
+  </data>
 </root>

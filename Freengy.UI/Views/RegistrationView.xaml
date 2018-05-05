@@ -57,7 +57,7 @@
                                Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
 
                         <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right" FontSize="16"
-                                   Foreground="{StaticResource SuccessBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
+                                   Foreground="{StaticResource GreenBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
                     </DockPanel>
                 </DockPanel>
 

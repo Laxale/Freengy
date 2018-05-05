@@ -50,8 +50,7 @@ namespace Freengy.UI.ViewModels
         private readonly ILoginController loginController;
 
         private bool mustSavePassword;
-        private bool isServerAvailable;
-
+        
         private UserAccount CurrentAccount => loginController.MyAccountState?.Account;
 
 
@@ -119,24 +118,7 @@ namespace Freengy.UI.ViewModels
             }
         }
         
-        /// <summary>
-        /// Возвращает значение флага доступности сервера.
-        /// </summary>
-        public bool IsServerAvailable 
-        {
-            get => isServerAvailable;
-
-            private set
-            {
-                if (isServerAvailable == value) return;
-
-                isServerAvailable = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-
+        
         protected override void SetupCommands() 
         {
             CommandCreateAccount = new MyCommand(CreateAccountImpl);
@@ -165,12 +147,14 @@ namespace Freengy.UI.ViewModels
                 {
                     HttpResponseMessage response = await client.GetAsync(Url.Http.HelloUrl);
 
-                    IsServerAvailable = response.StatusCode == HttpStatusCode.OK;
+                    bool isOnline = response.StatusCode == HttpStatusCode.OK;
+
+                    Mediator.SendMessage(new MessageServerOnlineStatus(isOnline));
                 }
                 catch (Exception ex)
                 {
                     logger.Warn(ex, "Failed to check server");
-                    IsServerAvailable = false;
+                    Mediator.SendMessage(new MessageServerOnlineStatus(false));
                 }
             }
         }

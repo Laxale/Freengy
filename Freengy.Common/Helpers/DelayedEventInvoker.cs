@@ -29,9 +29,9 @@ namespace Freengy.Common.Helpers
 
 
         /// <summary>
-        /// Creates new <see cref="DelayedEventInvoker"/> with a given event delay.
+        /// Creates new <see cref="DelayedEventInvoker"/> with a given event delay in milliseconds.
         /// </summary>
-        /// <param name="eventDelayInMs">Delay before generating an event (in milliseconds).</param>
+        /// <param name="eventDelayInMs">Delay before generating an event.</param>
         public DelayedEventInvoker(int eventDelayInMs) 
         {
             timer = new Timer(eventDelayInMs < MinimumEventDelayInMs ? MinimumEventDelayInMs : eventDelayInMs);

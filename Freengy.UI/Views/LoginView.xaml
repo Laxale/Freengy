@@ -52,49 +52,6 @@
         <DockPanel Grid.Row="0">
             <!-- Выезжающий блок приветствия -->
             <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.LogInWelcomeText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
-
-            <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <Path DockPanel.Dock="Left" HorizontalAlignment="Right">
-                    <Path.Style>
-                        <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="True">
-                                    <Setter Property="Data" Value="{StaticResource OkayBirdyIconGeometry}"/>
-                                    <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
-                                    <Setter Property="LayoutTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="False">
-                                    <Setter Property="Data" Value="{StaticResource WarningIconGeometry}"/>
-                                    <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Path.Style>
-                </Path>
-
-                <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Right">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource HeavyTextBlockStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="True">
-                                    <Setter Property="Text" Value="Server online"/>
-                                    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding Path=IsServerAvailable}" Value="False">
-                                    <Setter Property="Text" Value="Server not available"/>
-                                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </DockPanel>
         </DockPanel>
 
         <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" 
@@ -139,7 +96,7 @@
                         <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.LogInText}"/>
                         
                         <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowUpIconGeometry}" 
-                              Fill="{StaticResource DarkGrayBrush}" Margin="0, 3, 0, 0">
+                              Fill="{StaticResource BlackBrush}" Margin="0, 3, 0, 0">
                             <Path.LayoutTransform>
                                 <RotateTransform Angle="90"/>
                             </Path.LayoutTransform>

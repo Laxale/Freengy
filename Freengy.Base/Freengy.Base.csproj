@@ -123,6 +123,7 @@
     <Compile Include="Messages\MessageCurtainRequest.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageParentWindowKeyDown.cs" />
+    <Compile Include="Messages\MessageServerOnlineStatus.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

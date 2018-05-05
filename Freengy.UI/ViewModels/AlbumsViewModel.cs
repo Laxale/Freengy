@@ -210,7 +210,7 @@ namespace Freengy.UI.ViewModels
 
         private void OnDelayedSearchEvent() 
         {
-            AlbumViewModels.Refresh();
+            GUIDispatcher.BeginInvokeOnGuiThread(AlbumViewModels.Refresh);
         }
 
         private bool FilterAlbums(object albumObject) 

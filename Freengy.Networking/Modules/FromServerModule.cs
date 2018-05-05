@@ -26,6 +26,9 @@ using Url = Freengy.Networking.Constants.Url;
 
 namespace Freengy.Networking.Modules 
 {
+    using Freengy.Base.Messages;
+
+
     /// <summary>
     /// Module for handling server requests.
     /// </summary>
@@ -33,9 +36,17 @@ namespace Freengy.Networking.Modules
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly IMessageMediator mediator = MessageMediator.Default;
+        private static readonly DelayedEventInvoker delayedInvoker;
+        private static readonly int statusPublishDelay = 3000;
 
         private static ILoginController loginController;
 
+
+        static FromServerModule() 
+        {
+            delayedInvoker = new DelayedEventInvoker(statusPublishDelay);
+            delayedInvoker.DelayedEvent += OnDelayedEvent;
+        }
 
         public FromServerModule() 
         {
@@ -79,7 +90,19 @@ namespace Freengy.Networking.Modules
 
         private static dynamic OnStateReplyRequest(dynamic arg) 
         {
+            // каждый запрос от сервера даёт нам понять, что сервер онлайн
+            // если по истечении таймаута инвокер не был перезапущен, он запостит сообщение о статусе сервера
+            delayedInvoker.RemoveDelayedEventRequest();
+            delayedInvoker.RequestDelayedEvent();
+
+            mediator.SendMessage(new MessageServerOnlineStatus(true));
+
             return HttpStatusCode.OK;
+        }
+
+        private static void OnDelayedEvent() 
+        {
+            mediator.SendMessage(new MessageServerOnlineStatus(false));
         }
     }
 }
