@@ -5,10 +5,20 @@
 using System;
 using System.Linq;
 
+
 namespace Freengy.Common.Models 
 {
+    /// <summary>
+    /// Unit of a statistics.
+    /// </summary>
     public class StatisticsUnit 
     {
+        /// <summary>
+        /// Конструирует новый <see cref="StatisticsUnit"/> с заданным названием и временем старта работы.
+        /// </summary>
+        /// <param name="unitName"></param>
+        /// <param name="started"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public StatisticsUnit(string unitName, DateTime started) 
         {
             if (string.IsNullOrWhiteSpace(unitName)) throw new ArgumentNullException(nameof(unitName));

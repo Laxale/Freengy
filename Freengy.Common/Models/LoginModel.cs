@@ -31,6 +31,9 @@ namespace Freengy.Common.Models
         /// </summary>
         public string PasswordHash { get; set; }
 
+        /// <summary>
+        /// User password.
+        /// </summary>
         [JsonIgnore]
         public string Password { get; set; }
 

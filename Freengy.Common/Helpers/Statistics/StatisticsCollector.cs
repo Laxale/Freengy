@@ -49,11 +49,19 @@ namespace Freengy.Common.Helpers.Statistics
             flushImpl?.Invoke(units);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unit"></param>
         public void AddUnit(StatisticsUnit unit) 
         {
             units.Add(unit);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flushAction"></param>
         public void Configure(Action<IEnumerable<StatisticsUnit>> flushAction) 
         {
             flushImpl = flushAction ?? throw new ArgumentNullException(nameof(flushAction));
