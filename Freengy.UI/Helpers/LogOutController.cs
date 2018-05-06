@@ -9,12 +9,13 @@ using System.Windows;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Helpers.Result;
 
-using Catel.IoC;
 using Freengy.Base.ErrorReasons;
 using Freengy.Common.Enums;
 using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
+
+using Catel.IoC;
 
 
 namespace Freengy.UI.Helpers 
@@ -43,10 +44,13 @@ namespace Freengy.UI.Helpers
 
             if (activities.Any())
             {
-                MessageBoxResult result = MessageBox.Show("wow", CommonResources.StringResources.ProjectName, MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.No)
+                if (activities.Any(act => !act.CanCancelInSilent))
                 {
-                    return Result.Fail(new UserCancelledReason());
+                    MessageBoxResult result = MessageBox.Show("Cancel activities?", CommonResources.StringResources.ProjectName, MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return Result.Fail(new UserCancelledReason());
+                    }
                 }
 
                 foreach (IUserActivity activity in activities)

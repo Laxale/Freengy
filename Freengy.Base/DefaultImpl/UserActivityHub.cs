@@ -51,7 +51,7 @@ namespace Freengy.Base.DefaultImpl
         /// Get running user activities.
         /// </summary>
         /// <returns>Collection of running activities.</returns>
-        public IEnumerable<IUserActivity> GetRunningActivities()
+        public IEnumerable<IUserActivity> GetRunningActivities() 
         {
             return activities;
         }

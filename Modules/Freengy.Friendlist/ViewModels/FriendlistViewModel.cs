@@ -38,9 +38,10 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
-    public class FriendListViewModel : WaitableViewModel
+    public class FriendListViewModel : WaitableViewModel 
     {
         private readonly ICurtainedExecutor curtainedExecutor;
+        private readonly IFriendStateController friendStateController;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
         private readonly ObservableCollection<AccountStateViewModel> friendViewModels = new ObservableCollection<AccountStateViewModel>();
@@ -53,6 +54,7 @@ namespace Freengy.FriendList.ViewModels
         public FriendListViewModel()
         {
             curtainedExecutor = ServiceLocatorProperty.ResolveType<ICurtainedExecutor>();
+            friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
 
             FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
@@ -119,7 +121,6 @@ namespace Freengy.FriendList.ViewModels
             CommandRemoveFriend = new MyCommand<AccountStateViewModel>(RemoveFriendImpl, CanRemoveFriend);
         }
         
-        /// <inheritdoc />
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в Initialize().
         /// </summary>
@@ -127,10 +128,8 @@ namespace Freengy.FriendList.ViewModels
         {
             base.InitializeImpl();
 
-            var dispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
             var loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
-            var friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
-
+            
             myAccount = loginController.MyAccountState.Account;
             mySessionToken = loginController.MySessionToken;
 
@@ -139,12 +138,12 @@ namespace Freengy.FriendList.ViewModels
             
             foreach (AccountState friendState in realFriends)
             {
-                dispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
+                GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
             }
 
             foreach (FriendRequest friendRequest in requests)
             {
-                dispatcher.InvokeOnGuiThread(() => friendRequests.Add(friendRequest));
+                GUIDispatcher.InvokeOnGuiThread(() => friendRequests.Add(friendRequest));
             }
         }
 
@@ -210,13 +209,23 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private void AddFriendImpl() 
+        private async void AddFriendImpl() 
         {
             curtainedExecutor.ExecuteWithCurtain
             (
                 KnownCurtainedIds.MainWindowId,
                 () => new AddNewFriendWindow().ShowDialog()
             );
+            
+            IEnumerable<AccountState> realFriends = await friendStateController.GetFriendStatesAsync();
+
+            foreach (AccountState friendState in realFriends)
+            {
+                if (friendViewModels.All(viewModel => viewModel.AccountState.Account.Id != friendState.Account.Id))
+                {
+                    GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
+                }
+            }
         }
 
         private bool CanAddFriend() 

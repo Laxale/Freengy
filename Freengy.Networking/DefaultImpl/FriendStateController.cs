@@ -17,6 +17,7 @@ using Freengy.Networking.Interfaces;
 using Catel.IoC;
 using Catel.Messaging;
 
+using Freengy.Base.Messages;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
@@ -28,7 +29,7 @@ namespace Freengy.Networking.DefaultImpl
     /// <summary>
     /// <see cref="IFriendStateController"/> implementer.
     /// </summary>
-    internal class FriendStateController : IFriendStateController 
+    internal class FriendStateController : IFriendStateController, IUserActivity 
     {
         private static readonly object Locker = new object();
 
@@ -39,6 +40,7 @@ namespace Freengy.Networking.DefaultImpl
         private readonly List<AccountState> friendStates = new List<AccountState>();
 
         private bool inited;
+        private bool isActivityStarted;
         private Func<string> sessionTokenGetter;
         private Func<UserAccount> myAccountGetter;
         private ILoginController loginController;
@@ -65,7 +67,12 @@ namespace Freengy.Networking.DefaultImpl
         }
 
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+        /// </summary>
+        public bool CanCancelInSilent { get; } = true;
+
+
         /// <summary>
         /// Get the state of a friend account.
         /// </summary>
@@ -80,7 +87,6 @@ namespace Freengy.Networking.DefaultImpl
             return friendState;
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Get current friend accounts states.
         /// </summary>
@@ -111,7 +117,26 @@ namespace Freengy.Networking.DefaultImpl
                 }
             }
 
+            if (!isActivityStarted)
+            {
+                mediator.SendMessage(new MessageActivityChanged(this, true));
+            }
+
+            isActivityStarted = true;
+            
             return friendStates;
+        }
+
+
+        /// <summary>
+        /// Cancel activity.
+        /// </summary>
+        /// <returns>Result of a cancel attempt.</returns>
+        public Result Cancel() 
+        {
+            friendStates.Clear();
+
+            return Result.Ok();
         }
 
 

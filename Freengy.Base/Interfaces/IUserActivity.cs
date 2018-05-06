@@ -17,5 +17,10 @@ namespace Freengy.Base.Interfaces
         /// </summary>
         /// <returns>Result of a cancel attempt.</returns>
         Result Cancel();
+
+        /// <summary>
+        /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+        /// </summary>
+        bool CanCancelInSilent { get; }
     }
 }
