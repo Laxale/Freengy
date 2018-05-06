@@ -23,6 +23,7 @@ using Catel.Data;
 using Catel.IoC;
 using Catel.MVVM;
 using Freengy.Base.Helpers;
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
@@ -161,9 +162,15 @@ namespace Freengy.FriendList.ViewModels
                     httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 
                     FriendRequest request = FriendRequest.Create(myAccount, targetAccount);
-                    FriendRequest result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
+                    Result<FriendRequest> result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
 
-                    requestResults.Add(result);
+                    if (result.Failure)
+                    {
+                        ReportMessage(result.Error.Message);
+                        return;
+                    }
+
+                    requestResults.Add(result.Value);
                 }
             }
             catch (Exception ex)

@@ -51,6 +51,9 @@ namespace Freengy.Common.Models.Readonly
         /// </summary>
         public UserAccount OwnerAccount { get; }
 
+        /// <summary>
+        /// Gets the collection of album images.
+        /// </summary>
         public List<ImageModel> Images { get; } = new List<ImageModel>();
     }
 }

@@ -21,6 +21,16 @@ namespace Freengy.Common.Constants
         public const string ClientSessionTokenHeaderName = "ClientSessionToken";
 
         /// <summary>
+        /// The name of custom ClientPassword header.
+        /// </summary>
+        public const string ClientPasswordHeaderName = "ClientPassword";
+
+        /// <summary>
+        /// The name of custom NextPasswordSalt header.
+        /// </summary>
+        public const string NextPasswordSaltHeaderName = "NextPasswordSalt";
+
+        /// <summary>
         /// The name of custom ServerSessionToken header.
         /// </summary>
         public const string ServerSessionTokenHeaderName = "ServerSessionToken";

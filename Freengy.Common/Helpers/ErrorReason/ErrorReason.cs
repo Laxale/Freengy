@@ -11,7 +11,7 @@ namespace Freengy.Common.Helpers.ErrorReason
     /// <summary>
     /// Причина ошибки.
     /// </summary>
-    public abstract class ErrorReason
+    public abstract class ErrorReason 
     {
         private readonly StringBuilder developerMessage = new StringBuilder();
 

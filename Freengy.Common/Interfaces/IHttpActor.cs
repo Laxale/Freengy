@@ -6,6 +6,8 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Freengy.Common.Helpers.Result;
+
 
 namespace Freengy.Common.Interfaces 
 {
@@ -58,7 +60,7 @@ namespace Freengy.Common.Interfaces
         /// <typeparam name="TResponce">Type of expected request to deserialize.</typeparam>
         /// <param name="request"><see cref="TRequest"/> instance.</param>
         /// <returns><see cref="TResponce"/> deserialized instance.</returns>
-        Task<TResponce> PostAsync<TRequest, TResponce>(TRequest request) 
+        Task<Result<TResponce>> PostAsync<TRequest, TResponce>(TRequest request) 
             where TRequest : class, new()
             where TResponce : class, new();
     }

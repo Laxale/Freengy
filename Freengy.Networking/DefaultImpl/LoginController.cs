@@ -3,6 +3,8 @@
 //
 
 using System;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,6 +28,10 @@ using NLog;
 using Catel.IoC;
 using Catel.Messaging;
 
+using Freengy.Base.Extensions;
+using Freengy.Base.Models;
+using Freengy.Common.Constants;
+
 
 namespace Freengy.Networking.DefaultImpl 
 {
@@ -35,6 +41,7 @@ namespace Freengy.Networking.DefaultImpl
     internal class LoginController : ILoginController 
     {
         private readonly Func<string> clientAddressGetter;
+        private readonly IAccountManager accountManager;
         private readonly ITaskWrapper taskWrapper;
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
@@ -53,6 +60,7 @@ namespace Freengy.Networking.DefaultImpl
             messageLogInAttempt = new MessageLogInAttempt();
 
             taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
+            accountManager = serviceLocator.ResolveType<IAccountManager>();
             clientAddressGetter = () => serviceLocator.ResolveType<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
         }
 
@@ -76,20 +84,19 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         public string LoggedInPassword { get; private set; }
 
-        /// <inheritdoc />
         /// <summary>
         /// Returns current user account in usage.
         /// </summary>
         public AccountState MyAccountState { get; private set; }
 
 
-        /// <inheritdoc />
         /// <summary>
         /// Attempts to register new user.
         /// </summary>
         /// <param name="userName">Desired new user name.</param>
+        /// <param name="password">User password.</param>
         /// <returns>Registration result - new account or error details.</returns>
-        public Result<UserAccount> Register(string userName) 
+        public Result<UserAccount> Register(string userName, string password) 
         {
             try
             {
@@ -98,23 +105,34 @@ namespace Freengy.Networking.DefaultImpl
                     return Result<UserAccount>.Fail(new UnexpectedErrorReason("User name should not be empty"));
                 }
 
-                var request = new RegistrationRequest(userName);
+                var request = new RegistrationRequest(userName)
+                {
+                    Password = password
+                };
 
                 using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
                 {
                     httpActor.SetRequestAddress(Url.Http.RegisterUrl);
 
-                    request = httpActor.PostAsync<RegistrationRequest, RegistrationRequest>(request).Result;
-
-                    if (request.CreatedAccount == null)
+                    Result<RegistrationRequest> result = httpActor.PostAsync<RegistrationRequest, RegistrationRequest>(request).Result;
+                    if (result.Failure)
+                    {
+                        return Result<UserAccount>.Fail(new UnexpectedErrorReason(result.Error.Message));
+                    }
+                    if (result.Value.CreatedAccount == null)
                     {
                         return Result<UserAccount>.Fail(new UnexpectedErrorReason(request.Status.ToString()));
                     }
 
-                    return Result<UserAccount>.Ok(null);
-                }
+                    var createdAccount = new UserAccount(result.Value.CreatedAccount);
+                    var privateAccountModel = result.Value.CreatedAccount.ToPrivate();
+                    var saltHeaderValue = httpActor.ResponceMessage.Headers.GetValues(FreengyHeaders.NextPasswordSaltHeaderName);
+                    privateAccountModel.NextLoginSalt = saltHeaderValue.First();
 
-                
+                    accountManager.SaveLastLoggedIn(privateAccountModel);
+
+                    return Result<UserAccount>.Ok(createdAccount);
+                }
             }
             catch (Exception ex)
             {
@@ -125,7 +143,6 @@ namespace Freengy.Networking.DefaultImpl
             }
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Attempts to log the user in.
         /// </summary>
@@ -158,7 +175,6 @@ namespace Freengy.Networking.DefaultImpl
             return InvokeLogInOrOut(loginModel);
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Attempts to log in the user asynchronously.
         /// </summary>
@@ -178,8 +194,6 @@ namespace Freengy.Networking.DefaultImpl
             {
                 messageMediator.SendMessage(messageLogInAttempt);
 
-                //Thread.Sleep(300);
-
                 AccountStateModel stateModel = LogInImpl(loginModel);
 
                 if (stateModel.OnlineStatus != targetStatus)
@@ -193,7 +207,7 @@ namespace Freengy.Networking.DefaultImpl
             catch (Exception ex)
             {
                 string direction = loginModel.IsLoggingIn ? "in" : "out";
-                string message = $"Failed to log '{loginModel?.Account?.Name}' {direction}";
+                string message = $"Failed to log '{loginModel?.Account?.Name}' {direction}. { ex.Message }";
                 logger.Error(ex, message);
 
                 return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(message));
@@ -222,12 +236,22 @@ namespace Freengy.Networking.DefaultImpl
                 actor.SetClientAddress(myAddress)
                      .SetRequestAddress(Url.Http.LogInUrl);
 
-                AccountStateModel stateModel = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
-                var responceMessage = actor.ResponceMessage;
+                Result<AccountStateModel> result = actor.PostAsync<LoginModel, AccountStateModel>(loginModel).Result;
+                if (result.Failure)
+                {
+                    throw new InvalidOperationException(result.Error.Message);
+                }
+
+                AccountStateModel stateModel = result.Value;
+                HttpResponseMessage responceMessage = actor.ResponceMessage;
                 SessionAuth auth = responceMessage.Headers.GetSessionAuth();
 
                 if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
+                    var privateAccountModel = stateModel.Account.ToPrivate();
+                    //пока что салт не меняется после каждого логина. сервер не проставляет заголовок
+                    //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
+                    accountManager.SaveLastLoggedIn(privateAccountModel);
                     SaveOnlineState(loginModel, auth);
                     messageMediator.SendMessage(messageLoggedIn);
                 }
@@ -256,7 +280,9 @@ namespace Freengy.Networking.DefaultImpl
 
         private void HashThePassword(LoginModel loginModel) 
         {
-            loginModel.PasswordHash = new Hasher().GetHash(loginModel.Password);
+            var loginSalt = accountManager.GetStoredAccount(loginModel.Account.Name).Value.NextLoginSalt;
+
+            loginModel.PasswordHash = new Hasher().GetHash(loginSalt + loginModel.Password);
         }
     }
 }

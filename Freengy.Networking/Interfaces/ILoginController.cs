@@ -41,8 +41,9 @@ namespace Freengy.Networking.Interfaces
         /// Attempts to register new user.
         /// </summary>
         /// <param name="userName">Desired new user name.</param>
+        /// <param name="password">User password.</param>
         /// <returns>Registration result - new account or error details.</returns>
-        Result<UserAccount> Register(string userName);
+        Result<UserAccount> Register(string userName, string password);
 
         /// <summary>
         /// Attempts to log the user in.

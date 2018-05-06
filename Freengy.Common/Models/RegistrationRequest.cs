@@ -47,6 +47,11 @@ namespace Freengy.Common.Models
         public string UserName { get; set; }
 
         /// <summary>
+        /// Gets or sets user password to register.
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
         /// Registration status is set by server when processed request.
         /// </summary>
         public RegistrationStatus Status { get; set; }

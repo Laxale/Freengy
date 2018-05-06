@@ -16,6 +16,8 @@ using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
 using Catel.Messaging;
+
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
 using Freengy.Networking.Messages;
@@ -91,7 +93,8 @@ namespace Freengy.Networking.DefaultImpl
                 httpActor.SetRequestAddress(Url.Http.SearchUsersUrl).SetClientSessionToken(sessionTokenGetter());
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccountGetter(), string.Empty);
 
-                stateModels = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);
+                Result<List<AccountStateModel>> result = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);
+                stateModels = result.Failure ? new List<AccountStateModel>() : result.Value;
             }
 
             foreach (AccountStateModel fromServer in stateModels)

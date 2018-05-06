@@ -46,9 +46,14 @@ namespace Freengy.Networking.DefaultImpl
                     {
                         httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 
-                        var responce = httpActor.PostAsync<SearchRequest, TResponce>(searchRequest).Result;
+                        Result<TResponce> result = httpActor.PostAsync<SearchRequest, TResponce>(searchRequest).Result;
 
-                        return Result<TResponce>.Ok(responce);
+                        if (result.Failure)
+                        {
+                            throw new InvalidOperationException(result.Error.Message);
+                        }
+
+                        return Result<TResponce>.Ok(result.Value);
                     }
                 }
                 catch (Exception ex)
@@ -85,9 +90,14 @@ namespace Freengy.Networking.DefaultImpl
                     {
                         httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
 
-                        var responce = httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest).Result;
+                        Result<List<UserAccountModel>> result = httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest).Result;
 
-                        return Result<IEnumerable<UserAccount>>.Ok(responce.Select(model => new UserAccount(model)));
+                        if (result.Failure)
+                        {
+                            throw new InvalidOperationException(result.Error.Message);
+                        }
+
+                        return Result<IEnumerable<UserAccount>>.Ok(result.Value.Select(model => new UserAccount(model)));
                     }
                 }
                 catch (Exception ex)

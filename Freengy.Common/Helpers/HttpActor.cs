@@ -5,12 +5,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Common.Constants;
+using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
+
+using Nancy.Responses;
+
+using NLog;
 
 
 namespace Freengy.Common.Helpers 
@@ -21,6 +28,7 @@ namespace Freengy.Common.Helpers
     public class HttpActor : IHttpActor 
     {
         private readonly MediaTypes mediaTypes = new MediaTypes();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, string> addedHeaders = new Dictionary<string, string>();
 
         private string address;
@@ -97,7 +105,6 @@ namespace Freengy.Common.Helpers
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Execute POST method with a given message payload.
         /// </summary>
@@ -105,7 +112,7 @@ namespace Freengy.Common.Helpers
         /// <typeparam name="TResponce">Type of expected request to deserialize.</typeparam>
         /// <param name="request"><see cref="!:TRequest" /> instance.</param>
         /// <returns><see cref="!:TResponce" /> deserialized instance.</returns>
-        public Task<TResponce> PostAsync<TRequest, TResponce>(TRequest request) where TRequest : class, new() where TResponce : class, new() 
+        public Task<Result<TResponce>> PostAsync<TRequest, TResponce>(TRequest request) where TRequest : class, new() where TResponce : class, new() 
         {
             return Task.Factory.StartNew(() =>
             {
@@ -121,13 +128,90 @@ namespace Freengy.Common.Helpers
 
                     ResponceMessage = client.PostAsync(address, httpRequest).Result;
 
-                    Stream responceStream = ResponceMessage.Content.ReadAsStreamAsync().Result;
+                    if (IsKnownBadResponceCode(out ErrorReason.ErrorReason reason))
+                    {
+                        return Result<TResponce>.Fail(reason);
+                    }
 
-                    var responce = serializeHelper.DeserializeObject<TResponce>(responceStream);
+                    try
+                    {
+                        bool parsed = TryGetAsRawJson<TResponce>(serializeHelper, out TResponce tResponce);
 
-                    return responce;
+                        if (parsed)
+                        {
+                            return Result<TResponce>.Ok(tResponce);
+                        }
+
+                        //throw new Exception();
+                        parsed = TryGetAsJsonResponce(serializeHelper, out TResponce jsonTresponce);
+
+                        return Result<TResponce>.Ok(tResponce);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Failed to post request");
+
+                        return Result<TResponce>.Fail(new UnexpectedErrorReason(ex.Message));
+                    }
                 }
             });
+        }
+
+        private bool IsKnownBadResponceCode(out ErrorReason.ErrorReason errorReason) 
+        {
+            errorReason = null;
+
+            if (ResponceMessage.StatusCode == HttpStatusCode.Forbidden)
+            {
+                errorReason = new InvalidPasswordErrorReason();
+                return true;
+            }
+
+            if (ResponceMessage.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                errorReason = new UnexpectedErrorReason("Unexpected server error");
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryGetAsRawJson<TResponce>(SerializeHelper serializeHelper, out TResponce tresponce) 
+            where TResponce : class, new()
+        {
+            tresponce = null;
+            try
+            {
+                Stream responceStream = ResponceMessage.Content.ReadAsStreamAsync().Result;
+
+                tresponce = serializeHelper.DeserializeObject<TResponce>(responceStream);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+
+        private bool TryGetAsJsonResponce<TResponce>(SerializeHelper serializeHelper, out TResponce tresponce) 
+            where TResponce : class, new()
+        {
+            tresponce = null;
+            try
+            {
+                Stream responceStream = ResponceMessage.Content.ReadAsStreamAsync().Result;
+
+                var ttt = ResponceMessage.Content.ReadAsStringAsync().Result;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
 
         /// <summary>

@@ -40,6 +40,7 @@
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,12 +71,14 @@
     <Compile Include="Chat\DefaultImpl\ChatSession.cs" />
     <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\CurtainedExecutor.cs" />
+    <Compile Include="DefaultImpl\DbAccountManager.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
     <Compile Include="DefaultImpl\TaskWrapper.cs" />
     <Compile Include="DefaultImpl\UserActivityHub.cs" />
     <Compile Include="ErrorReasons\UserCancelledReason.cs" />
     <Compile Include="Exceptions\FreengyExceptionBase.cs" />
     <Compile Include="Exceptions\NotHandledException.cs" />
+    <Compile Include="Extensions\AccountExtensions.cs" />
     <Compile Include="Extensions\AlbumExtensions.cs" />
     <Compile Include="Extensions\ChatMessageExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Messages\MessageParentWindowKeyDown.cs" />
     <Compile Include="Messages\MessageServerOnlineStatus.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
+    <Compile Include="Models\PrivateAccountModel.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />

@@ -18,7 +18,10 @@ using Freengy.Networking.Interfaces;
 using Freengy.FriendList.Views;
 
 using Catel.IoC;
+
+using Freengy.Common.Constants;
 using Freengy.Common.Database;
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
@@ -78,13 +81,21 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
             {
-                actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl);
+                actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl).AddHeader(FreengyHeaders.ClientSessionTokenHeaderName, sessionToken);
+
                 FriendRequestReply reply = CreateReplyTo(userAccount);
 
                 FriendRequestReply result;
                 try
                 {
-                    result = actor.PostAsync<FriendRequestReply, FriendRequestReply>(reply).Result;
+                    Result<FriendRequestReply> postResult = actor.PostAsync<FriendRequestReply, FriendRequestReply>(reply).Result;
+
+                    if (postResult.Failure)
+                    {
+                        throw new InvalidOperationException(postResult.Error.Message);
+                    }
+
+                    result = postResult.Value;
                 }
                 catch (Exception ex)
                 {

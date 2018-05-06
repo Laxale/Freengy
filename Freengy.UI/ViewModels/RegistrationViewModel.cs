@@ -91,7 +91,7 @@ namespace Freengy.UI.ViewModels
             {
                 SetBusyState("Registering");
                 Thread.Sleep(1000);
-                result = loginController.Register(UserName);
+                result = loginController.Register(UserName, Password);
             }
 
             void Continuator()

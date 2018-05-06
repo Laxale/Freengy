@@ -31,6 +31,7 @@ namespace Freengy.Base.Module
                 ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
 
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAlbumManager, AlbumManager>();
+                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, DbAccountManager>();
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessage, ChatMessage>(RegistrationType.Transient);

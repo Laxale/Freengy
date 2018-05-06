@@ -30,6 +30,8 @@ using Freengy.Networking.Helpers;
 
 using Catel.IoC;
 
+using Freengy.Common.Helpers.Result;
+
 
 namespace Freengy.FriendList.ViewModels 
 {
@@ -197,9 +199,14 @@ namespace Freengy.FriendList.ViewModels
                 httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
 
-                var result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
+                Result<List<FriendRequest>> result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
 
-                return result;
+                if (result.Failure)
+                {
+                    ReportMessage(result.Error.Message);
+                }
+
+                return result.Value;
             }
         }
 

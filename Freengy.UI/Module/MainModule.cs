@@ -3,7 +3,6 @@
 //
 
 using Freengy.UI.Helpers;
-using Freengy.UI.DefaultImpl;
 using Freengy.Common.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
@@ -15,6 +14,9 @@ using Prism.Modularity;
 
 namespace Freengy.UI.Module 
 {
+    /// <summary>
+    /// Prism-модуль библиотеки UI.
+    /// </summary>
     public class MainModule : IModule 
     {
         public void Initialize() 
@@ -23,8 +25,6 @@ namespace Freengy.UI.Module
             {
                 ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
 
-                //ServiceLocator.Default.RegisterType<IAccountManager, DbAccountManager>(RegistrationType.Transient);
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, ConfigFileAccountManager>();
                 ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
             }
         }

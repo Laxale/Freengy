@@ -8,6 +8,9 @@
     <RootNamespace>Freengy.Common</RootNamespace>
     <AssemblyName>Freengy.Common</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DocumentationFile>..\output\Debug\Freengy.Common\Freengy.Common.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nancy, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nancy.1.4.1\lib\net40\Nancy.dll</HintPath>
@@ -56,6 +59,7 @@
     <Compile Include="Extensions\NancyHttpMessageExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
+    <Compile Include="Helpers\ErrorReason\InvalidPasswordErrorReason.cs" />
     <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Helpers\Hasher.cs" />

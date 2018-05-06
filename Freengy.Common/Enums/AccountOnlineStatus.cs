@@ -55,6 +55,11 @@ namespace Freengy.Common.Enums
         /// <summary>
         /// Account cant be logged in as it is not registered.
         /// </summary>
-        DoesntExist
+        DoesntExist,
+
+        /// <summary>
+        /// Provided user password is not valid.
+        /// </summary>
+        InvalidPassword
     }
 }

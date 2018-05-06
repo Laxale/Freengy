@@ -3,10 +3,12 @@
 //
 
 using System;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 
 using Freengy.Common.Enums;
@@ -45,9 +47,11 @@ namespace Freengy.UI.ViewModels
     internal class LoginViewModel : CredentialViewModel, INavigationAware 
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Configuration uiConfiguration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
-        private readonly IAccountManager accountManager;
+        private readonly string lastLoggedName;
         private readonly ILoginController loginController;
+        private readonly string lastLoggedParameterName = "LastLoggedUserName";
 
         private bool mustSavePassword;
         
@@ -56,7 +60,7 @@ namespace Freengy.UI.ViewModels
 
         public LoginViewModel() 
         {
-            accountManager = ServiceLocatorProperty.ResolveType<IAccountManager>();
+            lastLoggedName = uiConfiguration.AppSettings.Settings[lastLoggedParameterName].Value;
             loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
 
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading"));
@@ -186,18 +190,9 @@ namespace Freengy.UI.ViewModels
 
         private void LoadCredsFromSettings() 
         {
-            Result<UserAccount> lastLoggedResult;
-            using (new StatisticsDeployer("Get last account"))
-            {
-                lastLoggedResult = accountManager.GetLastLoggedIn();
-            }
-
             var settings = AppSettings.Instance;
 
-            if (lastLoggedResult.Success && lastLoggedResult.Value != null)
-            {
-                UserName = CurrentAccount?.Name ?? lastLoggedResult.Value.Name;
-            }
+            UserName = CurrentAccount?.Name ?? lastLoggedName;
 
             MustSavePassword = settings.SavePassword;
 
@@ -238,7 +233,10 @@ namespace Freengy.UI.ViewModels
             }
             else
             {
-                accountManager.SaveLastLoggedIn(loginController.MyAccountState.Account);
+                uiConfiguration.AppSettings.Settings.Remove(lastLoggedParameterName);
+                uiConfiguration.AppSettings.Settings.Add(lastLoggedParameterName, UserName);
+                uiConfiguration.Save();
+
                 ClearInformation();
             }
         }

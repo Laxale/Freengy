@@ -39,5 +39,22 @@ namespace Freengy.Common.Extensions
 
             return auth;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public static string GetSaltHeaderValue(this HttpHeaders headers) 
+        {
+            bool hasSaltHeader = headers.TryGetValues(FreengyHeaders.ClientAddressHeaderName, out IEnumerable<string> headerValues);
+
+            if (hasSaltHeader)
+            {
+                return headerValues.First();
+            }
+
+            return null;
+        }
     }
 }
