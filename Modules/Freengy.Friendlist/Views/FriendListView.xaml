@@ -79,7 +79,7 @@
                                                 </DataTrigger>
 
                                                 <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
-                                                    <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
+                                                    <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

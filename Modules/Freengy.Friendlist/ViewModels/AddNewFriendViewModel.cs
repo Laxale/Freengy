@@ -9,6 +9,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 
+using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Models;
 using Freengy.Common.Enums;
@@ -16,24 +18,18 @@ using Freengy.Common.Helpers;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
-
-using NLog;
-
-using Catel.Data;
-using Catel.IoC;
-using Catel.MVVM;
-using Freengy.Base.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
 
+using NLog;
+
+using Catel.IoC;
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.FriendList.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// Viewmodel for <see cref="AddNewFriendWindow"/>.
     /// </summary>
@@ -41,9 +37,10 @@ namespace Freengy.FriendList.ViewModels
     {
         private readonly UserAccount myAccount;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly List<UserAccount> myCurrentFriends = new List<UserAccount>();
         private readonly DelayedEventInvoker delayedInvoker = new DelayedEventInvoker(400);
-        private readonly ObservableCollection<UserAccount> foundUsers = new ObservableCollection<UserAccount>();
         private readonly ObservableCollection<FriendRequest> requestResults = new ObservableCollection<FriendRequest>();
+        private readonly ObservableCollection<UserAccountViewModel> foundUsers = new ObservableCollection<UserAccountViewModel>();
 
         private string searchFilter;
 
@@ -116,6 +113,24 @@ namespace Freengy.FriendList.ViewModels
             GC.SuppressFinalize(this);
         }
 
+        public void SetMyCurrentFriends(IEnumerable<UserAccount> friendAccounts) 
+        {
+            myCurrentFriends.Clear();
+            myCurrentFriends.AddRange(friendAccounts);
+        }
+
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
+        {
+            base.InitializeImpl();
+
+            IEnumerable<AccountState> myFriends = ServiceLocatorProperty.ResolveType<IFriendStateController>().GetFriendStatesAsync().Result;
+
+            SetMyCurrentFriends(myFriends.Select(friendState => friendState.Account));
+        }
+
 
         /// <summary>
         /// This is called in InitializeAsync - force coderast to not init commands manually
@@ -147,7 +162,8 @@ namespace Freengy.FriendList.ViewModels
 
                     foreach (UserAccount foundUser in searchResult.Value)
                     {
-                        foundUsers.Add(foundUser);
+                        bool isFriend = myCurrentFriends.Any(friendAccount => friendAccount.Id == foundUser.Id);
+                        foundUsers.Add(new UserAccountViewModel(foundUser) { IsMyFriend = isFriend });
                     }
                 });
             }

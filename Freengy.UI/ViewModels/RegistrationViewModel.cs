@@ -12,17 +12,15 @@ using Freengy.Common.Models;
 using Freengy.Base.ViewModels;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
+using Freengy.Base.Helpers.Commands;
+using Freengy.Common.Models.Readonly;
 
 using Catel.IoC;
 using Catel.Services;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.UI.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-
-
     internal class RegistrationViewModel : CredentialViewModel 
     {
         private readonly ILoginController loginController;
@@ -48,7 +46,7 @@ namespace Freengy.UI.ViewModels
         {
             get => registered;
 
-            set
+            private set
             {
                 if (registered == value) return;
 
@@ -72,7 +70,6 @@ namespace Freengy.UI.ViewModels
             }
         }
 
-        /// <inheritdoc />
         protected override bool IsEmailMandatory { get; } = true;
 
 
@@ -90,7 +87,7 @@ namespace Freengy.UI.ViewModels
             void Method()
             {
                 SetBusyState("Registering");
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 result = loginController.Register(UserName, Password);
             }
 

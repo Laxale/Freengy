@@ -121,7 +121,7 @@ namespace Freengy.Networking.DefaultImpl
                     }
                     if (result.Value.CreatedAccount == null)
                     {
-                        return Result<UserAccount>.Fail(new UnexpectedErrorReason(request.Status.ToString()));
+                        return Result<UserAccount>.Fail(new UnexpectedErrorReason($"Failed to register '{ userName }': { result.Value.Status.ToString() }"));
                     }
 
                     var createdAccount = new UserAccount(result.Value.CreatedAccount);
@@ -168,8 +168,7 @@ namespace Freengy.Networking.DefaultImpl
             var loginModel = new LoginModel
             {
                 IsLoggingIn = false,
-                Account = MyAccountState.Account.ToModel(),
-                PasswordHash = "fffuuuu"
+                Account = MyAccountState.Account.ToModel()
             };
             
             return InvokeLogInOrOut(loginModel);
@@ -278,9 +277,15 @@ namespace Freengy.Networking.DefaultImpl
             LoggedInPassword = string.Empty;
         }
 
-        private void HashThePassword(LoginModel loginModel) 
+        private void HashThePassword(LoginModel loginModel)
         {
-            var loginSalt = accountManager.GetStoredAccount(loginModel.Account.Name).Value.NextLoginSalt;
+            Result<PrivateAccountModel> result = accountManager.GetStoredAccount(loginModel.Account.Name);
+            if (result.Failure)
+            {
+                throw new InvalidOperationException(result.Error.Message);
+            }
+
+            var loginSalt = result.Value.NextLoginSalt;
 
             loginModel.PasswordHash = new Hasher().GetHash(loginSalt + loginModel.Password);
         }

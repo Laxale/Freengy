@@ -14,6 +14,8 @@
         xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
         xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
         xmlns:readonly="clr-namespace:Freengy.Common.Models.Readonly;assembly=Freengy.Common"
+        xmlns:views="clr-namespace:Freengy.Base.Views;assembly=Freengy.Base"
+        xmlns:baseviewModels="clr-namespace:Freengy.Base.ViewModels;assembly=Freengy.Base"
 
         mc:Ignorable="d" 
         Height="400"
@@ -55,8 +57,9 @@
                 </ItemsControl.Resources>
 
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="readonly:UserAccount">
-                        <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4">
+                    <DataTemplate DataType="baseviewModels:UserAccountViewModel">
+                        <!--
+                        <DockPanel Background="{StaticResource FirstMainBrush}" Margin="4" Visibility="Collapsed">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Let's be friends!" 
@@ -77,6 +80,43 @@
                                 <Run Text=")"/>
                             </TextBlock>
                         </DockPanel>
+                        -->
+                        
+                        <Border Background="{StaticResource FirstMainBrush}" HorizontalAlignment="Stretch" Margin="{StaticResource All4Margin}">
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Let's be friends!" 
+                                              IsEnabled="{Binding Path=IsMyFriend, Converter={StaticResource ReverseBooleanConverter}}"
+                                              CommandParameter="{Binding Path=Account}"
+                                              Command="{Binding Source={StaticResource ContextProxy}, Path=Data.RequestFriendCommand}"/>
+                                    <MenuItem Header="Ban this faggot!"/>
+                                </ContextMenu>
+                            </Border.ContextMenu>
+
+                            <DockPanel>
+                                <views:UserAccountView DockPanel.Dock="Left" Margin="{StaticResource All4Margin}"/>
+
+                                <Border DockPanel.Dock="Left" CornerRadius="6" Background="{StaticResource LightGrayBrush}" 
+                                        VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10, 8, 0, 0"
+                                        Visibility="{Binding Path=IsMyFriend, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <DockPanel>
+                                        <Path DockPanel.Dock="Left" Fill="{StaticResource DarkGrayBrush}" Margin="{StaticResource 4LeftMargin}"
+                                              Style="{StaticResource CommonPathStyle}" Data="{StaticResource OkayBirdyIconGeometry}">
+                                            <Path.LayoutTransform>
+                                                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                            </Path.LayoutTransform>
+                                        </Path>
+
+                                        <TextBlock DockPanel.Dock="Left" Margin="4, 0, 4, 0" VerticalAlignment="Center" Foreground="{StaticResource DarkGrayBrush}">
+                                            <!--
+                                    <Run Text="{Binding Path=Account.Name}" />
+                                    -->
+                                            <Run Text="Your friend" FontWeight="Medium"/>
+                                        </TextBlock>
+                                    </DockPanel>
+                                </Border>
+                            </DockPanel>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -111,7 +151,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             
-            <TextBlock DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Text="{Binding Path=Information}" Foreground="{StaticResource ErrorBrush}" 
+            <TextBlock DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Text="{Binding Path=Information}" Foreground="{StaticResource RedBrush}" 
                        Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </DockPanel>
     </DockPanel>

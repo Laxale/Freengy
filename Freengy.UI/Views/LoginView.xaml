@@ -148,7 +148,7 @@
             <Image Style="{StaticResource CommonImageStyle}" MaxHeight="{StaticResource CommonLargeIconSize}" 
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/FailedIcon.png"/>
             
-            <TextBlock VerticalAlignment="Center" Foreground="{StaticResource ErrorBrush}" 
+            <TextBlock VerticalAlignment="Center" Foreground="{StaticResource RedBrush}" 
                        Text="{Binding Path=Information, Mode=OneWay}" TextWrapping="Wrap"/>
         </DockPanel>
     </Grid>

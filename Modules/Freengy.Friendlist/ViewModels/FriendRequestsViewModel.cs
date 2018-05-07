@@ -107,7 +107,6 @@ namespace Freengy.FriendList.ViewModels
                 {
                     requestAccounts.Remove(userAccount);
                     ReportMessage($"{ result.Request.TargetAccount.Name } is now your friend. Yey!");
-
                 }
                 else
                 {

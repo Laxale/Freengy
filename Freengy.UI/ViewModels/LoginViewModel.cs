@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-
+using System.Windows;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
@@ -28,13 +28,13 @@ using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
 using Freengy.UI.Views;
 using Freengy.UI.Windows;
+using Freengy.Base.Windows;
 
 using NLog;
 
 using Catel.IoC;
 
 using Prism.Regions;
-
 
 using CommonRes = Freengy.CommonResources.StringResources;
 
@@ -165,8 +165,22 @@ namespace Freengy.UI.ViewModels
 
         private void CreateAccountImpl() 
         {
-            var model = new RegistrationViewModel();
-            var win = new RegistrationWindow { DataContext = model };
+            var viewModel = new RegistrationViewModel();
+            var view = new RegistrationView
+            {
+                Margin = new Thickness(8)
+            };
+            
+            var win = new EmptyCustomToolWindow
+            {
+                Title = "Register new account",
+                MainContent = view,
+                DataContext = viewModel,
+                Height = 300,
+                MaxHeight = 400,
+                Width = 400,
+                MaxWidth = 500
+            };
 
             win.ShowDialog();
         }
@@ -254,17 +268,23 @@ namespace Freengy.UI.ViewModels
         private LoginModel GetCurrentLoginParameters() 
         {
             var parameters = new LoginModel();
-            
+
+            UserAccountModel CreateEmptyNew()
+            {
+                return new UserAccountModel
+                {
+                    Id = Guid.Empty,
+                    Name = UserName
+                };
+            }
+
             if (CurrentAccount != null)
             {
-                parameters.Account = 
-                    UserName == CurrentAccount?.Name ? 
-                        CurrentAccount.ToModel() : 
-                        new UserAccountModel { Name = UserName };
+                parameters.Account = UserName == CurrentAccount?.Name ? CurrentAccount.ToModel() : CreateEmptyNew();
             }
             else
             {
-                parameters.Account = new UserAccountModel { Name = UserName };
+                parameters.Account = CreateEmptyNew();
             }
 
             parameters.Password = this.Password;

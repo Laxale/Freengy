@@ -34,95 +34,130 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-
-            <Grid x:Key="FrontPanelGrid">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                    <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Right" Visibility="{Binding Path=Registered, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Image DockPanel.Dock="Right" MaxWidth="{StaticResource CommonSmallIconSize}" Margin="{StaticResource All4Margin}"
-                               Source="pack://application:,,,/Freengy.CommonResources;component/Images/SuccessIcon2.png"/>
-
-                        <TextBlock DockPanel.Dock="Right" Text="Registered" HorizontalAlignment="Right" FontSize="16"
-                                   Foreground="{StaticResource GreenBrush}" Style="{StaticResource HeavyTextBlockStyle}"/>
-                    </DockPanel>
-                </DockPanel>
-
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Loaded="FocusBox_Loaded"
-                         Name="FocusBox" MaxLength="{x:Static baseconst:Numeric.MaxAccountNameLength}"
-                         Text="{Binding Path=UserName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
-                <PasswordBox Grid.Row="2" Grid.Column="1" Margin="{StaticResource All4Margin}"
-                             helpers:PasswordBoxBinder.BindPassword="True"
-                             helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
-                                                                               NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static commonres:StringResources.EmailText}"/>
-                <TextBox Grid.Row="3" Grid.Column="1" 
-                         Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <DockPanel Grid.Row="4" Grid.Column="1" Visibility="Collapsed">
-                    <Image DockPanel.Dock="Left" MaxWidth="{StaticResource CommonLargeIconSize}" Margin="{StaticResource All4Margin}"
-                           Source="pack://application:,,,/Freengy.CommonResources;component/Images/EmailIcon.png"/>
-                    <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" FontWeight="Heavy" TextAlignment="Left"/>
-                </DockPanel>
-
-                <Rectangle Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 
-                           HorizontalAlignment="Stretch" Fill="{StaticResource DarkGrayBrush}" Margin="4" />
-
-                <DockPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4, 8">
-                    <Button DockPanel.Dock="Right" 
-                            Content="{x:Static commonres:StringResources.FinishText}" 
-                            Command="{Binding Path=CommandFinish}" 
-                            IsDefault="{Binding Path=Registered}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
-
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{x:Static commonres:StringResources.RegisterText}"
-                            Name="RegisterButton" IsDefault="True" Command="{Binding Path=CommandRegister}" IsEnabledChanged="RegisterButton_OnIsEnabledChanged"/>
-                </DockPanel>
-            </Grid>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <controls:WaitableDecorator WaitTemplate="{StaticResource WaitTemplate}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Заголовок окна -->
-        <TextBlock Grid.Row="0" DockPanel.Dock="Left" Text="{x:Static localprops:Resources.CreateNewAccountText}"
-                   Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource WaitTemplate}">
-            <controls:FlipPanel IsFrontPanelActive="{Binding Path=IsCodeSent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,
-                                                             Converter={StaticResource ReverseBooleanConverter}}">
+            <!-- Название юзера -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Loaded="FocusBox_Loaded"
+                     MaxLength="{x:Static baseconst:Numeric.MaxAccountNameLength}"
+                     Text="{Binding Path=UserName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <controls:FlipPanel.FrontPanel>
-                    <UserControl Content="{StaticResource FrontPanelGrid}"/>
-                </controls:FlipPanel.FrontPanel>
+            <!-- Пароль юзера -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
+            <PasswordBox Grid.Row="1" Grid.Column="1" Margin="{StaticResource All4Margin}"
+                         helpers:PasswordBoxBinder.BindPassword="True"
+                         helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
+                                                                               NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <controls:FlipPanel.BackPanel>
-                    <UserControl>
+            <!-- Почта юзера -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonres:StringResources.EmailText}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    </UserControl>
-                </controls:FlipPanel.BackPanel>
-            </controls:FlipPanel>
-        </controls:WaitableDecorator>
-    </Grid>
+            <!-- Панель подсказки про почту -->
+            <DockPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom">
+                <Image DockPanel.Dock="Left" MaxWidth="{StaticResource CommonLargeIconSize}" Margin="{StaticResource All4Margin}"
+                           Source="pack://application:,,,/Freengy.CommonResources;component/Images/EmailIcon.png"/>
+
+                <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" FontWeight="Heavy" TextAlignment="Left"/>
+            </DockPanel>
+
+            <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 
+                       HorizontalAlignment="Stretch" Fill="{StaticResource DarkGrayBrush}" Margin="4" />
+
+            <!-- Панелька результата регистрации -->
+            <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                <DockPanel DockPanel.Dock="Right" HorizontalAlignment="Left">
+                    <DockPanel.Style>
+                        <Style TargetType="DockPanel">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=Registered}" Value="False"/>
+                                        <Condition Binding="{Binding Path=HasInformation}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Style>
+
+                    <Path DockPanel.Dock="Left" HorizontalAlignment="Left">
+                        <Path.Style>
+                            <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=HasInformation}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
+                                        <Setter Property="Data" Value="{StaticResource CloseIconGeometry}"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=Registered}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource GreenBrush}"/>
+                                        <Setter Property="Data" Value="{StaticResource OkayBirdyIconGeometry}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+
+                    <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="6, 0, 0, 0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Registered}" Value="True">
+                                        <Setter Property="Text" Value="Registered"/>
+                                        <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=HasInformation}" Value="True">
+                                        <Setter Property="Text" Value="{Binding Path=Information}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </DockPanel>
+            </DockPanel>
+
+            <!-- Панель кнопок -->
+            <DockPanel Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4, 8">
+                <Button DockPanel.Dock="Right" 
+                        Style="{StaticResource CommonButtonStyle}"
+                        HorizontalContentAlignment="Center"
+                        MinWidth="60"
+                        Content="{x:Static commonres:StringResources.FinishText}" 
+                        Command="{Binding Path=CommandFinish}" 
+                        IsDefault="{Binding Path=Registered}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" 
+                        Content="{x:Static commonres:StringResources.RegisterText}"
+                        Style="{StaticResource CommonButtonStyle}"
+                        HorizontalContentAlignment="Center"
+                        MinWidth="60"
+                        IsDefault="True"
+                        Command="{Binding Path=CommandRegister}" 
+                        IsEnabledChanged="RegisterButton_OnIsEnabledChanged"/>
+            </DockPanel>
+        </Grid>
+    </controls:WaitableDecorator>
 </UserControl>

@@ -12,7 +12,7 @@
     <Color x:Key="SecondMainColor" A="255" R="210" G="210" B="210"/>
     <Color x:Key="ThirdMainColor" A="255" R="169" G="169" B="169"/>
 
-    <SolidColorBrush x:Key="ErrorBrush" Color="Red"/>
+    <SolidColorBrush x:Key="RedBrush" Color="Red"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>
     <SolidColorBrush x:Key="GreenBrush" Color="#60EE70"/>

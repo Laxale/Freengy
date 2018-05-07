@@ -48,7 +48,7 @@
         </ItemsControl>
         
         <!-- Сообщение об ошибке -->
-        <TextBlock DockPanel.Dock="Top" Foreground="{StaticResource ErrorBrush}" Text="{Binding Path=Information}" VerticalAlignment="Bottom"
+        <TextBlock DockPanel.Dock="Top" Foreground="{StaticResource RedBrush}" Text="{Binding Path=Information}" VerticalAlignment="Bottom"
                    Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </DockPanel>
 </UserControl>

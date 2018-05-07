@@ -73,6 +73,7 @@ namespace Freengy.Networking.Modules
 
                 logger.Warn(message);
 
+                //TODO пока что это нормально - один раз упасть тут после логина. На второй запрос токены уже синхронизируются
                 throw new ServerNotAuthorizedException();
             }
 

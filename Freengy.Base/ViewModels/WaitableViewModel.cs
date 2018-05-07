@@ -131,7 +131,6 @@ namespace Freengy.Base.ViewModels
             }
         }
         
-        /// <inheritdoc />
         public virtual void Refresh() { }
 
 

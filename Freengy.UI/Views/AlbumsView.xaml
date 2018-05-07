@@ -138,7 +138,7 @@
             <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" Data="{StaticResource WarningIconGeometry}" 
                   Margin="{StaticResource All4Margin}" Fill="{StaticResource DarkGrayBrush}"/>
             
-            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource ErrorBrush}" Text="{Binding Path=Information}"/>
+            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource RedBrush}" Text="{Binding Path=Information}"/>
         </DockPanel>
     </Grid>
 </UserControl>

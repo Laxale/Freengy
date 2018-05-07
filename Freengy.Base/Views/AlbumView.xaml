@@ -68,7 +68,7 @@
             <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" Data="{StaticResource WarningIconGeometry}" 
                   Margin="{StaticResource 4LeftMargin}" Fill="{StaticResource DarkGrayBrush}"/>
 
-            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource ErrorBrush}" Text="{Binding Path=Information}" VerticalAlignment="Center"/>
+            <TextBlock DockPanel.Dock="Left" Foreground="{StaticResource RedBrush}" Text="{Binding Path=Information}" VerticalAlignment="Center"/>
         </DockPanel>
 
         <controls:InvisibleFocuser Grid.Row="2" />
