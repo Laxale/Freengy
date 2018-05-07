@@ -124,9 +124,11 @@
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageCurtainRequest.cs" />
+    <Compile Include="Messages\Notification\MessageFriendRequestState.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
     <Compile Include="Messages\MessageParentWindowKeyDown.cs" />
-    <Compile Include="Messages\MessageServerOnlineStatus.cs" />
+    <Compile Include="Messages\Notification\MessageNewFriendRequest.cs" />
+    <Compile Include="Messages\Notification\MessageServerOnlineStatus.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
     <Compile Include="Models\PrivateAccountModel.cs" />
     <Compile Include="Module\BaseModule.cs" />

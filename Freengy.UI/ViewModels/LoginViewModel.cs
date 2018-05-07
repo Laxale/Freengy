@@ -33,7 +33,7 @@ using Freengy.Base.Windows;
 using NLog;
 
 using Catel.IoC;
-
+using Freengy.Base.Messages.Notification;
 using Prism.Regions;
 
 using CommonRes = Freengy.CommonResources.StringResources;

@@ -4,13 +4,13 @@
 
 
 using System;
+using System.Threading.Tasks;
 
+using Freengy.Base.Messages;
 using Freengy.Common.Exceptions;
 using Freengy.Networking.Interfaces;
 using Freengy.Common.Helpers;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
-using Freengy.Networking.Messages;
 using Freengy.Common.Extensions;
 using Freengy.Networking.DefaultImpl;
 
@@ -20,15 +20,12 @@ using Nancy;
 
 using Catel.IoC;
 using Catel.Messaging;
-
+using Freengy.Base.Messages.Notification;
 using Url = Freengy.Networking.Constants.Url;
 
 
 namespace Freengy.Networking.Modules 
 {
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// Module for handling server requests.
     /// </summary>
@@ -50,14 +47,16 @@ namespace Freengy.Networking.Modules
 
         public FromServerModule() 
         {
-            Before.AddItemToStartOfPipeline(ValidateRequest);
+            Before.AddItemToStartOfPipeline(ValidateServerMessage);
 
             Get[Url.Http.FromServer.ReplyState] = OnStateReplyRequest;
             Post[Url.Http.FromServer.InformFriendState] = OnFriendStateInform;
+            Post[Url.Http.FromServer.InformFriendRequestState] = OnFriendRequestReply;
+            Post[Url.Http.FromServer.InformFriendRequest] = OnNewFriendRequest;
         }
 
-        
-        private Response ValidateRequest(NancyContext nancyContext) 
+
+        private Response ValidateServerMessage(NancyContext nancyContext) 
         {
             loginController = loginController ?? ServiceLocator.Default.ResolveType<ILoginController>();
 
@@ -80,11 +79,29 @@ namespace Freengy.Networking.Modules
             return nancyContext.Response;
         }
 
+        private dynamic OnNewFriendRequest(dynamic arg) 
+        {
+            var newRequest = new SerializeHelper().DeserializeObject<FriendRequest>(Request.Body);
+
+            Task.Run(() => mediator.SendMessage(new MessageNewFriendRequest(newRequest)));
+
+            return HttpStatusCode.OK;
+        }
+
         private dynamic OnFriendStateInform(dynamic arg) 
         {
             var stateModel = new SerializeHelper().DeserializeObject<AccountStateModel>(Request.Body);
 
             FriendStateController.InternalInstance.UpdateFriendState(stateModel);
+
+            return HttpStatusCode.OK;
+        }
+
+        private dynamic OnFriendRequestReply(dynamic arg) 
+        {
+            var reply = new SerializeHelper().DeserializeObject<FriendRequestReply>(Request.Body);
+
+            Task.Run(() => mediator.SendMessage(new MessageFriendRequestState(reply)));
 
             return HttpStatusCode.OK;
         }

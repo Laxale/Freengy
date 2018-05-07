@@ -35,6 +35,7 @@ namespace Freengy.FriendList.ViewModels
     {
         private readonly Guid myId;
         private readonly string sessionToken;
+        private readonly List<UserAccountViewModel> acceptedAccounts = new List<UserAccountViewModel>();
         private readonly ObservableCollection<UserAccountViewModel> requestAccounts = new ObservableCollection<UserAccountViewModel>();
         private readonly Dictionary<UserAccountViewModel, FriendRequest> requestPairs = new Dictionary<UserAccountViewModel, FriendRequest>();
 
@@ -77,6 +78,16 @@ namespace Freengy.FriendList.ViewModels
         public ICollectionView RequestAccounts { get; }
 
 
+        /// <summary>
+        /// Get the collection of accepted friend-account viewmodels.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<UserAccountViewModel> GetAcceptedAccounts() 
+        {
+            return acceptedAccounts;
+        }
+
+
         private void AcceptFriendImpl(UserAccountViewModel userAccount) 
         {
             using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
@@ -106,6 +117,7 @@ namespace Freengy.FriendList.ViewModels
                 if (result.Reaction == FriendRequestReaction.Accept)
                 {
                     requestAccounts.Remove(userAccount);
+                    acceptedAccounts.Add(userAccount);
                     ReportMessage($"{ result.Request.TargetAccount.Name } is now your friend. Yey!");
                 }
                 else

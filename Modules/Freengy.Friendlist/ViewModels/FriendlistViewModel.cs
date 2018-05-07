@@ -27,10 +27,11 @@ using Freengy.Networking.DefaultImpl;
 using Freengy.Networking.Messages;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
+using Freengy.Common.Helpers.Result;
+using Freengy.Base.Messages.Notification;
+using Freengy.Common.Enums;
 
 using Catel.IoC;
-
-using Freengy.Common.Helpers.Result;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -51,7 +52,7 @@ namespace Freengy.FriendList.ViewModels
         private UserAccount myAccount;
 
 
-        public FriendListViewModel()
+        public FriendListViewModel() 
         {
             curtainedExecutor = ServiceLocatorProperty.ResolveType<ICurtainedExecutor>();
             friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
@@ -60,6 +61,8 @@ namespace Freengy.FriendList.ViewModels
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
             Mediator.Register<MessageFriendStateUpdate>(this, OnFriendStateUpdated);
+            Mediator.Register<MessageFriendRequestState>(this, OnFriendRequestReply);
+            Mediator.Register<MessageNewFriendRequest>(this, OnNewFriendRequest);
             Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading friends"));
         }
 
@@ -116,7 +119,7 @@ namespace Freengy.FriendList.ViewModels
         protected override void SetupCommands() 
         {
             CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
-            CommandSearchFriend = new MyCommand(AddFriendImpl, CanAddFriend);
+            CommandSearchFriend = new MyCommand(RequestFriendImpl, CanAddFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
             CommandRemoveFriend = new MyCommand<AccountStateViewModel>(RemoveFriendImpl, CanRemoveFriend);
         }
@@ -209,14 +212,19 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private async void AddFriendImpl() 
+        private async void RequestFriendImpl() 
         {
             curtainedExecutor.ExecuteWithCurtain
             (
                 KnownCurtainedIds.MainWindowId,
                 () => new AddNewFriendWindow().ShowDialog()
             );
-            
+
+            //await UpdateFriends();
+        }
+
+        private async Task UpdateFriends() 
+        {
             IEnumerable<AccountState> realFriends = await friendStateController.GetFriendStatesAsync();
 
             foreach (AccountState friendState in realFriends)
@@ -247,7 +255,7 @@ namespace Freengy.FriendList.ViewModels
             return friendAccount != null;
         }
 
-        private void ShowFriendRequestsImpl() 
+        private async void ShowFriendRequestsImpl() 
         {
             var viewModel = new FriendRequestsViewModel(friendRequests);
             var window = new EmptyCustomToolWindow
@@ -260,7 +268,20 @@ namespace Freengy.FriendList.ViewModels
                 MaxWidth = 600
             };
 
-            window.ShowDialog();
+            curtainedExecutor.ExecuteWithCurtain
+            (
+                KnownCurtainedIds.MainWindowId,
+                () => window.ShowDialog()
+            );
+
+            foreach (UserAccountViewModel accountViewModel in viewModel.GetAcceptedAccounts())
+            {
+                var requestToRemove = friendRequests.First(request => request.RequesterAccount.Id == accountViewModel.Account.Id);
+
+                friendRequests.Remove(requestToRemove);
+            }
+
+            await UpdateFriends();
         }
 
         private void OnFriendStateUpdated(MessageFriendStateUpdate message) 
@@ -272,6 +293,28 @@ namespace Freengy.FriendList.ViewModels
             // dont update anything. Account object already updated. Just raise propertychanged
             //targetState.UpdateFromModel(null);
             targetStateViewModel.RaiseAccountPropertyCahnged();
+        }
+
+        private async void OnFriendRequestReply(MessageFriendRequestState message) 
+        {
+            string text = $"User { message.RepliedAccount.Name } replied for your friendrequest: { message.RequestReaction }";
+
+            MessageBox.Show(text, CommonResources.StringResources.ProjectName, MessageBoxButton.OK);
+
+            if (message.RequestReaction == FriendRequestReaction.Accept)
+            {
+                await UpdateFriends();
+            }
+        }
+
+        private void OnNewFriendRequest(MessageNewFriendRequest requestMessage) 
+        {
+            if (friendRequests.Contains(requestMessage.NewFriendRequest))
+            {
+                throw new InvalidOperationException($"Friendrequest from { requestMessage.NewFriendRequest.RequesterAccount.Name } already cached");
+            }
+
+            GUIDispatcher.BeginInvokeOnGuiThread(() => friendRequests.Add(requestMessage.NewFriendRequest));
         }
 
         #endregion privates

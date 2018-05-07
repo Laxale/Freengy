@@ -89,6 +89,16 @@ namespace Freengy.Networking.Constants
                 /// Subroute on which server posts client's friends status updates.
                 /// </summary>
                 public static string InformFriendState { get; } = $"{ Root }/{ informAction }/{ friendAction}/{ stateAction }";
+
+                /// <summary>
+                /// Subroute on which server posts new incoming friendrequest.
+                /// </summary>
+                public static string InformFriendRequest { get; } = $"{ Root }/{ informAction }/{ friendAction}{ requestAction }";
+
+                /// <summary>
+                /// Subroute on which server posts friendrequest reply.
+                /// </summary>
+                public static string InformFriendRequestState { get; } = $"{ InformFriendRequest }/{ stateAction }";
             }
         }
 

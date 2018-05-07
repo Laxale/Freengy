@@ -6,6 +6,7 @@ using System;
 
 using Freengy.UI.Views;
 using Freengy.Base.Messages;
+using Freengy.Base.Messages.Notification;
 using Freengy.Base.ViewModels;
 using Freengy.CommonResources.Styles;
 

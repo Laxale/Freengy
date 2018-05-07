@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Base.Messages 
+namespace Freengy.Base.Messages.Notification 
 {
     /// <summary>
     /// Сообщение об онлайн-статусе сервера.
