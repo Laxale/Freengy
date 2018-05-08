@@ -2,32 +2,28 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+using Freengy.Base.ViewModels;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.Diagnostics.ViewModels;
+
 
 namespace Freengy.Diagnostics.Helpers 
 {
-    using System;
-    using System.Linq;
-    using System.Windows.Data;
-    using System.ComponentModel;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
-    using Freengy.Diagnostics.Interfaces;
-    using Freengy.Diagnostics.ViewModels;
-
-    using Catel.MVVM;
-
-
-    internal class DiagnosticsCategoryDecorator : ViewModelBase 
+    internal class DiagnosticsCategoryDecorator : WaitableViewModel 
     {
         private readonly IDiagnosticsCategory category;
 
 
         public DiagnosticsCategoryDecorator(IDiagnosticsCategory category) 
         {
-            if (category == null) throw new ArgumentNullException(nameof(category));
-
-            this.category = category;
+            this.category = category ?? throw new ArgumentNullException(nameof(category));
 
             this.AttachUnits();
         }
@@ -70,7 +66,7 @@ namespace Freengy.Diagnostics.Helpers
 
             if(args.PropertyName != nameof(senderUnit.IsFinished)) return;
             
-            base.RaisePropertyChanged(() => this.IsRunningUnits);
+            OnPropertyChanged(nameof(IsRunningUnits));
         }
     }
 }

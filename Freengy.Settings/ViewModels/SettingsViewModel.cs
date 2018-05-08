@@ -5,20 +5,14 @@
 using System;
 using System.Windows;
 using System.Collections.Generic;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.ViewModels;
+using Freengy.Base.Helpers.Commands;
 using Freengy.Settings.Messages;
-
-using Catel.MVVM;
-using Catel.Messaging;
-using Freengy.Base.Helpers;
 
 
 namespace Freengy.Settings.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-
-
     internal class ChangedSettings 
     {
         private static readonly object Locker = new object();
@@ -72,10 +66,10 @@ namespace Freengy.Settings.ViewModels
 
         public SettingsViewModel() 
         {
-            this.changedSettings.HasChangedSettingsLeft += this.SetCanSaveState;
-            this.changedSettings.NoChangedSettingsLeft  += this.SetCannotSaveState;
+            this.changedSettings.HasChangedSettingsLeft += SetCanSaveState;
+            this.changedSettings.NoChangedSettingsLeft  += SetCannotSaveState;
 
-            base.Mediator.Register<MessageSettingChanged>(this, this.MessageListener);
+            this.Subscribe<MessageSettingChanged>(MessageListener);
 
             this.SetupCommands();
         }
@@ -99,7 +93,7 @@ namespace Freengy.Settings.ViewModels
         {
             var saveRequestMessage = new MessageSaveRequest();
 
-            base.Mediator.SendMessage(saveRequestMessage);
+            this.Publish(saveRequestMessage);
         }
         private bool CanSave() 
         {
@@ -116,7 +110,6 @@ namespace Freengy.Settings.ViewModels
             this.CommandSave.RaiseCanExecuteChanged();
         }
 
-        [MessageRecipient]
         private void MessageListener(MessageSettingChanged isDirtyMesage) 
         {
             this.changedSettings.SetChangedState(isDirtyMesage.SettingsUnitName, isDirtyMesage.IsChanged);

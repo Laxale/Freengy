@@ -2,6 +2,7 @@
 //
 //
 
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security;
@@ -9,15 +10,13 @@ using System.ServiceModel.Security;
 
 
 using Freengy.Base.Helpers;
+using Freengy.Base.Interfaces;
 
 using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.Base.ViewModels 
 {
-    using System.Linq;
-
-
     public abstract class CredentialViewModel : WaitableViewModel, IDataErrorInfo  
     {
         private readonly Dictionary<string, string> validationErrors = new Dictionary<string, string>();
@@ -26,6 +25,13 @@ namespace Freengy.Base.ViewModels
         private string userName;
         private string password = string.Empty;
         //private SecureString password;
+
+
+        protected CredentialViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
+        {
+
+        }
 
 
         /// <summary>

@@ -3,6 +3,7 @@
 //
 
 using Freengy.Base.Messages;
+using Freengy.Base.Messages.Base;
 
 
 namespace Freengy.FriendList.Messages 

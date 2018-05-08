@@ -58,9 +58,10 @@
     <Compile Include="Extensions\IpAddressExtensions.cs" />
     <Compile Include="Extensions\NancyHttpMessageExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
-    <Compile Include="Helpers\ErrorReason\ErrorReason.cs" />
-    <Compile Include="Helpers\ErrorReason\InvalidPasswordErrorReason.cs" />
-    <Compile Include="Helpers\ErrorReason\UnexpectedErrorReason.cs" />
+    <Compile Include="ErrorReason\ErrorReason.cs" />
+    <Compile Include="ErrorReason\NoServerConnectionErrorReason.cs" />
+    <Compile Include="ErrorReason\InvalidPasswordErrorReason.cs" />
+    <Compile Include="ErrorReason\UnexpectedErrorReason.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Helpers\Hasher.cs" />
     <Compile Include="Helpers\HttpActor.cs" />
@@ -100,6 +101,12 @@
   <ItemGroup>
     <Content Include="Contract\LoginRequest.txt" />
     <Content Include="Contract\RegistrationRequest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Freengy.Localization\Freengy.Localization.csproj">
+      <Project>{9d2c4141-5ed5-449b-acab-3276f9881c4c}</Project>
+      <Name>Freengy.Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

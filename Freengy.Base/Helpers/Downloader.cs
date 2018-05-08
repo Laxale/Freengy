@@ -7,8 +7,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Windows;
-
-using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.ErrorReason;
 using Freengy.Common.Helpers.Result;
 
 

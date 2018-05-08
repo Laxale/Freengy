@@ -3,7 +3,7 @@
 //
 
 using System;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.UI.Views;
 using Freengy.Base.Messages;
 using Freengy.Base.Messages.Notification;
@@ -23,7 +23,7 @@ namespace Freengy.UI.ViewModels
 
         public HeaderToolbarViewModel() 
         {
-            Mediator.Register<MessageServerOnlineStatus>(this, OnServerStatusInform);
+            this.Subscribe<MessageServerOnlineStatus>(OnServerStatusInform);
         }
 
         

@@ -2,21 +2,23 @@
 //
 //
 
+using LocalizedRes = Freengy.Localization.StringResources;
 
-namespace Freengy.Common.Helpers.ErrorReason 
+
+namespace Freengy.Common.ErrorReason 
 {
     /// <summary>
     /// Ошибка о неправильном пароле.
     /// </summary>
-    public class InvalidPasswordErrorReason : ErrorReason 
+    public class NoServerConnectionErrorReason : ErrorReason 
     {
         /// <summary>
         /// Получить сообщение об ошибке.
         /// </summary>
         /// <returns>Сообщение об ошибке.</returns>
-        protected override string GetMessage()
+        protected override string GetMessage() 
         {
-            return "Invalid password";
+            return LocalizedRes.NoServerConnection;
         }
     }
 }

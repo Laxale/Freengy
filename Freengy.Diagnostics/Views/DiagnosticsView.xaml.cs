@@ -2,17 +2,16 @@
 //
 //
 
+using System.Windows.Controls;
+
 
 namespace Freengy.Diagnostics.Views 
 {
-    using CatelControl = Catel.Windows.Controls.UserControl;
-
-
-    public partial class DiagnosticsView : CatelControl 
+    public partial class DiagnosticsView : UserControl 
     {
         public DiagnosticsView() 
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

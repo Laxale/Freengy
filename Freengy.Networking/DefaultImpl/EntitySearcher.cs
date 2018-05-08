@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 using Freengy.Common.Enums;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;
-using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
-
-using NLog;
-
-using Catel.IoC;
+using Freengy.Base.DefaultImpl;
+using Freengy.Common.ErrorReason;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
+
+using NLog;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -42,7 +41,7 @@ namespace Freengy.Networking.DefaultImpl
             {
                 try
                 {
-                    using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
+                    using (var httpActor = MyServiceLocator.Instance.Resolve<IHttpActor>())
                     {
                         httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 
@@ -77,7 +76,7 @@ namespace Freengy.Networking.DefaultImpl
             {
                 try
                 {
-                    UserAccount currentAccount = ServiceLocator.Default.ResolveType<ILoginController>().MyAccountState.Account;
+                    UserAccount currentAccount = MyServiceLocator.Instance.Resolve<ILoginController>().MyAccountState.Account;
 
                     var searchRequest = new SearchRequest
                     {
@@ -86,7 +85,7 @@ namespace Freengy.Networking.DefaultImpl
                         SenderId = currentAccount.Id
                     };
 
-                    using (var httpActor = ServiceLocator.Default.ResolveType<IHttpActor>())
+                    using (var httpActor = MyServiceLocator.Instance.Resolve<IHttpActor>())
                     {
                         httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
 

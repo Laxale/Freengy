@@ -5,7 +5,7 @@
 
 using System;
 using System.Threading.Tasks;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Messages;
 using Freengy.Common.Exceptions;
 using Freengy.Networking.Interfaces;
@@ -13,14 +13,12 @@ using Freengy.Common.Helpers;
 using Freengy.Common.Models;
 using Freengy.Common.Extensions;
 using Freengy.Networking.DefaultImpl;
+using Freengy.Base.Messages.Notification;
 
 using NLog;
 
 using Nancy;
 
-using Catel.IoC;
-using Catel.Messaging;
-using Freengy.Base.Messages.Notification;
 using Url = Freengy.Networking.Constants.Url;
 
 
@@ -32,7 +30,6 @@ namespace Freengy.Networking.Modules
     public class FromServerModule : NancyModule 
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static readonly IMessageMediator mediator = MessageMediator.Default;
         private static readonly DelayedEventInvoker delayedInvoker;
         private static readonly int statusPublishDelay = 3000;
 
@@ -58,7 +55,7 @@ namespace Freengy.Networking.Modules
 
         private Response ValidateServerMessage(NancyContext nancyContext) 
         {
-            loginController = loginController ?? ServiceLocator.Default.ResolveType<ILoginController>();
+            loginController = loginController ?? MyServiceLocator.Instance.Resolve<ILoginController>();
 
             SessionAuth serverAuth = nancyContext.Request.Headers.GetSessionAuth();
 
@@ -83,7 +80,7 @@ namespace Freengy.Networking.Modules
         {
             var newRequest = new SerializeHelper().DeserializeObject<FriendRequest>(Request.Body);
 
-            Task.Run(() => mediator.SendMessage(new MessageNewFriendRequest(newRequest)));
+            Task.Run(() => this.Publish(new MessageNewFriendRequest(newRequest)));
 
             return HttpStatusCode.OK;
         }
@@ -101,7 +98,7 @@ namespace Freengy.Networking.Modules
         {
             var reply = new SerializeHelper().DeserializeObject<FriendRequestReply>(Request.Body);
 
-            Task.Run(() => mediator.SendMessage(new MessageFriendRequestState(reply)));
+            Task.Run(() => this.Publish(new MessageFriendRequestState(reply)));
 
             return HttpStatusCode.OK;
         }
@@ -113,14 +110,14 @@ namespace Freengy.Networking.Modules
             delayedInvoker.RemoveDelayedEventRequest();
             delayedInvoker.RequestDelayedEvent();
 
-            mediator.SendMessage(new MessageServerOnlineStatus(true));
+            delayedInvoker.Publish(new MessageServerOnlineStatus(true));
 
             return HttpStatusCode.OK;
         }
 
         private static void OnDelayedEvent() 
         {
-            mediator.SendMessage(new MessageServerOnlineStatus(false));
+            delayedInvoker.Publish(new MessageServerOnlineStatus(false));
         }
     }
 }

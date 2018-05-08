@@ -2,28 +2,23 @@
 //
 //
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.DefaultImpl;
+using Freengy.Settings.Interfaces;
+using Freengy.Settings.ModuleSettings;
+using Freengy.Diagnostics.Interfaces;
+
+using LocalRes = Freengy.GameList.Resources;
+
 
 namespace Freengy.GameList.Diagnostics 
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Interfaces;
-    using Freengy.Settings.Interfaces;
-    using Freengy.Settings.ModuleSettings;
-
-    using Freengy.Diagnostics.Interfaces;
-
-    using Catel.IoC;
-
-    using LocalRes = Freengy.GameList.Resources;
-
-
     internal class GameListDiagnosticsCategory : IDiagnosticsCategory 
     {
-        #region vars
-
         private static readonly string GameFolderUnitName = LocalRes.WhatIsYourGameFolderText;
         private static readonly string TestAssembliesUnitName = "Are there assemblies in game folder?";
         private static readonly string TestGameConfigPairsUnitName = "Are there game assemblies with configs in game folder?";
@@ -31,17 +26,15 @@ namespace Freengy.GameList.Diagnostics
         private readonly ISettingsRepository settingsRepository;
         private readonly IDiagnosticsUnitFactory unitFactory;
         private readonly IAppDirectoryInspector appDirectoryInspector;
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
-
-        #endregion vars
 
 
         internal GameListDiagnosticsCategory() 
         {
-            this.settingsRepository = this.serviceLocator.ResolveType<ISettingsRepository>();
-            this.unitFactory = this.serviceLocator.ResolveType<IDiagnosticsUnitFactory>();
-            this.appDirectoryInspector = this.serviceLocator.ResolveType<IAppDirectoryInspector>();
+            this.settingsRepository = this.serviceLocator.Resolve<ISettingsRepository>();
+            this.unitFactory = this.serviceLocator.Resolve<IDiagnosticsUnitFactory>();
+            this.appDirectoryInspector = this.serviceLocator.Resolve<IAppDirectoryInspector>();
 
             this.FillUnits();
         }

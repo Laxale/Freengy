@@ -13,10 +13,11 @@ using Freengy.Base.Messages;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.DefaultImpl;
 using Freengy.Chatter.Views;
 using Freengy.Networking.DefaultImpl;
 
-using Catel.IoC;
+using Freengy.Base.Interfaces;
 
 
 namespace Freengy.Chatter.ViewModels 
@@ -31,16 +32,17 @@ namespace Freengy.Chatter.ViewModels
         private readonly ObservableCollection<ChatSessionViewModel> chatSessions = new ObservableCollection<ChatSessionViewModel>();
 
 
-        public ChatterViewModel() 
+        public ChatterViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IChatSessionFactory chatSessionFactory, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
-            chatSessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
+            this.chatSessionFactory = chatSessionFactory;
 
             ChatSessions = CollectionViewSource.GetDefaultView(chatSessions);
 
             FillSomeSessions();
 
-            Mediator.Register<MessageChatSessionChanged>(this, OnChatSessionChanged);
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading sessions"));
+            this.Subscribe<MessageChatSessionChanged>(OnChatSessionChanged);
+            this.Publish(new MessageInitializeModelRequest(this, "Loading sessions"));
         }
 
         

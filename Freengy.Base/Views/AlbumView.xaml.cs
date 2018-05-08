@@ -12,14 +12,13 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 using Freengy.Base.Attributes;
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
-
-using Catel.Messaging;
 
 
 namespace Freengy.Base.Views 
@@ -43,7 +42,7 @@ namespace Freengy.Base.Views
 
             Loaded += OnLoaded;
 
-            MessageMediator.Default.Register<MessageParentWindowKeyDown>(this, OnParentWindowKeyDown);
+            this.Subscribe<MessageParentWindowKeyDown>(OnParentWindowKeyDown);
         }
 
         ~AlbumView() 
@@ -59,7 +58,7 @@ namespace Freengy.Base.Views
         {
             if (isDisposed) return;
 
-            MessageMediator.Default.UnregisterRecipient(this);
+            this.Unsubscribe();
 
             isDisposed = true;
         }
@@ -135,7 +134,7 @@ namespace Freengy.Base.Views
 
             if (string.IsNullOrWhiteSpace(inputText)) return;
 
-            MessageMediator.Default.SendMessage(new MessageAddImageRequest(inputText));
+            this.Publish(new MessageAddImageRequest(inputText));
         }
 
         private BitmapImage LoadBitmapImage(string imagePath) 

@@ -10,12 +10,13 @@ using System.Windows;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-
+using System.Windows.Media;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Windows;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
@@ -30,9 +31,7 @@ using Freengy.Networking.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages.Notification;
 using Freengy.Common.Enums;
-
-using Catel.IoC;
-
+using Freengy.CommonResources;
 using LocalizedRes = Freengy.Localization.StringResources;
 
 
@@ -54,30 +53,31 @@ namespace Freengy.FriendList.ViewModels
         private UserAccount myAccount;
 
 
-        public FriendListViewModel() 
+        public FriendListViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
-            curtainedExecutor = ServiceLocatorProperty.ResolveType<ICurtainedExecutor>();
-            friendStateController = ServiceLocatorProperty.ResolveType<IFriendStateController>();
+            curtainedExecutor = ServiceLocator.Resolve<ICurtainedExecutor>();
+            friendStateController = ServiceLocator.Resolve<IFriendStateController>();
 
             FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
-            Mediator.Register<MessageFriendStateUpdate>(this, OnFriendStateUpdated);
-            Mediator.Register<MessageFriendRequestState>(this, OnFriendRequestReply);
-            Mediator.Register<MessageNewFriendRequest>(this, OnNewFriendRequest);
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading friends"));
+            this.Subscribe<MessageFriendStateUpdate>(OnFriendStateUpdated);
+            this.Subscribe<MessageFriendRequestState>(OnFriendRequestReply);
+            this.Subscribe<MessageNewFriendRequest>(OnNewFriendRequest);
+            this.Publish(new MessageInitializeModelRequest(this, "Loading friends"));
         }
 
         ~FriendListViewModel() 
         {
-            Mediator.UnregisterRecipient(this);
+            this.Unsubscribe();
         }
 
         
         /// <summary>
-        /// Command to search for new friend.
+        /// Command to search for new friends.
         /// </summary>
-        public MyCommand CommandSearchFriend { get; private set; }
+        public MyCommand CommandSearchFriends { get; private set; }
 
         /// <summary>
         /// Command to show incoming friend requests.
@@ -120,8 +120,8 @@ namespace Freengy.FriendList.ViewModels
 
         protected override void SetupCommands() 
         {
+            CommandSearchFriends = new MyCommand(SearchFriendsImpl);
             CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
-            CommandSearchFriend = new MyCommand(RequestFriendImpl, CanAddFriend);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
             CommandRemoveFriend = new MyCommand<AccountStateViewModel>(RemoveFriendImpl, CanRemoveFriend);
         }
@@ -133,7 +133,7 @@ namespace Freengy.FriendList.ViewModels
         {
             base.InitializeImpl();
 
-            var loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
+            var loginController = ServiceLocator.Resolve<ILoginController>();
             
             myAccount = loginController.MyAccountState.Account;
             mySessionToken = loginController.MySessionToken;
@@ -143,7 +143,9 @@ namespace Freengy.FriendList.ViewModels
             
             foreach (AccountState friendState in realFriends)
             {
-                GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
+                var viewModel = ServiceLocator.Resolve<AccountStateViewModel>();
+                viewModel.AccountState = friendState;
+                GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(viewModel));
             }
 
             foreach (FriendRequest friendRequest in requests)
@@ -157,8 +159,8 @@ namespace Freengy.FriendList.ViewModels
 
         private void StartChatImpl(AccountState targetAccountState) 
         {
-            var chatHub = ServiceLocatorProperty.ResolveType<IChatHub>();
-            var messageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
+            var chatHub = ServiceLocator.Resolve<IChatHub>();
+            var messageFactory = ServiceLocator.Resolve<IChatMessageFactory>();
             
             messageFactory.Author = myAccount;
             
@@ -185,7 +187,7 @@ namespace Freengy.FriendList.ViewModels
 
         private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
         {
-            var sessionFactory = ServiceLocatorProperty.ResolveType<IChatSessionFactory>();
+            var sessionFactory = ServiceLocator.Resolve<IChatSessionFactory>();
             sessionFactory.SetNetworkInterface(messageSender.SendMessageToFriend);
 
             IChatSession chatSession = sessionFactory.CreateInstance(targetAccountState.Account.Name, targetAccountState.Account.Name);
@@ -198,7 +200,7 @@ namespace Freengy.FriendList.ViewModels
 
         private async Task<IEnumerable<FriendRequest>> SearchFriendRequests() 
         {
-            using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
+            using (var httpActor = ServiceLocator.Resolve<IHttpActor>())
             {
                 httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
@@ -214,15 +216,27 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private async void RequestFriendImpl() 
+        private void SearchFriendsImpl() 
         {
+            var view = new SearchFriendsView();
+            SolidColorBrush graBrush = new CommonResourceExposer().GetBrush(CommonResourceExposer.LightGrayBrushKey);
+
+            var win = new EmptyCustomToolWindow
+            {
+                Title = LocalizedRes.SearchFriends,
+                Background = graBrush,
+                MainContent = view,
+                Height = 400,
+                MaxHeight = 600,
+                Width = 500,
+                MaxWidth = 700
+            };
+
             curtainedExecutor.ExecuteWithCurtain
             (
                 KnownCurtainedIds.MainWindowId,
-                () => new AddNewFriendWindow().ShowDialog()
+                () => win.ShowDialog()
             );
-
-            //await UpdateFriends();
         }
 
         private async Task UpdateFriends() 
@@ -233,15 +247,11 @@ namespace Freengy.FriendList.ViewModels
             {
                 if (friendViewModels.All(viewModel => viewModel.AccountState.Account.Id != friendState.Account.Id))
                 {
-                    GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(new AccountStateViewModel(friendState)));
+                    var viewModel = ServiceLocator.Resolve<AccountStateViewModel>();
+                    viewModel.AccountState = friendState;
+                    GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(viewModel));
                 }
             }
-        }
-
-        private bool CanAddFriend() 
-        {
-            // just a stub
-            return true;
         }
 
         private void RemoveFriendImpl(AccountStateViewModel viewModel) 
@@ -259,7 +269,8 @@ namespace Freengy.FriendList.ViewModels
 
         private async void ShowFriendRequestsImpl() 
         {
-            var viewModel = new FriendRequestsViewModel(friendRequests);
+            var viewModel = ServiceLocator.Resolve<FriendRequestsViewModel>();
+            viewModel.SetRequests(friendRequests);
             var window = new EmptyCustomToolWindow
             {
                 Title = "Friend requests",
@@ -285,6 +296,7 @@ namespace Freengy.FriendList.ViewModels
 
             await UpdateFriends();
         }
+
 
         private void OnFriendStateUpdated(MessageFriendStateUpdate message) 
         {

@@ -117,27 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChangePasswordText" xml:space="preserve">
-    <value>Change password</value>
-  </data>
-  <data name="CreateAccountText" xml:space="preserve">
-    <value>Create account</value>
-  </data>
-  <data name="CreateNewAccountText" xml:space="preserve">
-    <value>Create new account</value>
-  </data>
-  <data name="LogInText" xml:space="preserve">
-    <value>Log in</value>
-  </data>
-  <data name="LogInWelcomeText" xml:space="preserve">
-    <value>Log in and kawabanga!</value>
-  </data>
-  <data name="NewAccountEmailHintText" xml:space="preserve">
-    <value>Email is not not required, but you will be unable to recover forgotten password without it</value>
-  </data>
-  <data name="PasswordChangedText" xml:space="preserve">
-    <value>Password changed</value>
-  </data>
   <data name="PasswordRecoveryEmailBodyFormat" xml:space="preserve">
     <value>This email has been sent to You because of Freengy password recovery request.
 If You didnt request such operation, just ignore this message.

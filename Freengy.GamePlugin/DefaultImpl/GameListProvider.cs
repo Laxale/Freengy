@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
@@ -21,11 +21,8 @@ using Freengy.GamePlugin.Helpers;
 using Freengy.GamePlugin.Messages;
 using Freengy.GamePlugin.Constants;
 using Freengy.GamePlugin.Interfaces;
-
+using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
-
-using Catel.IoC;
-using Catel.Messaging;
 
 
 namespace Freengy.GamePlugin.DefaultImpl 
@@ -108,14 +105,13 @@ namespace Freengy.GamePlugin.DefaultImpl
     }
 
 
-    internal class GameListProvider : IGameListProvider 
+    internal class GameListProvider : IGameListProvider
     {
-        private readonly ITypeFactory typeFactory;
         private readonly ISettingsRepository settingsRepository;
         private readonly IAppDirectoryInspector directoryInspector;
         private readonly PluginsCache pluginsCache = new PluginsCache();
         private readonly GameDirectoryFilterStrategyBase gameFolderStrategy;
-        private readonly IMessageMediator messageMediator = MessageMediator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
 
 
         #region Singleton
@@ -124,11 +120,10 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         private GameListProvider() 
         {
-            typeFactory = this.GetTypeFactory();
             gameFolderStrategy = new GameFolderConfigFilterStrategy();
-            settingsRepository = ServiceLocator.Default.ResolveType<ISettingsRepository>();
-            directoryInspector = ServiceLocator.Default.ResolveType<IAppDirectoryInspector>();
-            messageMediator.Register<MessageWorkingDirectoryChanged>(this, MessageListener);
+            settingsRepository = serviceLocator.Resolve<ISettingsRepository>();
+            directoryInspector = serviceLocator.Resolve<IAppDirectoryInspector>();
+            this.Subscribe<MessageWorkingDirectoryChanged>(MessageListener);
 
             TryCreateDefaultGamesFolder();
         }
@@ -236,7 +231,7 @@ namespace Freengy.GamePlugin.DefaultImpl
 
                 TryInitializePluginModule(loadedAssembly);
 
-                var gamePlugin = typeFactory.CreateInstanceWithParameters(gamePluginImplementer) as IGamePlugin;
+                var gamePlugin = serviceLocator.ResolveWithParameters<IGamePlugin>(gamePluginImplementer);
 
                 pluginsCache.AddPathAndPlugin(newDllPath, gamePlugin);
             }
@@ -258,7 +253,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             {
                 Type gameImoduleImplementer = pluginAssembly.FindImplementingType<IModule>();
 
-                var gameModule = typeFactory.CreateInstanceWithParameters(gameImoduleImplementer) as IModule;
+                var gameModule = serviceLocator.ResolveWithParameters<IModule>(gameImoduleImplementer);
 
                 gameModule?.Initialize();
             }
@@ -269,7 +264,6 @@ namespace Freengy.GamePlugin.DefaultImpl
             }
         }
 
-        [MessageRecipient]
         private void MessageListener(MessageWorkingDirectoryChanged changedMessage) 
         {
             // listen only to creation events, not interested in deleting anyth
@@ -290,7 +284,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             if (newGames.Any())
             {
                 var gamesAddedMessage = new MessageGamesAdded(newGames);
-                messageMediator.SendMessage(gamesAddedMessage);
+                this.Publish(gamesAddedMessage);
             }
         }
     }

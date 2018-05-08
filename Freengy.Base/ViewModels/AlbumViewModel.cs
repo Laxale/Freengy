@@ -6,7 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Messages;
 using Freengy.Common.Models;
@@ -38,7 +38,7 @@ namespace Freengy.Base.ViewModels
 
             album.Images.ForEach(imageModels.Add);
 
-            Mediator.Register<MessageAddImageRequest>(this, OnAddImageRequest);
+            this.Subscribe<MessageAddImageRequest>(OnAddImageRequest);
         }
 
         ~AlbumViewModel() 
@@ -76,7 +76,7 @@ namespace Freengy.Base.ViewModels
         {
             if (isDisposed) return;
 
-            Mediator.UnregisterRecipient(this);
+            this.Unsubscribe();
 
             isDisposed = true;
         }

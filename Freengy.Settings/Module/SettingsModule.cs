@@ -8,9 +8,9 @@ using Freengy.Common.Constants;
 using Freengy.Settings.Constants;
 using Freengy.Settings.Interfaces;
 using Freengy.Settings.DefaultImpl;
-
-using Catel.IoC;
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Helpers;
+
 using Prism.Modularity;
 
 
@@ -26,7 +26,7 @@ namespace Freengy.Settings.Module
                 Initializer.SetStorageDirectoryPath(appDataFolderPath);
                 Initializer.SetDbFileName(SettingsConstants.SettingsDbFileName);
 
-                ServiceLocator.Default.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
+               MyServiceLocator.Instance.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
             }
         }
     }

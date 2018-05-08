@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
 using Freengy.UI.Views;
 using Freengy.Common.Helpers;
@@ -20,8 +21,6 @@ using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
 using Freengy.Common.Helpers.Result;
-
-using Catel.IoC;
 
 
 namespace Freengy.UI.ViewModels 
@@ -45,7 +44,7 @@ namespace Freengy.UI.ViewModels
 
         public AlbumsViewModel() 
         {
-            albumManager = ServiceLocatorProperty.ResolveType<IAlbumManager>();
+            albumManager = ServiceLocator.Resolve<IAlbumManager>();
 
             AlbumViewModels = CollectionViewSource.GetDefaultView(albumViewModels);
 
@@ -53,7 +52,7 @@ namespace Freengy.UI.ViewModels
             delayedInvoker.DelayedEvent += OnDelayedSearchEvent;
             AlbumViewModels.Filter = FilterAlbums;
 
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading albums"));
+            this.Publish(new MessageInitializeModelRequest(this, "Loading albums"));
         }
 
         
@@ -236,7 +235,7 @@ namespace Freengy.UI.ViewModels
 
             ClearInformation();
 
-            AccountState myAccountState = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState;
+            AccountState myAccountState = ServiceLocator.Resolve<ILoginController>().MyAccountState;
 
             var albumModel = new AlbumModel
             {

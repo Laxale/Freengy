@@ -7,12 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Interfaces;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.Diagnostics.ViewModels;
-
-using Catel.IoC;
-using Catel.Services;
 using Freengy.Diagnostics.Views;
 
 
@@ -21,7 +19,6 @@ namespace Freengy.Diagnostics.DefaultImpl
     internal class DiagnosticsController : IDiagnosticsController
     {
         private readonly IGuiDispatcher guiDispatcher;
-        private readonly IUIVisualizerService uiVisualizer;
 
         private static readonly object Locker = new object();
 
@@ -34,12 +31,10 @@ namespace Freengy.Diagnostics.DefaultImpl
 
         private DiagnosticsController() 
         {
-            this.guiDispatcher = ServiceLocator.Default.ResolveType<IGuiDispatcher>();
-            this.uiVisualizer = ServiceLocator.Default.ResolveType<IUIVisualizerService>();
+            guiDispatcher = MyServiceLocator.Instance.Resolve<IGuiDispatcher>();
         }
 
-        public static IDiagnosticsController Instance =>
-            DiagnosticsController.instance ?? (DiagnosticsController.instance = new DiagnosticsController());
+        public static IDiagnosticsController Instance => instance ?? (instance = new DiagnosticsController());
 
         #endregion Singleton
 
@@ -54,7 +49,6 @@ namespace Freengy.Diagnostics.DefaultImpl
                         () =>
                         {
                             new DiagnosticsWindow().ShowDialog();
-                            //uiVisualizer.ShowAsync<DiagnosticsViewModel>();
                         });
                     }
                 );
@@ -67,13 +61,13 @@ namespace Freengy.Diagnostics.DefaultImpl
 
         public void RegisterCategory(IDiagnosticsCategory diagnosticsCategory) 
         {
-            this.ThrowIfInvalidCategory(diagnosticsCategory);
+            ThrowIfInvalidCategory(diagnosticsCategory);
 
             lock (Locker)
             {
-                if (this.diagnosticsCategories.Keys.Contains(diagnosticsCategory.Name)) return;
+                if (diagnosticsCategories.Keys.Contains(diagnosticsCategory.Name)) return;
 
-                this.diagnosticsCategories.Add(diagnosticsCategory.Name, diagnosticsCategory);
+                diagnosticsCategories.Add(diagnosticsCategory.Name, diagnosticsCategory);
             }
         }
 
@@ -83,7 +77,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticsCategories.ContainsKey(diagnosticsCategoryName);
+                bool isRegistered = diagnosticsCategories.ContainsKey(diagnosticsCategoryName);
 
                 return isRegistered;
             }
@@ -96,7 +90,7 @@ namespace Freengy.Diagnostics.DefaultImpl
 
             lock (Locker)
             {
-                bool isRegistered = this.diagnosticsCategories.ContainsKey(diagnosticsCategory.Name);
+                bool isRegistered = diagnosticsCategories.ContainsKey(diagnosticsCategory.Name);
 
                 return isRegistered;
             }
@@ -106,7 +100,7 @@ namespace Freengy.Diagnostics.DefaultImpl
         {
             if (string.IsNullOrWhiteSpace(diagnosticsCategoryName)) throw new ArgumentNullException(nameof(diagnosticsCategoryName));
 
-            this.TryRemoveUnitByName(diagnosticsCategoryName);
+            TryRemoveUnitByName(diagnosticsCategoryName);
         }
 
         public void UnregisterCategory(IDiagnosticsCategory diagnosticsCategory) 
@@ -114,14 +108,14 @@ namespace Freengy.Diagnostics.DefaultImpl
             if (diagnosticsCategory == null) throw new ArgumentNullException(nameof(diagnosticsCategory));
             if (string.IsNullOrWhiteSpace(diagnosticsCategory.Name)) throw new ArgumentNullException(nameof(diagnosticsCategory.Name));
 
-            this.TryRemoveUnitByName(diagnosticsCategory.Name);
+            TryRemoveUnitByName(diagnosticsCategory.Name);
         }
 
         public IEnumerable<IDiagnosticsCategory> GetAllCategories() 
         {
             lock (Locker)
             {
-                return this.diagnosticsCategories.Values.ToArray();
+                return diagnosticsCategories.Values.ToArray();
             }
         }
 
@@ -132,7 +126,7 @@ namespace Freengy.Diagnostics.DefaultImpl
             {
                 try
                 {
-                    this.diagnosticsCategories.Remove(diagnosticsUnitName);
+                    diagnosticsCategories.Remove(diagnosticsUnitName);
                 }
                 catch (Exception)
                 {

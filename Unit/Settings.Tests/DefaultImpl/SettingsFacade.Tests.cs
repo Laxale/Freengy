@@ -12,8 +12,6 @@ using Freengy.Settings.ModuleSettings;
 
 using NUnit.Framework;
 
-using Catel.IoC;
-
 
 namespace Settings.Tests.DefaultImpl 
 {

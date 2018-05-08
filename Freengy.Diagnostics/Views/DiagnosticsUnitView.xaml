@@ -5,13 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              
-             xmlns:catel="http://catel.codeplex.com" 
-             
+             xmlns:prism="http://prismlibrary.com/"
+
              xmlns:local="clr-namespace:Freengy.Diagnostics.Views"
              xmlns:viewModels="clr-namespace:Freengy.Diagnostics.ViewModels"
-             xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-             xmlns:interactivity="http://schemas.catelproject.com"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
@@ -57,7 +55,7 @@
                    Visibility="{Binding Path=IsFailed, Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <interactivity:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                        <prism:InvokeCommandAction Command="{Binding Path=CommandShowDetails}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
@@ -66,7 +64,7 @@
                    Visibility="{Binding Path=Succeeded, Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <interactivity:EventToCommand Command="{Binding Path=CommandShowDetails}" DisableAssociatedObjectOnCannotExecute="False"/>
+                        <prism:InvokeCommandAction Command="{Binding Path=CommandShowDetails}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>

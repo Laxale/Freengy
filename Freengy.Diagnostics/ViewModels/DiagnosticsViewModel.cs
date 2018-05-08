@@ -10,11 +10,6 @@ using System.Collections.ObjectModel;
 using Freengy.Base.ViewModels;
 using Freengy.Diagnostics.Helpers;
 using Freengy.Diagnostics.Interfaces;
-
-using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-
 using Freengy.Base.Helpers.Commands;
 
 
@@ -32,7 +27,7 @@ namespace Freengy.Diagnostics.ViewModels
 
         public DiagnosticsViewModel() 
         {
-            diagnosticsController = ServiceLocatorProperty.ResolveType<IDiagnosticsController>();
+            diagnosticsController = ServiceLocator.Resolve<IDiagnosticsController>();
             DiagnosticsCategories = CollectionViewSource.GetDefaultView(diagnosticsCategories);
         }
 
@@ -91,11 +86,7 @@ namespace Freengy.Diagnostics.ViewModels
 
         public bool IsCategoryFilterEmpty => string.IsNullOrWhiteSpace(CategoryFilter);
 
-
-        public static readonly PropertyData CategoryFilterProperty =
-            ModelBase.RegisterProperty<DiagnosticsViewModel, string>(diagViewModel => diagViewModel.CategoryFilter, () => string.Empty);
-
-
+        
         private void SetCategoryFilter(string value) 
         {
             DiagnosticsCategories.Filter =

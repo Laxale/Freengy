@@ -2,7 +2,7 @@
 //
 //
 
-using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.ErrorReason;
 
 
 namespace Freengy.Base.ErrorReasons 

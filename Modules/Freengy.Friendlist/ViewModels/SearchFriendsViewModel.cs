@@ -24,7 +24,7 @@ using Freengy.Common.Models.Readonly;
 
 using NLog;
 
-using Catel.IoC;
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Interfaces;
 
 
@@ -33,7 +33,7 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Viewmodel for <see cref="AddNewFriendWindow"/>.
     /// </summary>
-    internal class AddNewFriendViewModel : WaitableViewModel, IDisposable 
+    internal class SearchFriendsViewModel : WaitableViewModel, IDisposable 
     {
         private readonly UserAccount myAccount;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -45,18 +45,19 @@ namespace Freengy.FriendList.ViewModels
         private string searchFilter;
 
 
-        public AddNewFriendViewModel() 
+        public SearchFriendsViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) :
+            base(taskWrapper, guiDispatcher, serviceLocator) 
         {
-            myAccount = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState.Account;
+            myAccount = ServiceLocator.Resolve<ILoginController>().MyAccountState.Account;
 
             delayedInvoker.DelayedEvent += SearchUsersImpl;
             FoundUsers = CollectionViewSource.GetDefaultView(foundUsers);
             SentRequestResults = CollectionViewSource.GetDefaultView(requestResults);
 
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading user search"));
+            this.Publish(new MessageInitializeModelRequest(this, "Loading user search"));
         }
 
-        ~AddNewFriendViewModel() 
+        ~SearchFriendsViewModel() 
         {
             Dispose(false);
         }
@@ -126,7 +127,7 @@ namespace Freengy.FriendList.ViewModels
         {
             base.InitializeImpl();
 
-            IEnumerable<AccountState> myFriends = ServiceLocatorProperty.ResolveType<IFriendStateController>().GetFriendStatesAsync().Result;
+            IEnumerable<AccountState> myFriends = ServiceLocator.Resolve<IFriendStateController>().GetFriendStatesAsync().Result;
 
             SetMyCurrentFriends(myFriends.Select(friendState => friendState.Account));
         }
@@ -146,7 +147,7 @@ namespace Freengy.FriendList.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SearchFilter)) return;
 
-            var searcher = ServiceLocatorProperty.ResolveType<IEntitySearcher>();
+            var searcher = ServiceLocator.Resolve<IEntitySearcher>();
 
             var searchResult = await searcher.SearchUsersAsync(SearchFilter);
 
@@ -173,7 +174,7 @@ namespace Freengy.FriendList.ViewModels
         {
             try
             {
-                using (var httpActor = ServiceLocatorProperty.ResolveType<IHttpActor>())
+                using (var httpActor = ServiceLocator.Resolve<IHttpActor>())
                 {
                     httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 

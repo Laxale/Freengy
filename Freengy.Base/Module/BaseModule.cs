@@ -9,8 +9,6 @@ using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
 using Freengy.Common.Helpers;
 
-using Catel.IoC;
-
 using Prism.Modularity;
 
 
@@ -25,17 +23,17 @@ namespace Freengy.Base.Module
                 //just create singleton
                 var initializer = ViewModelInitializer.Instance;
 
-                ServiceLocator.Default.RegisterInstance(ChatHub.Instance);
-                ServiceLocator.Default.RegisterInstance(UserActivityHub.Instance);
-                ServiceLocator.Default.RegisterInstance(CurtainedExecutor.Instance);
-                ServiceLocator.Default.RegisterInstance(ChatSessionFactory.Instance);
+                MyServiceLocator.Instance.RegisterInstance(ChatHub.Instance);
+                MyServiceLocator.Instance.RegisterInstance(UserActivityHub.Instance);
+                MyServiceLocator.Instance.RegisterInstance(CurtainedExecutor.Instance);
+                MyServiceLocator.Instance.RegisterInstance(ChatSessionFactory.Instance);
 
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAlbumManager, AlbumManager>();
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAccountManager, DbAccountManager>();
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessage, ChatMessage>(RegistrationType.Transient);
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IChatMessageFactory, ChatMessageFactory>(RegistrationType.Transient);
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IAlbumManager, AlbumManager>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IAccountManager, DbAccountManager>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IAppDirectoryInspector, AppDirectoryInspector>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<ITaskWrapper, TaskWrapper>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IChatMessage, ChatMessage>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IChatMessageFactory, ChatMessageFactory>();
             }
         }
     }

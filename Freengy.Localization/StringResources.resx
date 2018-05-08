@@ -222,4 +222,70 @@
   <data name="ServerOffline" xml:space="preserve">
     <value>Server offline</value>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="NoServerConnection" xml:space="preserve">
+    <value>No server сonnection</value>
+  </data>
+  <data name="RequestRouteNotFound" xml:space="preserve">
+    <value>Request route not found on server</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="LetsBeFriends" xml:space="preserve">
+    <value>Let's be friends!</value>
+  </data>
+  <data name="SearchFriends" xml:space="preserve">
+    <value>Search for friends</value>
+  </data>
+  <data name="SearchNewAwesomeFriends" xml:space="preserve">
+    <value>Search for new awesome friends!</value>
+  </data>
+  <data name="YourFriend" xml:space="preserve">
+    <value>Your friend</value>
+  </data>
+  <data name="StartChat" xml:space="preserve">
+    <value>Start chat</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="IAm" xml:space="preserve">
+    <value>I am</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="CreateNewAccount" xml:space="preserve">
+    <value>Create new account</value>
+  </data>
+  <data name="LogInWelcomeText" xml:space="preserve">
+    <value>Log in and kawabanga!</value>
+  </data>
+  <data name="NewAccountEmailHintText" xml:space="preserve">
+    <value>Email is not not required, but you will be unable to recover forgotten password without it</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Password changed</value>
+  </data>
+  <data name="RecoverPassword" xml:space="preserve">
+    <value>Recover your password</value>
+  </data>
+  <data name="Connecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MyAlbums" xml:space="preserve">
+    <value>My albums</value>
+  </data>
 </root>

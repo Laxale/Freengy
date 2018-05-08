@@ -29,7 +29,7 @@
             <DataTemplate x:Key="LoginWaitTemplate">
                 <Grid>
                     <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
-                        <TextBlock Text="Connecting" Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{x:Static localization:StringResources.Connecting}" Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
 
                         <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
                                            IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}">
@@ -52,7 +52,8 @@
 
         <DockPanel Grid.Row="0">
             <!-- Выезжающий блок приветствия -->
-            <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.LogInWelcomeText}" Style="{StaticResource SlidingTitleTextBlockStyle}"/>
+            <TextBlock DockPanel.Dock="Left" Style="{StaticResource SlidingTitleTextBlockStyle}"
+                       Text="{x:Static localization:StringResources.LogInWelcomeText}"/>
         </DockPanel>
 
         <controls:WaitableDecorator Grid.Row="1" WaitTemplate="{StaticResource LoginWaitTemplate}" 
@@ -86,20 +87,19 @@
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- TODO какого хера кнопка не в любом месте юзерконтрола работает? -->
-                <Button Grid.Row="2" Grid.Column="1" 
-                        Style="{StaticResource ImageButtonStyle}"
-                        Command="{Binding Path=CommandLogin}"
-                        MinWidth="{StaticResource MinButtonWidth}" 
-                        HorizontalAlignment="Right" IsDefault="True" 
-                        Width="60"
-                        Margin="{StaticResource All4Margin}">
+                <Button Grid.Row="2" Grid.Column="1" Width="Auto" IsDefault="True" 
+                        Style="{StaticResource ImageButtonStyle}" MinWidth="{StaticResource MinButtonWidth}" 
+                        Command="{Binding Path=CommandLogin}" HorizontalAlignment="Right" Margin="{StaticResource All4Margin}">
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="{x:Static localprops:Resources.LogInText}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.LogIn}"/>
                         
                         <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowUpIconGeometry}" 
                               Fill="{StaticResource BlackBrush}" Margin="0, 3, 0, 0">
                             <Path.LayoutTransform>
-                                <RotateTransform Angle="90"/>
+                                <TransformGroup>
+                                    <RotateTransform Angle="90"/>
+                                    <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                                </TransformGroup>
                             </Path.LayoutTransform>
                         </Path>
                     </DockPanel>
@@ -123,15 +123,15 @@
 
                         <Style TargetType="ToolTip" BasedOn="{StaticResource CommonToolTipStyle}">
                             <Setter Property="Background" Value="{StaticResource FirstMainBrush}"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
                         </Style>
                     </DockPanel.Resources>
 
                     <Button Content="{x:Static localization:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
-                            ToolTip="Recover your password" Command="{Binding Path=CommandRecoverPassword}"/>
+                            Command="{Binding Path=CommandRecoverPassword}" ToolTip="{x:Static localization:StringResources.RecoverPassword}"/>
 
-                    <Button Content="{x:Static localprops:Resources.CreateAccountText}" ToolTip="Create a new user account" 
-                            Command="{Binding Path=CommandCreateAccount}"/>
+                    <Button Content="{x:Static localization:StringResources.CreateAccount}" Command="{Binding Path=CommandCreateAccount}"
+                            ToolTip="{x:Static localization:StringResources.CreateNewAccount}"/>
                 </DockPanel>
             </Grid>
         </controls:WaitableDecorator>

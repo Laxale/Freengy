@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 using Freengy.Base.Messages;
 using Freengy.Base.Chat.Interfaces;
-
-using Catel.IoC;
-using Catel.Messaging;
+using Freengy.Base.DefaultImpl;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 
@@ -24,7 +22,6 @@ namespace Freengy.Base.Chat.DefaultImpl
 
         private static ChatHub instance;
 
-        private readonly IMessageMediator mediator = MessageMediator.Default;
         private readonly Dictionary<Guid, IChatSession> chatSessions = new Dictionary<Guid, IChatSession>();
 
 
@@ -80,7 +77,7 @@ namespace Freengy.Base.Chat.DefaultImpl
                 chatSessions.Add(session.Id, session);                  
 
                 var message = new MessageChatSessionChanged(session, true);
-                mediator.SendMessage(message);
+                this.Publish(message);
             }
         }
 
@@ -101,7 +98,7 @@ namespace Freengy.Base.Chat.DefaultImpl
                 chatSessions.Remove(session.Id);
 
                 var message = new MessageChatSessionChanged(session, false);
-                mediator.SendMessage(message);
+                this.Publish(message);
             }
         }
     }

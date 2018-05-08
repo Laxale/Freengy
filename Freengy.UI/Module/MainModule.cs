@@ -7,8 +7,6 @@ using Freengy.Common.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
 
-using Catel.IoC;
-
 using Prism.Modularity;
 
 
@@ -23,9 +21,7 @@ namespace Freengy.UI.Module
         {
             using (new StatisticsDeployer(nameof(MainModule)))
             {
-                ServiceLocator.Default.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
-
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
+                MyServiceLocator.Instance.RegisterInstance<IGuiDispatcher>(UiDispatcher.Instance);
             }
         }
     }

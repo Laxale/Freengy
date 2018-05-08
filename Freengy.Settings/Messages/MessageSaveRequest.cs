@@ -3,6 +3,8 @@
 //
 
 
+using Freengy.Base.Messages.Base;
+
 namespace Freengy.Settings.Messages 
 {
     using Freengy.Base.Messages;

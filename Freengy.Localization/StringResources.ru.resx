@@ -145,7 +145,7 @@
     <value>Hostname</value>
   </data>
   <data name="PasswordRequirementsText" xml:space="preserve">
-    <value>Minimum length of 10 symbols and no spaces</value>
+    <value>Не меньше 10 символов без пробелов</value>
   </data>
   <data name="PasswordText" xml:space="preserve">
     <value>Пароль</value>
@@ -221,5 +221,71 @@
   </data>
   <data name="ServerOffline" xml:space="preserve">
     <value>Сервер офлайн</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Сменить пароль</value>
+  </data>
+  <data name="Connecting" xml:space="preserve">
+    <value>Соединяем</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Создать аккаунт</value>
+  </data>
+  <data name="CreateNewAccount" xml:space="preserve">
+    <value>Зарегистрировать новый аккаунт</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="IAm" xml:space="preserve">
+    <value>Я есть</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Неверный пароль</value>
+  </data>
+  <data name="LetsBeFriends" xml:space="preserve">
+    <value>Будем друзьями!</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="LogInWelcomeText" xml:space="preserve">
+    <value>Набирай пароль, и погнали!</value>
+  </data>
+  <data name="MyAlbums" xml:space="preserve">
+    <value>Мои альбомы</value>
+  </data>
+  <data name="NewAccountEmailHintText" xml:space="preserve">
+    <value>Почту вводить не обязательно, но без неё будет невозможно восстановить пароль</value>
+  </data>
+  <data name="NoServerConnection" xml:space="preserve">
+    <value>Нет связи с сервером</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Пароль изменён</value>
+  </data>
+  <data name="RecoverPassword" xml:space="preserve">
+    <value>Восстановить пароль</value>
+  </data>
+  <data name="RequestRouteNotFound" xml:space="preserve">
+    <value>На сервере не  найден обработчик запроса</value>
+  </data>
+  <data name="SearchFriends" xml:space="preserve">
+    <value>Найти друзей</value>
+  </data>
+  <data name="SearchNewAwesomeFriends" xml:space="preserve">
+    <value>Искать новых крутых и прикольных друзей!</value>
+  </data>
+  <data name="StartChat" xml:space="preserve">
+    <value>Написать</value>
+  </data>
+  <data name="YourFriend" xml:space="preserve">
+    <value>Ваш друг</value>
   </data>
 </root>

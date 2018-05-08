@@ -4,14 +4,13 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Interfaces;
 
 using NLog;
 
-using Catel.IoC;
-using Catel.Messaging;
-using Catel.Services;
+using Freengy.Base.Messages.Base;
+using Microsoft.Practices.ServiceLocation;
 
 
 namespace Freengy.Base.ViewModels 
@@ -23,27 +22,30 @@ namespace Freengy.Base.ViewModels
         private string information;
 
 
+        protected WaitableViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) 
+        {
+            TaskerWrapper = taskWrapper;
+            GUIDispatcher = guiDispatcher;
+            ServiceLocator = serviceLocator;
+        }
+
         protected WaitableViewModel() 
         {
-            Factory = this.GetTypeFactory();
-            TaskerWrapper = ServiceLocatorProperty.ResolveType<ITaskWrapper>();
-            GUIDispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
+            ServiceLocator = MyServiceLocator.Instance;
+            TaskerWrapper = ServiceLocator.Resolve<ITaskWrapper>();
+            GUIDispatcher = ServiceLocator.Resolve<IGuiDispatcher>();
         }
 
 
         protected ITaskWrapper TaskerWrapper { get; }
 
-        protected ITypeFactory Factory { get; }
-
         protected IGuiDispatcher GUIDispatcher { get; }
 
         protected Logger NLogger { get; } = LogManager.GetCurrentClassLogger();
 
-        protected IServiceLocator ServiceLocatorProperty { get; } = ServiceLocator.Default;
+        protected IMyServiceLocator ServiceLocator { get; }
 
-        protected IMessageMediator Mediator { get; } = MessageMediator.Default;
-
-
+        
         /// <summary>
         /// Событие изменения значения свойства.
         /// </summary>

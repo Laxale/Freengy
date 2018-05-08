@@ -3,12 +3,12 @@
 //
 
 
-namespace Freengy.Base.Messages 
+namespace Freengy.Base.Messages.Base 
 {
     /// <summary>
-    /// Just a base class for Catel messages. Nothing special, OOP purposes
+    /// Just a base class for MVVM messaging. Nothing special, OOP purposes.
     /// </summary>
-    public abstract class MessageBase 
+    public abstract class MessageBase  
     {
         protected MessageBase() 
         {

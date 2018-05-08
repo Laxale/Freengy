@@ -5,6 +5,7 @@
 using System;
 
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Messages.Base;
 
 
 namespace Freengy.Base.Messages 

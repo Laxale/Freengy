@@ -6,17 +6,15 @@ using System.Windows;
 using System.Windows.Controls;
 
 using Freengy.Base.Attributes;
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Messages.Collapse;
 using Freengy.UI.ViewModels;
 
-using Catel.Messaging;
+using Prism.Regions;
 
 
 namespace Freengy.UI.Views 
 {
-    using Prism.Regions;
-
-
     /// <summary>
     /// Main view for a program for logged in user.
     /// </summary>
@@ -24,8 +22,6 @@ namespace Freengy.UI.Views
     [HasViewModel(typeof(ShellViewModel))]
     public partial class ShellView 
     {
-        private readonly IMessageMediator mediator = MessageMediator.Default;
-
         private GridLength previousChatHeight;
         private RowDefinition chatterRowDefinition;
 
@@ -67,7 +63,7 @@ namespace Freengy.UI.Views
         {
             IsChatCollapsed = !IsChatCollapsed;
 
-            mediator.SendMessage(new MessageCollapseChatRequest(IsChatCollapsed));
+            this.Publish(new MessageCollapseChatRequest(IsChatCollapsed));
         }
 
         private void ChatterRegionDefinition_OnLoaded(object sender, RoutedEventArgs e) 

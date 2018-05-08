@@ -61,6 +61,7 @@
     <Compile Include="Controls\FlipPanel.xaml.cs">
       <DependentUpon>FlipPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonResourceExposer.cs" />
     <Compile Include="Styles\StylishWindowStyle.xaml.cs">
       <DependentUpon>StylishWindowStyle.xaml</DependentUpon>
     </Compile>

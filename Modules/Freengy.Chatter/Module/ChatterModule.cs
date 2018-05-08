@@ -7,11 +7,9 @@ using System;
 using Freengy.Chatter.Views;
 using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
+using Freengy.Common.Helpers;
 
 using Prism.Modularity;
-
-using Catel.IoC;
-using Freengy.Common.Helpers;
 
 
 namespace Freengy.Chatter.Module 

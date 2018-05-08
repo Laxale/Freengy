@@ -10,7 +10,6 @@ namespace Freengy.Base.Messages.Collapse
     /// </summary>
     public class MessageCollapseChatRequest : MessageCollapseBase 
     {
-        /// <inheritdoc />
         /// <summary>
         /// Construct new <see cref="MessageCollapseChatRequest" /> with a given collapse flag.
         /// </summary>

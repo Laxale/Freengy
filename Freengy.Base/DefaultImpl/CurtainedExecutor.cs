@@ -8,8 +8,6 @@ using System.Windows;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 
-using Catel.Messaging;
-
 
 namespace Freengy.Base.DefaultImpl 
 {
@@ -22,9 +20,7 @@ namespace Freengy.Base.DefaultImpl
 
         private static CurtainedExecutor instance;
 
-        private readonly IMessageMediator mediator = MessageMediator.Default;
-
-
+        
         private CurtainedExecutor() { }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace Freengy.Base.DefaultImpl
                 
                 try
                 {
-                    mediator.SendMessage(request);
+                    this.Publish(request);
                     method();
                 }
                 catch (Exception ex)
@@ -65,7 +61,7 @@ namespace Freengy.Base.DefaultImpl
                 }
                 finally
                 {
-                    mediator.SendMessage(request);
+                    this.Publish(request);
                 }
             }
         }

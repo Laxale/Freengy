@@ -9,11 +9,6 @@ using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
 using Freengy.Diagnostics.Interfaces;
 
-using Catel.IoC;
-using Catel.Data;
-using Catel.MVVM;
-using Freengy.Base.Helpers;
-
 
 namespace Freengy.Diagnostics.ViewModels 
 {

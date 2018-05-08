@@ -2,28 +2,27 @@
 //
 //
 
+using System.Collections.Generic;
+
+using Freengy.Base.Interfaces;
+using Freengy.Base.DefaultImpl;
+using Freengy.Diagnostics.Interfaces;
+
+using LocalRes = Freengy.FriendList.Resources;
+
 
 namespace Freengy.FriendList.Diagnostics 
 {
-    using System.Collections.Generic;
-
-    using Freengy.Diagnostics.Interfaces;
-
-    using Catel.IoC;
-
-    using LocalRes = FriendList.Resources;
-
-
     internal class FriendListDiagnosticsCategory : IDiagnosticsCategory 
     {
         private readonly IDiagnosticsUnitFactory unitFactory;
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
         private readonly List<IDiagnosticsUnit> diagnosticUnits = new List<IDiagnosticsUnit>();
 
 
         internal FriendListDiagnosticsCategory() 
         {
-            this.unitFactory = this.serviceLocator.ResolveType<IDiagnosticsUnitFactory>();
+            this.unitFactory = this.serviceLocator.Resolve<IDiagnosticsUnitFactory>();
 
             this.FillUnits();
         }

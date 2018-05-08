@@ -8,15 +8,15 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Collections.Generic;
 using System.Windows.Controls;
+
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers;
 using Freengy.UI.Helpers;
 using Freengy.UI.Constants;
-
-using Catel.IoC;
-using Catel.Logging;
 using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Statistics;
 using Freengy.Common.Models;
+
 using Prism.Regions;
 
 
@@ -33,9 +33,6 @@ namespace Freengy.UI
 
             DispatcherUnhandledException += OnUnhandledException;
 
-#if DEBUG
-            LogManager.AddDebugListener();
-#endif
             UiDispatcher.Invoke(() => { }); // initialize him with static ctor
 
             StatisticsCollector.Instance.Configure(FlushStatistics);
@@ -54,7 +51,7 @@ namespace Freengy.UI
             {
                 using (new StatisticsDeployer("Navigate main window"))
                 {
-                    ServiceLocator.Default.ResolveType<IRegionManager>().RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
+                    MyServiceLocator.Instance.Resolve<IRegionManager>().RequestNavigate(RegionNames.MainWindowRegion, ViewNames.LoginViewName);
                 }
 
                 using (new StatisticsDeployer("Show main window"))

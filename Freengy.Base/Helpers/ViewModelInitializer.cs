@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Base.Messages;
+using Freengy.Base.DefaultImpl;
 
 using NLog;
-
-using Catel.Messaging;
 
 
 namespace Freengy.Base.Helpers 
@@ -26,7 +22,7 @@ namespace Freengy.Base.Helpers
 
         private ViewModelInitializer() 
         {
-            MessageMediator.Default.Register<MessageInitializeModelRequest>(this, OnInitializeRequest);
+            this.Subscribe<MessageInitializeModelRequest>(OnInitializeRequest);
         }
 
 

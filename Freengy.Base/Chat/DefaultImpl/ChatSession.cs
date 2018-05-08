@@ -10,17 +10,14 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 
+using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 
 {
-    using Catel.IoC;
-
-    using Freengy.Base.Interfaces;
-
-
     internal sealed class ChatMessageComparer : IComparer<IChatMessageDecorator> 
     {
         public int Compare(IChatMessageDecorator first, IChatMessageDecorator second) 
@@ -40,7 +37,7 @@ namespace Freengy.Base.Chat.DefaultImpl
     internal class ChatSession : IChatSession 
     {
         private static readonly object Locker = new object();
-        private static readonly IGuiDispatcher guiDispatcher = ServiceLocator.Default.ResolveType<IGuiDispatcher>();
+        private static readonly IGuiDispatcher guiDispatcher = MyServiceLocator.Instance.Resolve<IGuiDispatcher>();
 
         private readonly Action<IChatMessageDecorator, AccountState> messageSender;
         private readonly List<AccountState> sessionUsers = new List<AccountState>();

@@ -2,32 +2,24 @@
 //
 //
 
+using System;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Freengy.Base.DefaultImpl;
+using Freengy.Base.ViewModels;
+using Freengy.Base.Interfaces;
+using Freengy.GamePlugin.Messages;
+using Freengy.GamePlugin.Interfaces;
+using Freengy.GamePlugin.DefaultImpl;
+using Freengy.Diagnostics.Interfaces;
+using Freengy.Base.Helpers.Commands;
 
-using Freengy.Base.Helpers;
 
 namespace Freengy.GameList.ViewModels 
 {
-    using System;
-    using System.Windows.Data;
-    using System.ComponentModel;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
-    using Base.ViewModels;
-    using Base.Interfaces;
-    using GamePlugin.Messages;
-    using GamePlugin.Interfaces;
-    using GamePlugin.DefaultImpl;
-    using Freengy.Diagnostics.Interfaces;
-    
-    using Catel.IoC;
-    using Catel.MVVM;
-    using Catel.Messaging;
-
-    using Freengy.Base.Helpers.Commands;
-
-
     public class GameListViewModel : WaitableViewModel 
     {
         private readonly IGameListProvider gameListProvider;
@@ -35,13 +27,14 @@ namespace Freengy.GameList.ViewModels
         private readonly ObservableCollection<IGamePlugin> gameList = new ObservableCollection<IGamePlugin>();
 
 
-        public GameListViewModel() 
+        public GameListViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
             GameList = CollectionViewSource.GetDefaultView(gameList);
 
-            gameListProvider = ServiceLocatorProperty.ResolveType<IGameListProvider>();
-            Mediator.Register<MessageGamesAdded>(this, MessageListener);
-            diagnosticsController = ServiceLocatorProperty.ResolveType<IDiagnosticsController>();
+            gameListProvider = ServiceLocator.Resolve<IGameListProvider>();
+            this.Subscribe<MessageGamesAdded>(MessageListener);
+            diagnosticsController = ServiceLocator.Resolve<IDiagnosticsController>();
         }
 
 
@@ -77,7 +70,7 @@ namespace Freengy.GameList.ViewModels
         {
             MessageGameStateRequest loadRequest = new MessageLoadGameRequest(gamePluginToLoad, null);
 
-            Mediator.SendMessage(loadRequest);
+            this.Publish(loadRequest);
         }
         private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
         {
@@ -120,22 +113,17 @@ namespace Freengy.GameList.ViewModels
             }
         }
 
-        [MessageRecipient]
         private void MessageListener(MessageGamesAdded newGamesMessage)
         {
-            var uiDispatcher = ServiceLocatorProperty.ResolveType<IGuiDispatcher>();
+            var uiDispatcher = ServiceLocator.Resolve<IGuiDispatcher>();
 
-            uiDispatcher
-                .InvokeOnGuiThread
-                (
-                    () =>
-                    {
-                        foreach (IGamePlugin newGamePlugin in newGamesMessage.NewGames)
-                        {
-                            gameList.Add(newGamePlugin);
-                        }
-                    }
-                );
+            uiDispatcher.InvokeOnGuiThread(() =>
+            {
+                foreach (IGamePlugin newGamePlugin in newGamesMessage.NewGames)
+                {
+                    gameList.Add(newGamePlugin);
+                }
+            });
         }
     }
 }

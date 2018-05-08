@@ -10,8 +10,6 @@ using Freengy.Base.Views;
 using Freengy.Base.Attributes;
 using Freengy.UI.ViewModels;
 
-using Catel.Messaging;
-
 
 namespace Freengy.UI.Views 
 {

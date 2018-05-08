@@ -6,15 +6,11 @@ using System;
 using System.Windows;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Extensions;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Settings.Messages;
 using Freengy.Settings.ModuleSettings;
-
-using Catel.Data;
-using Catel.MVVM;
-using Catel.Messaging;
 
 using LocalRes = Freengy.Settings.Properties.Resources;
 
@@ -28,7 +24,7 @@ namespace Freengy.Settings.ViewModels
 
         public GameListSettingsViewModel() 
         {
-            Mediator.Register<MessageSaveRequest>(this, MessageListener);
+            this.Subscribe<MessageSaveRequest>(OnSaveRequest);
         }
         
 
@@ -116,8 +112,7 @@ namespace Freengy.Settings.ViewModels
             }
         }
 
-        [MessageRecipient]
-        private void MessageListener(MessageSaveRequest requestMessage) 
+        private void OnSaveRequest(MessageSaveRequest requestMessage) 
         {
             SettingsRepository.UpdateUnit(gameListUnit);
         }

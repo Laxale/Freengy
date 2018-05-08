@@ -4,8 +4,6 @@
 
 using System;
 
-using Catel.IoC;
-
 using Freengy.Base.Interfaces;
 using Freengy.Base.DefaultImpl;
 
@@ -36,7 +34,7 @@ namespace Freengy.UI.Helpers
 
         public void Register() 
         {
-            ServiceLocator.Default.RegisterInstance(UiNavigator.Instance);
+            MyServiceLocator.Instance.RegisterInstance(UiNavigator.Instance);
             
             this.IsRegistered = true;
         }

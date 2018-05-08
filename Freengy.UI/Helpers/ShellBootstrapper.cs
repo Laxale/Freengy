@@ -4,7 +4,8 @@
 
 using System;
 using System.Windows;
-
+using Freengy.Base.DefaultImpl;
+using Freengy.Base.Interfaces;
 using Freengy.UI.Views;
 using Freengy.UI.Module;
 using Freengy.UI.Windows;
@@ -18,8 +19,6 @@ using Freengy.Networking.Module;
 using Freengy.GamePlugin.Module;
 using Freengy.FriendList.Module;
 using Freengy.Diagnostics.Module;
-
-using Catel.IoC;
 
 using Prism.Mvvm;
 using Prism.Unity;
@@ -37,6 +36,7 @@ namespace Freengy.UI.Helpers
     public class ShellBootstrapper : UnityBootstrapper 
     {
         private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
 
         private IRegionManager regionManager;
 
@@ -51,15 +51,17 @@ namespace Freengy.UI.Helpers
 
             Register();
 
-            ServiceLocator.Default.RegisterInstance(Container);
-            ServiceLocator.Default.RegisterInstance(regionManager);
+            serviceLocator.RegisterInstance(Container);
+            serviceLocator.RegisterInstance(regionManager);
 
             TypeRegistrator.Instance.Register();
         }
         
         protected override DependencyObject CreateShell() 
         {
-            var mainWindow = ServiceLocator.Default.ResolveType<MainWindow>();
+            MyServiceLocator.Instance.ConfigureContainer(Container);
+
+            var mainWindow = MyServiceLocator.Instance.Resolve<MainWindow>();
 
             return mainWindow;
         }

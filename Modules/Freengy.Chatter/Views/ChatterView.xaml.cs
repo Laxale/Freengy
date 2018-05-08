@@ -7,9 +7,9 @@ using System.Windows;
 using Freengy.Base.Messages;
 using Freengy.Base.Messages.Collapse;
 using Freengy.Base.Attributes;
+using Freengy.Base.DefaultImpl;
 using Freengy.Chatter.ViewModels;
-
-using Catel.Messaging;
+using Prism.Events;
 
 
 namespace Freengy.Chatter.Views 
@@ -24,7 +24,7 @@ namespace Freengy.Chatter.Views
         {
             InitializeComponent();
 
-            MessageMediator.Default.Register<MessageCollapseChatRequest>(this, OnCollapseRequest);
+            this.Subscribe<MessageCollapseChatRequest>(OnCollapseRequest);
         }
 
 

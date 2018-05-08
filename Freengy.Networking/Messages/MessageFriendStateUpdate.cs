@@ -5,6 +5,7 @@
 using System;
 
 using Freengy.Base.Messages;
+using Freengy.Base.Messages.Base;
 using Freengy.Common.Models.Readonly;
 
 

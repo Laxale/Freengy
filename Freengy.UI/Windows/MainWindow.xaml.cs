@@ -6,13 +6,12 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
+using Freengy.Base.DefaultImpl;
 using Freengy.UI.Views;
 using Freengy.Base.Helpers;
 using Freengy.Base.Messages;
 using Freengy.Common.Interfaces;
 using Freengy.CommonResources.Styles;
-
-using Catel.Messaging;
 
 
 namespace Freengy.UI.Windows 
@@ -37,7 +36,7 @@ namespace Freengy.UI.Windows
 
             StylishWindowStyle.ToolbarRegionLoadedEvent += OnHeaderToolbarHostLoaded;
 
-            MessageMediator.Default.Register<MessageCurtainRequest>(this, OnCurtainRequest);
+            this.Subscribe<MessageCurtainRequest>(OnCurtainRequest);
         }
 
 

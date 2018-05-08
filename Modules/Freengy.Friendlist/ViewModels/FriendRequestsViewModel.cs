@@ -11,13 +11,12 @@ using System.Windows.Data;
 
 using Freengy.Base.ViewModels;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Interfaces;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.FriendList.Views;
-
-using Catel.IoC;
 
 using Freengy.Common.Constants;
 using Freengy.Common.Database;
@@ -31,7 +30,7 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Viewmodel for the <see cref="FriendRequestsView"/>.
     /// </summary>
-    internal class FriendRequestsViewModel : WaitableViewModel
+    internal class FriendRequestsViewModel : WaitableViewModel 
     {
         private readonly Guid myId;
         private readonly string sessionToken;
@@ -40,27 +39,14 @@ namespace Freengy.FriendList.ViewModels
         private readonly Dictionary<UserAccountViewModel, FriendRequest> requestPairs = new Dictionary<UserAccountViewModel, FriendRequest>();
 
 
-        public FriendRequestsViewModel(IEnumerable<FriendRequest> requests) 
+        public FriendRequestsViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) :
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
-            var listedRequests = requests?.ToList() ?? throw new ArgumentNullException(nameof(requests));
-
-            IEnumerable<UserAccountViewModel> accounts =
-                listedRequests
-                    .Select(request => new UserAccount(request.RequesterAccount))
-                    .Select(account => new UserAccountViewModel(account));
-
-            requestAccounts.AddRange(accounts);
-
-            for (int index = 0; index < requestAccounts.Count; index++)
-            {
-                requestPairs.Add(requestAccounts[index], listedRequests[index]);
-            }
-
             RequestAccounts = CollectionViewSource.GetDefaultView(requestAccounts);
 
             CommandAcceptFriend = new MyCommand<UserAccountViewModel>(AcceptFriendImpl);
 
-            var controller = ServiceLocatorProperty.ResolveType<ILoginController>();
+            var controller = ServiceLocator.Resolve<ILoginController>();
             myId = controller.MyAccountState.Account.Id;
             sessionToken = controller.MySessionToken;
         }
@@ -87,10 +73,27 @@ namespace Freengy.FriendList.ViewModels
             return acceptedAccounts;
         }
 
+        public void SetRequests(IEnumerable<FriendRequest> requests) 
+        {
+            var listedRequests = requests?.ToList() ?? throw new ArgumentNullException(nameof(requests));
+
+            IEnumerable<UserAccountViewModel> accounts =
+                listedRequests
+                    .Select(request => new UserAccount(request.RequesterAccount))
+                    .Select(account => new UserAccountViewModel(account));
+
+            requestAccounts.AddRange(accounts);
+
+            for (int index = 0; index < requestAccounts.Count; index++)
+            {
+                requestPairs.Add(requestAccounts[index], listedRequests[index]);
+            }
+        }
+
 
         private void AcceptFriendImpl(UserAccountViewModel userAccount) 
         {
-            using (var actor = ServiceLocatorProperty.ResolveType<IHttpActor>())
+            using (var actor = ServiceLocator.Resolve<IHttpActor>())
             {
                 actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl).AddHeader(FreengyHeaders.ClientSessionTokenHeaderName, sessionToken);
 

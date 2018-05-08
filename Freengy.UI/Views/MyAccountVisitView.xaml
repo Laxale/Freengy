@@ -45,8 +45,12 @@
         </Path>
 
         <!-- Account name -->
-        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource LinkButtonStyle}" Content="{Binding Path=MyAccountState.Account.Name}"
-                VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <DockPanel Grid.Row="0" Grid.Column="2">
+            <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="4, 0, -2, 0"/>
+
+            <Button DockPanel.Dock="Left" Style="{StaticResource LinkButtonStyle}" Content="{Binding Path=MyAccountState.Account.Name}"
+                    VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource PurpleBrush}" FontWeight="Medium"/>
+        </DockPanel>
 
         <!-- Account level -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.Level}"/>
@@ -56,7 +60,7 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.Privilege}"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Privilege}"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Address"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:StringResources.Address}"/>
         <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Path=MyAccountState.UserAddress}"/>
     </Grid>
 </UserControl>

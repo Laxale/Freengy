@@ -2,20 +2,18 @@
 //
 //
 
+using System.ComponentModel;
+using System.Threading.Tasks;
+
+using Freengy.Base.DefaultImpl;
+using Freengy.Base.ViewModels;
+using Freengy.Settings.Messages;
+using Freengy.Settings.Interfaces;
+using Freengy.Settings.ModuleSettings;
+
 
 namespace Freengy.Settings.ViewModels 
 {
-    using System.ComponentModel;
-    using System.Threading.Tasks;
-
-    using Freengy.Base.ViewModels;
-    using Freengy.Settings.Messages;
-    using Freengy.Settings.Interfaces;
-    using Freengy.Settings.ModuleSettings;
-
-    using Catel.Messaging;
-
-
     internal abstract class UnitViewModelBase : WaitableViewModel
     {
         protected readonly ISettingsRepository SettingsRepository = DefaultImpl.SettingsRepository.Instance;
@@ -38,7 +36,7 @@ namespace Freengy.Settings.ViewModels
 
             var isDirtyMessage = new MessageSettingChanged(this.ToString(), true);
             // inform Settings window that some of settings changed
-            base.Mediator.SendMessage(isDirtyMessage);
+            this.Publish(isDirtyMessage);
         }
 
         private bool CanBroadcastDirtyState(PropertyChangedEventArgs args) 

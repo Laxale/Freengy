@@ -8,7 +8,7 @@ using System.Linq;
 
 using Freengy.Base.Interfaces;
 using Freengy.Base.Models;
-using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.ErrorReason;
 using Freengy.Common.Helpers.Result;
 using Freengy.Database.Context;
 

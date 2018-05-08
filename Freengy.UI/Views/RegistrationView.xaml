@@ -77,7 +77,8 @@
                 <Image DockPanel.Dock="Left" MaxWidth="{StaticResource CommonLargeIconSize}" Margin="{StaticResource All4Margin}"
                            Source="pack://application:,,,/Freengy.CommonResources;component/Images/EmailIcon.png"/>
 
-                <TextBlock Text="{x:Static localprops:Resources.NewAccountEmailHintText}" TextWrapping="Wrap" FontWeight="Heavy" TextAlignment="Left"/>
+                <TextBlock Text="{x:Static localization:StringResources.NewAccountEmailHintText}" 
+                           TextWrapping="Wrap" FontWeight="Heavy" TextAlignment="Left"/>
             </DockPanel>
 
             <Rectangle Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Width="Auto" 

@@ -11,11 +11,9 @@ using Freengy.Common.Helpers.Result;
 
 using Freengy.Base.ErrorReasons;
 using Freengy.Common.Enums;
-using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.ErrorReason;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
-
-using Catel.IoC;
 
 using LocalizedRes = Freengy.Localization.StringResources;
 
@@ -27,10 +25,10 @@ namespace Freengy.UI.Helpers
     /// </summary>
     internal class LogOutController 
     {
-        private readonly IServiceLocator serviceLocator;
+        private readonly IMyServiceLocator serviceLocator;
 
 
-        public LogOutController(IServiceLocator serviceLocator) 
+        public LogOutController(IMyServiceLocator serviceLocator) 
         {
             this.serviceLocator = serviceLocator;
         }
@@ -42,7 +40,7 @@ namespace Freengy.UI.Helpers
         /// <returns>Logout result.</returns>
         public Result LogOut() 
         {
-            IEnumerable<IUserActivity> activities = serviceLocator.ResolveType<IUserActivityHub>().GetRunningActivities().ToList();
+            IEnumerable<IUserActivity> activities = serviceLocator.Resolve<IUserActivityHub>().GetRunningActivities().ToList();
 
             if (activities.Any())
             {
@@ -62,7 +60,7 @@ namespace Freengy.UI.Helpers
             }
             
             // check if can close activities
-            Result<AccountStateModel> logoutResult = serviceLocator.ResolveType<ILoginController>().LogOut();
+            Result<AccountStateModel> logoutResult = serviceLocator.Resolve<ILoginController>().LogOut();
 
             if (logoutResult.Failure)
             {

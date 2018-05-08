@@ -13,8 +13,6 @@
              xmlns:viewmodels="clr-namespace:Freengy.GameList.ViewModels"
              xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
              xmlns:gameinterfaces="clr-namespace:Freengy.GamePlugin.Interfaces;assembly=Freengy.GamePlugin"
-             xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-             xmlns:controls="http://schemas.catelproject.com"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
@@ -123,9 +121,9 @@
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <!-- Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
                                                       Path=DataContext.CommandRequestLoadGame -->
-                                <controls:EventToCommand Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
-                                                                                                Path=DataContext.CommandRequestLoadGame}"
-                                                                               CommandParameter="{Binding}"/>
+                                <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
+                                                                             Path=DataContext.CommandRequestLoadGame}"
+                                                           CommandParameter="{Binding}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Border>

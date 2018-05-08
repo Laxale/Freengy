@@ -15,10 +15,7 @@ using Freengy.Common.Helpers;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
-
-using NLog;
-
-using Catel.IoC;
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Extensions;
 
 
@@ -35,10 +32,10 @@ namespace Freengy.Networking.DefaultImpl
         
         private static ServerListener instance;
 
-        private readonly IChatHub chatHub = ServiceLocator.Default.ResolveType<IChatHub>();
-        private readonly IChatSessionFactory sessionFactory = ServiceLocator.Default.ResolveType<IChatSessionFactory>();
-        private readonly IChatMessageFactory messageFactory = ServiceLocator.Default.ResolveType<IChatMessageFactory>();
-        private readonly IFriendStateController friendController = ServiceLocator.Default.ResolveType<IFriendStateController>();
+        private readonly IChatHub chatHub = MyServiceLocator.Instance.Resolve<IChatHub>();
+        private readonly IChatSessionFactory sessionFactory = MyServiceLocator.Instance.Resolve<IChatSessionFactory>();
+        private readonly IChatMessageFactory messageFactory = MyServiceLocator.Instance.Resolve<IChatMessageFactory>();
+        private readonly IFriendStateController friendController = MyServiceLocator.Instance.Resolve<IFriendStateController>();
 
         private Task startupTask;
         private string clientAddress;

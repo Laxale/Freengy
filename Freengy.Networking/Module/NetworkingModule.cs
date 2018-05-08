@@ -12,8 +12,6 @@ using Freengy.Common.Interfaces;
 using Freengy.Networking.Interfaces;
 using Freengy.Networking.DefaultImpl;
 
-using Catel.IoC;
-
 using Prism.Modularity;
 
 
@@ -32,13 +30,13 @@ namespace Freengy.Networking.Module
         {
             using (new StatisticsDeployer(nameof(NetworkingModule)))
             {
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IHttpActor, HttpActor>(RegistrationType.Transient);
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<ITaskWrapper, TaskWrapper>(RegistrationType.Transient);
-                ServiceLocator.Default.RegisterTypeIfNotYetRegistered<IEntitySearcher, EntitySearcher>(RegistrationType.Transient);
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IHttpActor, HttpActor>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<ITaskWrapper, TaskWrapper>();
+                MyServiceLocator.Instance.RegisterIfNotRegistered<IEntitySearcher, EntitySearcher>();
                 // login controller uses task wrapper, so must register them this order
-                ServiceLocator.Default.RegisterInstance(FriendStateController.ExposedInstance);
-                ServiceLocator.Default.RegisterInstance(ServerListener.ExposedInstance);
-                ServiceLocator.Default.RegisterInstance(LoginController.Instance);
+                MyServiceLocator.Instance.RegisterInstance(FriendStateController.ExposedInstance);
+                MyServiceLocator.Instance.RegisterInstance(ServerListener.ExposedInstance);
+                MyServiceLocator.Instance.RegisterInstance(LoginController.Instance);
 
                 await ServerListener.InternalInstance.InitInternalAsync();
 

@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Common.Helpers.ErrorReason 
+namespace Freengy.Common.ErrorReason 
 {
     /// <summary>
     /// Непредвиденная ошибка.

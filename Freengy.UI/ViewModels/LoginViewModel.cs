@@ -11,6 +11,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows;
+
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
@@ -32,8 +34,6 @@ using Freengy.Base.Windows;
 using Freengy.Base.Messages.Notification;
 
 using NLog;
-
-using Catel.IoC;
 
 using Prism.Regions;
 
@@ -59,12 +59,13 @@ namespace Freengy.UI.ViewModels
         private UserAccount CurrentAccount => loginController.MyAccountState?.Account;
 
 
-        public LoginViewModel() 
+        public LoginViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator) 
         {
             lastLoggedName = uiConfiguration.AppSettings.Settings[lastLoggedParameterName].Value;
-            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
+            loginController = ServiceLocator.Resolve<ILoginController>();
 
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading"));
+            this.Publish(new MessageInitializeModelRequest(this, "Loading"));
 
             CheckServerAsync();
         }
@@ -154,19 +155,19 @@ namespace Freengy.UI.ViewModels
 
                     bool isOnline = response.StatusCode == HttpStatusCode.OK;
 
-                    Mediator.SendMessage(new MessageServerOnlineStatus(isOnline));
+                    this.Publish(new MessageServerOnlineStatus(isOnline));
                 }
                 catch (Exception ex)
                 {
                     logger.Warn(ex, "Failed to check server");
-                    Mediator.SendMessage(new MessageServerOnlineStatus(false));
+                    this.Publish(new MessageServerOnlineStatus(false));
                 }
             }
         }
 
         private void CreateAccountImpl() 
         {
-            var viewModel = new RegistrationViewModel();
+            var viewModel = ServiceLocator.Resolve<RegistrationViewModel>();
             var view = new RegistrationView
             {
                 Margin = new Thickness(8)
@@ -174,7 +175,7 @@ namespace Freengy.UI.ViewModels
             
             var win = new EmptyCustomToolWindow
             {
-                Title = "Register new account",
+                Title = LocalizedRes.CreateAccount,
                 MainContent = view,
                 DataContext = viewModel,
                 Height = 300,
@@ -186,9 +187,9 @@ namespace Freengy.UI.ViewModels
             win.ShowDialog();
         }
 
-        private void RecoverPasswordImpl() 
+        private void RecoverPasswordImpl()
         {
-            var model = new RecoverPasswordViewModel();
+            var model = ServiceLocator.Resolve<RecoverPasswordViewModel>();
             var win = new RecoverPasswordWindow { DataContext = model };
 
             win.ShowDialog();

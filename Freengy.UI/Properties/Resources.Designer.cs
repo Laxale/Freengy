@@ -19,7 +19,7 @@ namespace Freengy.UI.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -57,69 +57,6 @@ namespace Freengy.UI.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Change password.
-        /// </summary>
-        public static string ChangePasswordText {
-            get {
-                return ResourceManager.GetString("ChangePasswordText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create account.
-        /// </summary>
-        public static string CreateAccountText {
-            get {
-                return ResourceManager.GetString("CreateAccountText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create new account.
-        /// </summary>
-        public static string CreateNewAccountText {
-            get {
-                return ResourceManager.GetString("CreateNewAccountText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log in.
-        /// </summary>
-        public static string LogInText {
-            get {
-                return ResourceManager.GetString("LogInText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Log in and kawabanga!.
-        /// </summary>
-        public static string LogInWelcomeText {
-            get {
-                return ResourceManager.GetString("LogInWelcomeText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email is not not required, but you will be unable to recover forgotten password without it.
-        /// </summary>
-        public static string NewAccountEmailHintText {
-            get {
-                return ResourceManager.GetString("NewAccountEmailHintText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password changed.
-        /// </summary>
-        public static string PasswordChangedText {
-            get {
-                return ResourceManager.GetString("PasswordChangedText", resourceCulture);
             }
         }
         

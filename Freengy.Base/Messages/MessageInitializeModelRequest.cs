@@ -3,7 +3,7 @@
 //
 
 using System;
-
+using Freengy.Base.Messages.Base;
 using Freengy.Base.ViewModels;
 
 

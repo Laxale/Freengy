@@ -15,7 +15,7 @@ namespace Freengy.Common.Helpers.Result
         /// </summary>
         protected Result()
         {
-            Error = ErrorReason.ErrorReason.None;
+            Error = Common.ErrorReason.ErrorReason.None;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Freengy.Common.Helpers.Result
         /// <summary>
         /// Ошибка.
         /// </summary>
-        public ErrorReason.ErrorReason Error { get; private set; }
+        public Common.ErrorReason.ErrorReason Error { get; private set; }
 
         /// <summary>
         /// Провальный ли результат.
@@ -42,7 +42,7 @@ namespace Freengy.Common.Helpers.Result
         /// </summary>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        public static Result Fail(ErrorReason.ErrorReason error)
+        public static Result Fail(Common.ErrorReason.ErrorReason error)
         {
             return new Result().Failed(error);
         }
@@ -53,7 +53,7 @@ namespace Freengy.Common.Helpers.Result
         /// <typeparam name="T">Тип значения.</typeparam>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        public static Result<T> Fail<T>(ErrorReason.ErrorReason error)
+        public static Result<T> Fail<T>(Common.ErrorReason.ErrorReason error)
         {
             return Result<T>.Fail(error);
         }
@@ -82,7 +82,7 @@ namespace Freengy.Common.Helpers.Result
         /// Преведение ErrorReason к Result.
         /// </summary>
         /// <param name="reason">Ошибка.</param>
-        public static implicit operator Result(ErrorReason.ErrorReason reason)
+        public static implicit operator Result(Common.ErrorReason.ErrorReason reason)
         {
             return Fail(reason);
         }
@@ -92,7 +92,7 @@ namespace Freengy.Common.Helpers.Result
         /// </summary>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        protected Result Failed(ErrorReason.ErrorReason error)
+        protected Result Failed(Common.ErrorReason.ErrorReason error)
         {
             Success = false;
             Error = error;

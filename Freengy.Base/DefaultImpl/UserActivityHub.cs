@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 
-using Catel.Messaging;
-
 
 namespace Freengy.Base.DefaultImpl 
 {
@@ -27,7 +25,7 @@ namespace Freengy.Base.DefaultImpl
 
         private UserActivityHub() 
         {
-            MessageMediator.Default.Register<MessageActivityChanged>(this, OnActivityChanged);
+            this.Subscribe<MessageActivityChanged>(OnActivityChanged);
         }
 
 

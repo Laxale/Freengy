@@ -2,24 +2,21 @@
 //
 //
 
+using System;
+using System.Windows;
+using Freengy.Base.DefaultImpl;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Messages;
+using Freengy.GamePlugin.Messages;
+using Freengy.GamePlugin.Interfaces;
+using Freengy.Base.Messages.Base;
+
 
 namespace Freengy.GamePlugin.DefaultImpl 
-{
-    using System;
-    using System.Windows;
-
-    using Freengy.Base.Messages;
-    using Freengy.GamePlugin.Messages;
-    using Freengy.GamePlugin.Interfaces;
-    
-    using Catel.IoC;
-    using Catel.Messaging;
-
-
+{  
     public class GameDispatcher : IGameDispatcher 
     {
-        private readonly IMessageMediator messageMediator;
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
 
 
         #region Singleton
@@ -28,11 +25,10 @@ namespace Freengy.GamePlugin.DefaultImpl
         
         private GameDispatcher() 
         {
-            this.messageMediator = this.serviceLocator.ResolveType<IMessageMediator>();
-            this.messageMediator.Register<MessageGameStateRequest>(this, this.MessageListener);
+            this.Subscribe<MessageGameStateRequest>(MessageListener);
         }
 
-        public static GameDispatcher Instance => GameDispatcher.instance ?? (GameDispatcher.instance = new GameDispatcher());
+        public static GameDispatcher Instance => instance ?? (instance = new GameDispatcher());
 
         #endregion Singleton
 
@@ -46,7 +42,7 @@ namespace Freengy.GamePlugin.DefaultImpl
 
         public bool UnloadCurrentGame() 
         {
-            if (this.CurrentRunningGame == null) return true;
+            if (CurrentRunningGame == null) return true;
 
             if (MessageBox.Show("Leave current game session?", "Leaving game", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
@@ -62,15 +58,15 @@ namespace Freengy.GamePlugin.DefaultImpl
         {
             if (gamePlugin == null) throw new ArgumentNullException(nameof(gamePlugin));
 
-            if (!this.CanLoadGame(gamePlugin)) return false;
+            if (!CanLoadGame(gamePlugin)) return false;
 
-            if (!this.UnloadCurrentGame()) return false;
+            if (!UnloadCurrentGame()) return false;
 
             MessageBase requestGameUiMessage = new MessageRequestGameUi(gamePlugin.ExportedViewType);
 
-            this.messageMediator.SendMessage(requestGameUiMessage);
+            this.Publish(requestGameUiMessage);
 
-            this.CurrentRunningGame = gamePlugin;
+            CurrentRunningGame = gamePlugin;
 
             return true;
         }
@@ -81,13 +77,12 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             if (gamePlugin.ExportedViewType == null) throw new ArgumentException("gamePlugin.ExportedViewType is null");
 
-            bool canLoad = gamePlugin.ExportedViewType != this.CurrentRunningGame?.ExportedViewType;
+            bool canLoad = gamePlugin.ExportedViewType != CurrentRunningGame?.ExportedViewType;
 
             return canLoad;
         }
 
 
-        [MessageRecipient]
         private void MessageListener(MessageGameStateRequest gameStateRequest) 
         {
             // TODO: implement chainer?
@@ -97,7 +92,7 @@ namespace Freengy.GamePlugin.DefaultImpl
             {
                 if(loadGameRequest.Plugin == null) throw new ArgumentException("loadGameRequest.Plugin is null");
 
-                this.LoadGame(loadGameRequest.Plugin);
+                LoadGame(loadGameRequest.Plugin);
 
                 return;
             }
@@ -106,7 +101,7 @@ namespace Freengy.GamePlugin.DefaultImpl
 
             if (unloadGameRequest != null)
             {
-                this.UnloadCurrentGame();
+                UnloadCurrentGame();
             }
         }
     }

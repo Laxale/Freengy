@@ -2,6 +2,7 @@
 //
 //
 
+using Freengy.Base.Messages.Base;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;

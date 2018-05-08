@@ -6,8 +6,6 @@ using Freengy.UI.Views;
 using Freengy.Common.Models;
 using Freengy.Base.ViewModels;
 using Freengy.Networking.Interfaces;
-
-using Catel.IoC;
 using Freengy.Common.Models.Readonly;
 
 
@@ -20,7 +18,7 @@ namespace Freengy.UI.ViewModels
     {
         public MyAccountVisitViewModel() 
         {
-            MyAccountState = ServiceLocatorProperty.ResolveType<ILoginController>().MyAccountState;
+            MyAccountState = ServiceLocator.Resolve<ILoginController>().MyAccountState;
         }
 
 

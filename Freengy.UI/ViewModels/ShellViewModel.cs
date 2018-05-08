@@ -5,8 +5,8 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Forms;
 
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.ErrorReasons;
 using Freengy.Base.Messages;
 using Freengy.Base.ViewModels;
@@ -19,10 +19,10 @@ using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Settings.Views;
 using Freengy.UI.Views;
-
-using Catel.IoC;
+using Freengy.Base.Messages.Base;
 
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.UI.ViewModels 
@@ -37,8 +37,8 @@ namespace Freengy.UI.ViewModels
 
         public ShellViewModel() 
         {
-            curtainedExecutor = ServiceLocatorProperty.ResolveType<ICurtainedExecutor>();
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading shell"));
+            curtainedExecutor = ServiceLocator.Resolve<ICurtainedExecutor>();
+            this.Publish(new MessageInitializeModelRequest(this, "Loading shell"));
         }
 
 
@@ -72,7 +72,7 @@ namespace Freengy.UI.ViewModels
             {
                 SetBusySilent();
 
-                Result logoutResult = new LogOutController(ServiceLocatorProperty).LogOut();
+                Result logoutResult = ServiceLocator.Resolve<LogOutController>().LogOut();
 
                 if (logoutResult.Failure)
                 {
@@ -82,7 +82,7 @@ namespace Freengy.UI.ViewModels
                     }
                 }
 
-                Mediator.SendMessage<MessageBase>(new MessageLogoutRequest());
+                this.Publish<MessageBase>(new MessageLogoutRequest());
             }
 
             TaskerWrapper.Wrap(LogoutInvoker, task => ClearBusyState());
@@ -102,7 +102,7 @@ namespace Freengy.UI.ViewModels
             var content = new AlbumsView();
             var hostWindow = new EmptyCustomToolWindow
             {
-                Title = "My albums",
+                Title = LocalizedRes.MyAlbums,
                 MainContent = content,
                 Height = 400,
                 Width = 600,
@@ -119,7 +119,7 @@ namespace Freengy.UI.ViewModels
 
             void OnWindowKeyPressed(object sender, KeyEventArgs args)
             {
-                Mediator.SendMessage(new MessageParentWindowKeyDown((Window) sender, args));
+                this.Publish(new MessageParentWindowKeyDown((Window) sender, args));
             }
 
             void TryShowWindow()

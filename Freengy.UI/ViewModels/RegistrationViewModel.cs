@@ -5,7 +5,7 @@
 using System.Windows;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Helpers;
 using Freengy.Common.Models;
@@ -13,10 +13,8 @@ using Freengy.Base.ViewModels;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Interfaces;
 using Freengy.Common.Models.Readonly;
-
-using Catel.IoC;
-using Catel.Services;
 
 
 namespace Freengy.UI.ViewModels 
@@ -29,11 +27,12 @@ namespace Freengy.UI.ViewModels
         private bool isCodeSent;
 
 
-        public RegistrationViewModel() 
+        public RegistrationViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) :
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
-            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
+            loginController = ServiceLocator.Resolve<ILoginController>();
 
-            Mediator.SendMessage(new MessageInitializeModelRequest(this, "Loading registration"));
+            this.Publish(new MessageInitializeModelRequest(this, "Loading registration"));
         }
 
 

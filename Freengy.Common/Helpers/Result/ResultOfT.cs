@@ -31,7 +31,7 @@ namespace Freengy.Common.Helpers.Result
         /// </summary>
         /// <param name="error">Ошибка.</param>
         /// <returns>Result.</returns>
-        public new static Result<T> Fail(ErrorReason.ErrorReason error) 
+        public new static Result<T> Fail(Common.ErrorReason.ErrorReason error) 
         {
             var result = new Result<T>();
             result.Failed(error);

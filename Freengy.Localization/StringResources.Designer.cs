@@ -61,6 +61,33 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        public static string ChangePassword {
+            get {
+                return ResourceManager.GetString("ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
         public static string Clear {
@@ -84,6 +111,33 @@ namespace Freengy.Localization {
         public static string Collapse {
             get {
                 return ResourceManager.GetString("Collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connecting.
+        /// </summary>
+        public static string Connecting {
+            get {
+                return ResourceManager.GetString("Connecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create account.
+        /// </summary>
+        public static string CreateAccount {
+            get {
+                return ResourceManager.GetString("CreateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new account.
+        /// </summary>
+        public static string CreateNewAccount {
+            get {
+                return ResourceManager.GetString("CreateNewAccount", resourceCulture);
             }
         }
         
@@ -133,6 +187,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finished.
         /// </summary>
         public static string FinishedText {
@@ -169,6 +232,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to I am.
+        /// </summary>
+        public static string IAm {
+            get {
+                return ResourceManager.GetString("IAm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignore.
         /// </summary>
         public static string IgnoreText {
@@ -183,6 +255,24 @@ namespace Freengy.Localization {
         public static string InProgressText {
             get {
                 return ResourceManager.GetString("InProgressText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password.
+        /// </summary>
+        public static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Let&apos;s be friends!.
+        /// </summary>
+        public static string LetsBeFriends {
+            get {
+                return ResourceManager.GetString("LetsBeFriends", resourceCulture);
             }
         }
         
@@ -214,11 +304,65 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string LogIn {
+            get {
+                return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in and kawabanga!.
+        /// </summary>
+        public static string LogInWelcomeText {
+            get {
+                return ResourceManager.GetString("LogInWelcomeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log out.
         /// </summary>
         public static string LogOut {
             get {
                 return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My albums.
+        /// </summary>
+        public static string MyAlbums {
+            get {
+                return ResourceManager.GetString("MyAlbums", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is not not required, but you will be unable to recover forgotten password without it.
+        /// </summary>
+        public static string NewAccountEmailHintText {
+            get {
+                return ResourceManager.GetString("NewAccountEmailHintText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No server сonnection.
+        /// </summary>
+        public static string NoServerConnection {
+            get {
+                return ResourceManager.GetString("NoServerConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password changed.
+        /// </summary>
+        public static string PasswordChanged {
+            get {
+                return ResourceManager.GetString("PasswordChanged", resourceCulture);
             }
         }
         
@@ -268,6 +412,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recover your password.
+        /// </summary>
+        public static string RecoverPassword {
+            get {
+                return ResourceManager.GetString("RecoverPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string RegisterText {
@@ -286,6 +439,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request route not found on server.
+        /// </summary>
+        public static string RequestRouteNotFound {
+            get {
+                return ResourceManager.GetString("RequestRouteNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save password.
         /// </summary>
         public static string SavePasswordText {
@@ -300,6 +462,24 @@ namespace Freengy.Localization {
         public static string SaveText {
             get {
                 return ResourceManager.GetString("SaveText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for friends.
+        /// </summary>
+        public static string SearchFriends {
+            get {
+                return ResourceManager.GetString("SearchFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for new awesome friends!.
+        /// </summary>
+        public static string SearchNewAwesomeFriends {
+            get {
+                return ResourceManager.GetString("SearchNewAwesomeFriends", resourceCulture);
             }
         }
         
@@ -340,6 +520,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start chat.
+        /// </summary>
+        public static string StartChat {
+            get {
+                return ResourceManager.GetString("StartChat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
         public static string SuccessText {
@@ -372,6 +561,15 @@ namespace Freengy.Localization {
         public static string ValuesContainsInvalidSymbols {
             get {
                 return ResourceManager.GetString("ValuesContainsInvalidSymbols", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your friend.
+        /// </summary>
+        public static string YourFriend {
+            get {
+                return ResourceManager.GetString("YourFriend", resourceCulture);
             }
         }
     }

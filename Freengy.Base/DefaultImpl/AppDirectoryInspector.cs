@@ -2,27 +2,23 @@
 //
 //
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+
+using Freengy.Base.Helpers;
+using Freengy.Base.Messages;
+using Freengy.Base.Interfaces;
+
 
 namespace Freengy.Base.DefaultImpl 
-{
-    using System;
-    using System.IO;
-    using System.Collections.Generic;
-
-    using Freengy.Base.Helpers;
-    using Freengy.Base.Messages;
-    using Freengy.Base.Interfaces;
-    
-    using Catel.Messaging;
-
-
+{    
     /// <summary>
     /// Default <see cref="IAppDirectoryInspector"/> implementer
     /// </summary>
     public class AppDirectoryInspector : IAppDirectoryInspector
     {
         private readonly FileSystemWatcher watcher;
-        private readonly IMessageMediator messageMediator = MessageMediator.Default;
 
 
         public AppDirectoryInspector() 
@@ -72,7 +68,7 @@ namespace Freengy.Base.DefaultImpl
         private void FileSystemListener(object sender, FileSystemEventArgs args) 
         {
             var changedMessage = new MessageWorkingDirectoryChanged(args);
-            this.messageMediator.SendMessage(changedMessage);
+            this.Publish(changedMessage);
         }
 
         private IEnumerable<string> GetFilesInSubfolderByFilter(string subFolderName, string filter) 

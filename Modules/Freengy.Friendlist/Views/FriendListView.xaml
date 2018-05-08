@@ -9,6 +9,7 @@
              xmlns:viewmodels="clr-namespace:Freengy.FriendList.ViewModels"
              xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
              xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="200"
@@ -19,8 +20,7 @@
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary 
-                        Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
                 
                 <helpers:DataContextProxy x:Key="ContextProxy" Data="{Binding}"/>
@@ -34,15 +34,28 @@
         </Grid.RowDefinitions>
 
         <!-- Buttons panel -->
-        <DockPanel Grid.Row="0">
-            <Button DockPanel.Dock="Left" Content="Add" Command="{Binding Path=CommandSearchFriend}"/>
+        <DockPanel Grid.Row="0" Margin="0, 0, 0, 2">
+            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" 
+                    Command="{Binding Path=CommandSearchFriends}" ToolTip="{x:Static localization:StringResources.SearchFriends}">
+                <Path Data="{StaticResource AddFriendIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                    <Path.LayoutTransform>
+                        <ScaleTransform ScaleX="0.048" ScaleY="0.048"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </Button>
 
-            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top" 
+            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" 
                     Command="{Binding Path=CommandShowFriendRequests}" ToolTip="Wow! New friend request"
-                    HorizontalAlignment="Right" Background="{StaticResource GreenBrush}" 
+                    HorizontalAlignment="Right" 
                     Visibility="{Binding Path=FriendRequests.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
-                <Path Fill="{StaticResource BlackBrush}" Style="{StaticResource CommonPathStyle}" 
-                      Data="{StaticResource UserIconGeometry}" Margin="2, 0, 0, 0"/>
+                <Border CornerRadius="12" Background="{StaticResource GreenBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Path Fill="{StaticResource BlackBrush}" Style="{StaticResource CommonPathStyle}" Data="{StaticResource UserIconGeometry}" 
+                          Margin="3, 2, -1, 0">
+                        <Path.RenderTransform>
+                            <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                        </Path.RenderTransform>
+                    </Path>
+                </Border>
             </Button>
         </DockPanel>
 
@@ -60,7 +73,7 @@
                         <DockPanel Background="{StaticResource AlmostTransparent}">
                             <DockPanel.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Chat" 
+                                    <MenuItem Header="{x:Static localization:StringResources.StartChat}" 
                                               CommandParameter="{Binding Path=AccountState}"
                                               Command="{Binding Source={StaticResource ContextProxy}, Path=Data.CommandStartChat}"/>
                                     <MenuItem Header="Remove this faggot!"/>
@@ -90,7 +103,7 @@
                             </DockPanel>
                             
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBlock DockPanel.Dock="Left" Text="Level"/>
+                                <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.Level}"/>
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding Path=AccountState.Account.Level}"/>
                             </DockPanel>
                         </DockPanel>

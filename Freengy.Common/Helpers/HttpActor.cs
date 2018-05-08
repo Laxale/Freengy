@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Common.Constants;
-using Freengy.Common.Helpers.ErrorReason;
+using Freengy.Common.ErrorReason;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 
@@ -34,11 +34,12 @@ namespace Freengy.Common.Helpers
         private string address;
 
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the last responce message.
+        /// </summary>
         public HttpResponseMessage ResponceMessage { get; private set; }
 
 
-        /// <inheritdoc />
         /// <summary>
         /// Add HTTP header to sender.
         /// </summary>
@@ -57,7 +58,6 @@ namespace Freengy.Common.Helpers
             return this;
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Set the HTTP address to send request to.
         /// </summary>
@@ -92,7 +92,6 @@ namespace Freengy.Common.Helpers
             });
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Execute GET method with a given message payload.
         /// </summary>
@@ -128,7 +127,7 @@ namespace Freengy.Common.Helpers
 
                     ResponceMessage = client.PostAsync(address, httpRequest).Result;
 
-                    if (IsKnownBadResponceCode(out ErrorReason.ErrorReason reason))
+                    if (IsKnownBadResponceCode(out Common.ErrorReason.ErrorReason reason))
                     {
                         return Result<TResponce>.Fail(reason);
                     }
@@ -161,16 +160,19 @@ namespace Freengy.Common.Helpers
         {
             errorReason = null;
 
-            if (ResponceMessage.StatusCode == HttpStatusCode.Forbidden)
+            switch (ResponceMessage.StatusCode)
             {
-                errorReason = new InvalidPasswordErrorReason();
-                return true;
-            }
+                case HttpStatusCode.NotFound:
+                    errorReason = new NoServerConnectionErrorReason();
+                    return true;
 
-            if (ResponceMessage.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                errorReason = new UnexpectedErrorReason("Unexpected server error");
-                return true;
+                case HttpStatusCode.Forbidden:
+                    errorReason = new InvalidPasswordErrorReason();
+                    return true;
+
+                case HttpStatusCode.InternalServerError:
+                    errorReason = new UnexpectedErrorReason("Unexpected server error");
+                    return true;
             }
 
             return false;

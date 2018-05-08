@@ -13,8 +13,6 @@ using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
 
-using Catel.IoC;
-
 
 namespace Freengy.Chatter.ViewModels 
 {
@@ -38,8 +36,8 @@ namespace Freengy.Chatter.ViewModels
             Session = session ?? throw new ArgumentNullException(nameof(session));
             Session.MessageAdded += OnMessageAdded;
 
-            loginController = ServiceLocatorProperty.ResolveType<ILoginController>();
-            chatMessageFactory = ServiceLocatorProperty.ResolveType<IChatMessageFactory>();
+            loginController = ServiceLocator.Resolve<ILoginController>();
+            chatMessageFactory = ServiceLocator.Resolve<IChatMessageFactory>();
             chatMessageFactory.Author = loginController.MyAccountState.Account;
 
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);

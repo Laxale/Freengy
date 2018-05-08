@@ -12,13 +12,11 @@ using Freengy.Base.Exceptions;
 using Freengy.Base.DefaultImpl;
 using Freengy.Networking.Messages;
 using Freengy.GamePlugin.Messages;
+using Freengy.Base.Messages.Base;
+using Freengy.UI.Messages;
 
 using Prism.Regions;
 
-using Catel.IoC;
-using Catel.Services;
-using Catel.Messaging;
-using Freengy.UI.Messages;
 using Microsoft.Practices.Unity;
 
 
@@ -29,16 +27,10 @@ namespace Freengy.UI.Helpers
     /// </summary>
     internal class UiNavigator 
     {
-        #region vars
-
-        private readonly IPleaseWaitService waiter;
         private readonly IRegionManager regionManager;
         private readonly IUnityContainer unityContainer;
         private readonly IResponsibilityChainer<MessageBase> requestHandleChain;
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
-        private readonly IMessageMediator messageMediator = MessageMediator.Default;
-        
-        #endregion vars
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
 
 
         #region Singleton
@@ -48,11 +40,10 @@ namespace Freengy.UI.Helpers
         private UiNavigator() 
         {
             requestHandleChain = new ResponsibilityChainer<MessageBase>();
-            waiter = serviceLocator.ResolveType<IPleaseWaitService>();
-            regionManager  = serviceLocator.ResolveType<IRegionManager>();
-            unityContainer = serviceLocator.ResolveType<IUnityContainer>();
+            regionManager  = serviceLocator.Resolve<IRegionManager>();
+            unityContainer = serviceLocator.Resolve<IUnityContainer>();
 
-            messageMediator.Register<MessageBase>(this, MessageListener);
+            this.Subscribe<MessageBase>(MessageListener);
 
             SetupChainer();
         }
@@ -62,7 +53,6 @@ namespace Freengy.UI.Helpers
         #endregion Singleton
 
 
-        [MessageRecipient]
         private async void MessageListener(MessageBase message) 
         {
             bool handled = await requestHandleChain.HandleAsync(message);

@@ -4,6 +4,7 @@
 
 using System.Windows;
 using System.Windows.Input;
+using Freengy.Base.Messages.Base;
 
 
 namespace Freengy.Base.Messages 

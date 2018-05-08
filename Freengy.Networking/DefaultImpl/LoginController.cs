@@ -14,7 +14,6 @@ using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers;
 using Freengy.Common.Extensions;
-using Freengy.Common.Helpers.ErrorReason;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models.Readonly;
 using Freengy.Common.Interfaces;
@@ -22,15 +21,16 @@ using Freengy.Networking.Helpers;
 using Freengy.Networking.Messages;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
+using Freengy.Base.DefaultImpl;
+using Freengy.Base.Extensions;
+using Freengy.Base.Messages.Base;
+using Freengy.Base.Models;
+using Freengy.Common.Constants;
+using Freengy.Common.ErrorReason;
 
 using NLog;
 
-using Catel.IoC;
-using Catel.Messaging;
-
-using Freengy.Base.Extensions;
-using Freengy.Base.Models;
-using Freengy.Common.Constants;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.Networking.DefaultImpl 
@@ -46,8 +46,7 @@ namespace Freengy.Networking.DefaultImpl
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
-        private readonly IMessageMediator messageMediator = MessageMediator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
 
         
         #region Singleton
@@ -59,9 +58,9 @@ namespace Freengy.Networking.DefaultImpl
             messageLoggedIn = new MessageLogInSuccess();
             messageLogInAttempt = new MessageLogInAttempt();
 
-            taskWrapper = serviceLocator.ResolveType<ITaskWrapper>();
-            accountManager = serviceLocator.ResolveType<IAccountManager>();
-            clientAddressGetter = () => serviceLocator.ResolveType<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
+            taskWrapper = serviceLocator.Resolve<ITaskWrapper>();
+            accountManager = serviceLocator.Resolve<IAccountManager>();
+            clientAddressGetter = () => serviceLocator.Resolve<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
         }
 
         public static ILoginController Instance => instance ?? (instance = new LoginController());
@@ -110,7 +109,7 @@ namespace Freengy.Networking.DefaultImpl
                     Password = password
                 };
 
-                using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+                using (var httpActor = serviceLocator.Resolve<IHttpActor>())
                 {
                     httpActor.SetRequestAddress(Url.Http.RegisterUrl);
 
@@ -191,7 +190,7 @@ namespace Freengy.Networking.DefaultImpl
 
             try
             {
-                messageMediator.SendMessage(messageLogInAttempt);
+                this.Publish(messageLogInAttempt);
 
                 AccountStateModel stateModel = LogInImpl(loginModel);
 
@@ -205,8 +204,8 @@ namespace Freengy.Networking.DefaultImpl
             }
             catch (Exception ex)
             {
-                string direction = loginModel.IsLoggingIn ? "in" : "out";
-                string message = $"Failed to log '{loginModel?.Account?.Name}' {direction}. { ex.Message }";
+                //string direction = loginModel.IsLoggingIn ? "in" : "out";
+                string message = $"{ LocalizedRes.Error }. { ex.Message }";
                 logger.Error(ex, message);
 
                 return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(message));
@@ -224,7 +223,7 @@ namespace Freengy.Networking.DefaultImpl
 
             HashThePassword(loginModel);
 
-            using (var actor = serviceLocator.ResolveType<IHttpActor>())
+            using (var actor = serviceLocator.Resolve<IHttpActor>())
             {
                 string myAddress = clientAddressGetter();
                 if (string.IsNullOrWhiteSpace(myAddress))
@@ -252,7 +251,7 @@ namespace Freengy.Networking.DefaultImpl
                     //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
                     accountManager.SaveLastLoggedIn(privateAccountModel);
                     SaveOnlineState(loginModel, auth);
-                    messageMediator.SendMessage(messageLoggedIn);
+                    this.Publish(messageLoggedIn);
                 }
                 else if(stateModel.OnlineStatus == AccountOnlineStatus.Offline)
                 {

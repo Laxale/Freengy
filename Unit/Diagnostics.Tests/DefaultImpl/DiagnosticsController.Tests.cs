@@ -7,14 +7,13 @@ using System.Linq;
 using System.Collections.Generic;
 
 using Freengy.Base.Interfaces;
+using Freengy.Base.DefaultImpl;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.Diagnostics.DefaultImpl;
 
 using Moq;
 
 using NUnit.Framework;
-
-using Catel.IoC;
 
 
 namespace Diagnostics.Tests.DefaultImpl 
@@ -32,7 +31,7 @@ namespace Diagnostics.Tests.DefaultImpl
             var fakeDispatcher = new Mock<IGuiDispatcher>();
             fakeDispatcher.Setup(dispatcher => dispatcher.InvokeOnGuiThread(emptyAction));
 
-            ServiceLocator.Default.RegisterInstance(fakeDispatcher.Object);
+           MyServiceLocator.Instance.RegisterInstance(fakeDispatcher.Object);
 
             this.diagnosticsController = DiagnosticsController.Instance;
         }

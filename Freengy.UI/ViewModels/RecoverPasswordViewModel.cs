@@ -13,9 +13,8 @@ using Freengy.Base.Helpers;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Extensions;
 using Freengy.Common.Extensions;
-
-using Catel.Data;
-using Catel.MVVM;
+using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Interfaces;
 
 using ActiveUp.Net.Mail;
 
@@ -25,15 +24,18 @@ using LocalizedRes = Freengy.Localization.StringResources;
 
 namespace Freengy.UI.ViewModels 
 {
-    using Freengy.Base.Helpers.Commands;
-
-
     public class RecoverPasswordViewModel : CredentialViewModel 
     {
         private const int ValidationCodeMinimum = 10000;
         private const int ValidationCodeMaximum = 90000;
         private readonly SecureStringDecorator secureDecorator = new SecureStringDecorator();
 
+
+        public RecoverPasswordViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
+        {
+
+        }
 
         public MyCommand CommandSendCode { get; private set; }
 
@@ -189,10 +191,9 @@ namespace Freengy.UI.ViewModels
         }
         private bool CanSendCode() 
         {
-            List<IFieldValidationResult> validationResults = new List<IFieldValidationResult>();
             //base.ValidateFields(validationResults);
 
-            bool canTryRegister = !validationResults.Any();
+            bool canTryRegister = true;
 
             return canTryRegister;
         }
@@ -228,28 +229,21 @@ namespace Freengy.UI.ViewModels
             });
         }
 
-        private void CheckPasswordEmptiness(List<IFieldValidationResult> validationResults) 
+        private void CheckPasswordEmptiness() 
         {
+            //TODO implement
             if (Password.Length < 1)
             {
-                validationResults.Add
-                (
-                    null
-                    //FieldValidationResult.CreateError(PasswordProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
-                );
+
             }
 
             if (string.IsNullOrWhiteSpace(PasswordConfirmation))
             {
-                validationResults.Add
-                (
-                    null
-                    //FieldValidationResult.CreateError(PasswordConfirmationProperty, CommonRes.ValueCannotBeEmptyFormat, CommonRes.PasswordText)
-                );
+
             }
         }
 
-        private void CheckPasswordsEquality(List<IFieldValidationResult> validationResults) 
+        private void CheckPasswordsEquality() 
         {
             //if (Password == PasswordConfirmation) return;
             if (Password == null) return;

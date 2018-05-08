@@ -13,6 +13,10 @@ namespace Freengy.Common.Database
     [AttributeUsage(AttributeTargets.Class)]
     public class RelationalContextAttribute : Attribute 
     {
+        /// <summary>
+        /// Конструирует <see cref="RelationalContextAttribute"/> с заданным типом ORM-контекста.
+        /// </summary>
+        /// <param name="contextType"></param>
         public RelationalContextAttribute(Type contextType) 
         {
             ContextType = contextType ?? throw new ArgumentNullException(nameof(contextType));

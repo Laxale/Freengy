@@ -82,7 +82,7 @@ namespace Freengy.Common.Helpers.Result
         /// <param name="action">Действие.</param>
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
-        public static Result OnFailure(this Result result, Action<ErrorReason.ErrorReason> action)
+        public static Result OnFailure(this Result result, Action<Common.ErrorReason.ErrorReason> action)
         {
             if (result.Failure)
             {
@@ -100,7 +100,7 @@ namespace Freengy.Common.Helpers.Result
         /// <param name="action">Действие.</param>
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
-        public static Result<TResult> OnFailure<TResult>(this Result<TResult> result, Func<ErrorReason.ErrorReason, TResult> action)
+        public static Result<TResult> OnFailure<TResult>(this Result<TResult> result, Func<Common.ErrorReason.ErrorReason, TResult> action)
         {
             if (result.Failure)
             {
@@ -121,7 +121,7 @@ namespace Freengy.Common.Helpers.Result
         /// <returns>Результат.</returns>
         [DebuggerStepThrough]
         public static Result<TResult> OnFailure<TResult>(this Result<TResult> result,
-            Func<ErrorReason.ErrorReason, Result<TResult>> action)
+            Func<Common.ErrorReason.ErrorReason, Result<TResult>> action)
         {
             if (result.Failure)
             {

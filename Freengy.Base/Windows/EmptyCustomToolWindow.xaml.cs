@@ -33,7 +33,7 @@ namespace Freengy.Base.Windows
         /// </summary>
         public object MainContent 
         {
-            get => (object)GetValue(MainContentProperty);
+            get => GetValue(MainContentProperty);
             set => SetValue(MainContentProperty, value);
         }
 

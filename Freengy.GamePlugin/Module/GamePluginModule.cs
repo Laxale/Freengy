@@ -3,12 +3,12 @@
 //
 
 using System.Threading.Tasks;
-using Freengy.Base.Helpers;
+
 using Freengy.GamePlugin.Interfaces;
 using Freengy.GamePlugin.DefaultImpl;
-
-using Catel.IoC;
+using Freengy.Base.DefaultImpl;
 using Freengy.Common.Helpers;
+
 using Prism.Modularity;
 
 
@@ -26,10 +26,10 @@ namespace Freengy.GamePlugin.Module
         {
             using (new StatisticsDeployer(nameof(GamePluginModule)))
             {
-                ServiceLocator.Default.RegisterInstance<IGameDispatcher>(GameDispatcher.Instance);
+               MyServiceLocator.Instance.RegisterInstance<IGameDispatcher>(GameDispatcher.Instance);
 
                 // убийственно долгая енумерация единственного объекта. Вероятно, EF раздупляется со страшным скрипом
-                Task.Run(() => ServiceLocator.Default.RegisterInstance<IGameListProvider>(GameListProvider.Instance));
+                Task.Run(() =>MyServiceLocator.Instance.RegisterInstance<IGameListProvider>(GameListProvider.Instance));
             }
         }
     }

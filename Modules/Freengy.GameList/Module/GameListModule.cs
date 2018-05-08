@@ -10,8 +10,8 @@ using Freengy.Common.Helpers;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.GameList.Views;
 using Freengy.GameList.Diagnostics;
+using Freengy.Base.DefaultImpl;
 
-using Catel.IoC;
 using Prism.Modularity;
 
 
@@ -26,7 +26,7 @@ namespace Freengy.GameList.Module
         {
             using (new StatisticsDeployer(nameof(GameListModule)))
             {
-                var controller = ServiceLocator.Default.ResolveType<IDiagnosticsController>();
+                var controller = MyServiceLocator.Instance.Resolve<IDiagnosticsController>();
                 controller.RegisterCategory(new GameListDiagnosticsCategory());
             }
         }

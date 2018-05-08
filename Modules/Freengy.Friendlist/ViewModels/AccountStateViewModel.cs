@@ -2,6 +2,7 @@
 //
 //
 
+using Freengy.Base.Interfaces;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Models.Readonly;
 
@@ -10,13 +11,14 @@ namespace Freengy.FriendList.ViewModels
 {
     public class AccountStateViewModel : WaitableViewModel 
     {
-        public AccountStateViewModel(AccountState accountState) 
+        public AccountStateViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
+            base(taskWrapper, guiDispatcher, serviceLocator)
         {
-            AccountState = accountState;
+
         }
 
 
-        public AccountState AccountState { get; }
+        public AccountState AccountState { get; set; }
 
 
         public void RaiseAccountPropertyCahnged() 

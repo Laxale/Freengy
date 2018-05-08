@@ -8,15 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
-
-using Catel.IoC;
-using Catel.Messaging;
-
 using Freengy.Base.Messages;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
@@ -35,8 +32,7 @@ namespace Freengy.Networking.DefaultImpl
 
         private static FriendStateController instance;
 
-        private readonly IMessageMediator mediator = MessageMediator.Default;
-        private readonly IServiceLocator serviceLocator = ServiceLocator.Default;
+        private readonly IMyServiceLocator serviceLocator = MyServiceLocator.Instance;
         private readonly List<AccountState> friendStates = new List<AccountState>();
 
         private bool inited;
@@ -94,7 +90,7 @@ namespace Freengy.Networking.DefaultImpl
         public async Task<IEnumerable<AccountState>> GetFriendStatesAsync() 
         {
             List<AccountStateModel> stateModels;
-            using (var httpActor = serviceLocator.ResolveType<IHttpActor>())
+            using (var httpActor = serviceLocator.Resolve<IHttpActor>())
             {
                 httpActor.SetRequestAddress(Url.Http.SearchUsersUrl).SetClientSessionToken(sessionTokenGetter());
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccountGetter(), string.Empty);
@@ -119,7 +115,7 @@ namespace Freengy.Networking.DefaultImpl
 
             if (!isActivityStarted)
             {
-                mediator.SendMessage(new MessageActivityChanged(this, true));
+                this.Publish(new MessageActivityChanged(this, true));
             }
 
             isActivityStarted = true;
@@ -144,7 +140,7 @@ namespace Freengy.Networking.DefaultImpl
         {
             if (inited) return;
 
-            loginController = serviceLocator.ResolveType<ILoginController>();
+            loginController = serviceLocator.Resolve<ILoginController>();
 
             myAccountGetter = () => loginController.MyAccountState.Account;
             sessionTokenGetter = () => loginController.MySessionToken;
@@ -171,7 +167,7 @@ namespace Freengy.Networking.DefaultImpl
                     savedState.UpdateFromModel(stateModel);
                 }
 
-                mediator.SendMessage(new MessageFriendStateUpdate(savedState));
+                this.Publish(new MessageFriendStateUpdate(savedState));
             }
         }
     }
