@@ -66,41 +66,32 @@
                     Command="{Binding Path=CommandShowFriendRequests}" VerticalAlignment="Center" 
                     VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" 
                     Visibility="{Binding Path=FriendRequests.IsEmpty, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
-                <Button.ToolTip>
-                    <DockPanel>
-                        <ContentControl>
-                            <Border CornerRadius="24" Background="{StaticResource GreenBrush}" Width="46" Height="46"
-                                    VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{StaticResource All4Margin}">
-                                <Path Fill="{StaticResource BlackBrush}" Data="{StaticResource AddFriendIconGeometry1}" Margin="1, 0, 0, 0"
-                                      VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button.Resources>
+                    <VisualBrush x:Key="IconBrush">
+                        <VisualBrush.Visual>
+                            <Border CornerRadius="14" Background="{StaticResource GreenBrush}" Width="26" Height="26"
+                                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Path Fill="{StaticResource BlackBrush}" Data="{StaticResource AddFriendIconGeometry1}" Margin="4, 3, -1, 0">
                                     <Path.LayoutTransform>
-                                        <ScaleTransform ScaleX="0.068" ScaleY="0.068"/>
+                                        <ScaleTransform ScaleX="0.038" ScaleY="0.04" CenterX="0.5" CenterY="0.5"/>
                                     </Path.LayoutTransform>
                                 </Path>
                             </Border>
-                        </ContentControl>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Button.Resources>
 
-                        <TextBlock Text="{x:Static localization:StringResources.NewFriendRequestNotice}" Margin="{StaticResource All4Margin}"/>
-                    </DockPanel>
+                <Button.ToolTip>
+                    <ToolTip Background="{StaticResource LightGrayBrush}">
+                        <DockPanel>
+                            <Border Background="{StaticResource IconBrush}" Margin="{StaticResource All4Margin}" Height="44" Width="44"/>
+
+                            <TextBlock Text="{x:Static localization:StringResources.NewFriendRequestNotice}" Margin="{StaticResource All4Margin}"/>
+                        </DockPanel>
+                    </ToolTip>
                 </Button.ToolTip>
 
-                <Border CornerRadius="12" Background="{StaticResource GreenBrush}" Width="Auto" Height="Auto"
-                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <!--
-                    <Path Fill="{StaticResource BlackBrush}" Style="{StaticResource CommonPathStyle}" Data="{StaticResource UserIconGeometry}" 
-                          Margin="3, 2, -1, 0">
-                        <Path.RenderTransform>
-                            <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
-                        </Path.RenderTransform>
-                    </Path>
-                    -->
-
-                    <Path Fill="{StaticResource BlackBrush}" Data="{StaticResource AddFriendIconGeometry1}" Margin="3, 2, -1, 0">
-                        <Path.LayoutTransform>
-                            <ScaleTransform ScaleX="0.036" ScaleY="0.036"/>
-                        </Path.LayoutTransform>
-                    </Path>
-                </Border>
+                <Border Background="{StaticResource IconBrush}"/>
             </Button>
         </DockPanel>
 

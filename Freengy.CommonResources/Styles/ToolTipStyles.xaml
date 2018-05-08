@@ -7,6 +7,7 @@
                     mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
         <ResourceDictionary Source="Variables.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -17,19 +18,19 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid Background="Transparent">
+                    <Grid Background="{StaticResource AlmostTransparent}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" Background="{TemplateBinding Background}">
+                        <Border Grid.Row="0" Background="{TemplateBinding Background}" MinWidth="60">
                             <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
                         </Border>
 
                         <Path Grid.Row="1" Data="M10,170 L10,180 20,170" Stretch="Fill" 
-                              HorizontalAlignment="Left" Margin="20, 0, 0, 0" Width="25"
-                              Fill="{TemplateBinding Background}" />
+                              HorizontalAlignment="Left" Margin="16, -2, 0, 0" Width="25" 
+                              Fill="{TemplateBinding Background}" Stroke="{TemplateBinding Background}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

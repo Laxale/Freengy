@@ -56,17 +56,20 @@
                         <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
                             <Setter Property="ToolTip">
                                 <Setter.Value>
-                                    <DockPanel Margin="{StaticResource All4Margin}">
-                                        <Rectangle DockPanel.Dock="Left" Fill="{StaticResource Visual}" Height="32" Width="32"/>
+                                    <ToolTip Background="{StaticResource FirstMainBrush}">
+                                        <DockPanel Margin="{StaticResource All4Margin}">
+                                            <!-- Отображение геометрии иконки в тултип -->
+                                            <Border DockPanel.Dock="Left" Background="{StaticResource Visual}" Height="32" Width="32"/>
 
-                                        <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
-                                            <TextBlock DockPanel.Dock="Top" Text="{x:Static localization:StringResources.ServerOnline}"
-                                                       Margin="{StaticResource 4LeftMargin}"/>
+                                            <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
+                                                <TextBlock DockPanel.Dock="Top" Text="{x:Static localization:StringResources.ServerOnline}"
+                                                           Margin="{StaticResource 4LeftMargin}"/>
 
-                                            <TextBlock DockPanel.Dock="Top" Margin="{StaticResource 4LeftMargin}"
-                                                       Text="Server address: blablabla" Foreground="{StaticResource PurpleBrush}"/>
+                                                <TextBlock DockPanel.Dock="Top" Margin="{StaticResource 4LeftMargin}"
+                                                           Text="{Binding Path=ServerAddress}" Foreground="{StaticResource PurpleBrush}"/>
+                                            </DockPanel>
                                         </DockPanel>
-                                    </DockPanel>
+                                    </ToolTip>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
@@ -78,7 +81,7 @@
                 </Style>
             </Border.Style>
 
-            <Rectangle Fill="{StaticResource Visual}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
+            <Border Background="{StaticResource Visual}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
         </Border>
     </DockPanel>
 </UserControl>

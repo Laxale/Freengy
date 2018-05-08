@@ -1,24 +1,23 @@
 ﻿<UserControl x:Class="Freengy.UI.Views.LoginView"
-                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-                   xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/"
 
-                   xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
-                   xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
-                   xmlns:localprops="clr-namespace:Freengy.UI.Properties"
-                   xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-                   xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-                   xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
-                   xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+             xmlns:helpers="clr-namespace:Freengy.UI.Helpers"
+             xmlns:viewmodels="clr-namespace:Freengy.UI.ViewModels"
+             xmlns:localprops="clr-namespace:Freengy.UI.Properties"
+             xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+             xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
-                   mc:Ignorable="d"
-                   Margin="60, 0, 60, 0"
-                   prism:ViewModelLocator.AutoWireViewModel="True"
-                   d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
-    <!-- prism:ViewModelLocator.AutoWireViewModel="True" -->
+             mc:Ignorable="d"
+             Margin="60, 0, 60, 0"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -127,11 +126,27 @@
                         </Style>
                     </DockPanel.Resources>
 
-                    <Button Content="{x:Static localization:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
+                    <Button DockPanel.Dock="Right" Content="{x:Static localization:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
                             Command="{Binding Path=CommandRecoverPassword}" ToolTip="{x:Static localization:StringResources.RecoverPassword}"/>
 
-                    <Button Content="{x:Static localization:StringResources.CreateAccount}" Command="{Binding Path=CommandCreateAccount}"
-                            ToolTip="{x:Static localization:StringResources.CreateNewAccount}"/>
+                    <Button DockPanel.Dock="Right" Content="{x:Static localization:StringResources.CreateAccount}" 
+                            Command="{Binding Path=CommandCreateAccount}" HorizontalAlignment="Right">
+                        <Button.ToolTip>
+                            <ToolTip Background="{StaticResource LightGrayBrush}">
+                                <DockPanel>
+                                    <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}" 
+                                          Data="{StaticResource AddFriendIconGeometry}" Margin="4, 4, 0, 4">
+                                        <Path.LayoutTransform>
+                                            <ScaleTransform ScaleX="0.08" ScaleY="0.08"/>
+                                        </Path.LayoutTransform>
+                                    </Path>
+
+                                    <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}"
+                                   Text="{x:Static localization:StringResources.CreateNewAccount}" />
+                                </DockPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
                 </DockPanel>
             </Grid>
         </controls:WaitableDecorator>
