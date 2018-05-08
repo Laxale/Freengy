@@ -10,7 +10,7 @@ using System.ServiceModel.Security;
 
 using Freengy.Base.Helpers;
 
-using CommonRes = Freengy.CommonResources.StringResources;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.Base.ViewModels 
@@ -40,9 +40,9 @@ namespace Freengy.Base.ViewModels
             string error =
                 string.Format
                 (
-                    CommonRes.EntityDoesntMatchRequirementsFormat,
-                    CommonRes.PasswordText,
-                    CommonRes.PasswordRequirementsText
+                    LocalizedRes.EntityDoesntMatchRequirementsFormat,
+                    LocalizedRes.PasswordText,
+                    LocalizedRes.PasswordRequirementsText
                 );
 
             return error;
@@ -141,7 +141,7 @@ namespace Freengy.Base.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Email) && IsEmailMandatory)
             {
-                return string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.EmailText);
+                return string.Format(LocalizedRes.ValueCannotBeEmptyFormat, LocalizedRes.EmailText);
             }
 
             if (Account.IsValidEmail(Email)) return null;
@@ -149,9 +149,9 @@ namespace Freengy.Base.ViewModels
             string error =
                 string.Format
                 (
-                    CommonRes.EntityDoesntMatchRequirementsFormat,
-                    CommonRes.EmailText,
-                    CommonRes.EmailRequirementsText
+                    LocalizedRes.EntityDoesntMatchRequirementsFormat,
+                    LocalizedRes.EmailText,
+                    LocalizedRes.EmailRequirementsText
                 );
 
             return error;
@@ -161,12 +161,12 @@ namespace Freengy.Base.ViewModels
         {
             if (string.IsNullOrWhiteSpace(UserName))
             {
-                return string.Format(CommonRes.ValueCannotBeEmptyFormat, CommonRes.UserNameText);
+                return string.Format(LocalizedRes.ValueCannotBeEmptyFormat, LocalizedRes.UserNameText);
             }
 
             if (Helpers.Common.HasInvalidSymbols(UserName))
             {
-                return string.Format(CommonRes.ValuesContainsInvalidSymbols, CommonRes.UserNameText);
+                return string.Format(LocalizedRes.ValuesContainsInvalidSymbols, LocalizedRes.UserNameText);
             }
 
             return null;

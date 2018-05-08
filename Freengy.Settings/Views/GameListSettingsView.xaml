@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Freengy.Settings" 
              xmlns:views="clr-namespace:Freengy.Settings.Views" 
              xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
-             xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+             xmlns:common="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
              xmlns:properties="clr-namespace:Freengy.Settings.Properties"
 

@@ -11,6 +11,7 @@
                    xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
                    xmlns:views="clr-namespace:Freengy.UI.Views"
+                   xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
                    mc:Ignorable="d" 
                    MinWidth="700" MinHeight="500" 
@@ -70,7 +71,7 @@
                     -->
 
                         <!-- Settings button -->
-                        <Button DockPanel.Dock="Right" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.SettingsText}" 
+                        <Button DockPanel.Dock="Right" HorizontalContentAlignment="Left" ToolTip="{x:Static localization:StringResources.SettingsText}" 
                                 Command="{Binding Path=CommandShowSettings}" Style="{StaticResource ImageButtonStyle}" 
                                 HorizontalAlignment="Right" Margin="{StaticResource 4LeftMargin}" Padding="3, 2, 0, 0">
                             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
@@ -88,7 +89,7 @@
                         </Button>
 
                         <!-- Log out button -->
-                        <Button DockPanel.Dock="Left" HorizontalContentAlignment="Left" ToolTip="{x:Static commonRes:StringResources.LogOut}" Padding="2, 1, 0, 0"
+                        <Button DockPanel.Dock="Left" HorizontalContentAlignment="Left" ToolTip="{x:Static localization:StringResources.LogOut}" Padding="2, 1, 0, 0"
                                 Command="{Binding Path=CommandLogOut}" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right">
                             <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource LevelUpIconGeometry}" Fill="{StaticResource PurpleBrush}">
                                 <Path.LayoutTransform>
@@ -140,7 +141,7 @@
 
                 <!-- Collapsing button -->
                 <Button Grid.Column="0" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Top"
-                    HorizontalAlignment="Left" Margin="2" Click="ChatCollapserButton_OnClick" ToolTip="{x:Static commonRes:StringResources.Collapse}">
+                    HorizontalAlignment="Left" Margin="2" Click="ChatCollapserButton_OnClick" ToolTip="{x:Static localization:StringResources.Collapse}">
                     <Path Fill="{StaticResource BlackBrush}">
                         <Path.Style>
                             <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">

@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Database", "Freengy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Common", "Freengy.Common\Freengy.Common.csproj", "{719364BA-235E-4507-93E9-5CFF992BEC51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freengy.Localization", "Freengy.Localization\Freengy.Localization.csproj", "{9D2C4141-5ED5-449B-ACAB-3276F9881C4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{719364BA-235E-4507-93E9-5CFF992BEC51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{719364BA-235E-4507-93E9-5CFF992BEC51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{719364BA-235E-4507-93E9-5CFF992BEC51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D2C4141-5ED5-449B-ACAB-3276F9881C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D2C4141-5ED5-449B-ACAB-3276F9881C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D2C4141-5ED5-449B-ACAB-3276F9881C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D2C4141-5ED5-449B-ACAB-3276F9881C4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

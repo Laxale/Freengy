@@ -10,6 +10,7 @@
         xmlns:viewModels="clr-namespace:Freengy.Settings.ViewModels"
         xmlns:common="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
         xmlns:properties="clr-namespace:Freengy.Settings.Properties"
+        xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
         mc:Ignorable="d"
         ShowInTaskbar="False"
@@ -45,13 +46,13 @@
         <vies:SettingsView Grid.Row="0"/>
 
         <DockPanel Grid.Row="1">
-            <Button DockPanel.Dock="Right" Content="{x:Static common:StringResources.CloseText}" 
+            <Button DockPanel.Dock="Right" Content="{x:Static localization:StringResources.CloseText}" 
                     Command="{Binding Path=CommandClose}" HorizontalAlignment="Right"
                     IsDefault="{Binding ElementName=SaveButton, Path=IsEnabled, Converter={StaticResource ReverseBooleanConverter}}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
             <Button Name="SaveButton" DockPanel.Dock="Right" HorizontalAlignment="Right" 
-                    Content="{x:Static common:StringResources.SaveText}" Command="{Binding Path=CommandSave}"
+                    Content="{x:Static localization:StringResources.SaveText}" Command="{Binding Path=CommandSave}"
                     IsDefault="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled}"/>
         </DockPanel>
     </Grid>

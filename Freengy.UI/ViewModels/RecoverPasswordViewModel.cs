@@ -18,8 +18,9 @@ using Catel.Data;
 using Catel.MVVM;
 
 using ActiveUp.Net.Mail;
+
 using LocalRes = Freengy.UI.Properties.Resources;
-using CommonRes = Freengy.CommonResources.StringResources;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.UI.ViewModels 
@@ -178,7 +179,7 @@ namespace Freengy.UI.ViewModels
             var message = new SmtpMessage
             {
                 BodyText = { Text = body },
-                From = { Email = CommonRes.ProjectFakeEmail },
+                From = { Email = LocalizedRes.ProjectFakeEmail },
                 Subject = LocalRes.PasswordRecoveryEmailSubjectText,
             };
 

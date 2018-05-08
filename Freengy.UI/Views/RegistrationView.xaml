@@ -11,7 +11,8 @@
              xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
              xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
-                   
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+
              mc:Ignorable="d" 
              d:DesignWidth="360"
              
@@ -55,20 +56,20 @@
             </Grid.ColumnDefinitions>
 
             <!-- Название юзера -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:StringResources.UserNameText}"/>
             <TextBox Grid.Row="0" Grid.Column="1" Loaded="FocusBox_Loaded"
                      MaxLength="{x:Static baseconst:Numeric.MaxAccountNameLength}"
                      Text="{Binding Path=UserName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Пароль юзера -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.PasswordText}"/>
             <PasswordBox Grid.Row="1" Grid.Column="1" Margin="{StaticResource All4Margin}"
                          helpers:PasswordBoxBinder.BindPassword="True"
                          helpers:PasswordBoxBinder.BoundPassword="{Binding Path=Password, ValidatesOnDataErrors=True, Mode=TwoWay,
                                                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Почта юзера -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonres:StringResources.EmailText}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.EmailText}"/>
             <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Панель подсказки про почту -->
@@ -144,13 +145,13 @@
                         Style="{StaticResource CommonButtonStyle}"
                         HorizontalContentAlignment="Center"
                         MinWidth="60"
-                        Content="{x:Static commonres:StringResources.FinishText}" 
+                        Content="{x:Static localization:StringResources.FinishText}" 
                         Command="{Binding Path=CommandFinish}" 
                         IsDefault="{Binding Path=Registered}"
                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
                 <Button DockPanel.Dock="Right" HorizontalAlignment="Right" 
-                        Content="{x:Static commonres:StringResources.RegisterText}"
+                        Content="{x:Static localization:StringResources.RegisterText}"
                         Style="{StaticResource CommonButtonStyle}"
                         HorizontalContentAlignment="Center"
                         MinWidth="60"

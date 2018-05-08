@@ -6,6 +6,7 @@
              
              xmlns:commonResources="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:MyAccountVisitViewModel}">
@@ -48,11 +49,11 @@
                 VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
         <!-- Account level -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonResources:StringResources.Level}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.Level}"/>
         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Level}"/>
 
         <!-- Account privilege -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static commonResources:StringResources.Privilege}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.Privilege}"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Privilege}"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Address"/>

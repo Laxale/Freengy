@@ -58,11 +58,6 @@
     <Compile Include="Converters\StringToBoolConverter.cs" />
     <Compile Include="Converters\StringUriToImageSourceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StringResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\FlipPanel.xaml.cs">
       <DependentUpon>FlipPanel.xaml</DependentUpon>
     </Compile>
@@ -72,12 +67,6 @@
     <Compile Include="Controls\WaitableDecorator.xaml.cs">
       <DependentUpon>WaitableDecorator.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="StringResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Filter.xaml">
@@ -233,7 +222,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Freengy.Localization\Freengy.Localization.csproj">
+      <Project>{9d2c4141-5ed5-449b-acab-3276f9881c4c}</Project>
+      <Name>Freengy.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

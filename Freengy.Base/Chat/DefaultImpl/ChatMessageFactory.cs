@@ -8,7 +8,8 @@ using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
-using Res = Freengy.CommonResources.StringResources;
+
+using Res = Freengy.Localization.StringResources;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 

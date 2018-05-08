@@ -17,6 +17,8 @@ using Freengy.Networking.Interfaces;
 
 using Catel.IoC;
 
+using LocalizedRes = Freengy.Localization.StringResources;
+
 
 namespace Freengy.UI.Helpers 
 {
@@ -46,7 +48,7 @@ namespace Freengy.UI.Helpers
             {
                 if (activities.Any(act => !act.CanCancelInSilent))
                 {
-                    MessageBoxResult result = MessageBox.Show("Cancel activities?", CommonResources.StringResources.ProjectName, MessageBoxButton.YesNo);
+                    MessageBoxResult result = MessageBox.Show("Cancel activities?", LocalizedRes.ProjectName, MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.No)
                     {
                         return Result.Fail(new UserCancelledReason());

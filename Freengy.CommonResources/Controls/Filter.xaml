@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls"
              xmlns:commonResources="clr-namespace:Freengy.CommonResources"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d">
 
@@ -73,7 +74,7 @@
 
             <!-- Картинка очистки текста фильтра -->
             <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="ClearButton_OnClick" 
-                    Cursor="Hand" Style="{StaticResource ImageButtonStyle}" Height="24" Width="24" ToolTip="{x:Static commonResources:StringResources.Clear}">
+                    Style="{StaticResource ImageButtonStyle}" Height="24" Width="24" ToolTip="{x:Static localization:StringResources.Clear}">
                 <Path Data="{StaticResource CloseIconGeometry}" IsHitTestVisible="False"/>
             </Button>
         </Grid>

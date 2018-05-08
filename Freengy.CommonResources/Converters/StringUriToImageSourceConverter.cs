@@ -2,18 +2,17 @@
 //
 //
 
+using System;
+using System.Globalization;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+using LocalizedRes = Freengy.Localization.StringResources;
+
 
 namespace Freengy.CommonResources.Converters 
 {
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-
-    using Res = CommonResources.StringResources;
-
-
     [ValueConversion(typeof(string), typeof(ImageSource))]
     public class StringUriToImageSourceConverter : IValueConverter 
     {
@@ -36,7 +35,7 @@ namespace Freengy.CommonResources.Converters
         {
             if (string.IsNullOrWhiteSpace(uri))
             {
-                uri = Res.DefaultGameIconUri;
+                uri = LocalizedRes.DefaultGameIconUri;
             }
             
             var bitmapImage = new BitmapImage();

@@ -8,10 +8,11 @@
         
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
+        xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
         mc:Ignorable="d"
         Style="{StaticResource CommonWindowStyle}"
-        Title="{x:Static commonRes:StringResources.ProjectName}" 
+        Title="{x:Static localization:StringResources.ProjectName}" 
         WindowStartupLocation="CenterScreen" 
         MinHeight="360" MinWidth="630" Width="630" Height="360"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">

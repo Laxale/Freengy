@@ -10,6 +10,7 @@
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
              xmlns:commonResources="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:properties="clr-namespace:Freengy.UI.Properties"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -30,11 +31,11 @@
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
-                            <Setter Property="ToolTip" Value="{x:Static commonResources:StringResources.ServerOnline}"/>
+                            <Setter Property="ToolTip" Value="{x:Static localization:StringResources.ServerOnline}"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
-                            <Setter Property="ToolTip" Value="{x:Static commonResources:StringResources.ServerOffline}"/>
+                            <Setter Property="ToolTip" Value="{x:Static localization:StringResources.ServerOffline}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

@@ -11,9 +11,10 @@ using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
+
 using NUnit.Framework;
 
-using Res = Freengy.CommonResources.StringResources;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Base.Tests.Chat 
@@ -65,7 +66,7 @@ namespace Base.Tests.Chat
         {
             var message = this.messageFactory.CreateMessage(text);
 
-            Assert.AreEqual(Res.EmptyPlaceHolder, message.Text);
+            Assert.AreEqual(LocalizedRes.EmptyPlaceHolder, message.Text);
         }
     }
 }

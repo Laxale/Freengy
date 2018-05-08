@@ -97,6 +97,10 @@
       <Project>{719364ba-235e-4507-93e9-5cff992bec51}</Project>
       <Name>Freengy.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Freengy.Localization\Freengy.Localization.csproj">
+      <Project>{9d2c4141-5ed5-449b-acab-3276f9881c4c}</Project>
+      <Name>Freengy.Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

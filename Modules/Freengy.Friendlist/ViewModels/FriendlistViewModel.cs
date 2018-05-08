@@ -33,6 +33,8 @@ using Freengy.Common.Enums;
 
 using Catel.IoC;
 
+using LocalizedRes = Freengy.Localization.StringResources;
+
 
 namespace Freengy.FriendList.ViewModels 
 {
@@ -299,7 +301,7 @@ namespace Freengy.FriendList.ViewModels
         {
             string text = $"User { message.RepliedAccount.Name } replied for your friendrequest: { message.RequestReaction }";
 
-            MessageBox.Show(text, CommonResources.StringResources.ProjectName, MessageBoxButton.OK);
+            MessageBox.Show(text, LocalizedRes.ProjectName, MessageBoxButton.OK);
 
             if (message.RequestReaction == FriendRequestReaction.Accept)
             {

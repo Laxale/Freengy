@@ -12,7 +12,8 @@
                    xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
                    xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
                    xmlns:baseconst="clr-namespace:Freengy.Base.Constants;assembly=Freengy.Base"
-                   
+                   xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+
                    mc:Ignorable="d"
                    Margin="60, 0, 60, 0"
                    prism:ViewModelLocator.AutoWireViewModel="True"
@@ -69,8 +70,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static commonres:StringResources.UserNameText}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static commonres:StringResources.PasswordText}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:StringResources.UserNameText}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.PasswordText}"/>
 
                 <TextBox Grid.Row="0" Grid.Column="1" MaxLength="{x:Static baseconst:Numeric.MaxPasswordLength}" Style="{StaticResource CommonTextBoxStyle}"
                          Text="{Binding Path=UserName, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
@@ -108,7 +109,7 @@
                           Margin="{StaticResource All4Margin}" IsChecked="{Binding Path=MustSavePassword}">
 
                     <CheckBox.Content>
-                        <TextBlock Text="{x:Static commonres:StringResources.SavePasswordText}" Style="{x:Null}"/>
+                        <TextBlock Text="{x:Static localization:StringResources.SavePasswordText}" Style="{x:Null}"/>
                     </CheckBox.Content>
                 </CheckBox>
 
@@ -121,12 +122,12 @@
                         </Style>
 
                         <Style TargetType="ToolTip" BasedOn="{StaticResource CommonToolTipStyle}">
-                            <Setter Property="Background" Value="Orange"/>
+                            <Setter Property="Background" Value="{StaticResource FirstMainBrush}"/>
                             <Setter Property="BorderBrush" Value="Black"/>
                         </Style>
                     </DockPanel.Resources>
 
-                    <Button Content="{x:Static commonres:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
+                    <Button Content="{x:Static localization:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
                             ToolTip="Recover your password" Command="{Binding Path=CommandRecoverPassword}"/>
 
                     <Button Content="{x:Static localprops:Resources.CreateAccountText}" ToolTip="Create a new user account" 

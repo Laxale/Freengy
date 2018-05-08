@@ -12,6 +12,7 @@
              xmlns:commonres="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
              xmlns:interactivity="http://schemas.catelproject.com"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
              d:DesignWidth="300"
@@ -31,7 +32,7 @@
                 <Style TargetType="Image" BasedOn="{StaticResource CommonImageStyle}" x:Key="InformativeButtonStyle">
                     <Setter Property="Cursor" Value="Hand"/>
                     <Setter Property="MaxHeight" Value="{StaticResource CommonSmallIconSize}"/>
-                    <Setter Property="ToolTip" Value="{x:Static commonres:StringResources.ShowInfoText}"/>
+                    <Setter Property="ToolTip" Value="{x:Static localization:StringResources.ShowInfoText}"/>
                 </Style>
             </ResourceDictionary>
         </DockPanel.Resources>
@@ -46,7 +47,7 @@
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=UnitName}" TextWrapping="Wrap" MaxHeight="1000"/>
 
-            <controls:GifImage Grid.Row="0" Grid.Column="1" ToolTip="{x:Static commonres:StringResources.InProgressText}" 
+            <controls:GifImage Grid.Row="0" Grid.Column="1" ToolTip="{x:Static localization:StringResources.InProgressText}" 
                                GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon3.gif" 
                                Stretch="UniformToFill" IsAutoStart="True" Opacity="0.6" MaxHeight="{StaticResource CommonSmallIconSize}"
                                Visibility="{Binding Path=IsRunning, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -71,7 +72,7 @@
             </Image>
 
             <Image Grid.Row="0" Grid.Column="3" 
-                   ToolTip="{x:Static commonres:StringResources.FinishedText}" 
+                   ToolTip="{x:Static localization:StringResources.FinishedText}" 
                    Source="pack://application:,,,/Freengy.CommonResources;component/Images/FinishIcon.png" 
                    Visibility="{Binding Path=IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>

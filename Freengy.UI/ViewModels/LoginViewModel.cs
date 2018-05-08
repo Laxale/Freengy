@@ -29,14 +29,15 @@ using Freengy.Networking.Constants;
 using Freengy.UI.Views;
 using Freengy.UI.Windows;
 using Freengy.Base.Windows;
+using Freengy.Base.Messages.Notification;
 
 using NLog;
 
 using Catel.IoC;
-using Freengy.Base.Messages.Notification;
+
 using Prism.Regions;
 
-using CommonRes = Freengy.CommonResources.StringResources;
+using LocalizedRes = Freengy.Localization.StringResources;
 
 
 namespace Freengy.UI.ViewModels 

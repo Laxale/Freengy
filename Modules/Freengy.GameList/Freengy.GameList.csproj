@@ -99,6 +99,10 @@
       <Project>{35b54274-f354-47ea-bc7c-37119903c093}</Project>
       <Name>Freengy.GamePlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Freengy.Localization\Freengy.Localization.csproj">
+      <Project>{9d2c4141-5ed5-449b-acab-3276f9881c4c}</Project>
+      <Name>Freengy.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Freengy.Settings\Freengy.Settings.csproj">
       <Project>{deaa296b-5e75-4940-b0be-f68ab321589f}</Project>
       <Name>Freengy.Settings</Name>
