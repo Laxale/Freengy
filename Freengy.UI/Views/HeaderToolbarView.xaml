@@ -19,19 +19,56 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary 
-                    Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <VisualBrush x:Key="Visual">
+                <VisualBrush.Visual>
+                    <Path Data="{StaticResource ServerIconGeometry}" Name="IconPath">
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX="0.0392" ScaleY="0.035"/>
+                        </Path.LayoutTransform>
+
+                        <Path.Style>
+                            <Style TargetType="Path">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource PurpleBrush}"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
+                                        <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </VisualBrush.Visual>
+            </VisualBrush>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <DockPanel>
-        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Margin="0, 2, 0, 0" Cursor="Help">
+        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Cursor="Help">
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
-                            <Setter Property="ToolTip" Value="{x:Static localization:StringResources.ServerOnline}"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <DockPanel Margin="{StaticResource All4Margin}">
+                                        <Rectangle DockPanel.Dock="Left" Fill="{StaticResource Visual}" Height="32" Width="32"/>
+
+                                        <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
+                                            <TextBlock DockPanel.Dock="Top" Text="{x:Static localization:StringResources.ServerOnline}"
+                                                       Margin="{StaticResource 4LeftMargin}"/>
+
+                                            <TextBlock DockPanel.Dock="Top" Margin="{StaticResource 4LeftMargin}"
+                                                       Text="Server address: blablabla" Foreground="{StaticResource PurpleBrush}"/>
+                                        </DockPanel>
+                                    </DockPanel>
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
@@ -41,25 +78,7 @@
                 </Style>
             </Border.Style>
 
-            <Path Data="{StaticResource ServerIconGeometry}">
-                <Path.LayoutTransform>
-                    <ScaleTransform ScaleX="0.04" ScaleY="0.04"/>
-                </Path.LayoutTransform>
-
-                <Path.Style>
-                    <Style TargetType="Path" >
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
-                                <Setter Property="Fill" Value="{StaticResource GreenBrush}"/>
-                            </DataTrigger>
-
-                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
-                                <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Path.Style>
-            </Path>
+            <Rectangle Fill="{StaticResource Visual}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
         </Border>
     </DockPanel>
 </UserControl>
