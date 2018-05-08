@@ -288,4 +288,16 @@
   <data name="MyAlbums" xml:space="preserve">
     <value>My albums</value>
   </data>
+  <data name="NewFriendRequestNotice" xml:space="preserve">
+    <value>Wow! New friend request</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Ban" xml:space="preserve">
+    <value>Ban</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Decline</value>
+  </data>
 </root>

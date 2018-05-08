@@ -222,11 +222,17 @@
   <data name="ServerOffline" xml:space="preserve">
     <value>Сервер офлайн</value>
   </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Принять</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>Добавить</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>Адрес</value>
+  </data>
+  <data name="Ban" xml:space="preserve">
+    <value>Заблокировать</value>
   </data>
   <data name="ChangePassword" xml:space="preserve">
     <value>Сменить пароль</value>
@@ -239,6 +245,9 @@
   </data>
   <data name="CreateNewAccount" xml:space="preserve">
     <value>Зарегистрировать новый аккаунт</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Отклонить</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Ошибка</value>
@@ -263,6 +272,9 @@
   </data>
   <data name="NewAccountEmailHintText" xml:space="preserve">
     <value>Почту вводить не обязательно, но без неё будет невозможно восстановить пароль</value>
+  </data>
+  <data name="NewFriendRequestNotice" xml:space="preserve">
+    <value>Новый запрос в друзья!</value>
   </data>
   <data name="NoServerConnection" xml:space="preserve">
     <value>Нет связи с сервером</value>

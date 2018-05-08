@@ -61,6 +61,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
@@ -75,6 +84,15 @@ namespace Freengy.Localization {
         public static string Address {
             get {
                 return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ban.
+        /// </summary>
+        public static string Ban {
+            get {
+                return ResourceManager.GetString("Ban", resourceCulture);
             }
         }
         
@@ -138,6 +156,15 @@ namespace Freengy.Localization {
         public static string CreateNewAccount {
             get {
                 return ResourceManager.GetString("CreateNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decline.
+        /// </summary>
+        public static string Decline {
+            get {
+                return ResourceManager.GetString("Decline", resourceCulture);
             }
         }
         
@@ -345,6 +372,15 @@ namespace Freengy.Localization {
         public static string NewAccountEmailHintText {
             get {
                 return ResourceManager.GetString("NewAccountEmailHintText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wow! New friend request.
+        /// </summary>
+        public static string NewFriendRequestNotice {
+            get {
+                return ResourceManager.GetString("NewFriendRequestNotice", resourceCulture);
             }
         }
         

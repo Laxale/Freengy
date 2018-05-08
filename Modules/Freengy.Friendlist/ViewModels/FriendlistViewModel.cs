@@ -273,11 +273,12 @@ namespace Freengy.FriendList.ViewModels
             viewModel.SetRequests(friendRequests);
             var window = new EmptyCustomToolWindow
             {
-                Title = "Friend requests",
+                Title = LocalizedRes.NewFriendRequestNotice,
                 Owner = Application.Current?.MainWindow,
                 MainContent = new FriendRequestsView(),
                 DataContext = viewModel,
                 MaxHeight = 400,
+                Width = 500,
                 MaxWidth = 600
             };
 

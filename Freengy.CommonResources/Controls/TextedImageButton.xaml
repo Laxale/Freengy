@@ -1,0 +1,52 @@
+﻿<Button x:Class="Freengy.CommonResources.Controls.TextedImageButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        
+        xmlns:controls="clr-namespace:Freengy.CommonResources.Controls"
+
+        mc:Ignorable="d"
+        Width="Auto"
+        Height="Auto"
+        Focusable="False"
+        Style="{StaticResource ImageButtonStyle}">
+
+    <Button.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                    Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Button.Resources>
+
+    <DockPanel Margin="4" Focusable="False">
+        <ContentControl DockPanel.Dock="Left" VerticalAlignment="Center" 
+                        Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, Path=ImageContent}"/>
+
+        <FrameworkElement DockPanel.Dock="Left" Width="4">
+            <FrameworkElement.Style>
+                <Style TargetType="FrameworkElement">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, Path=ImageText}"
+                                     Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, Path=ImageContent}"
+                                     Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </FrameworkElement.Style>
+        </FrameworkElement>
+
+        <TextBlock DockPanel.Dock="Left" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, Path=TextForeground}" 
+                   Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, Path=ImageText}"
+                   Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:TextedImageButton}, 
+                                        Path=ImageText, Converter={StaticResource NullToVisibilityConverter}}"/>
+    </DockPanel>
+</Button>

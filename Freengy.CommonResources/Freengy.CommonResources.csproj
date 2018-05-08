@@ -43,6 +43,9 @@
     <Compile Include="Controls\Switch.xaml.cs">
       <DependentUpon>Switch.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TextedImageButton.xaml.cs">
+      <DependentUpon>TextedImageButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\IsNotNullToBoolConverter.cs" />
     <Compile Include="Controls\WatermarkTextBox.xaml.cs">
       <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
@@ -79,6 +82,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Switch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TextedImageButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
