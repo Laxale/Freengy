@@ -11,12 +11,29 @@ namespace Freengy.FriendList.ViewModels
 {
     public class AccountStateViewModel : WaitableViewModel 
     {
+        private bool hasNewMessages;
+
+
         public AccountStateViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
             base(taskWrapper, guiDispatcher, serviceLocator)
         {
 
         }
 
+
+        public bool HasNewMessages 
+        {
+            get => hasNewMessages;
+
+            set
+            {
+                if (hasNewMessages == value) return;
+
+                hasNewMessages = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public AccountState AccountState { get; set; }
 

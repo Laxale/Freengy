@@ -23,6 +23,6 @@ namespace Freengy.Common.Constants
         /// <summary>
         /// Initial client-side host port.
         /// </summary>
-        public const ushort InitialClientPort = 12345;
+        public const ushort InitialClientPort = 12346;
     }
 }

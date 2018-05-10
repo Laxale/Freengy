@@ -2,6 +2,8 @@
 //
 //
 
+using System;
+using System.Linq;
 using System.Windows;
 
 using Freengy.Base.Messages;
@@ -9,7 +11,6 @@ using Freengy.Base.Messages.Collapse;
 using Freengy.Base.Attributes;
 using Freengy.Base.DefaultImpl;
 using Freengy.Chatter.ViewModels;
-using Prism.Events;
 
 
 namespace Freengy.Chatter.Views 
@@ -24,10 +25,11 @@ namespace Freengy.Chatter.Views
         {
             InitializeComponent();
 
+            this.Subscribe<MessageShowChatSession>(OnShowChatSessionRequest);
             this.Subscribe<MessageCollapseChatRequest>(OnCollapseRequest);
         }
 
-
+        
         public static readonly DependencyProperty IsCollapsedProperty =
             DependencyProperty.Register(nameof(IsCollapsed), typeof(bool), typeof(ChatterView));
 
@@ -45,6 +47,22 @@ namespace Freengy.Chatter.Views
         private void OnCollapseRequest(MessageCollapseChatRequest collapseRequest) 
         {
             IsCollapsed = collapseRequest.BeCollapsed;
+        }
+
+        private void OnShowChatSessionRequest(MessageShowChatSession request) 
+        {
+            ChatSessionViewModel targetSession = 
+                SessionsTab.Items
+                    .OfType<ChatSessionViewModel>()
+                    .FirstOrDefault(viewModel => viewModel.Session.Id == request.SessionId);
+
+            if (targetSession == null)
+            {
+                MessageBox.Show($"Session {request.SessionId} is not found in chatter");
+                return;
+            }
+
+            SessionsTab.Items.MoveCurrentTo(targetSession);
         }
     }
 }

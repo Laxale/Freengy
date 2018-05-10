@@ -115,19 +115,34 @@
                 <DockPanel Grid.Row="3" Grid.Column="1">
                     <DockPanel.Resources>
                         <Style TargetType="Button" BasedOn="{StaticResource LinkButtonStyle}">
-                            <Setter Property="Foreground" Value="Blue"/>
                             <Setter Property="DockPanel.Dock" Value="Right"/>
                             <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
                         </Style>
 
                         <Style TargetType="ToolTip" BasedOn="{StaticResource CommonToolTipStyle}">
-                            <Setter Property="Background" Value="{StaticResource FirstMainBrush}"/>
                             <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
+                            <Setter Property="Background" Value="{StaticResource FirstMainBrush}"/>
                         </Style>
                     </DockPanel.Resources>
 
                     <Button DockPanel.Dock="Right" Content="{x:Static localization:StringResources.ForgotPasswordQuestionText}" HorizontalAlignment="Right" 
-                            Command="{Binding Path=CommandRecoverPassword}" ToolTip="{x:Static localization:StringResources.RecoverPassword}"/>
+                            Command="{Binding Path=CommandRecoverPassword}">
+                        <Button.ToolTip>
+                            <ToolTip Background="{StaticResource LightGrayBrush}">
+                                <DockPanel>
+                                    <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}" Data="{StaticResource ManWithKeyIconGeometry}" 
+                                          VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4, 4, 0, 4">
+                                        <Path.LayoutTransform>
+                                            <ScaleTransform ScaleX="0.88" ScaleY="0.88"/>
+                                        </Path.LayoutTransform>
+                                    </Path>
+
+                                    <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}" Text="{x:Static localization:StringResources.RecoverPassword}"/>
+                                </DockPanel>
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
 
                     <Button DockPanel.Dock="Right" Content="{x:Static localization:StringResources.CreateAccount}" 
                             Command="{Binding Path=CommandCreateAccount}" HorizontalAlignment="Right">

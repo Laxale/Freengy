@@ -53,6 +53,7 @@
                 </Path>
             </Button>
 
+            <!-- Кнопка поиска друзей -->
             <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" 
                     Command="{Binding Path=CommandSearchFriends}" ToolTip="{x:Static localization:StringResources.SearchFriends}">
                 <Path Data="{StaticResource FriendsIconGeometry}" Fill="{StaticResource PurpleBrush}">
@@ -62,6 +63,7 @@
                 </Path>
             </Button>
 
+            <!-- Кнопка отображения входящих запросов в друзья -->
             <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" 
                     Command="{Binding Path=CommandShowFriendRequests}" VerticalAlignment="Center" 
                     VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" 
@@ -106,8 +108,18 @@
             <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" IsSynchronizedWithCurrentItem="True">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:AccountStateViewModel}">
-                        <DockPanel Background="{StaticResource AlmostTransparent}">
-                            <DockPanel.ContextMenu>
+                        <Grid Background="{StaticResource AlmostTransparent}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="{x:Static localization:StringResources.StartChat}" 
                                               CommandParameter="{Binding Path=AccountState}"
@@ -116,9 +128,10 @@
                                     <Separator/>
                                     <MenuItem Header="See info"/>
                                 </ContextMenu>
-                            </DockPanel.ContextMenu>
+                            </Grid.ContextMenu>
 
-                            <DockPanel DockPanel.Dock="Top" Margin="{StaticResource StdMargin}">
+                            <!-- Строка названия и статуса аккаунта -->
+                            <DockPanel Grid.Row="0" Grid.Column="0" Margin="{StaticResource StdMargin}">
                                 <Path DockPanel.Dock="Left" Data="{StaticResource UserIconGeometry}">
                                     <Path.Style>
                                         <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
@@ -137,12 +150,25 @@
 
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding Path=AccountState.Account.Name}" Margin="{StaticResource 4LeftMargin}"/>
                             </DockPanel>
-                            
-                            <DockPanel DockPanel.Dock="Top">
+
+                            <!-- Строка уровня аккаунта -->
+                            <DockPanel Grid.Row="1" Grid.Column="0">
                                 <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.Level}"/>
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding Path=AccountState.Account.Level}"/>
                             </DockPanel>
-                        </DockPanel>
+
+                            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Right"
+                                    Visibility="{Binding Path=HasNewMessages, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox},
+                                                      Path=DataContext.CommandShowChatSessionWith}"
+                                    CommandParameter="{Binding Path=AccountState}">
+                                <Path Data="{StaticResource LetterIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                                    <Path.LayoutTransform>
+                                        <ScaleTransform ScaleX="0.048" ScaleY="0.052"/>
+                                    </Path.LayoutTransform>
+                                </Path>
+                            </Button>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

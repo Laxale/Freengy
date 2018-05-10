@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Chatter.Helpers;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
 
@@ -20,7 +21,7 @@ namespace Freengy.Chatter.ViewModels
     {
         private readonly ILoginController loginController;
         private readonly IChatMessageFactory chatMessageFactory;
-        private readonly ObservableCollection<IChatMessageDecorator> sessionMessages = new ObservableCollection<IChatMessageDecorator>();
+        private readonly ObservableCollection<DistinguishedChatMessage> sessionMessages = new ObservableCollection<DistinguishedChatMessage>();
 
         private string messageText;
 
@@ -28,7 +29,6 @@ namespace Freengy.Chatter.ViewModels
         /// Event is fired to scroll the message list to end.
         /// </summary>
         internal event Action<IChatMessageDecorator> MessageAdded = decoratpr => { };
-
 
 
         public ChatSessionViewModel(IChatSession session) 
@@ -40,6 +40,7 @@ namespace Freengy.Chatter.ViewModels
             chatMessageFactory = ServiceLocator.Resolve<IChatMessageFactory>();
             chatMessageFactory.Author = loginController.MyAccountState.Account;
 
+            MyName = loginController.MyAccountState.Account.Name;
             SessionMessages = CollectionViewSource.GetDefaultView(sessionMessages);
 
             // this viewmodel is not created by catel. need to init manually
@@ -57,6 +58,11 @@ namespace Freengy.Chatter.ViewModels
         /// Gets current chat session object.
         /// </summary>
         public IChatSession Session { get; }
+
+        /// <summary>
+        /// Возвращает название моего аккаунта.
+        /// </summary>
+        public string MyName { get; }
 
         /// <summary>
         /// Get the collection of messages for current session.
@@ -96,20 +102,20 @@ namespace Freengy.Chatter.ViewModels
 
         private void CommandSendMessageImpl() 
         {
-            IChatMessageDecorator processedMessage;
-
             var newMessage = chatMessageFactory.CreateMessage(MessageText);
 
-            Session.SendMessage(newMessage, out processedMessage);
+            Session.SendMessage(newMessage, out _);
 
             MessageText = string.Empty;
         }
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 
         {
+            bool isMyMessage = addedMessage.OriginalMessage.Author.Name == MyName;
+
             GUIDispatcher.InvokeOnGuiThread(() =>
             {
-                sessionMessages.Add(addedMessage);
+                sessionMessages.Add(new DistinguishedChatMessage(addedMessage, isMyMessage));
                 SessionMessages.MoveCurrentToLast();
                 MessageAdded.Invoke(addedMessage);
             });

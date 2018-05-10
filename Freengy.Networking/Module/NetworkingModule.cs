@@ -35,10 +35,10 @@ namespace Freengy.Networking.Module
                 MyServiceLocator.Instance.RegisterIfNotRegistered<IEntitySearcher, EntitySearcher>();
                 // login controller uses task wrapper, so must register them this order
                 MyServiceLocator.Instance.RegisterInstance(FriendStateController.ExposedInstance);
-                MyServiceLocator.Instance.RegisterInstance(ServerListener.ExposedInstance);
+                MyServiceLocator.Instance.RegisterInstance(PortListener.ExposedInstance);
                 MyServiceLocator.Instance.RegisterInstance(LoginController.Instance);
 
-                await ServerListener.InternalInstance.InitInternalAsync();
+                await PortListener.InternalInstance.InitInternalAsync();
 
                 FriendStateController.InternalInstance.InitInternal();
             }

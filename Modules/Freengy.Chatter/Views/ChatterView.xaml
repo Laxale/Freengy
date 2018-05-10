@@ -10,22 +10,20 @@
              xmlns:viewmodels="clr-namespace:Freengy.Chatter.ViewModels"
              
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatterViewModel}">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/StylishWindowStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <!-- Chat sessions -->
-    <TabControl ItemsSource="{Binding Path=ChatSessions}" 
-                IsSynchronizedWithCurrentItem="True" Background="Transparent" BorderThickness="0">
+    <TabControl ItemsSource="{Binding Path=ChatSessions}" IsSynchronizedWithCurrentItem="True" 
+                Background="{StaticResource AlmostTransparent}" Name="SessionsTab" BorderThickness="0">
         <TabControl.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>

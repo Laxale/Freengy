@@ -133,6 +133,9 @@ namespace Freengy.Base.ViewModels
             }
         }
         
+        /// <summary>
+        /// Обновить вьюмодель.
+        /// </summary>
         public virtual void Refresh() { }
 
 

@@ -42,12 +42,13 @@ namespace Freengy.FriendList.ViewModels
     /// </summary>
     public class FriendListViewModel : WaitableViewModel 
     {
+        private readonly IChatHub chatHub;
         private readonly ICurtainedExecutor curtainedExecutor;
         private readonly IFriendStateController friendStateController;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<FriendRequest> friendRequests = new ObservableCollection<FriendRequest>();
-        private readonly ObservableCollection<AccountStateViewModel> friendViewModels = new ObservableCollection<AccountStateViewModel>();
         private readonly Dictionary<AccountState, IChatSession> startedChatSessions = new Dictionary<AccountState, IChatSession>();
+        private readonly ObservableCollection<AccountStateViewModel> friendViewModels = new ObservableCollection<AccountStateViewModel>();
 
         private string mySessionToken;
         private UserAccount myAccount;
@@ -56,15 +57,17 @@ namespace Freengy.FriendList.ViewModels
         public FriendListViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IMyServiceLocator serviceLocator) : 
             base(taskWrapper, guiDispatcher, serviceLocator)
         {
+            chatHub = ServiceLocator.Resolve<IChatHub>();
             curtainedExecutor = ServiceLocator.Resolve<ICurtainedExecutor>();
             friendStateController = ServiceLocator.Resolve<IFriendStateController>();
 
             FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
 
+            this.Subscribe<MessageNewFriendRequest>(OnNewFriendRequest);
+            this.Subscribe<MessageReceivedMessage>(OnNewMessaggeReceived);
             this.Subscribe<MessageFriendStateUpdate>(OnFriendStateUpdated);
             this.Subscribe<MessageFriendRequestState>(OnFriendRequestReply);
-            this.Subscribe<MessageNewFriendRequest>(OnNewFriendRequest);
             this.Publish(new MessageInitializeModelRequest(this, "Loading friends"));
         }
 
@@ -94,6 +97,11 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         public MyCommand<AccountState> CommandStartChat { get; private set; }
 
+        /// <summary>
+        /// Command to show chat session with the given friend.
+        /// </summary>
+        public MyCommand<AccountState> CommandShowChatSessionWith { get; private set; }
+
 
         /// <summary>
         /// Gets teh collection of a friends of current user.
@@ -105,8 +113,9 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         public ICollectionView FriendRequests { get; }
 
-
-        /// <inheritdoc />
+        /// <summary>
+        /// Обновить вьюмодель.
+        /// </summary>
         public override void Refresh() 
         {
             base.Refresh();
@@ -123,9 +132,10 @@ namespace Freengy.FriendList.ViewModels
             CommandSearchFriends = new MyCommand(SearchFriendsImpl);
             CommandStartChat = new MyCommand<AccountState>(StartChatImpl);
             CommandShowFriendRequests = new MyCommand(ShowFriendRequestsImpl);
+            CommandShowChatSessionWith = new MyCommand<AccountState>(ShowChatSessionWithImpl);
             CommandRemoveFriend = new MyCommand<AccountStateViewModel>(RemoveFriendImpl, CanRemoveFriend);
         }
-        
+
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в Initialize().
         /// </summary>
@@ -159,7 +169,6 @@ namespace Freengy.FriendList.ViewModels
 
         private void StartChatImpl(AccountState targetAccountState) 
         {
-            var chatHub = ServiceLocator.Resolve<IChatHub>();
             var messageFactory = ServiceLocator.Resolve<IChatMessageFactory>();
             
             messageFactory.Author = myAccount;
@@ -181,8 +190,7 @@ namespace Freengy.FriendList.ViewModels
 
             var testMessage = messageFactory.CreateMessage("Lets chat!");
 
-            IChatMessageDecorator processedMessage;
-            session.SendMessage(testMessage, out processedMessage);
+            session.SendMessage(testMessage, out _);
         }
 
         private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
@@ -298,6 +306,13 @@ namespace Freengy.FriendList.ViewModels
             await UpdateFriends();
         }
 
+        private void ShowChatSessionWithImpl(AccountState accountState) 
+        {
+            Guid targetSessionId = startedChatSessions[accountState].Id;
+
+            this.Publish(new MessageShowChatSession(targetSessionId));
+        }
+
 
         private void OnFriendStateUpdated(MessageFriendStateUpdate message) 
         {
@@ -330,6 +345,22 @@ namespace Freengy.FriendList.ViewModels
             }
 
             GUIDispatcher.BeginInvokeOnGuiThread(() => friendRequests.Add(requestMessage.NewFriendRequest));
+        }
+
+        private void OnNewMessaggeReceived(MessageReceivedMessage message) 
+        {
+            var senderModel = friendViewModels.FirstOrDefault(model => model.AccountState.Account.Id == message.SenderId);
+
+            if (senderModel != null)
+            {
+                senderModel.HasNewMessages = true;
+
+                if (!startedChatSessions.ContainsKey(senderModel.AccountState))
+                {
+                    IChatSession friendSession = chatHub.GetSession(message.SessionId);
+                    startedChatSessions.Add(senderModel.AccountState, friendSession);
+                }
+            }
         }
 
         #endregion privates

@@ -17,20 +17,21 @@ using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.DefaultImpl;
 using Freengy.Common.Extensions;
+using Freengy.Networking.Messages;
 
 
 namespace Freengy.Networking.DefaultImpl 
 {
     /// <summary>
-    /// Client-side Freengy server listener.
+    /// Client-side port listener.
     /// </summary>
-    internal class ServerListener : IHttpClientParametersProvider 
+    internal class PortListener : IHttpClientParametersProvider 
     {
         private static readonly string httpAddressNoPort = "localhost";
         private static readonly object Locker = new object();
         private static readonly ushort maxStartTrials = 50;
         
-        private static ServerListener instance;
+        private static PortListener instance;
 
         private readonly IChatHub chatHub = MyServiceLocator.Instance.Resolve<IChatHub>();
         private readonly IChatSessionFactory sessionFactory = MyServiceLocator.Instance.Resolve<IChatSessionFactory>();
@@ -41,11 +42,11 @@ namespace Freengy.Networking.DefaultImpl
         private string clientAddress;
 
 
-        private ServerListener() { }
+        private PortListener() { }
      
 
         /// <summary>
-        /// Единственный инстанс <see cref="ServerListener"/>.
+        /// Единственный инстанс <see cref="PortListener"/>.
         /// </summary>
         public static IHttpClientParametersProvider ExposedInstance => InternalInstance;
         
@@ -53,13 +54,13 @@ namespace Freengy.Networking.DefaultImpl
         /// <summary>
         /// Internal instance for nonclient usage.
         /// </summary>
-        internal static ServerListener InternalInstance 
+        internal static PortListener InternalInstance 
         {
             get
             {
                 lock (Locker)
                 {
-                    return instance ?? (instance = new ServerListener());
+                    return instance ?? (instance = new PortListener());
                 }
             }
         }
@@ -150,6 +151,8 @@ namespace Freengy.Networking.DefaultImpl
             messageFactory.Author = friendState.Account;
             IChatMessage message = messageFactory.CreateMessage(messageModel.MessageText);
             session.AcceptMessage(message);
+
+            this.Publish(new MessageReceivedMessage(friendState.Account.Id, sessionId));
         }
     }
 }

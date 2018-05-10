@@ -7,6 +7,8 @@
              xmlns:local="clr-namespace:Freengy.Chatter.Views"
              xmlns:viewModels="clr-namespace:Freengy.Chatter.ViewModels"
              xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
+             xmlns:converters="clr-namespace:Freengy.Chatter.Converters"
+             xmlns:helpers="clr-namespace:Freengy.Chatter.Helpers"
 
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300"
@@ -18,6 +20,8 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
+
+                <converters:MessageAutorToBoolConverter x:Key="MessageAutorToBoolConverter"/>
             </ResourceDictionary>
         </Grid.Resources>
 
@@ -31,20 +35,40 @@
         <ListBox Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding Path=SessionMessages}" IsSynchronizedWithCurrentItem="True" Name="MessageList"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.ScrollUnit="Pixel">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="interfaces:IChatMessageDecorator">
+                <DataTemplate DataType="helpers:DistinguishedChatMessage">
                     <DockPanel>
+                        <DockPanel.Style>
+                            <Style TargetType="DockPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsMy}" Value="True">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Style>
+
                         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=TimeStamp}" Foreground="Blue"/>
-                            <TextBlock Text="{Binding Path=OriginalMessage.Author.Name}" Foreground="{StaticResource PurpleBrush}"/>
+                            <TextBlock Text="{Binding Path=MessageDecorator.TimeStamp}"/>
+                            <TextBlock Text="{Binding Path=MessageDecorator.OriginalMessage.Author.Name}" FontWeight="Medium">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsMy}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
 
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=OriginalMessage.Text}"/>
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding Path=MessageDecorator.OriginalMessage.Text}"/>
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <GridSplitter Grid.Row="1" Height="6" Width="Auto" ResizeBehavior="PreviousAndNext" Background="{StaticResource DarkGrayBrush}" 
+        <GridSplitter Grid.Row="1" Height="4" Width="Auto" ResizeBehavior="PreviousAndNext" Background="{StaticResource DarkGrayBrush}" 
                       Margin="{StaticResource All4Margin}" HorizontalAlignment="Stretch"/>
 
         <!-- Sending messages panel -->

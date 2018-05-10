@@ -28,7 +28,7 @@ namespace Freengy.Networking.Modules
         {
             var messageModel = new SerializeHelper().DeserializeObject<ChatMessageModel>(Request.Body);
 
-            ServerListener.InternalInstance.InformOfANewMessage(messageModel);
+            PortListener.InternalInstance.InformOfANewMessage(messageModel);
 
             return HttpStatusCode.OK;
         }
