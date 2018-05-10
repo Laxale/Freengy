@@ -7,7 +7,6 @@
              xmlns:local="clr-namespace:Freengy.Chatter.Views"
              xmlns:viewModels="clr-namespace:Freengy.Chatter.ViewModels"
              xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
-             xmlns:converters="clr-namespace:Freengy.Chatter.Converters"
              xmlns:helpers="clr-namespace:Freengy.Chatter.Helpers"
 
              mc:Ignorable="d" 
@@ -20,8 +19,6 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
-
-                <converters:MessageAutorToBoolConverter x:Key="MessageAutorToBoolConverter"/>
             </ResourceDictionary>
         </Grid.Resources>
 

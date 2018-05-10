@@ -90,6 +90,40 @@ namespace Freengy.Networking.DefaultImpl
 
 
         /// <summary>
+        /// Синхронизировать данные моего аккаунта с сервера.
+        /// </summary>
+        /// <returns>Результат синхронизации.</returns>
+        public Result<AccountState> SyncMyAccount() 
+        {
+            try
+            {
+                using (var actor = serviceLocator.Resolve<IHttpActor>())
+                {
+                    actor
+                        .AddHeader(FreengyHeaders.Client.ClientIdHeaderName, MyAccountState.Account.Id.ToString())
+                        .SetRequestAddress(Url.Http.Sync.SyncAccount)
+                        .SetClientSessionToken(MySessionToken);
+
+                    Result<AccountStateModel> result = actor.GetAsync<AccountStateModel>().Result;
+
+                    if (result.Failure)
+                    {
+                        return Result<AccountState>.Fail(result.Error);
+                    }
+
+                    MyAccountState.UpdateFromModel(result.Value);
+
+                    return Result<AccountState>.Ok(MyAccountState);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Attempts to register new user.
         /// </summary>
         /// <param name="userName">Desired new user name.</param>
@@ -125,7 +159,7 @@ namespace Freengy.Networking.DefaultImpl
 
                     var createdAccount = new UserAccount(result.Value.CreatedAccount);
                     var privateAccountModel = result.Value.CreatedAccount.ToPrivate();
-                    var saltHeaderValue = httpActor.ResponceMessage.Headers.GetValues(FreengyHeaders.NextPasswordSaltHeaderName);
+                    var saltHeaderValue = httpActor.ResponceMessage.Headers.GetValues(FreengyHeaders.Server.NextPasswordSaltHeaderName);
                     privateAccountModel.NextLoginSalt = saltHeaderValue.First();
 
                     accountManager.SaveLastLoggedIn(privateAccountModel);

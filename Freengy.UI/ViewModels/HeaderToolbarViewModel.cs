@@ -26,7 +26,7 @@ namespace Freengy.UI.ViewModels
 
         public HeaderToolbarViewModel() 
         {
-            ServerAddress = Url.Http.RootUrl;
+            ServerAddress = Url.Http.RootServerUrl;
 
             this.Subscribe<MessageServerOnlineStatus>(OnServerStatusInform);
         }

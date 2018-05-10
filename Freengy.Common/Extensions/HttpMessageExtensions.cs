@@ -25,8 +25,8 @@ namespace Freengy.Common.Extensions
         public static SessionAuth GetSessionAuth(this HttpHeaders headers) 
         {
             var auth = new SessionAuth();
-            bool hasClientToken = headers.TryGetValues(FreengyHeaders.ClientAddressHeaderName, out IEnumerable<string> clientValues);
-            bool hasServerToken = headers.TryGetValues(FreengyHeaders.ServerSessionTokenHeaderName, out IEnumerable<string> serverValues);
+            bool hasClientToken = headers.TryGetValues(FreengyHeaders.Client.ClientAddressHeaderName, out IEnumerable<string> clientValues);
+            bool hasServerToken = headers.TryGetValues(FreengyHeaders.Server.ServerSessionTokenHeaderName, out IEnumerable<string> serverValues);
 
             if (hasClientToken)
             {
@@ -47,7 +47,7 @@ namespace Freengy.Common.Extensions
         /// <returns></returns>
         public static string GetSaltHeaderValue(this HttpHeaders headers) 
         {
-            bool hasSaltHeader = headers.TryGetValues(FreengyHeaders.ClientAddressHeaderName, out IEnumerable<string> headerValues);
+            bool hasSaltHeader = headers.TryGetValues(FreengyHeaders.Client.ClientAddressHeaderName, out IEnumerable<string> headerValues);
 
             if (hasSaltHeader)
             {

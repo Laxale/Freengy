@@ -13,6 +13,9 @@ namespace Freengy.Networking.Constants
     /// </summary>
     public static class Url 
     {
+        private static readonly string syncAction;
+        private static readonly string editAction;
+        private static readonly string accountAction;
         private static readonly string stateAction;
         private static readonly string fromServerAction;
         private static readonly string informAction;
@@ -33,7 +36,10 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            syncAction = networkingConfig.AppSettings.Settings["SyncActionName"].Value;
             stateAction = networkingConfig.AppSettings.Settings["StateActionName"].Value;
+            editAction = networkingConfig.AppSettings.Settings["EditActionName"].Value;
+            accountAction = networkingConfig.AppSettings.Settings["AccountActionName"].Value;
             fromServerAction = networkingConfig.AppSettings.Settings["FromServerActionName"].Value;
             informAction = networkingConfig.AppSettings.Settings["InformActionName"].Value;
             chatAction = networkingConfig.AppSettings.Settings["ChatActionName"].Value;
@@ -52,21 +58,21 @@ namespace Freengy.Networking.Constants
 
         public static class Http 
         {
-            public static string RootUrl { get; } = networkingConfig.AppSettings.Settings["FreengyServerHttpAddress"].Value;
+            public static string RootServerUrl { get; } = networkingConfig.AppSettings.Settings["FreengyServerHttpAddress"].Value;
 
-            public static string HelloUrl { get; } = $"{ RootUrl }/{ helloAction }";
+            public static string HelloUrl { get; } = $"{ RootServerUrl }/{ helloAction }";
 
-            public static string RegisterUrl { get; } = $"{ RootUrl }/{ registerAction }";
+            public static string RegisterUrl { get; } = $"{ RootServerUrl }/{ registerAction }";
 
-            public static string LogInUrl { get; } = $"{ RootUrl }/{ logInAction }";
+            public static string LogInUrl { get; } = $"{ RootServerUrl }/{ logInAction }";
 
-            public static string SearchUsersUrl { get; } = $"{ RootUrl }/{ searchAction }/{ usersAction }";
+            public static string SearchUsersUrl { get; } = $"{ RootServerUrl }/{ searchAction }/{ usersAction }";
 
-            public static string SearchFriendRequestsUrl { get; } = $"{ RootUrl }/{ searchAction }/{ friendRequestAction }";
+            public static string SearchFriendRequestsUrl { get; } = $"{ RootServerUrl }/{ searchAction }/{ friendRequestAction }";
 
-            public static string AddFriendUrl { get; } = $"{ RootUrl }/{ requestAction }/{ friendAction }";
+            public static string AddFriendUrl { get; } = $"{ RootServerUrl }/{ requestAction }/{ friendAction }";
 
-            public static string ReplyFriendRequestUrl { get; } = $"{ RootUrl }/{ replyAction}/{ friendAction }{ requestAction }";
+            public static string ReplyFriendRequestUrl { get; } = $"{ RootServerUrl }/{ replyAction}/{ friendAction }{ requestAction }";
 
 
             public static class Chat 
@@ -99,6 +105,20 @@ namespace Freengy.Networking.Constants
                 /// Subroute on which server posts friendrequest reply.
                 /// </summary>
                 public static string InformFriendRequestState { get; } = $"{ InformFriendRequest }/{ stateAction }";
+            }
+
+            public static class Edit 
+            {
+                public static readonly string EditRoot = $"{ RootServerUrl }/{ editAction }";
+
+                public static readonly string EditAccount = $"{ EditRoot }/{ accountAction }";
+            }
+
+            public static class Sync 
+            {
+                public static readonly string SyncRoot = $"{ RootServerUrl }/{ syncAction }";
+
+                public static readonly string SyncAccount = $"{ SyncRoot }/{ accountAction }";
             }
         }
 

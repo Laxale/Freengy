@@ -11,28 +11,45 @@ namespace Freengy.Common.Constants
     public static class FreengyHeaders 
     {
         /// <summary>
-        /// The name of a custom ClientAddress header.
+        /// Содержит клиентские заголовки.
         /// </summary>
-        public const string ClientAddressHeaderName = "ClientAddress";
+        public static class Client 
+        {
+            /// <summary>
+            /// The name of a custom ClientAddress header.
+            /// </summary>
+            public const string ClientAddressHeaderName = "ClientAddress";
+
+            /// <summary>
+            /// The name of custom ClientSessionToken header.
+            /// </summary>
+            public const string ClientSessionTokenHeaderName = "ClientSessionToken";
+
+            /// <summary>
+            /// The name of custom ClientPassword header.
+            /// </summary>
+            public const string ClientPasswordHeaderName = "ClientPassword";
+
+            /// <summary>
+            /// The name of custom ClientId header.
+            /// </summary>
+            public const string ClientIdHeaderName = "ClientIdHeader";
+        }
 
         /// <summary>
-        /// The name of custom ClientSessionToken header.
+        /// Содержит серверные заголовки.
         /// </summary>
-        public const string ClientSessionTokenHeaderName = "ClientSessionToken";
+        public static class Server
+        {
+            /// <summary>
+            /// The name of custom NextPasswordSalt header.
+            /// </summary>
+            public const string NextPasswordSaltHeaderName = "NextPasswordSalt";
 
-        /// <summary>
-        /// The name of custom ClientPassword header.
-        /// </summary>
-        public const string ClientPasswordHeaderName = "ClientPassword";
-
-        /// <summary>
-        /// The name of custom NextPasswordSalt header.
-        /// </summary>
-        public const string NextPasswordSaltHeaderName = "NextPasswordSalt";
-
-        /// <summary>
-        /// The name of custom ServerSessionToken header.
-        /// </summary>
-        public const string ServerSessionTokenHeaderName = "ServerSessionToken";
+            /// <summary>
+            /// The name of custom ServerSessionToken header.
+            /// </summary>
+            public const string ServerSessionTokenHeaderName = "ServerSessionToken";
+        }
     }
 }

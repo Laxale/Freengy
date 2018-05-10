@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:commonResources="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
@@ -37,6 +36,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Временная графика вместо реального аватара -->
         <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
               Data="{StaticResource AccountIconGeometry}" Fill="{StaticResource PurpleBrush}">
             <Path.LayoutTransform>
@@ -46,10 +46,20 @@
 
         <!-- Account name -->
         <DockPanel Grid.Row="0" Grid.Column="2">
-            <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="4, 0, -2, 0"/>
+            <Button DockPanel.Dock="Top" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Left" Command="{Binding Path=CommandEditAccount}">
+                <Path DockPanel.Dock="Top" HorizontalAlignment="Left" Data="{StaticResource EditDocumentIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                    <Path.LayoutTransform>
+                        <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </Button>
 
-            <Button DockPanel.Dock="Left" Style="{StaticResource LinkButtonStyle}" Content="{Binding Path=MyAccountState.Account.Name}"
-                    VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource PurpleBrush}" FontWeight="Medium"/>
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="{StaticResource 4LeftMargin}"/>
+
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=MyAccountState.Account.Name}" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource PurpleBrush}"/>
+            </DockPanel>
         </DockPanel>
 
         <!-- Account level -->

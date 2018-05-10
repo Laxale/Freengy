@@ -2,6 +2,7 @@
 //
 //
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -27,13 +28,25 @@ namespace Freengy.Common.Extensions
         public static SessionAuth GetSessionAuth(this RequestHeaders nancyHeaders) 
         {
             var auth = new SessionAuth();
-            var clientTokens = nancyHeaders[FreengyHeaders.ClientSessionTokenHeaderName].ToList();
-            var serverTokens = nancyHeaders[FreengyHeaders.ServerSessionTokenHeaderName].ToList();
+            var clientTokens = nancyHeaders[FreengyHeaders.Client.ClientSessionTokenHeaderName].ToList();
+            var serverTokens = nancyHeaders[FreengyHeaders.Server.ServerSessionTokenHeaderName].ToList();
 
             auth.ClientToken = clientTokens.FirstOrDefault();
             auth.ServerToken = serverTokens.FirstOrDefault();
 
             return auth;
+        }
+
+        /// <summary>
+        /// Получить из заголовков идентификатор аккаунта клиента.
+        /// </summary>
+        /// <param name="nancyHeaders">Заголовки сообщения.</param>
+        /// <returns>Идентификатор аккаунта клиента или <see cref="Guid.Empty"/>.</returns>
+        public static Guid GetClientId(this RequestHeaders nancyHeaders) 
+        {
+            var clientId = nancyHeaders[FreengyHeaders.Client.ClientIdHeaderName].ToList().FirstOrDefault();
+
+            return clientId == null ? Guid.Empty : Guid.Parse(clientId);
         }
     }
 }

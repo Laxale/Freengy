@@ -95,7 +95,7 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var actor = ServiceLocator.Resolve<IHttpActor>())
             {
-                actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl).AddHeader(FreengyHeaders.ClientSessionTokenHeaderName, sessionToken);
+                actor.SetRequestAddress(Url.Http.ReplyFriendRequestUrl).AddHeader(FreengyHeaders.Client.ClientSessionTokenHeaderName, sessionToken);
 
                 FriendRequestReply reply = CreateReplyTo(userAccount);
 

@@ -300,4 +300,7 @@
   <data name="YourFriend" xml:space="preserve">
     <value>Ваш друг</value>
   </data>
+  <data name="EditAccountData" xml:space="preserve">
+    <value>Редактировать данные аккаунта</value>
+  </data>
 </root>

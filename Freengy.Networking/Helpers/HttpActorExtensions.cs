@@ -25,7 +25,7 @@ namespace Freengy.Networking.Helpers
         {
             if (string.IsNullOrWhiteSpace(sessionToken)) throw new ArgumentNullException(nameof(sessionToken));
 
-            actor.AddHeader(FreengyHeaders.ClientSessionTokenHeaderName, sessionToken);
+            actor.AddHeader(FreengyHeaders.Client.ClientSessionTokenHeaderName, sessionToken);
 
             return actor;
         }
@@ -38,7 +38,7 @@ namespace Freengy.Networking.Helpers
         /// <returns>this.</returns>
         public static IHttpActor SetClientAddress(this IHttpActor actor, string clientAddress) 
         {
-            actor.AddHeader(FreengyHeaders.ClientAddressHeaderName, clientAddress);
+            actor.AddHeader(FreengyHeaders.Client.ClientAddressHeaderName, clientAddress);
 
             return actor;
         }

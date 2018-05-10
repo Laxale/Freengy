@@ -38,6 +38,12 @@ namespace Freengy.Networking.Interfaces
         AccountState MyAccountState { get; }
 
         /// <summary>
+        /// Синхронизировать данные моего аккаунта с сервера.
+        /// </summary>
+        /// <returns>Результат синхронизации.</returns>
+        Result<AccountState> SyncMyAccount();
+
+        /// <summary>
         /// Attempts to register new user.
         /// </summary>
         /// <param name="userName">Desired new user name.</param>

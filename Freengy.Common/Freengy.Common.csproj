@@ -80,6 +80,7 @@
     <Compile Include="Models\AccountStateModel.cs" />
     <Compile Include="Models\AlbumModel.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
+    <Compile Include="Models\EditAccountModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
     <Compile Include="Models\ImageModel.cs" />

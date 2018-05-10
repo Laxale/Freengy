@@ -28,6 +28,12 @@ namespace Freengy.Common.Interfaces
         Task<HttpResponseMessage> GetAsync();
 
         /// <summary>
+        /// Execute HTTP GET and achieve deserialized result asynchronously.
+        /// </summary>
+        /// <returns>Request result.</returns>
+        Task<Result<TResponce>> GetAsync<TResponce>() where TResponce : class, new();
+
+        /// <summary>
         /// Add HTTP header to sender.
         /// </summary>
         /// <param name="headerName">Header name.</param>
@@ -43,16 +49,13 @@ namespace Freengy.Common.Interfaces
         IHttpActor SetRequestAddress(string requestAddress);
 
         /// <summary>
-        /// Execute GET method with a given message payload.
+        /// Execute POST method with a given message payload.
         /// </summary>
         /// <typeparam name="TRequest">Message payload type.</typeparam>
-        /// <typeparam name="TResponce">Type of expected request to deserialize.</typeparam>
         /// <param name="request"><see cref="TRequest"/> instance.</param>
-        /// <returns><see cref="TResponce"/> deserialized instance.</returns>
-        Task<TResponce> GetAsync<TRequest, TResponce>(TRequest request) 
-            where TRequest : class, new()
-            where TResponce : class, new();
-        
+        /// <returns>Responce message.</returns>
+        Task<HttpResponseMessage> PostAsync<TRequest>(TRequest request) where TRequest : class, new();
+
         /// <summary>
         /// Execute POST method with a given message payload.
         /// </summary>

@@ -41,6 +41,40 @@ namespace Freengy.Common.Helpers
 
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() { }
+
+        /// <summary>
+        /// Execute HTTP GET and achieve deserialized result asynchronously.
+        /// </summary>
+        /// <returns>Request result.</returns>
+        public Task<Result<TResponce>> GetAsync<TResponce>() where TResponce : class, new() 
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                using (HttpClientHandler handler = CreateHandler())
+                using (var client = new HttpClient(handler))
+                {
+                    AttachHeadersTo(client);
+
+                    ResponceMessage = client.GetAsync(address).Result;
+
+                    var serializeHelper = new SerializeHelper();
+
+                    bool parsed = TryGetAsRawJson(serializeHelper, out TResponce tResponce);
+
+                    if (parsed)
+                    {
+                        return Result<TResponce>.Ok(tResponce);
+                    }
+
+                    return Result<TResponce>.Fail(new UnexpectedErrorReason("Failed to parse server responce"));
+                }
+            });
+        }
+
+        /// <summary>
         /// Add HTTP header to sender.
         /// </summary>
         /// <param name="headerName">Header name.</param>
@@ -93,15 +127,25 @@ namespace Freengy.Common.Helpers
         }
 
         /// <summary>
-        /// Execute GET method with a given message payload.
+        /// Execute POST method with a given message payload.
         /// </summary>
         /// <typeparam name="TRequest">Message payload type.</typeparam>
-        /// <typeparam name="TResponce">Type of expected request to deserialize.</typeparam>
-        /// <param name="request"><see cref="!:TRequest" /> instance.</param>
-        /// <returns><see cref="!:TResponce" /> deserialized instance.</returns>
-        public Task<TResponce> GetAsync<TRequest, TResponce>(TRequest request) where TRequest : class, new() where TResponce : class, new() 
+        /// <param name="request"><see cref="TRequest"/> instance.</param>
+        /// <returns>Responce message.</returns>
+        public Task<HttpResponseMessage> PostAsync<TRequest>(TRequest request) where TRequest : class, new() 
         {
-            throw new NotImplementedException();
+            return Task.Factory.StartNew(() =>
+            {
+                using (HttpClientHandler handler = CreateHandler())
+                using (var client = new HttpClient(handler))
+                {
+                    StringContent httpRequest = PrepareRequest(request, client);
+
+                    ResponceMessage = client.PostAsync(address, httpRequest).Result;
+
+                    return ResponceMessage;
+                }
+            });
         }
 
         /// <summary>
@@ -118,20 +162,16 @@ namespace Freengy.Common.Helpers
                 using (HttpClientHandler handler = CreateHandler())
                 using (var client = new HttpClient(handler))
                 {
-                    AttachHeadersTo(client);
-
-                    var serializeHelper = new SerializeHelper();
-                    string jsonRequest = serializeHelper.Serialize(request);
-                    string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
-                    var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
+                    StringContent httpRequest = PrepareRequest(request, client);
 
                     ResponceMessage = client.PostAsync(address, httpRequest).Result;
 
-                    if (IsKnownBadResponceCode(out Common.ErrorReason.ErrorReason reason))
+                    if (IsKnownBadResponceCode(out ErrorReason.ErrorReason reason))
                     {
                         return Result<TResponce>.Fail(reason);
                     }
 
+                    var serializeHelper = new SerializeHelper();
                     try
                     {
                         bool parsed = TryGetAsRawJson<TResponce>(serializeHelper, out TResponce tResponce);
@@ -154,6 +194,19 @@ namespace Freengy.Common.Helpers
                     }
                 }
             });
+        }
+
+
+        private StringContent PrepareRequest<TRequest>(TRequest request, HttpClient client) where TRequest : class, new() 
+        {
+            AttachHeadersTo(client);
+
+            var serializeHelper = new SerializeHelper();
+            string jsonRequest = serializeHelper.Serialize(request);
+            string jsonMediaType = mediaTypes.GetStringValue(MediaTypesEnum.Json);
+            var httpRequest = new StringContent(jsonRequest, Encoding.UTF8, jsonMediaType);
+
+            return httpRequest;
         }
 
         private bool IsKnownBadResponceCode(out ErrorReason.ErrorReason errorReason) 
@@ -215,15 +268,6 @@ namespace Freengy.Common.Helpers
                 return false;
             }
         }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose() 
-        {
-
-        }
-
 
         private HttpClientHandler CreateHandler() 
         {

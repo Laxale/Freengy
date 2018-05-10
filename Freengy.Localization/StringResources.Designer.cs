@@ -178,6 +178,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit account data.
+        /// </summary>
+        public static string EditAccountData {
+            get {
+                return ResourceManager.GetString("EditAccountData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No spaces, template: good@email.
         /// </summary>
         public static string EmailRequirementsText {

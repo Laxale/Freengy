@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Freengy.UI.Views.EditMyAccountView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+             xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+
+             mc:Ignorable="d" 
+             d:DesignWidth="300"
+             d:DesignHeight="200"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:EditMyAccountViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <controls:WaitableDecorator CollapseContentOnWaiting="True">
+        <DockPanel>
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Название аккаунта -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:StringResources.IAm}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MyName}"/>
+
+                <!-- Текстовый статус аккаунта -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="My status"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=MyStatus}"/>
+
+                <!-- Цвет аккаунта -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="My color"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="My color" Foreground="{Binding Path=MyColor}"/>
+            </Grid>
+
+            <DockPanel DockPanel.Dock="Top" VerticalAlignment="Bottom" Margin="{StaticResource All4Margin}"
+                   Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
+                  Data="{StaticResource WarningIconGeometry}" Fill="{StaticResource RedBrush}" Margin="{StaticResource All4Margin}"/>
+
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=Information}" Foreground="{StaticResource RedBrush}" FontWeight="Medium"/>
+            </DockPanel>
+
+            <!-- Кнопка сохранения -->
+            <controls:TextedImageButton ImageText="{x:Static localization:StringResources.SaveText}" Background="{StaticResource FirstMainBrush}"
+                                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Command="{Binding Path=CommandSave}">
+                <controls:TextedImageButton.ImageContent>
+                    <Path Fill="{StaticResource PurpleBrush}" Data="{StaticResource SaveIconGeometry}">
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                        </Path.LayoutTransform>
+                    </Path>
+                </controls:TextedImageButton.ImageContent>
+            </controls:TextedImageButton>
+        </DockPanel>
+
+        <controls:WaitableDecorator.WaitTemplate>
+            <DataTemplate>
+                <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
+                    <TextBlock Text="Saving on server..." Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
+
+                    <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
+                                       IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}">
+                        <controls:GifImage.Effect>
+                            <DropShadowEffect/>
+                        </controls:GifImage.Effect>
+                    </controls:GifImage>
+                </StackPanel>
+            </DataTemplate>
+        </controls:WaitableDecorator.WaitTemplate>
+    </controls:WaitableDecorator>
+</UserControl>

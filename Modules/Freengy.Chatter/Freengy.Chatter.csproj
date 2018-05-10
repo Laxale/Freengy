@@ -34,7 +34,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\MessageAutorToBoolConverter.cs" />
     <Compile Include="Helpers\DistinguishedChatMessage.cs" />
     <Compile Include="Module\ChatterModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

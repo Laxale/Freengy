@@ -105,6 +105,7 @@
     <Compile Include="Messages\MessageLogoutRequest.cs" />
     <Compile Include="Module\MainModule.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
+    <Compile Include="ViewModels\EditMyAccountViewModel.cs" />
     <Compile Include="ViewModels\HeaderToolbarViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MyAccountVisitViewModel.cs" />
@@ -114,6 +115,9 @@
     <Compile Include="Views\AlbumsView.xaml.cs">
       <DependentUpon>AlbumsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditMyAccountView.xaml.cs">
+      <DependentUpon>EditMyAccountView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HeaderToolbarView.xaml.cs">
       <DependentUpon>HeaderToolbarView.xaml</DependentUpon>
     </Compile>
@@ -121,6 +125,10 @@
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\AlbumsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditMyAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
