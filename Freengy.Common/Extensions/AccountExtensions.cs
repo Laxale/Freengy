@@ -2,6 +2,7 @@
 //
 //
 
+using System;
 using Freengy.Common.Database;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
@@ -32,6 +33,25 @@ namespace Freengy.Common.Extensions
             };
 
             return model;
+        }
+
+        /// <summary>
+        /// Воспринять обновление свойств аккаунта.
+        /// </summary>
+        /// <param name="accountModel"></param>
+        /// <param name="updatedModel"></param>
+        public static void AcceptProperties(this UserAccountModel accountModel, UserAccountModel updatedModel) 
+        {
+            if (accountModel.Id != updatedModel.Id)
+            {
+                throw new InvalidOperationException($"Id mismatch");
+            }
+
+            accountModel.Name = accountModel.Name;
+            accountModel.Level = accountModel.Level;
+            accountModel.Privilege = accountModel.Privilege;
+            accountModel.LastLogInTime = accountModel.LastLogInTime;
+            accountModel.RegistrationTime = accountModel.RegistrationTime;
         }
     }
 }

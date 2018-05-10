@@ -9,7 +9,10 @@ using System.Linq;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Models;
 using Freengy.Common.ErrorReason;
+using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.Result;
+using Freengy.Common.Models;
+using Freengy.Common.Models.Readonly;
 using Freengy.Database.Context;
 
 using NLog;
@@ -17,32 +20,6 @@ using NLog;
 
 namespace Freengy.Base.DefaultImpl 
 {
-    internal static class DbSetExtensions 
-    {
-        /// <summary>
-        /// Find user account model with latest log-in time.
-        /// </summary>
-        /// <param name="accounts">Set of user accounts.</param>
-        /// <returns>Latest logged-in account or null.</returns>
-        public static PrivateAccountModel FindLatestLogIn(this IEnumerable<PrivateAccountModel> accounts) 
-        {
-            PrivateAccountModel maxAccount = null;
-            var maximumLoginTime = DateTime.MinValue;
-
-            foreach (var account in accounts)
-            {
-                if (account.LastLogInTime > maximumLoginTime)
-                {
-                    maxAccount = account;
-                    maximumLoginTime = account.LastLogInTime;
-                }
-            }
-
-            return maxAccount;
-        }
-    }
-
-
     /// <summary>
     /// <see cref="IAccountManager"/> implementer.
     /// </summary>
@@ -85,7 +62,7 @@ namespace Freengy.Base.DefaultImpl
         /// </summary>
         /// <param name="accountModel">Account to save as last logged in.</param>
         /// <returns>Save result.</returns>
-        public Result SaveLastLoggedIn(PrivateAccountModel accountModel) 
+        public Result SaveLoginTime(PrivateAccountModel accountModel) 
         {
             try
             {
@@ -110,6 +87,42 @@ namespace Freengy.Base.DefaultImpl
             catch (Exception ex)
             {
                 string message = "Failed to save last logged in account";
+                logger.Error(ex, message);
+
+                return Result.Fail(new UnexpectedErrorReason(message));
+            }
+        }
+
+        /// <summary>
+        /// Сохранить изменения аккаунта в базу клиента.
+        /// </summary>
+        /// <param name="myAccountModel"></param>
+        /// <returns></returns>
+        public Result UpdateMyAccount(PrivateAccountModel myAccountModel) 
+        {
+            try
+            {
+                using (var context = new SimpleDbContext<PrivateAccountModel>())
+                {
+                    var savedAcc = context.Objects.FirstOrDefault(savedModel => savedModel.Id == myAccountModel.Id);
+
+                    if (savedAcc != null)
+                    {
+                        savedAcc.AcceptProperties(myAccountModel);
+                    }
+                    else
+                    {
+                        context.Objects.Add(myAccountModel);
+                    }
+
+                    context.SaveChanges();
+
+                    return Result.Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = "Failed to save account changes";
                 logger.Error(ex, message);
 
                 return Result.Fail(new UnexpectedErrorReason(message));

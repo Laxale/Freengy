@@ -27,6 +27,13 @@ namespace Freengy.Base.Interfaces
         /// </summary>
         /// <param name="accountModel">Account to save as last logged in.</param>
         /// <returns>Save result.</returns>
-        Result SaveLastLoggedIn(PrivateAccountModel accountModel);
+        Result SaveLoginTime(PrivateAccountModel accountModel);
+
+        /// <summary>
+        /// Сохранить изменения аккаунта в базу клиента.
+        /// </summary>
+        /// <param name="myAccountModel"></param>
+        /// <returns></returns>
+        Result UpdateMyAccount(PrivateAccountModel myAccountModel);
     }
 }

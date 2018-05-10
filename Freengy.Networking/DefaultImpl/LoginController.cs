@@ -112,6 +112,8 @@ namespace Freengy.Networking.DefaultImpl
                     }
 
                     MyAccountState.UpdateFromModel(result.Value);
+                    PrivateAccountModel updatedAccount = MyAccountState.Account.ToModel().ToPrivate();
+                    accountManager.UpdateMyAccount(updatedAccount);
 
                     return Result<AccountState>.Ok(MyAccountState);
                 }
@@ -162,7 +164,7 @@ namespace Freengy.Networking.DefaultImpl
                     var saltHeaderValue = httpActor.ResponceMessage.Headers.GetValues(FreengyHeaders.Server.NextPasswordSaltHeaderName);
                     privateAccountModel.NextLoginSalt = saltHeaderValue.First();
 
-                    accountManager.SaveLastLoggedIn(privateAccountModel);
+                    accountManager.SaveLoginTime(privateAccountModel);
 
                     return Result<UserAccount>.Ok(createdAccount);
                 }
@@ -283,7 +285,7 @@ namespace Freengy.Networking.DefaultImpl
                     var privateAccountModel = stateModel.Account.ToPrivate();
                     //пока что салт не меняется после каждого логина. сервер не проставляет заголовок
                     //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
-                    accountManager.SaveLastLoggedIn(privateAccountModel);
+                    accountManager.SaveLoginTime(privateAccountModel);
                     SaveOnlineState(loginModel, auth);
                     this.Publish(messageLoggedIn);
                 }
