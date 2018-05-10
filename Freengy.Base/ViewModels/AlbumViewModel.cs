@@ -3,9 +3,11 @@
 //
 
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Data;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+
+using Freengy.Base.Extensions;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Messages;
@@ -15,9 +17,6 @@ using Freengy.Common.Models.Readonly;
 
 namespace Freengy.Base.ViewModels 
 {
-    using Freengy.Base.Extensions;
-
-
     /// <summary>
     /// Вьюмодель для работы с <see cref="Album"/>.
     /// </summary>

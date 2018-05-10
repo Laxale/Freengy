@@ -44,14 +44,14 @@ namespace Freengy.Common.Extensions
         {
             if (accountModel.Id != updatedModel.Id)
             {
-                throw new InvalidOperationException($"Id mismatch");
+                throw new InvalidOperationException("Account Id mismatch");
             }
 
-            accountModel.Name = accountModel.Name;
-            accountModel.Level = accountModel.Level;
-            accountModel.Privilege = accountModel.Privilege;
-            accountModel.LastLogInTime = accountModel.LastLogInTime;
-            accountModel.RegistrationTime = accountModel.RegistrationTime;
+            accountModel.Name = updatedModel.Name;
+            accountModel.Level = updatedModel.Level;
+            accountModel.Privilege = updatedModel.Privilege;
+            accountModel.LastLogInTime = updatedModel.LastLogInTime;
+            accountModel.RegistrationTime = updatedModel.RegistrationTime;
         }
     }
 }

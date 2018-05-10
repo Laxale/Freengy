@@ -114,6 +114,7 @@ namespace Freengy.Networking.DefaultImpl
                     MyAccountState.UpdateFromModel(result.Value);
                     PrivateAccountModel updatedAccount = MyAccountState.Account.ToModel().ToPrivate();
                     accountManager.UpdateMyAccount(updatedAccount);
+                    this.Publish(new MessageMyAccountUpdated(MyAccountState));
 
                     return Result<AccountState>.Ok(MyAccountState);
                 }

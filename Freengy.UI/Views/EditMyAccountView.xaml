@@ -43,15 +43,15 @@
 
                 <!-- Название аккаунта -->
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:StringResources.IAm}"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MyName}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MyName, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Текстовый статус аккаунта -->
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="My status"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=MyStatus}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=MyStatus, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Цвет аккаунта -->
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="My color"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="My color" Foreground="{Binding Path=MyColor}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="My color" Foreground="{Binding Path=MyColor, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <DockPanel DockPanel.Dock="Top" VerticalAlignment="Bottom" Margin="{StaticResource All4Margin}"
@@ -63,16 +63,32 @@
             </DockPanel>
 
             <!-- Кнопка сохранения -->
-            <controls:TextedImageButton ImageText="{x:Static localization:StringResources.SaveText}" Background="{StaticResource FirstMainBrush}"
-                                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Command="{Binding Path=CommandSave}">
-                <controls:TextedImageButton.ImageContent>
-                    <Path Fill="{StaticResource PurpleBrush}" Data="{StaticResource SaveIconGeometry}">
-                        <Path.LayoutTransform>
-                            <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
-                        </Path.LayoutTransform>
-                    </Path>
-                </controls:TextedImageButton.ImageContent>
-            </controls:TextedImageButton>
+            <Button DockPanel.Dock="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Style="{StaticResource ImageButtonStyle}" Margin="10" Command="{Binding Path=CommandSave}">
+                <Path Data="{StaticResource SaveIconGeometry}" VerticalAlignment="Center">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button},
+                                                               Path=IsEnabled}"
+                                             Value="True">
+                                    <Setter Property="Fill" Value="{StaticResource PurpleBrush}"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button},
+                                                               Path=IsEnabled}"
+                                             Value="False">
+                                    <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+
+                    <Path.LayoutTransform>
+                        <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </Button>
         </DockPanel>
 
         <controls:WaitableDecorator.WaitTemplate>

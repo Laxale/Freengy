@@ -110,7 +110,7 @@ namespace Freengy.Common.Helpers
         /// Execute HTTP GET and return responce message asynchronously.
         /// </summary>
         /// <returns>Responce message.</returns>
-        public Task<HttpResponseMessage> GetAsync() 
+        public Task<Result<HttpResponseMessage>> GetAsync() 
         {
             return Task.Factory.StartNew(() =>
             {
@@ -119,9 +119,17 @@ namespace Freengy.Common.Helpers
                 {
                     AttachHeadersTo(client);
 
-                    ResponceMessage = client.GetAsync(address).Result;
+                    try
+                    {
+                        ResponceMessage = client.GetAsync(address).Result;
 
-                    return ResponceMessage;
+                        return Result<HttpResponseMessage>.Ok(ResponceMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        ResponceMessage = null;
+                        return Result<HttpResponseMessage>.Fail(new UnexpectedErrorReason(ex.Message));
+                    }
                 }
             });
         }

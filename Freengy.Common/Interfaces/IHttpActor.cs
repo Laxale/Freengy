@@ -25,7 +25,7 @@ namespace Freengy.Common.Interfaces
         /// Execute HTTP GET and return responce message asynchronously.
         /// </summary>
         /// <returns>Responce message.</returns>
-        Task<HttpResponseMessage> GetAsync();
+        Task<Result<HttpResponseMessage>> GetAsync();
 
         /// <summary>
         /// Execute HTTP GET and achieve deserialized result asynchronously.

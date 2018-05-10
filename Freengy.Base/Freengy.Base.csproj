@@ -126,6 +126,7 @@
     <Compile Include="Messages\Collapse\MessageCollapseChatRequest.cs" />
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageCurtainRequest.cs" />
+    <Compile Include="Messages\MessageMyAccountUpdated.cs" />
     <Compile Include="Messages\MessageShowChatSession.cs" />
     <Compile Include="Messages\Notification\MessageFriendRequestState.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
