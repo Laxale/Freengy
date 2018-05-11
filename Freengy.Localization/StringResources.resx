@@ -300,7 +300,10 @@
   <data name="Decline" xml:space="preserve">
     <value>Decline</value>
   </data>
-    <data name="EditAccountData" xml:space="preserve">
+  <data name="EditAccountData" xml:space="preserve">
     <value>Edit account data</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
   </data>
 </root>

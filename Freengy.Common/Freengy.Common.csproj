@@ -52,6 +52,7 @@
     <Compile Include="Enums\FriendRequestState.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
+    <Compile Include="ErrorReason\UserNotFoundErrorReason.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\HttpMessageExtensions.cs" />
     <Compile Include="Exceptions\ServerNotAuthorizedException.cs" />

@@ -222,4 +222,7 @@
   <data name="ServerOffline" xml:space="preserve">
     <value>Server offline</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User is not found</value>
+  </data>
 </root>

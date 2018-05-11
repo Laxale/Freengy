@@ -22,11 +22,11 @@ namespace Freengy.Common.Models.Readonly
         public AccountState(AccountStateModel model) 
         {
             if(model == null) throw new ArgumentNullException(nameof(model));
-            if(model.Account == null) throw new ArgumentNullException(nameof(model.Account));
+            if(model.AccountModel == null) throw new ArgumentNullException(nameof(model.AccountModel));
 
             UserAddress = model.Address;
             AccountStatus = model.OnlineStatus;
-            Account = new UserAccount(model.Account);
+            Account = new UserAccount(model.AccountModel);
         }
 
 
@@ -53,12 +53,12 @@ namespace Freengy.Common.Models.Readonly
         public void UpdateFromModel(AccountStateModel stateModel) 
         {
             if(stateModel == null) throw new ArgumentNullException(nameof(stateModel));
-            if(stateModel.Account.Id != Account.Id) throw new InvalidOperationException("Account id mismatch");
+            if(stateModel.AccountModel.Id != Account.Id) throw new InvalidOperationException("Account id mismatch");
 
             UserAddress = stateModel.Address;
             AccountStatus = stateModel.OnlineStatus;
 
-            Account.UpdateFromModel(stateModel.Account);
+            Account.UpdateFromModel(stateModel.AccountModel);
         }
     }
 }

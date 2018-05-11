@@ -172,7 +172,14 @@ namespace Freengy.Common.Helpers
                 {
                     StringContent httpRequest = PrepareRequest(request, client);
 
-                    ResponceMessage = client.PostAsync(address, httpRequest).Result;
+                    try
+                    {
+                        ResponceMessage = client.PostAsync(address, httpRequest).Result;
+                    }
+                    catch (Exception ex)
+                    {
+                        return Result<TResponce>.Fail(new UnexpectedErrorReason(ex.Message));
+                    }
 
                     if (IsKnownBadResponceCode(out ErrorReason.ErrorReason reason))
                     {
@@ -225,6 +232,10 @@ namespace Freengy.Common.Helpers
             {
                 case HttpStatusCode.NotFound:
                     errorReason = new NoServerConnectionErrorReason();
+                    return true;
+
+                case HttpStatusCode.Unauthorized:
+                    errorReason = new UserNotFoundErrorReason();
                     return true;
 
                 case HttpStatusCode.Forbidden:

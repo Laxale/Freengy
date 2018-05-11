@@ -283,7 +283,7 @@ namespace Freengy.Networking.DefaultImpl
 
                 if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
-                    var privateAccountModel = stateModel.Account.ToPrivate();
+                    var privateAccountModel = stateModel.AccountModel.ToPrivate();
                     //пока что салт не меняется после каждого логина. сервер не проставляет заголовок
                     //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
                     accountManager.SaveLoginTime(privateAccountModel);

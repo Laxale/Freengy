@@ -73,7 +73,7 @@ namespace Freengy.Networking.Modules
                 throw new ServerNotAuthorizedException();
             }
 
-            return nancyContext.Response;
+            return null;
         }
 
         private dynamic OnNewFriendRequest(dynamic arg) 

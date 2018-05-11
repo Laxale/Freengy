@@ -303,4 +303,7 @@
   <data name="EditAccountData" xml:space="preserve">
     <value>Редактировать данные аккаунта</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Пользователь не найден</value>
+  </data>
 </root>

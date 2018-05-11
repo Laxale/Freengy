@@ -20,7 +20,7 @@ namespace Freengy.Common.Models
         /// <summary>
         /// User account model.
         /// </summary>
-        public UserAccountModel Account { get; set; }
+        public UserAccountModel AccountModel { get; set; }
 
         /// <summary>
         /// User account online status.
@@ -32,7 +32,7 @@ namespace Freengy.Common.Models
         /// <returns>A string that represents the current object.</returns>
         public override string ToString() 
         {
-            return $"{Account?.Name} [{Account?.Level}] {OnlineStatus}";
+            return $"{AccountModel?.Name} [{AccountModel?.Level}] {OnlineStatus}";
         }
     }
 }

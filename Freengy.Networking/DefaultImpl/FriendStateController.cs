@@ -101,7 +101,7 @@ namespace Freengy.Networking.DefaultImpl
 
             foreach (AccountStateModel fromServer in stateModels)
             {
-                AccountState savedState = friendStates.FirstOrDefault(state => state.Account.Id == fromServer.Account.Id);
+                AccountState savedState = friendStates.FirstOrDefault(state => state.Account.Id == fromServer.AccountModel.Id);
 
                 if (savedState == null)
                 {
@@ -156,7 +156,7 @@ namespace Freengy.Networking.DefaultImpl
         {
             lock (Locker)
             {
-                var savedState = friendStates.FirstOrDefault(state => state.Account.Id == stateModel.Account.Id);
+                var savedState = friendStates.FirstOrDefault(state => state.Account.Id == stateModel.AccountModel.Id);
 
                 if (savedState == null)
                 {
