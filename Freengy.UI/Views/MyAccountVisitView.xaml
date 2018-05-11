@@ -22,55 +22,70 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="0.1" CornerRadius="6">
+        <Border.Background>
+            <VisualBrush>
+                <VisualBrush.Visual>
+                    <Image Source="pack://application:,,,/Freengy.CommonResources;component/Images/randpurple.jpg" Opacity="0.2">
+                        <Image.CacheMode>
+                            <BitmapCache/>
+                        </Image.CacheMode>
+                    </Image>
+                </VisualBrush.Visual>
+            </VisualBrush>
+        </Border.Background>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="10"/> <!-- Just a separator -->
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Grid Margin="{StaticResource All4Margin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Временная графика вместо реального аватара -->
-        <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <!-- Just a separator -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Временная графика вместо реального аватара -->
+            <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
               Data="{StaticResource AccountIconGeometry}" Fill="{StaticResource PurpleBrush}">
-            <Path.LayoutTransform>
-                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="2" ScaleY="2"/>
-            </Path.LayoutTransform>
-        </Path>
+                <Path.LayoutTransform>
+                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="2" ScaleY="2"/>
+                </Path.LayoutTransform>
+            </Path>
 
-        <!-- Account name -->
-        <DockPanel Grid.Row="0" Grid.Column="2">
-            <Button DockPanel.Dock="Top" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Left" Command="{Binding Path=CommandEditAccount}">
-                <Path DockPanel.Dock="Top" HorizontalAlignment="Left" Data="{StaticResource EditDocumentIconGeometry}" Fill="{StaticResource PurpleBrush}">
-                    <Path.LayoutTransform>
-                        <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
-                    </Path.LayoutTransform>
-                </Path>
-            </Button>
+            <!-- Account name -->
+            <DockPanel Grid.Row="0" Grid.Column="2">
+                <Button DockPanel.Dock="Top" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Left" Command="{Binding Path=CommandEditAccount}">
+                    <Path DockPanel.Dock="Top" HorizontalAlignment="Left" Data="{StaticResource EditDocumentIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
+                        </Path.LayoutTransform>
+                    </Path>
+                </Button>
 
-            <DockPanel DockPanel.Dock="Top">
-                <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="{StaticResource 4LeftMargin}"/>
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="{StaticResource 4LeftMargin}"/>
 
-                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=MyAccountState.Account.Name}" FontWeight="Bold"
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Path=MyAccountState.Account.Name}" FontWeight="Bold"
                            VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource PurpleBrush}"/>
+                </DockPanel>
             </DockPanel>
-        </DockPanel>
 
-        <!-- Account level -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.Level}"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Level}"/>
+            <!-- Account level -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.Level}"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Level}"/>
 
-        <!-- Account privilege -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.Privilege}"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Privilege}"/>
+            <!-- Account privilege -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.Privilege}"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Privilege}"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:StringResources.Address}"/>
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Path=MyAccountState.UserAddress}"/>
-    </Grid>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:StringResources.Address}"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Path=MyAccountState.UserAddress}"/>
+        </Grid>
+    </Border>
 </UserControl>
