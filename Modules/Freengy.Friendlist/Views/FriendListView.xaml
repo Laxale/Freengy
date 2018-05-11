@@ -145,6 +145,12 @@
             </ListBox>
         </Border>
 
-        <views:FriendUpdatesView DockPanel.Dock="Bottom" VerticalAlignment="Bottom" MaxHeight="200"/>
+        <Expander DockPanel.Dock="Bottom" VerticalAlignment="Bottom" MaxHeight="200" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock DockPanel.Dock="Top" Text="Friend updates will be here" FontWeight="Black" Foreground="{StaticResource PurpleBrush}"/>
+            </Expander.Header>
+
+            <views:FriendUpdatesView />
+        </Expander>
     </DockPanel>
 </UserControl>

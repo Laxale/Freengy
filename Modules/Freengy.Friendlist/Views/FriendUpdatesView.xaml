@@ -10,8 +10,7 @@
              xmlns:update="clr-namespace:Freengy.Base.Models.Update;assembly=Freengy.Base"
 
              mc:Ignorable="d" 
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:FriendUpdatesViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:FriendUpdatesViewModel, d:IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,28 +20,24 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="Friend updates will be here" FontWeight="Black" Foreground="{StaticResource PurpleBrush}"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FriendUpdates}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="update:FriendUpdate">
+                    <DockPanel Margin="{StaticResource 4Left4TopMargin}">
+                        <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}" Data="{StaticResource MegaphoneIconGeometry}">
+                            <Path.LayoutTransform>
+                                <ScaleTransform ScaleX="0.046" ScaleY="0.046"/>
+                            </Path.LayoutTransform>
+                        </Path>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FriendUpdates}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="update:FriendUpdate">
-                        <DockPanel Margin="{StaticResource 4Left4TopMargin}">
-                            <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}" Data="{StaticResource MegaphoneIconGeometry}">
-                                <Path.LayoutTransform>
-                                    <ScaleTransform ScaleX="0.046" ScaleY="0.046"/>
-                                </Path.LayoutTransform>
-                            </Path>
-
-                            <TextBlock DockPanel.Dock="Left" Margin="8, 0, 0, 0">
-                                <Run Text="{Binding Path=FriendAccount.Name, Mode=OneTime}"/>
-                                <Run Text="{Binding Path=UpdateDescription, Mode=OneTime}"/>
-                            </TextBlock>
-                        </DockPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-    </DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Margin="8, 0, 0, 0">
+                            <Run Text="{Binding Path=FriendAccount.Name, Mode=OneTime}"/>
+                            <Run Text="{Binding Path=UpdateDescription, Mode=OneTime}"/>
+                        </TextBlock>
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>
