@@ -96,8 +96,8 @@ namespace Freengy.Base.DefaultImpl
         /// <summary>
         /// Сохранить изменения аккаунта в базу клиента.
         /// </summary>
-        /// <param name="myAccountModel"></param>
-        /// <returns></returns>
+        /// <param name="myAccountModel">Модель аккаунта для сохранения в базе.</param>
+        /// <returns>Результат сохранения.</returns>
         public Result UpdateMyAccount(PrivateAccountModel myAccountModel) 
         {
             try

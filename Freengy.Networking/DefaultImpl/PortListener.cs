@@ -110,7 +110,7 @@ namespace Freengy.Networking.DefaultImpl
             return machineAddress;
         }
 
-        private static string GetMachineIpAddress()
+        private static string GetMachineIpAddress() 
         {
             IPAddress[] ipAddresses = Dns.GetHostAddressesAsync(Environment.MachineName).Result;
 

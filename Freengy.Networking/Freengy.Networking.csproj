@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IHttpClientParametersProvider.cs" />
     <Compile Include="Interfaces\ILoginController.cs" />
     <Compile Include="Messages\MessageFriendStateUpdate.cs" />
+    <Compile Include="Messages\MessageFriendUpdates.cs" />
     <Compile Include="Messages\MessageLogInFailed.cs" />
     <Compile Include="Messages\MessageLogInSuccess.cs" />
     <Compile Include="Messages\MessageLogInAttempt.cs" />

@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Freengy.FriendList.Views.FriendUpdatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+             
+             xmlns:viewModels="clr-namespace:Freengy.FriendList.ViewModels"
+             xmlns:update="clr-namespace:Freengy.Base.Models.Update;assembly=Freengy.Base"
+
+             mc:Ignorable="d" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:FriendUpdatesViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Friend updates will be here" FontWeight="Black" Foreground="{StaticResource PurpleBrush}"/>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FriendUpdates}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="update:FriendUpdate">
+                        <DockPanel Margin="{StaticResource 4Left4TopMargin}">
+                            <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}" Data="{StaticResource MegaphoneIconGeometry}">
+                                <Path.LayoutTransform>
+                                    <ScaleTransform ScaleX="0.046" ScaleY="0.046"/>
+                                </Path.LayoutTransform>
+                            </Path>
+
+                            <TextBlock DockPanel.Dock="Left" Margin="8, 0, 0, 0">
+                                <Run Text="{Binding Path=FriendAccount.Name, Mode=OneTime}"/>
+                                <Run Text="{Binding Path=UpdateDescription, Mode=OneTime}"/>
+                            </TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

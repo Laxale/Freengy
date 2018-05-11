@@ -4,21 +4,21 @@
 
 using System;
 using System.Windows;
+
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Interfaces;
 using Freengy.UI.Views;
 using Freengy.UI.Module;
 using Freengy.UI.Windows;
 using Freengy.UI.Constants;
-
 using Freengy.Base.Module;
 using Freengy.Chatter.Module;
 using Freengy.GameList.Module;
 using Freengy.Settings.Module;
 using Freengy.Networking.Module;
 using Freengy.GamePlugin.Module;
-using Freengy.FriendList.Module;
 using Freengy.Diagnostics.Module;
+using Freengy.FriendList.Module;
 
 using Prism.Mvvm;
 using Prism.Unity;

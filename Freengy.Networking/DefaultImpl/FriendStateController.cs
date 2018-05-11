@@ -15,6 +15,7 @@ using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
+using Freengy.Base.Models.Update;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
@@ -157,6 +158,7 @@ namespace Freengy.Networking.DefaultImpl
             lock (Locker)
             {
                 var savedState = friendStates.FirstOrDefault(state => state.Account.Id == stateModel.AccountModel.Id);
+                IEnumerable<FriendUpdate> updates = null;
 
                 if (savedState == null)
                 {
@@ -164,11 +166,51 @@ namespace Freengy.Networking.DefaultImpl
                 }
                 else
                 {
+                    updates = GetUpdates(savedState, stateModel);
+
                     savedState.UpdateFromModel(stateModel);
                 }
 
                 this.Publish(new MessageFriendStateUpdate(savedState));
+
+                if (updates != null)
+                {
+                    this.Publish(new MessageFriendUpdates(updates));
+                }
             }
+        }
+
+
+        private IEnumerable<FriendUpdate> GetUpdates(AccountState beforeUpdate, AccountStateModel fromServerModel) 
+        {
+            var updates = new List<FriendUpdate>();
+
+            if (beforeUpdate.Account.Level != fromServerModel.AccountModel.Level)
+            {
+                updates.Add(new LevelUpdate(beforeUpdate.Account));
+            }
+
+            if (beforeUpdate.UserAddress != fromServerModel.Address)
+            {
+                updates.Add(new AddressUpdate(beforeUpdate.Account, fromServerModel.Address));
+            }
+
+            if (beforeUpdate.Account.Name != fromServerModel.AccountModel.Name) 
+            {
+                updates.Add(new NameUpdate(beforeUpdate.Account, beforeUpdate.Account.Name));
+            }
+
+            if (beforeUpdate.AccountStatus != fromServerModel.OnlineStatus)
+            {
+                updates.Add(new OnlineStatusUpdate(beforeUpdate.Account, fromServerModel.OnlineStatus));
+            }
+
+            if (beforeUpdate.Account.Privilege != fromServerModel.AccountModel.Privilege)
+            {
+                updates.Add(new PrivilegeUpdate(beforeUpdate.Account, fromServerModel.AccountModel.Privilege));
+            }
+
+            return updates;
         }
     }
 }

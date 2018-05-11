@@ -10,49 +10,26 @@
              xmlns:enums="clr-namespace:Freengy.Common.Enums;assembly=Freengy.Common"
              xmlns:helpers="clr-namespace:Freengy.Base.Helpers;assembly=Freengy.Base"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+             xmlns:views="clr-namespace:Freengy.FriendList.Views"
 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="200"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance Type=viewmodels:FriendListViewModel}">
-    
-    <Grid>
-        <Grid.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
-                </ResourceDictionary.MergedDictionaries>
-                
-                <helpers:DataContextProxy x:Key="ContextProxy" Data="{Binding}"/>
-            </ResourceDictionary>
-        </Grid.Resources>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <helpers:DataContextProxy x:Key="ContextProxy" Data="{Binding}"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
         <!-- Buttons panel -->
-        <DockPanel Grid.Row="0" Margin="0, 0, 0, 2">
-            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" Visibility="Collapsed"
-                    Command="{Binding Path=CommandSearchFriends}" ToolTip="{x:Static localization:StringResources.SearchFriends}">
-                <Path Data="{StaticResource AddFriendIconGeometry}" Fill="{StaticResource PurpleBrush}">
-                    <Path.LayoutTransform>
-                        <ScaleTransform ScaleX="0.048" ScaleY="0.048"/>
-                    </Path.LayoutTransform>
-                </Path>
-            </Button>
-
-            <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" Visibility="Collapsed"
-                    Command="{Binding Path=CommandSearchFriends}" ToolTip="{x:Static localization:StringResources.SearchFriends}">
-                <Path Data="{StaticResource AddFriendIconGeometry1}" Fill="{StaticResource PurpleBrush}">
-                    <Path.LayoutTransform>
-                        <ScaleTransform ScaleX="0.048" ScaleY="0.048"/>
-                    </Path.LayoutTransform>
-                </Path>
-            </Button>
-
+        <DockPanel DockPanel.Dock="Top" Margin="0, 0, 0, 2">
             <!-- Кнопка поиска друзей -->
             <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" VerticalAlignment="Center" 
                     Command="{Binding Path=CommandSearchFriends}" ToolTip="{x:Static localization:StringResources.SearchFriends}">
@@ -97,15 +74,9 @@
             </Button>
         </DockPanel>
 
-        <!-- Friends list -->
-        <Grid Grid.Row="1">
-            <Border Background="{StaticResource FirstMainBrush}" Opacity="0.5" CornerRadius="4">
-                <Border.Effect>
-                    <DropShadowEffect Color="{StaticResource ThirdMainColor}" Opacity="0.5" Direction="220"/>
-                </Border.Effect>
-            </Border>
-
-            <ListBox Name="FriendList" ItemsSource="{Binding Path=FriendList}" IsSynchronizedWithCurrentItem="True">
+        <!-- Friendlist -->
+        <Border DockPanel.Dock="Top" CornerRadius="4" Margin="0">
+            <ListBox ItemsSource="{Binding Path=FriendList}" IsSynchronizedWithCurrentItem="True" Margin="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:AccountStateViewModel}">
                         <Grid Background="{StaticResource AlmostTransparent}">
@@ -172,6 +143,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </Grid>
-    </Grid>
+        </Border>
+
+        <views:FriendUpdatesView DockPanel.Dock="Bottom" VerticalAlignment="Bottom" MaxHeight="200"/>
+    </DockPanel>
 </UserControl>

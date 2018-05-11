@@ -57,6 +57,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="ViewModels\AccountStateViewModel.cs" />
+    <Compile Include="ViewModels\FriendUpdatesViewModel.cs" />
     <Compile Include="ViewModels\SearchFriendsViewModel.cs" />
     <Compile Include="ViewModels\FriendlistViewModel.cs" />
     <Compile Include="ViewModels\FriendRequestsViewModel.cs" />
@@ -65,6 +66,9 @@
     </Compile>
     <Compile Include="Views\FriendRequestsView.xaml.cs">
       <DependentUpon>FriendRequestsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FriendUpdatesView.xaml.cs">
+      <DependentUpon>FriendUpdatesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchFriendsView.xaml.cs">
       <DependentUpon>SearchFriendsView.xaml</DependentUpon>
@@ -104,6 +108,10 @@
     <Page Include="Views\FriendRequestsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FriendUpdatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SearchFriendsView.xaml">
       <SubType>Designer</SubType>
