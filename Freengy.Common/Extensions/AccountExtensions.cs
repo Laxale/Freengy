@@ -26,7 +26,7 @@ namespace Freengy.Common.Extensions
             {
                 Id = account.Id,
                 Name = account.Name,
-                Level = account.Level,
+                Expirience = (int)account.GetCurrentExp(),
                 Privilege = account.Privilege,
                 LastLogInTime = account.LastLogInTime,
                 RegistrationTime = account.RegistrationTime
@@ -48,7 +48,7 @@ namespace Freengy.Common.Extensions
             }
 
             accountModel.Name = updatedModel.Name;
-            accountModel.Level = updatedModel.Level;
+            accountModel.Expirience = updatedModel.Expirience;
             accountModel.Privilege = updatedModel.Privilege;
             accountModel.LastLogInTime = updatedModel.LastLogInTime;
             accountModel.RegistrationTime = updatedModel.RegistrationTime;

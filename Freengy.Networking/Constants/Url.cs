@@ -13,6 +13,7 @@ namespace Freengy.Networking.Constants
     /// </summary>
     public static class Url 
     {
+        private static readonly string expAction;
         private static readonly string syncAction;
         private static readonly string editAction;
         private static readonly string accountAction;
@@ -36,6 +37,7 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            expAction = networkingConfig.AppSettings.Settings["ExpActionName"].Value;
             syncAction = networkingConfig.AppSettings.Settings["SyncActionName"].Value;
             stateAction = networkingConfig.AppSettings.Settings["StateActionName"].Value;
             editAction = networkingConfig.AppSettings.Settings["EditActionName"].Value;
@@ -105,6 +107,8 @@ namespace Freengy.Networking.Constants
                 /// Subroute on which server posts friendrequest reply.
                 /// </summary>
                 public static string InformFriendRequestState { get; } = $"{ InformFriendRequest }/{ stateAction }";
+
+                public static readonly string SyncExp = $"{ Inform }/{ expAction }";
             }
 
             public static class Edit 

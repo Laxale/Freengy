@@ -26,7 +26,7 @@ namespace Freengy.Settings.Module
                 Initializer.SetStorageDirectoryPath(appDataFolderPath);
                 Initializer.SetDbFileName(SettingsConstants.SettingsDbFileName);
 
-               MyServiceLocator.Instance.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
+                MyServiceLocator.Instance.RegisterInstance<ISettingsRepository>(SettingsRepository.Instance);
             }
         }
     }

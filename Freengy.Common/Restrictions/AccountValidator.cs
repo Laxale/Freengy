@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Freengy.Common.Enums;
+using Freengy.Common.Helpers;
 using Freengy.Common.Models;
 using Freengy.Common.Models.Readonly;
 
@@ -20,17 +21,7 @@ namespace Freengy.Common.Restrictions
     {
         private readonly UserAccountModel account;
 
-        /// <summary>
-        /// Maximum account level.
-        /// </summary>
-        public const int MaxLevel = 80;
-
-        /// <summary>
-        /// Minimum account level.
-        /// </summary>
-        public const int MinLevel = 1;
-
-
+        
         /// <summary>
         /// Creates instance of <see cref="AccountValidator"/> for a given <see cref="UserAccountModel"/>.
         /// </summary>
@@ -51,20 +42,20 @@ namespace Freengy.Common.Restrictions
             {
                 Id = account.Id,
                 Name = account.Name,
-                Level = account.Level,
+                Expirience = account.Expirience,
                 //UniqueId = account.UniqueId,
                 Privilege = account.Privilege,
                 RegistrationTime = account.RegistrationTime,
             };
 
-            if (trimmedAccount.Level < MinLevel)
+            if (trimmedAccount.Level < ExpirienceCalculator.MinLevel)
             {
-                trimmedAccount.Level = MinLevel;
+                trimmedAccount.Expirience = 1;
             }
 
-            if (trimmedAccount.Level > MaxLevel)
+            if (trimmedAccount.Level > ExpirienceCalculator.MaxLevel)
             {
-                trimmedAccount.Level = MaxLevel;
+                trimmedAccount.Expirience = (int)ExpirienceCalculator.GetExpOfLevel(ExpirienceCalculator.MaxLevel);
             }
 
             if (trimmedAccount.Privilege < 0)
@@ -77,22 +68,6 @@ namespace Freengy.Common.Restrictions
                 trimmedAccount.Privilege = AccountPrivilege.UltramarineImperator;
             }
 
-//            if (string.IsNullOrWhiteSpace(trimmedAccount.Id))
-//            {
-//                if (trimmedAccount.UniqueId == Guid.Empty)
-//                {
-//                    trimmedAccount.UniqueId = Guid.NewGuid();
-//                }
-//
-//                trimmedAccount.Id = trimmedAccount.UniqueId.ToString();
-//            }
-//            else
-//            {
-//                if (trimmedAccount.UniqueId == Guid.Empty)
-//                {
-//                    trimmedAccount.UniqueId = Guid.Parse(trimmedAccount.Id);
-//                }
-//            }
 
             return trimmedAccount;
         }
@@ -127,7 +102,7 @@ namespace Freengy.Common.Restrictions
 
         private bool IsLevelValid() 
         {
-            return account.Level > 0 && account.Level <= MaxLevel;
+            return account.Level >= ExpirienceCalculator.MinLevel && account.Level <= ExpirienceCalculator.MaxLevel;
         }
 
         private bool IsRegistrationDateValid() 

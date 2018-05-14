@@ -61,6 +61,8 @@ namespace Freengy.Networking.DefaultImpl
             taskWrapper = serviceLocator.Resolve<ITaskWrapper>();
             accountManager = serviceLocator.Resolve<IAccountManager>();
             clientAddressGetter = () => serviceLocator.Resolve<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
+
+            this.Subscribe<MessageExpirienceGained>(OnExpirienceGained);
         }
 
         public static ILoginController Instance => instance ?? (instance = new LoginController());
@@ -313,7 +315,7 @@ namespace Freengy.Networking.DefaultImpl
             LoggedInPassword = string.Empty;
         }
 
-        private void HashThePassword(LoginModel loginModel)
+        private void HashThePassword(LoginModel loginModel) 
         {
             Result<PrivateAccountModel> result = accountManager.GetStoredAccount(loginModel.Account.Name);
             if (result.Failure)
@@ -324,6 +326,13 @@ namespace Freengy.Networking.DefaultImpl
             var loginSalt = result.Value.NextLoginSalt;
 
             loginModel.PasswordHash = new Hasher().GetHash(loginSalt + loginModel.Password);
+        }
+
+        private void OnExpirienceGained(MessageExpirienceGained message) 
+        {
+            MyAccountState.Account.AddExp(message.Amount);
+
+            this.Publish(new MessageMyAccountUpdated(MyAccountState));
         }
     }
 }

@@ -14,11 +14,13 @@ using Freengy.UI.Views;
 using Freengy.Common.Models;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Windows;
+using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Networking.Interfaces;
 using Freengy.Common.Models.Readonly;
 using Freengy.CommonResources;
 using Freengy.Localization;
+using Freengy.Networking.Messages;
 
 
 namespace Freengy.UI.ViewModels 
@@ -26,9 +28,13 @@ namespace Freengy.UI.ViewModels
     /// <summary>
     /// Viewmodel for <see cref="MyAccountVisitView"/>.
     /// </summary>
-    public class MyAccountVisitViewModel : WaitableViewModel, IUserActivity  
+    public class MyAccountVisitViewModel : WaitableViewModel, IUserActivity 
     {
         private readonly ILoginController loginController;
+
+        private uint currentLevelStartExp;
+        private uint currentLevelFinishExp;
+
 
         public MyAccountVisitViewModel() 
         {
@@ -37,7 +43,11 @@ namespace Freengy.UI.ViewModels
 
             CommandEditAccount = new MyCommand(EditAccountImpl);
 
+            SetExpirienceBounds();
+            RaiseCurrentExpChanged();
+
             this.Subscribe<MessageMyAccountUpdated>(OnMyAccountChanged);
+
             this.Publish(new MessageActivityChanged(this, true));
         }
 
@@ -53,6 +63,53 @@ namespace Freengy.UI.ViewModels
         /// </summary>
         public AccountState MyAccountState { get; }
 
+        /// <summary>
+        /// Возвращает начальное значение опыта для данного уровня аккаунта.
+        /// </summary>
+        public uint CurrentLevelStartExp 
+        {
+            get => currentLevelStartExp;
+
+            private set
+            {
+                if (currentLevelStartExp == value) return;
+
+                currentLevelStartExp = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает конечное значение опыта для данного уровня аккаунта.
+        /// </summary>
+        public uint CurrentLevelFinishExp 
+        {
+            get => currentLevelFinishExp;
+
+            private set
+            {
+                if (currentLevelFinishExp == value) return;
+
+                currentLevelFinishExp = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает текущее количество опыта аккаунта.
+        /// </summary>
+        public uint CurrentExp => MyAccountState.Account.GetCurrentExp();
+
+        /// <summary>
+        /// Возвращает процентное отношение текущего опыта к конечному опыту для данного уровня.
+        /// </summary>
+        public uint CurrentExpPercentage => 
+            CurrentExp == 0 ? 
+                0 : 
+                (uint)(100 * ((CurrentExp - CurrentLevelStartExp) / (double)(CurrentLevelFinishExp - currentLevelStartExp)));
+        
         /// <summary>
         /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
         /// </summary>
@@ -100,9 +157,24 @@ namespace Freengy.UI.ViewModels
             }
         }
 
+        private void RaiseCurrentExpChanged() 
+        {
+            OnPropertyChanged(nameof(CurrentExp));
+            OnPropertyChanged(nameof(CurrentExpPercentage));
+        }
+
+        private void SetExpirienceBounds() 
+        {
+            CurrentLevelStartExp = ExpirienceCalculator.GetExpOfLevel(MyAccountState.Account.Level);
+            CurrentLevelFinishExp = ExpirienceCalculator.GetExpOfLevel(MyAccountState.Account.Level + 1) - 1;
+        }
+
         private void OnMyAccountChanged(MessageMyAccountUpdated message) 
         {
+            SetExpirienceBounds();
+
             OnPropertyChanged(nameof(MyAccountState));
+            RaiseCurrentExpChanged();
         }
     }
 }

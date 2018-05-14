@@ -5,6 +5,7 @@
 using System.Windows.Controls;
 
 using Freengy.Base.Attributes;
+using Freengy.Base.Helpers;
 using Freengy.FriendList.ViewModels;
 
 
@@ -19,6 +20,8 @@ namespace Freengy.FriendList.Views
         public FriendUpdatesView() 
         {
             InitializeComponent();
+
+            new ViewModelWierer().Wire(this);
         }
     }
 }

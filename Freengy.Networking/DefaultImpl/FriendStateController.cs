@@ -187,7 +187,7 @@ namespace Freengy.Networking.DefaultImpl
 
             if (beforeUpdate.Account.Level != fromServerModel.AccountModel.Level)
             {
-                updates.Add(new LevelUpdate(beforeUpdate.Account));
+                updates.Add(new LevelUpdate(beforeUpdate.Account, false));
             }
 
             if (beforeUpdate.UserAddress != fromServerModel.Address)

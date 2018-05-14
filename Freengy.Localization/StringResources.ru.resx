@@ -306,4 +306,7 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>Пользователь не найден</value>
   </data>
+  <data name="FriendUpdatesWillBeHere" xml:space="preserve">
+    <value>Новости друзей будут здесь</value>
+  </data>
 </root>

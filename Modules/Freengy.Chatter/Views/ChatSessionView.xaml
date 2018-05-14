@@ -75,7 +75,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" HorizontalAlignment="Stretch" AcceptsReturn="True"
+            <TextBox Grid.Column="0" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" VerticalContentAlignment="Top"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AcceptsReturn="True" Padding="0, 6, 0, 0"
                      Style="{StaticResource CommonTextBoxStyle}" Text="{Binding Path=MessageText, UpdateSourceTrigger=PropertyChanged}">
 
                 <TextBox.InputBindings>
@@ -85,9 +86,30 @@
                 </TextBox.InputBindings>
             </TextBox>
 
-            <Button Grid.Column="1" Content="Send" Style="{StaticResource CommonButtonStyle}" MaxWidth="140"
+            <Button Grid.Column="1" Style="{StaticResource ImageButtonStyle}" 
+                    Margin="{StaticResource All4Margin}" Height="30" Width="30" VerticalAlignment="Top"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl},
-                                      Path=DataContext.CommandSendMessage}"/>
+                                      Path=DataContext.CommandSendMessage}">
+                <Path Data="{StaticResource SendIconGeometry}">
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="True">
+                                    <Setter Property="Fill" Value="{StaticResource PurpleBrush}"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}, Path=IsEnabled}" Value="False">
+                                    <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+
+                    <Path.LayoutTransform>
+                        <ScaleTransform ScaleX="0.05" ScaleY="0.05"/>
+                    </Path.LayoutTransform>
+                </Path>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

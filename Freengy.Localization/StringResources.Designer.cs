@@ -259,6 +259,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friend updates will be here.
+        /// </summary>
+        public static string FriendUpdatesWillBeHere {
+            get {
+                return ResourceManager.GetString("FriendUpdatesWillBeHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hostname.
         /// </summary>
         public static string HostNameText {

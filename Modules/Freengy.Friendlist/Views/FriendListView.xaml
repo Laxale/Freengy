@@ -147,7 +147,8 @@
 
         <Expander DockPanel.Dock="Bottom" VerticalAlignment="Bottom" MaxHeight="200" IsExpanded="True">
             <Expander.Header>
-                <TextBlock DockPanel.Dock="Top" Text="Friend updates will be here" FontWeight="Black" Foreground="{StaticResource PurpleBrush}"/>
+                <TextBlock DockPanel.Dock="Top" FontWeight="Black" Foreground="{StaticResource PurpleBrush}"
+                           Text="{x:Static localization:StringResources.FriendUpdatesWillBeHere}"/>
             </Expander.Header>
 
             <views:FriendUpdatesView />

@@ -15,7 +15,7 @@ using Freengy.Common.Models;
 using Freengy.Common.Extensions;
 using Freengy.Networking.DefaultImpl;
 using Freengy.Base.Messages.Notification;
-
+using Freengy.Networking.Messages;
 using NLog;
 
 using Nancy;
@@ -48,6 +48,8 @@ namespace Freengy.Networking.Modules
             Before.AddItemToStartOfPipeline(ValidateServerMessage);
 
             Get[Url.Http.FromServer.ReplyState] = OnStateReplyRequest;
+
+            Post[Url.Http.FromServer.SyncExp] = OnExpAdded;
             Post[Url.Http.FromServer.InformFriendState] = OnFriendStateInform;
             Post[Url.Http.FromServer.InformFriendRequestState] = OnFriendRequestReply;
             Post[Url.Http.FromServer.InformFriendRequest] = OnNewFriendRequest;
@@ -104,7 +106,7 @@ namespace Freengy.Networking.Modules
             return HttpStatusCode.OK;
         }
 
-        private static dynamic OnStateReplyRequest(dynamic arg) 
+        private dynamic OnStateReplyRequest(dynamic arg) 
         {
             // каждый запрос от сервера даёт нам понять, что сервер онлайн
             // если по истечении таймаута инвокер не был перезапущен, он запостит сообщение о статусе сервера
@@ -115,6 +117,16 @@ namespace Freengy.Networking.Modules
 
             return HttpStatusCode.OK;
         }
+
+        private dynamic OnExpAdded(dynamic arg) 
+        {
+            var expModel = new SerializeHelper().DeserializeObject<GainExpModel>(Request.Body);
+
+            this.Publish(new MessageExpirienceGained(expModel.GainReason, expModel.Amount));
+
+            return HttpStatusCode.OK;
+        }
+
 
         private static void OnDelayedEvent() 
         {

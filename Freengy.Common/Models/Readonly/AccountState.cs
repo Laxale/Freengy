@@ -57,7 +57,7 @@ namespace Freengy.Common.Models.Readonly
 
             UserAddress = stateModel.Address;
             AccountStatus = stateModel.OnlineStatus;
-
+            
             Account.UpdateFromModel(stateModel.AccountModel);
         }
     }

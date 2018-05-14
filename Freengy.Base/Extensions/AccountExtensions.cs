@@ -24,7 +24,7 @@ namespace Freengy.Base.Extensions
             {
                 Id = commonModel.Id,
                 Name = commonModel.Name,
-                Level = commonModel.Level,
+                Expirience = commonModel.Expirience,
                 Privilege = commonModel.Privilege,
                 LastLogInTime = commonModel.LastLogInTime,
                 RegistrationTime = commonModel.RegistrationTime

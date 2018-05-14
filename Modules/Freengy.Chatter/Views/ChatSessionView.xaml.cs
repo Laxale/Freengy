@@ -5,7 +5,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Chatter.Helpers;
 using Freengy.Chatter.ViewModels;
 
 
@@ -25,7 +27,7 @@ namespace Freengy.Chatter.Views
         }
 
 
-        private void OnMessageAdded(IChatMessageDecorator addedMessage) 
+        private void OnMessageAdded(DistinguishedChatMessage addedMessage) 
         {
             MessageList.ScrollIntoView(addedMessage);
         }

@@ -78,7 +78,46 @@
 
             <!-- Account level -->
             <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:StringResources.Level}"/>
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyAccountState.Account.Level}"/>
+            <DockPanel Grid.Row="1" Grid.Column="2">
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Path=MyAccountState.Account.Level}" MinWidth="20"/>
+                
+                <!-- Полоска уровня -->
+                <Grid DockPanel.Dock="Left">
+                    <ProgressBar Height="10" Value="{Binding Path=CurrentExp, Mode=OneWay}" 
+                                 Minimum="{Binding Path=CurrentLevelStartExp}" Maximum="{Binding Path=CurrentLevelFinishExp}"
+                                 Foreground="{StaticResource PurpleBrush}" BorderBrush="{StaticResource PurpleBrush}" Background="{StaticResource AlmostTransparent}">
+                        <ProgressBar.ToolTip>
+                            <ToolTip>
+                                <Border Background="{StaticResource LightGrayBrush}">
+                                    <DockPanel  Margin="{StaticResource All4Margin}">
+                                        <Path DockPanel.Dock="Left" Data="{StaticResource StrengthIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                                            <Path.LayoutTransform>
+                                                <ScaleTransform ScaleX="0.084" ScaleY="0.084"/>
+                                            </Path.LayoutTransform>
+                                        </Path>
+
+                                        <TextBlock DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
+                                            <Run Text="Level Expirience "/>
+                                            <Run Text="{Binding Path=CurrentExp, Mode=OneWay}"/>
+                                            <Run Text="of"/>
+                                            <Run Text="{Binding Path=CurrentLevelFinishExp, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </DockPanel>
+                                </Border>
+                            </ToolTip>
+                        </ProgressBar.ToolTip>
+                    </ProgressBar>
+                    
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource WhiteBrush}" Margin="0, -1, 0, 0">
+                        <TextBlock.LayoutTransform>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                        </TextBlock.LayoutTransform>
+                        
+                        <Run Text="{Binding Path=CurrentExpPercentage, Mode=OneWay}"/>
+                        <Run Text="%"/>
+                    </TextBlock>
+                </Grid>
+            </DockPanel>
 
             <!-- Account privilege -->
             <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:StringResources.Privilege}"/>

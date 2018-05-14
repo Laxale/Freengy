@@ -9,9 +9,10 @@ namespace Freengy.Base.Models.Update
 {
     public class LevelUpdate : FriendUpdate 
     {
-        public LevelUpdate(UserAccount friendAccount) : base(friendAccount) 
+        public LevelUpdate(UserAccount friendAccount, bool isStateUpdated) : base(friendAccount) 
         {
-            UpdateDescription = $"achieved level {FriendAccount.Level}";
+            var actualLevel = isStateUpdated ? FriendAccount.Level : FriendAccount.Level + 1;
+            UpdateDescription = $"achieved level { actualLevel }";
         }
 
         /// <summary>

@@ -68,6 +68,7 @@ namespace Freengy.FriendList.ViewModels
             this.Subscribe<MessageReceivedMessage>(OnNewMessaggeReceived);
             this.Subscribe<MessageFriendStateUpdate>(OnFriendStateUpdated);
             this.Subscribe<MessageFriendRequestState>(OnFriendRequestReply);
+            
             this.Publish(new MessageInitializeModelRequest(this, "Loading friends"));
         }
 

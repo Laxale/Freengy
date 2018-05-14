@@ -50,6 +50,7 @@
     <Compile Include="Enums\AccountPrivilege.cs" />
     <Compile Include="Enums\FriendRequestReaction.cs" />
     <Compile Include="Enums\FriendRequestState.cs" />
+    <Compile Include="Enums\GainExpReason.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
     <Compile Include="ErrorReason\UserNotFoundErrorReason.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="ErrorReason\NoServerConnectionErrorReason.cs" />
     <Compile Include="ErrorReason\InvalidPasswordErrorReason.cs" />
     <Compile Include="ErrorReason\UnexpectedErrorReason.cs" />
+    <Compile Include="Helpers\ExpirienceCalculator.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Helpers\Hasher.cs" />
     <Compile Include="Helpers\HttpActor.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Models\EditAccountModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
     <Compile Include="Models\FriendRequestReply.cs" />
+    <Compile Include="Models\GainExpModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Readonly\AccountState.cs" />

@@ -28,7 +28,7 @@ namespace Freengy.Chatter.ViewModels
         /// <summary>
         /// Event is fired to scroll the message list to end.
         /// </summary>
-        internal event Action<IChatMessageDecorator> MessageAdded = decoratpr => { };
+        internal event Action<DistinguishedChatMessage> MessageAdded = decoratpr => { };
 
 
         public ChatSessionViewModel(IChatSession session) 
@@ -105,7 +105,7 @@ namespace Freengy.Chatter.ViewModels
             var newMessage = chatMessageFactory.CreateMessage(MessageText);
 
             Session.SendMessage(newMessage, out _);
-
+            
             MessageText = string.Empty;
         }
 
@@ -115,9 +115,10 @@ namespace Freengy.Chatter.ViewModels
 
             GUIDispatcher.InvokeOnGuiThread(() =>
             {
-                sessionMessages.Add(new DistinguishedChatMessage(addedMessage, isMyMessage));
+                var distinguishedMessage = new DistinguishedChatMessage(addedMessage, isMyMessage);
+                sessionMessages.Add(distinguishedMessage);
                 SessionMessages.MoveCurrentToLast();
-                MessageAdded.Invoke(addedMessage);
+                MessageAdded.Invoke(distinguishedMessage);
             });
         }
     }

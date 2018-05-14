@@ -6,6 +6,7 @@ using System;
 
 using Freengy.Common.Database;
 using Freengy.Common.Enums;
+using Freengy.Common.Helpers;
 using Freengy.Common.Interfaces;
 
 
@@ -14,9 +15,12 @@ namespace Freengy.Common.Models.Readonly
     /// <summary>
     /// Read-only wrapper other fragile <see cref="UserAccountModel" /> that must not be used in client code.
     /// </summary>
-    public class UserAccount : DbObject, INamedObject 
+    public class UserAccount : DbObject, INamedObject
     {
-        public UserAccount(UserAccountModel accountModel)
+        private uint exp;
+
+
+        public UserAccount(UserAccountModel accountModel) 
         {
             Id = accountModel.Id;
             Name = accountModel.Name;
@@ -25,6 +29,8 @@ namespace Freengy.Common.Models.Readonly
             RegistrationTime = accountModel.RegistrationTime;
             Level = accountModel.Level;
             Privilege = accountModel.Privilege;
+
+            exp = (uint)accountModel.Expirience;
         }
 
 
@@ -36,7 +42,7 @@ namespace Freengy.Common.Models.Readonly
         /// <summary>
         /// Account level.
         /// </summary>
-        public int Level { get; private set; }
+        public uint Level { get; private set; }
 
         /// <summary>
         /// Account privilege.
@@ -58,9 +64,21 @@ namespace Freengy.Common.Models.Readonly
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString()
+        public override string ToString() 
         {
             return $"{Name} [Level {Level} | {Privilege}]";
+        }
+
+        public uint GetCurrentExp() 
+        {
+            return exp;
+        }
+
+        public void AddExp(uint amount) 
+        {
+            exp += amount;
+
+            Level = ExpirienceCalculator.GetLevelForExp(exp);
         }
 
         /// <summary>
@@ -73,8 +91,10 @@ namespace Freengy.Common.Models.Readonly
             if (Id != model.Id) throw new InvalidOperationException("Account id mismatch");
 
             Name = model.Name;
-            Level = model.Level;
             Privilege = model.Privilege;
+
+            exp = (uint)model.Expirience;
+            Level = ExpirienceCalculator.GetLevelForExp(exp);
         }
     }
 }

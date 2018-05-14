@@ -63,7 +63,7 @@
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
-                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                        <ContentPresenter Margin="{TemplateBinding Padding}" 
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                     </Border>

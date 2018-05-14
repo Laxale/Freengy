@@ -9,8 +9,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Freengy.Common.Constants;
 using Freengy.Common.Database;
 using Freengy.Common.Enums;
+using Freengy.Common.Helpers;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Readonly;
+
+using Newtonsoft.Json;
 
 
 namespace Freengy.Common.Models 
@@ -24,14 +27,20 @@ namespace Freengy.Common.Models
         /// <summary>
         /// Gets or sets level of a user account.
         /// </summary>
-        public int Level { get; set; } = 1;
+        public int Expirience { get; set; }
+
+        /// <summary>
+        /// Возвращает рассчитанное значение уровня для данного аккаунта.
+        /// </summary>
+        [NotMapped]
+        [JsonIgnore]
+        public uint Level => ExpirienceCalculator.GetLevelForExp((uint)Expirience);
 
         /// <summary>
         /// Gets or sets privileges of account.
         /// </summary>
         public AccountPrivilege Privilege { get; set; } = AccountPrivilege.Common;
 
-        /// <inheritdoc />
         /// <summary>
         /// Gets or sets user name.
         /// </summary>
@@ -53,10 +62,9 @@ namespace Freengy.Common.Models
         public virtual List<AlbumModel> Albums { get; set; } = new List<AlbumModel>();
 
 
-        /// <inheritdoc />
         public override string ToString() 
         {
-            return $"{Name} [Level {Level} {Privilege}]";
+            return $"{Name} [Level {Expirience} {Privilege}]";
         }
 
         /// <summary>
@@ -69,7 +77,6 @@ namespace Freengy.Common.Models
             return (UserAccountModel) dbProxy;
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Заполнить актуальными данными зависимые свойства типа public <see cref="T:System.Collections.Generic.List`1" /> MyList { get; set; }.
         /// </summary>
@@ -79,7 +86,6 @@ namespace Freengy.Common.Models
             return this;
         }
 
-        /// <inheritdoc />
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
