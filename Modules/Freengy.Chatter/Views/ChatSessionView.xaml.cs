@@ -18,30 +18,46 @@ namespace Freengy.Chatter.Views
     /// </summary>
     public partial class ChatSessionView : UserControl 
     {
+        private ChatSessionViewModel currentContext;
+
+
         public ChatSessionView() 
         {
             InitializeComponent();
 
-            Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+
+            DataContextChanged += OnDataContextChanged;
         }
 
 
         private void OnMessageAdded(DistinguishedChatMessage addedMessage) 
         {
-            MessageList.ScrollIntoView(addedMessage);
-        }
+            var moved = MessageList.Items.MoveCurrentTo(addedMessage);
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
-        {
-            ((ChatSessionViewModel)DataContext).MessageAdded += OnMessageAdded;
+            if (moved)
+            {
+                MessageList.ScrollIntoView(MessageList.Items.CurrentItem);
+            }
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs) 
         {
-            Loaded -= OnLoaded;
             Unloaded -= OnUnloaded;
-            ((ChatSessionViewModel)DataContext).MessageAdded -= OnMessageAdded;
+            DataContextChanged -= OnDataContextChanged;
+            
+            currentContext.MessageAdded -= OnMessageAdded;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args) 
+        {
+            if (args.OldValue is ChatSessionViewModel previousContext)
+            {
+                previousContext.MessageAdded -= OnMessageAdded;
+            }
+
+            currentContext = (ChatSessionViewModel)args.NewValue;
+            currentContext.MessageAdded += OnMessageAdded;
         }
     }
 }

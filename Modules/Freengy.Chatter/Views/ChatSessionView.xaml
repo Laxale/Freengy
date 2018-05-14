@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                    
-             xmlns:local="clr-namespace:Freengy.Chatter.Views"
              xmlns:viewModels="clr-namespace:Freengy.Chatter.ViewModels"
-             xmlns:interfaces="clr-namespace:Freengy.Base.Chat.Interfaces;assembly=Freengy.Base"
              xmlns:helpers="clr-namespace:Freengy.Chatter.Helpers"
 
              mc:Ignorable="d" 
@@ -25,7 +23,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="20"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" MinHeight="40" MaxHeight="80" Name="TextBoxRow"/>
+            <RowDefinition Height="Auto" MinHeight="40" MaxHeight="80"/>
         </Grid.RowDefinitions>
 
         <!-- Chat messages list -->
