@@ -37,7 +37,8 @@ namespace Freengy.CommonResources.Converters
             {
                 builder.Append(input[charIndex]);
 
-                if (charIndex != 0 && charIndex % 3 == 0 && charIndex < charCount)
+                var iterationNumber = charCount - charIndex;
+                if (iterationNumber != 0 && iterationNumber % 3 == 0 && iterationNumber < charCount)
                 {
                     builder.Append(splitter);
                 }

@@ -108,7 +108,8 @@
                         </ProgressBar.ToolTip>
                     </ProgressBar>
                     
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource WhiteBrush}" Margin="0, -1, 0, 0">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource WhiteBrush}" 
+                               Margin="0, -1, 0, 0" IsHitTestVisible="False">
                         <TextBlock.LayoutTransform>
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                         </TextBlock.LayoutTransform>
