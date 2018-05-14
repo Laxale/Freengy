@@ -51,6 +51,7 @@
       <DependentUpon>WatermarkTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\IfNullToDefaultValueConverter.cs" />
+    <Compile Include="Converters\NumberToSplitFormatConverter.cs" />
     <Compile Include="Converters\PropertyNameToBindingConverter.cs" />
     <Compile Include="Converters\ResizeModeToVisibilityConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />

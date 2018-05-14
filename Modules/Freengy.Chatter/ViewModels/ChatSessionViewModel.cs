@@ -9,8 +9,12 @@ using System.Collections.ObjectModel;
 
 using Freengy.Base.ViewModels;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Messages;
 using Freengy.Chatter.Helpers;
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;
 using Freengy.Networking.Interfaces;
 
@@ -19,6 +23,62 @@ namespace Freengy.Chatter.ViewModels
 {
     public class ChatSessionViewModel : WaitableViewModel 
     {
+        private class AccountUpdateListener : IUserActivity 
+        {
+            private bool isRunning;
+            private string myCurrentName;
+
+            public event Action<string> MyNameChanged = nameValue => { };
+
+
+            public AccountUpdateListener() 
+            {
+                myCurrentName = MyServiceLocator.Instance.Resolve<ILoginController>().MyAccountState.Account.Name;
+
+                this.Publish(new MessageActivityChanged(this, true));
+
+                this.Subscribe<MessageMyAccountUpdated>(OnAccountUpdated);
+            }
+
+
+            /// <summary>
+            /// Cancel activity.
+            /// </summary>
+            /// <returns>Result of a cancel attempt.</returns>
+            public Result Cancel() 
+            {
+                if (isRunning)
+                {
+                    isRunning = false;
+
+                    this.Unsubscribe();
+                }
+
+                return Result.Ok();
+            }
+
+            /// <summary>
+            /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+            /// </summary>
+            public bool CanCancelInSilent { get; } = true;
+
+
+            private void OnAccountUpdated(MessageMyAccountUpdated message) 
+            {
+                if (myCurrentName == message.MyAccountState.Account.Name)
+                {
+                    return;
+                }
+
+                myCurrentName = message.MyAccountState.Account.Name;
+
+                MyNameChanged.Invoke(myCurrentName);
+            }
+        }
+
+        private static readonly AccountUpdateListener listener = new AccountUpdateListener();
+
+
         private readonly ILoginController loginController;
         private readonly IChatMessageFactory chatMessageFactory;
         private readonly ObservableCollection<DistinguishedChatMessage> sessionMessages = new ObservableCollection<DistinguishedChatMessage>();
@@ -28,7 +88,7 @@ namespace Freengy.Chatter.ViewModels
         /// <summary>
         /// Event is fired to scroll the message list to end.
         /// </summary>
-        internal event Action<DistinguishedChatMessage> MessageAdded = decoratpr => { };
+        internal event Action<DistinguishedChatMessage> MessageAdded = message => { };
 
 
         public ChatSessionViewModel(IChatSession session) 
@@ -45,6 +105,13 @@ namespace Freengy.Chatter.ViewModels
 
             // this viewmodel is not created by catel. need to init manually
             CommandSendMessage = new MyCommand(CommandSendMessageImpl, CanSendMessage);
+
+            listener.MyNameChanged += OnMyNameChanged;
+        }
+
+        ~ChatSessionViewModel() 
+        {
+            listener.MyNameChanged -= OnMyNameChanged;
         }
 
         
@@ -62,7 +129,7 @@ namespace Freengy.Chatter.ViewModels
         /// <summary>
         /// Возвращает название моего аккаунта.
         /// </summary>
-        public string MyName { get; }
+        public string MyName { get; private set; }
 
         /// <summary>
         /// Get the collection of messages for current session.
@@ -96,17 +163,21 @@ namespace Freengy.Chatter.ViewModels
 
         private bool CanSendMessage() 
         {
-            //return true;
             return !string.IsNullOrWhiteSpace(MessageText);
         }
 
         private void CommandSendMessageImpl() 
         {
-            var newMessage = chatMessageFactory.CreateMessage(MessageText);
+            IChatMessage newMessage = chatMessageFactory.CreateMessage(MessageText);
 
             Session.SendMessage(newMessage, out _);
             
             MessageText = string.Empty;
+        }
+
+        private void OnMyNameChanged(string nameValue) 
+        {
+            MyName = nameValue;
         }
 
         private void OnMessageAdded(object sender, IChatMessageDecorator addedMessage) 

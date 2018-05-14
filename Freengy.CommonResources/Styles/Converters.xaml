@@ -20,4 +20,5 @@
     <converters:ReverseBooleanToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter"/>
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <converters:ReversedNullToVisibilityConverter x:Key="ReversedNullToVisibilityConverter"/>
+    <converters:NumberToSplitFormatConverter x:Key="NumberToSplitFormatConverter"/>
 </ResourceDictionary>

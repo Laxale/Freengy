@@ -83,7 +83,7 @@
                 
                 <!-- Полоска уровня -->
                 <Grid DockPanel.Dock="Left">
-                    <ProgressBar Height="10" Value="{Binding Path=CurrentExp, Mode=OneWay}" 
+                    <ProgressBar Height="10" Value="{Binding Path=CurrentExp, Mode=OneWay}" Cursor="Help"
                                  Minimum="{Binding Path=CurrentLevelStartExp}" Maximum="{Binding Path=CurrentLevelFinishExp}"
                                  Foreground="{StaticResource PurpleBrush}" BorderBrush="{StaticResource PurpleBrush}" Background="{StaticResource AlmostTransparent}">
                         <ProgressBar.ToolTip>
@@ -98,9 +98,9 @@
 
                                         <TextBlock DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
                                             <Run Text="Level Expirience "/>
-                                            <Run Text="{Binding Path=CurrentExp, Mode=OneWay}"/>
+                                            <Run Text="{Binding Path=CurrentExp, Mode=OneWay, Converter={StaticResource NumberToSplitFormatConverter}}"/>
                                             <Run Text="of"/>
-                                            <Run Text="{Binding Path=CurrentLevelFinishExp, Mode=OneWay}"/>
+                                            <Run Text="{Binding Path=CurrentLevelFinishExp, Mode=OneWay, Converter={StaticResource NumberToSplitFormatConverter}}"/>
                                         </TextBlock>
                                     </DockPanel>
                                 </Border>

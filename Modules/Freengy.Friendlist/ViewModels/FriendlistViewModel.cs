@@ -192,6 +192,7 @@ namespace Freengy.FriendList.ViewModels
             var testMessage = messageFactory.CreateMessage("Lets chat!");
 
             session.SendMessage(testMessage, out _);
+            this.Publish(new MessageShowChatSession(session.Id));
         }
 
         private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
