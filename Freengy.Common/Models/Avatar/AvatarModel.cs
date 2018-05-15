@@ -12,7 +12,7 @@ namespace Freengy.Common.Models.Avatar
     /// <summary>
     /// Модель аватара пользователя или альбома или группы или чего угодно.
     /// </summary>
-    public abstract class AvatarModel<TParent> : ChildComplexDbObject<TParent> where TParent : ComplexDbObject, new () 
+    public abstract class AvatarModel<TParent> : ChildComplexDbObject<TParent> where TParent : AvataredComplexDbObject<AvatarModel<TParent>>, new () 
     {
         /// <summary>
         /// Возвращает или задаёт бинарный блоб изображения.
