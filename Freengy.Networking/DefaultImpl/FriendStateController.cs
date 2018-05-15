@@ -69,6 +69,11 @@ namespace Freengy.Networking.DefaultImpl
         /// </summary>
         public bool CanCancelInSilent { get; } = true;
 
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
+
 
         /// <summary>
         /// Get the state of a friend account.

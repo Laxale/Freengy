@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Name="Scroller">
         <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Path=FriendUpdates}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="update:FriendUpdate">

@@ -6,6 +6,7 @@
              
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+             xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
 
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:MyAccountVisitViewModel}">
@@ -83,10 +84,15 @@
                 
                 <!-- Полоска уровня -->
                 <Grid DockPanel.Dock="Left">
-                    <ProgressBar Height="10" Value="{Binding Path=CurrentExp, Mode=OneWay}" Cursor="Help"
-                                 Minimum="{Binding Path=CurrentLevelStartExp}" Maximum="{Binding Path=CurrentLevelFinishExp}"
-                                 Foreground="{StaticResource PurpleBrush}" BorderBrush="{StaticResource PurpleBrush}" Background="{StaticResource AlmostTransparent}">
-                        <ProgressBar.ToolTip>
+                    <controls:MyProgressBar CornerRadius="6" 
+                                            BorderBrush="{StaticResource PurpleBrush}" 
+                                            Background="{StaticResource AlmostTransparent}"
+                                            Foreground="{StaticResource PurpleBrush}"
+                                            BorderThickness="1" Height="10" Cursor="Help" 
+                                            Minimum="{Binding Path=CurrentLevelStartExp, Mode=OneWay}" 
+                                            Maximum="{Binding Path=CurrentLevelFinishExp, Mode=OneWay}"
+                                            Value="{Binding Path=CurrentExp, Mode=OneWay}">
+                        <controls:MyProgressBar.ToolTip>
                             <ToolTip>
                                 <Border Background="{StaticResource LightGrayBrush}">
                                     <DockPanel  Margin="{StaticResource All4Margin}">
@@ -97,17 +103,17 @@
                                         </Path>
 
                                         <TextBlock DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
-                                            <Run Text="Level Expirience "/>
+                                            <Run Text="{x:Static localization:StringResources.LevelExpirience}"/>
                                             <Run Text="{Binding Path=CurrentExp, Mode=OneWay, Converter={StaticResource NumberToSplitFormatConverter}}"/>
-                                            <Run Text="of"/>
+                                            <Run Text="/"/>
                                             <Run Text="{Binding Path=CurrentLevelFinishExp, Mode=OneWay, Converter={StaticResource NumberToSplitFormatConverter}}"/>
                                         </TextBlock>
                                     </DockPanel>
                                 </Border>
                             </ToolTip>
-                        </ProgressBar.ToolTip>
-                    </ProgressBar>
-                    
+                        </controls:MyProgressBar.ToolTip>
+                    </controls:MyProgressBar>
+
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource WhiteBrush}" 
                                Margin="0, -1, 0, 0" IsHitTestVisible="False">
                         <TextBlock.LayoutTransform>

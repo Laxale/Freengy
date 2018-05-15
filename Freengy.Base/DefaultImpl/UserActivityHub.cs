@@ -44,7 +44,6 @@ namespace Freengy.Base.DefaultImpl
         }
 
 
-        /// <inheritdoc />
         /// <summary>
         /// Get running user activities.
         /// </summary>

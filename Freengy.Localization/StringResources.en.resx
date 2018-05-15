@@ -228,4 +228,13 @@
   <data name="FriendUpdatesWillBeHere" xml:space="preserve">
     <value>Friend updates will be here</value>
   </data>
+  <data name="CancelActivities" xml:space="preserve">
+    <value>Cancel activities</value>
+  </data>
+  <data name="Disconnecting" xml:space="preserve">
+    <value>Disconnecting</value>
+  </data>
+  <data name="LevelExpirience" xml:space="preserve">
+    <value>Level Expirience</value>
+  </data>
 </root>

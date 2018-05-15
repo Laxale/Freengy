@@ -22,9 +22,11 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Вьюмодель для <see cref="FriendUpdatesView"/>.
     /// </summary>
-    internal class FriendUpdatesViewModel : WaitableViewModel, IUserActivity  
+    internal class FriendUpdatesViewModel : WaitableViewModel, IUserActivity 
     {
         private readonly ObservableCollection<FriendUpdate> friendUpdates = new ObservableCollection<FriendUpdate>();
+
+        public event Action GotNewUpdate = () => { };
 
 
         public FriendUpdatesViewModel() 
@@ -41,6 +43,11 @@ namespace Freengy.FriendList.ViewModels
         /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
         /// </summary>
         public bool CanCancelInSilent { get; } = true;
+
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
 
         /// <summary>
         /// Возвращает коллекцию апдейтов друзей.
@@ -62,7 +69,11 @@ namespace Freengy.FriendList.ViewModels
 
         private void OnFriendUpdate(MessageFriendUpdates message) 
         {
-            GUIDispatcher.BeginInvokeOnGuiThread(() => friendUpdates.AddRange(message.Updates));
+            GUIDispatcher.BeginInvokeOnGuiThread(() =>
+            {
+                friendUpdates.AddRange(message.Updates);
+                GotNewUpdate.Invoke();
+            });
         }
     }
 }

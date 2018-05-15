@@ -70,7 +70,7 @@ namespace Freengy.UI.ViewModels
         {
             void LogoutInvoker()
             {
-                SetBusySilent();
+                SetBusyState(LocalizedRes.Disconnecting);
 
                 Result logoutResult = ServiceLocator.Resolve<LogOutController>().LogOut();
 

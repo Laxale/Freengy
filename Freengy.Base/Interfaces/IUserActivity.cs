@@ -2,6 +2,8 @@
 //
 //
 
+using System;
+
 using Freengy.Common.Helpers.Result;
 
 
@@ -22,5 +24,10 @@ namespace Freengy.Base.Interfaces
         /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
         /// </summary>
         bool CanCancelInSilent { get; }
+
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        string CancelDescription { get; }
     }
 }

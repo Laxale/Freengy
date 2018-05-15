@@ -2,10 +2,12 @@
 //
 //
 
+using System;
 using System.Windows.Controls;
 
 using Freengy.Base.Attributes;
 using Freengy.Base.Helpers;
+using Freengy.Base.Models.Update;
 using Freengy.FriendList.ViewModels;
 
 
@@ -22,6 +24,17 @@ namespace Freengy.FriendList.Views
             InitializeComponent();
 
             new ViewModelWierer().Wire(this);
+
+            if (DataContext is FriendUpdatesViewModel context)
+            {
+                context.GotNewUpdate += OnGotNewUpdate;
+            }
+        }
+
+
+        private void OnGotNewUpdate() 
+        {
+            Scroller.ScrollToEnd();
         }
     }
 }

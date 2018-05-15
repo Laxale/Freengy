@@ -44,9 +44,12 @@ namespace Freengy.UI.Helpers
 
             if (activities.Any())
             {
-                if (activities.Any(act => !act.CanCancelInSilent))
+                var nonSilentActivities = activities.Where(act => !act.CanCancelInSilent).ToList();
+                if (nonSilentActivities.Any())
                 {
-                    MessageBoxResult result = MessageBox.Show("Cancel activities?", LocalizedRes.ProjectName, MessageBoxButton.YesNo);
+                    string activitiesDescription = string.Join(Environment.NewLine, nonSilentActivities.Select(activity => activity.CancelDescription));
+                    string ask = $"{LocalizedRes.CancelActivities}?{ Environment.NewLine }{ Environment.NewLine }{ activitiesDescription }";
+                    MessageBoxResult result = MessageBox.Show(ask, LocalizedRes.ProjectName, MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.No)
                     {
                         return Result.Fail(new UserCancelledReason());

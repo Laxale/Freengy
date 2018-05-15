@@ -116,6 +116,11 @@ namespace Freengy.UI.ViewModels
         public bool CanCancelInSilent { get; } = true;
 
         /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
+
+        /// <summary>
         /// Cancel activity.
         /// </summary>
         /// <returns>Result of a cancel attempt.</returns>

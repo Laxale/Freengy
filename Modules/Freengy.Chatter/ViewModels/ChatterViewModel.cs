@@ -18,6 +18,7 @@ using Freengy.Chatter.Views;
 using Freengy.Networking.DefaultImpl;
 
 using Freengy.Base.Interfaces;
+using Freengy.Common.Helpers.Result;
 
 
 namespace Freengy.Chatter.ViewModels 
@@ -25,11 +26,13 @@ namespace Freengy.Chatter.ViewModels
     /// <summary>
     /// Viewmodel for <see cref="ChatterView"/>.
     /// </summary>
-    public class ChatterViewModel : WaitableViewModel 
+    public class ChatterViewModel : WaitableViewModel, IUserActivity 
     {
         private readonly IChatSessionFactory chatSessionFactory;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<ChatSessionViewModel> chatSessions = new ObservableCollection<ChatSessionViewModel>();
+
+        private bool isCancelled;
 
 
         public ChatterViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IChatSessionFactory chatSessionFactory, IMyServiceLocator serviceLocator) : 
@@ -39,10 +42,11 @@ namespace Freengy.Chatter.ViewModels
 
             ChatSessions = CollectionViewSource.GetDefaultView(chatSessions);
 
-            FillSomeSessions();
+            FillTestSessions();
 
             this.Subscribe<MessageChatSessionChanged>(OnChatSessionChanged);
             this.Publish(new MessageInitializeModelRequest(this, "Loading sessions"));
+            this.Publish(new MessageActivityChanged(this, true));
         }
 
         
@@ -57,11 +61,38 @@ namespace Freengy.Chatter.ViewModels
         /// </summary>
         public ICollectionView ChatSessions { get; }
 
+        /// <summary>
+        /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+        /// </summary>
+        public bool CanCancelInSilent { get; } = true;
 
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
+
+
+        /// <summary>
+        /// Cancel activity.
+        /// </summary>
+        /// <returns>Result of a cancel attempt.</returns>
+        public Result Cancel() 
+        {
+            if (!isCancelled)
+            {
+                this.Unsubscribe();
+            }
+
+            isCancelled = true;
+
+            return Result.Ok();
+        }
+
+        
         private bool CanCreateSession => true;
 
 
-        private void FillSomeSessions() 
+        private void FillTestSessions() 
         {
             chatSessionFactory.SetNetworkInterface((msg, acc) => { });
             var firstSession = chatSessionFactory.CreateInstance("First test session", "First test session");

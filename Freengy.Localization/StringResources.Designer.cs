@@ -97,6 +97,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel activities.
+        /// </summary>
+        public static string CancelActivities {
+            get {
+                return ResourceManager.GetString("CancelActivities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change password.
         /// </summary>
         public static string ChangePassword {
@@ -174,6 +183,15 @@ namespace Freengy.Localization {
         public static string DefaultGameIconUri {
             get {
                 return ResourceManager.GetString("DefaultGameIconUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnecting.
+        /// </summary>
+        public static string Disconnecting {
+            get {
+                return ResourceManager.GetString("Disconnecting", resourceCulture);
             }
         }
         
@@ -327,6 +345,15 @@ namespace Freengy.Localization {
         public static string Level {
             get {
                 return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level Expirience.
+        /// </summary>
+        public static string LevelExpirience {
+            get {
+                return ResourceManager.GetString("LevelExpirience", resourceCulture);
             }
         }
         

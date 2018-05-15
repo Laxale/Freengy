@@ -62,6 +62,11 @@ namespace Freengy.Chatter.ViewModels
             /// </summary>
             public bool CanCancelInSilent { get; } = true;
 
+            /// <summary>
+            /// Возвращает описание активности в контексте её остановки.
+            /// </summary>
+            public string CancelDescription { get; } = string.Empty;
+
 
             private void OnAccountUpdated(MessageMyAccountUpdated message) 
             {

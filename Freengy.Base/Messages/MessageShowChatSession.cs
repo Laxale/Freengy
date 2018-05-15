@@ -18,7 +18,7 @@ namespace Freengy.Base.Messages
         /// Конструирует <see cref="MessageShowChatSession"/> с заданным идентификатором сессии.
         /// </summary>
         /// <param name="sessionId">Идентификатор желаемой для показа сессии.</param>
-        public MessageShowChatSession(Guid sessionId)
+        public MessageShowChatSession(Guid sessionId) 
         {
             SessionId = sessionId;
         }

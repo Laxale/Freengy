@@ -20,11 +20,12 @@ namespace Freengy.Base.Module
         {
             using (new StatisticsDeployer(nameof(BaseModule)))
             {
+                MyServiceLocator.Instance.RegisterInstance(UserActivityHub.Instance);
+
                 //just create singleton
                 var initializer = ViewModelInitializer.Instance;
 
                 MyServiceLocator.Instance.RegisterInstance(ChatHub.Instance);
-                MyServiceLocator.Instance.RegisterInstance(UserActivityHub.Instance);
                 MyServiceLocator.Instance.RegisterInstance(CurtainedExecutor.Instance);
                 MyServiceLocator.Instance.RegisterInstance(ChatSessionFactory.Instance);
 

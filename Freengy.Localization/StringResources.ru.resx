@@ -309,4 +309,13 @@
   <data name="FriendUpdatesWillBeHere" xml:space="preserve">
     <value>Новости друзей будут здесь</value>
   </data>
+  <data name="CancelActivities" xml:space="preserve">
+    <value>Завершить работу</value>
+  </data>
+  <data name="Disconnecting" xml:space="preserve">
+    <value>Завершаем работу</value>
+  </data>
+  <data name="LevelExpirience" xml:space="preserve">
+    <value>Уровень опыта</value>
+  </data>
 </root>
