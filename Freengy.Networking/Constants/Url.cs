@@ -13,6 +13,7 @@ namespace Freengy.Networking.Constants
     /// </summary>
     public static class Url 
     {
+        private static readonly string avatarAction;
         private static readonly string expAction;
         private static readonly string syncAction;
         private static readonly string editAction;
@@ -37,6 +38,7 @@ namespace Freengy.Networking.Constants
         {
             networkingConfig = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
+            avatarAction = networkingConfig.AppSettings.Settings["AvatarActionName"].Value;
             expAction = networkingConfig.AppSettings.Settings["ExpActionName"].Value;
             syncAction = networkingConfig.AppSettings.Settings["SyncActionName"].Value;
             stateAction = networkingConfig.AppSettings.Settings["StateActionName"].Value;
@@ -67,16 +69,23 @@ namespace Freengy.Networking.Constants
             public static string RegisterUrl { get; } = $"{ RootServerUrl }/{ registerAction }";
 
             public static string LogInUrl { get; } = $"{ RootServerUrl }/{ logInAction }";
-
-            public static string SearchUsersUrl { get; } = $"{ RootServerUrl }/{ searchAction }/{ usersAction }";
-
-            public static string SearchFriendRequestsUrl { get; } = $"{ RootServerUrl }/{ searchAction }/{ friendRequestAction }";
-
+            
             public static string AddFriendUrl { get; } = $"{ RootServerUrl }/{ requestAction }/{ friendAction }";
 
             public static string ReplyFriendRequestUrl { get; } = $"{ RootServerUrl }/{ replyAction}/{ friendAction }{ requestAction }";
 
 
+            public static class Search 
+            {
+                public static string SearchRoot { get; } = $"{ RootServerUrl }/{searchAction }";
+
+                public static string SearchUsersUrl { get; } = $"{ SearchRoot}/{ usersAction }";
+
+                public static string SearchFriendRequestsUrl { get; } = $"{ SearchRoot }/{ friendRequestAction }";
+
+                public static string SearchAvatarsUrl { get; } = $"{ SearchRoot }/{ avatarAction }";
+            }
+            
             public static class Chat 
             {
                 public static string ChatSubRoute { get; }= $"/{chatAction}";

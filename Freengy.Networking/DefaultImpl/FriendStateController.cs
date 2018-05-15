@@ -98,7 +98,7 @@ namespace Freengy.Networking.DefaultImpl
             List<AccountStateModel> stateModels;
             using (var httpActor = serviceLocator.Resolve<IHttpActor>())
             {
-                httpActor.SetRequestAddress(Url.Http.SearchUsersUrl).SetClientSessionToken(sessionTokenGetter());
+                httpActor.SetRequestAddress(Url.Http.Search.SearchUsersUrl).SetClientSessionToken(sessionTokenGetter());
                 SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccountGetter(), string.Empty);
 
                 Result<List<AccountStateModel>> result = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);

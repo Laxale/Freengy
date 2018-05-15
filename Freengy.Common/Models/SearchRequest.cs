@@ -3,6 +3,8 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Freengy.Common.Enums;
 using Freengy.Common.Models.Readonly;
@@ -44,6 +46,24 @@ namespace Freengy.Common.Models
                 Entity = SearchEntity.Friends,
                 SenderId = account.Id,
                 SearchFilter = nameFilter
+            };
+        }
+
+        /// <summary>
+        /// Создать запрос для поиска кэш-информации об аватарах пользователей.
+        /// </summary>
+        /// <param name="myAccount">Мой аккаунт.</param>
+        /// <param name="userIds">Коллекция идентификаторов пользователей.</param>
+        /// <returns>Готовый инстанс поискового запроса.</returns>
+        public static SearchRequest CreateAvatarCacheSearch(UserAccount myAccount, IEnumerable<Guid> userIds) 
+        {
+            var filter = string.Join(";", userIds.Select(id => id.ToString()));
+
+            return new SearchRequest
+            {
+                Entity = SearchEntity.UserAvatarsCache,
+                SenderId = myAccount.Id,
+                SearchFilter = filter
             };
         }
 

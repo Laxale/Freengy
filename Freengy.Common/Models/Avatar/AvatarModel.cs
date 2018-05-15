@@ -2,6 +2,7 @@
 //
 //
 
+using System;
 using System.Collections.Generic;
 
 using Freengy.Common.Database;
@@ -12,12 +13,22 @@ namespace Freengy.Common.Models.Avatar
     /// <summary>
     /// Модель аватара пользователя или альбома или группы или чего угодно.
     /// </summary>
-    public abstract class AvatarModel<TParent> : ChildComplexDbObject<TParent> where TParent : AvataredComplexDbObject<AvatarModel<TParent>>, new () 
+    public abstract class AvatarModel<TParent> : ChildComplexDbObject<TParent> where TParent : ComplexDbObject, new () 
     {
+        protected AvatarModel() 
+        {
+            
+        }
+
         /// <summary>
         /// Возвращает или задаёт бинарный блоб изображения.
         /// </summary>
         public byte[] ImageBlob { get; set; }
+
+        /// <summary>
+        /// Возвращает или задаёт дату последней модификации аватара.
+        /// </summary>
+        public DateTime LastModified { get; set; }
 
 
         /// <summary>

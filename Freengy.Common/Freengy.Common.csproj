@@ -42,7 +42,6 @@
     <Compile Include="Constants\FreengyHeaders.cs" />
     <Compile Include="Constants\FreengyPaths.cs" />
     <Compile Include="Constants\StartupConst.cs" />
-    <Compile Include="Database\AvataredComplexDbObject.cs" />
     <Compile Include="Database\ChildComplexDbObject.cs" />
     <Compile Include="Database\ComplexDbObject.cs" />
     <Compile Include="Database\DbObject.cs" />
@@ -86,6 +85,7 @@
     <Compile Include="Models\AlbumModel.cs" />
     <Compile Include="Models\Avatar\AvatarModel.cs" />
     <Compile Include="Models\Avatar\UserAvatarModel.cs" />
+    <Compile Include="Models\Avatar\UserAvatarsReply.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\EditAccountModel.cs" />
     <Compile Include="Models\FriendRequest.cs" />
@@ -93,6 +93,7 @@
     <Compile Include="Models\GainExpModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ObjectModificationTime.cs" />
     <Compile Include="Models\Readonly\AccountState.cs" />
     <Compile Include="Models\Readonly\Album.cs" />
     <Compile Include="Models\Readonly\UserAccount.cs" />

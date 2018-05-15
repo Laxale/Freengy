@@ -87,7 +87,7 @@ namespace Freengy.Networking.DefaultImpl
 
                     using (var httpActor = MyServiceLocator.Instance.Resolve<IHttpActor>())
                     {
-                        httpActor.SetRequestAddress(Url.Http.SearchUsersUrl);
+                        httpActor.SetRequestAddress(Url.Http.Search.SearchUsersUrl);
 
                         Result<List<UserAccountModel>> result = httpActor.PostAsync<SearchRequest, List<UserAccountModel>>(searchRequest).Result;
 

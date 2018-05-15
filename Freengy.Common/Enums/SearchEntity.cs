@@ -31,6 +31,16 @@ namespace Freengy.Common.Enums
         GameSessions,
 
         /// <summary>
+        /// Entity to search is user avatar(s)
+        /// </summary>
+        UserAvatars,
+
+        /// <summary>
+        /// Entity to search is user avatars modification timestamps.
+        /// </summary>
+        UserAvatarsCache,
+
+        /// <summary>
         /// Entity to search is an incoming friend request.
         /// </summary>
         IncomingFriendRequests,

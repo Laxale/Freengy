@@ -23,7 +23,7 @@ namespace Freengy.Common.Models
     /// Data model of a user account.
     /// </summary>
     [Table(nameof(UserAccount) + "s")]
-    public class UserAccountModel : AvataredComplexDbObject<UserAvatarModel>, INamedObject 
+    public class UserAccountModel : ComplexDbObject, INamedObject 
     {
         /// <summary>
         /// Gets or sets level of a user account.

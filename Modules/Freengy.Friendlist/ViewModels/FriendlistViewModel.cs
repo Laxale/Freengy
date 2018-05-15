@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+
 using Freengy.Base.ViewModels;
 using Freengy.Base.Windows;
 using Freengy.Base.Messages;
@@ -30,8 +31,11 @@ using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages.Notification;
+using Freengy.Common.Constants;
 using Freengy.Common.Enums;
+using Freengy.Common.Models.Avatar;
 using Freengy.CommonResources;
+
 using LocalizedRes = Freengy.Localization.StringResources;
 
 
@@ -159,6 +163,8 @@ namespace Freengy.FriendList.ViewModels
                 GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(viewModel));
             }
 
+            await SearchFriendAvatars();
+
             foreach (FriendRequest friendRequest in requests)
             {
                 GUIDispatcher.InvokeOnGuiThread(() => friendRequests.Add(friendRequest));
@@ -180,11 +186,11 @@ namespace Freengy.FriendList.ViewModels
                 session = 
                     chatHub.GetSession(startedChatSessions[targetAccountState].Id) 
                     ?? 
-                    AddNewSession(chatHub, targetAccountState);
+                    AddNewSession(targetAccountState);
             }
             else
             {
-                session = AddNewSession(chatHub, targetAccountState);
+                session = AddNewSession(targetAccountState);
             }
 
             messageFactory.Author = myAccount;
@@ -195,7 +201,7 @@ namespace Freengy.FriendList.ViewModels
             this.Publish(new MessageShowChatSession(session.Id));
         }
 
-        private IChatSession AddNewSession(IChatHub chatHub, AccountState targetAccountState) 
+        private IChatSession AddNewSession(AccountState targetAccountState) 
         {
             var sessionFactory = ServiceLocator.Resolve<IChatSessionFactory>();
             sessionFactory.SetNetworkInterface(messageSender.SendMessageToFriend);
@@ -212,7 +218,7 @@ namespace Freengy.FriendList.ViewModels
         {
             using (var httpActor = ServiceLocator.Resolve<IHttpActor>())
             {
-                httpActor.SetRequestAddress(Url.Http.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
+                httpActor.SetRequestAddress(Url.Http.Search.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
                 SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
 
                 Result<List<FriendRequest>> result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
@@ -220,6 +226,38 @@ namespace Freengy.FriendList.ViewModels
                 if (result.Failure)
                 {
                     ReportMessage(result.Error.Message);
+                }
+
+                return result.Value;
+            }
+        }
+
+        private async Task<UserAvatarsReply> SearchFriendAvatars() 
+        {
+            if (!friendViewModels.Any())
+            {
+                return await Task.FromResult<UserAvatarsReply>(null);
+            }
+
+            using (var httpActor = ServiceLocator.Resolve<IHttpActor>())
+            {
+                httpActor
+                    .SetRequestAddress(Url.Http.Search.SearchAvatarsUrl)
+                    .SetClientSessionToken(mySessionToken)
+                    .AddHeader(FreengyHeaders.Client.ClientIdHeaderName, myAccount.Id.ToString());
+
+                IEnumerable<Guid> friendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
+                SearchRequest searchRequest = SearchRequest.CreateAvatarCacheSearch(myAccount, friendIds);
+
+                Result<UserAvatarsReply> result = await httpActor.PostAsync<SearchRequest, UserAvatarsReply>(searchRequest);
+
+                if (result.Failure)
+                {
+                    ReportMessage(result.Error.Message);
+                }
+                else if(result.Value == null)
+                {
+                    ReportMessage("Friends not found");
                 }
 
                 return result.Value;
