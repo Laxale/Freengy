@@ -11,7 +11,6 @@
 
              mc:Ignorable="d" 
              d:DesignWidth="300"
-             d:DesignHeight="200"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:EditMyAccountViewModel}">
 
@@ -34,6 +33,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -52,8 +52,26 @@
                 <!-- Цвет аккаунта -->
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="My color"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Text="My color" Foreground="{Binding Path=MyColor, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- Аватар аккаунта -->
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="My avatar"/>
+                <Border Grid.Row="3" Grid.Column="1">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" 
+                                  Data="{StaticResource ArrowDownIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
+
+                            <TextBlock DockPanel.Dock="Left" Text="Drop image here"/>
+                        </DockPanel>
+                        
+                        <Border DockPanel.Dock="Top" Background="{StaticResource FirstMainBrush}" MinHeight="40">
+                            <Image HorizontalAlignment="Center" Height="40"/>
+                        </Border>
+                    </DockPanel>
+                </Border>
             </Grid>
 
+            <!-- Панель информации -->
             <DockPanel DockPanel.Dock="Top" VerticalAlignment="Bottom" Margin="{StaticResource All4Margin}"
                    Visibility="{Binding Path=HasInformation, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
