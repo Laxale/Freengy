@@ -3,14 +3,16 @@
 //
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Media.Imaging;
 using Freengy.UI.ViewModels;
 using Freengy.Base.Attributes;
 using Freengy.Base.Extensions;
 using Freengy.Base.Helpers;
+using Freengy.Common.Helpers.Result;
 
 
 namespace Freengy.UI.Views 
@@ -66,7 +68,12 @@ namespace Freengy.UI.Views
         {
             avatarImage = (Image) sender;
 
-            var avatarResult = new ImageLoader().LoadBitmapImage(ViewModelGetter.AvatarPath);
+            if (!File.Exists(ViewModelGetter.AvatarPath))
+            {
+                return;
+            }
+
+            Result<BitmapImage> avatarResult = new ImageLoader().LoadBitmapImage(ViewModelGetter.AvatarPath);
 
             if (avatarResult.Success)
             {

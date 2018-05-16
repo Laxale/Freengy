@@ -167,6 +167,53 @@ namespace Freengy.Base.DefaultImpl
         }
 
         /// <summary>
+        /// Сохранить аватар пользователя.
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя.</param>
+        /// <param name="avatarBlob">Блоб аватара.</param>
+        /// <returns>Результат сохранения.</returns>
+        public Result SaveUserAvatar(Guid userId, byte[] avatarBlob) 
+        {
+            try
+            {
+                using (var context = new UserAvatarContext())
+                {
+                    var savedAvatar = context.Objects.FirstOrDefault(avatar => avatar.ParentId == userId);
+
+                    if (savedAvatar != null)
+                    {
+                        savedAvatar.AvatarPath = null;
+                        savedAvatar.AvatarBlob = avatarBlob;
+                        savedAvatar.LastModified = DateTime.Now;
+                    }
+                    else
+                    {
+                        var newAvatar = new UserAvatarModel
+                        {
+                            AvatarBlob = avatarBlob,
+                            AvatarPath = null,
+                            LastModified = DateTime.Now,
+                            ParentId = userId
+                        };
+
+                        context.Objects.Add(newAvatar);
+                    }
+
+                    context.SaveChanges();
+
+                    return Result.Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = "Failed to save user avatar";
+                logger.Error(ex, message);
+
+                return Result<IEnumerable<UserAvatarModel>>.Fail(new UnexpectedErrorReason(message));
+            }
+        }
+
+        /// <summary>
         /// Получить коллекцию аватаров пользователей.
         /// </summary>
         /// <param name="userIds">Коллекция идентификаторов пользователей.</param>

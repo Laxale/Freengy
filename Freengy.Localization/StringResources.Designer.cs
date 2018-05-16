@@ -97,6 +97,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Best avatar ever.
+        /// </summary>
+        public static string BestAvatarEver {
+            get {
+                return ResourceManager.GetString("BestAvatarEver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel activities.
         /// </summary>
         public static string CancelActivities {

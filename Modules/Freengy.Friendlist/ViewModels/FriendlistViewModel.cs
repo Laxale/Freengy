@@ -207,6 +207,11 @@ namespace Freengy.FriendList.ViewModels
                 }
             }
 
+            if (!outdatedFriendIds.Any())
+            {
+                return;
+            }
+
             UserAvatarsReply remoteAvatars = await GetRemoteAvatars(outdatedFriendIds);
 
             foreach (AvatarModel remoteAvatar in remoteAvatars.UserAvatars)

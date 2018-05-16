@@ -20,18 +20,35 @@
                 <ControlTemplate>
                     <Grid Background="{StaticResource AlmostTransparent}">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" Background="{TemplateBinding Background}" MinWidth="60">
+                        <Path Grid.Row="0" Data="M20,170 L10,180 20,180" Stretch="Fill" 
+                              HorizontalAlignment="Left" Margin="16, 2, 0, 0" Width="25" Name="TopHolder"
+                              Fill="{TemplateBinding Background}" Stroke="{TemplateBinding Background}"/>
+
+                        <Border Grid.Row="1" Background="{TemplateBinding Background}" MinWidth="60">
                             <ContentControl Content="{TemplateBinding ToolTip.Content}"/>
                         </Border>
 
-                        <Path Grid.Row="1" Data="M10,170 L10,180 20,170" Stretch="Fill" 
-                              HorizontalAlignment="Left" Margin="16, -2, 0, 0" Width="25" 
+                        <Path Grid.Row="2" Data="M10,170 L10,180 20,170" Stretch="Fill" 
+                              HorizontalAlignment="Left" Margin="16, -2, 0, 0" Width="25" Name="BottomHolder"
                               Fill="{TemplateBinding Background}" Stroke="{TemplateBinding Background}"/>
                     </Grid>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToolTip.Placement" Value="Top">
+                            <Setter TargetName="TopHolder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="BottomHolder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+
+                        <Trigger Property="ToolTip.Placement" Value="Bottom">
+                            <Setter TargetName="TopHolder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="BottomHolder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

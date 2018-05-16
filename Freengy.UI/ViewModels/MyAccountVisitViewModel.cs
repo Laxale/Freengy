@@ -6,10 +6,12 @@ using System;
 using System.Windows.Documents;
 
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Extensions;
 using Freengy.Base.Helpers;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Messages;
+using Freengy.Base.Models;
 using Freengy.Base.Models.Readonly;
 using Freengy.UI.Views;
 using Freengy.Common.Models;
@@ -30,21 +32,27 @@ namespace Freengy.UI.ViewModels
     /// </summary>
     public class MyAccountVisitViewModel : WaitableViewModel, IUserActivity 
     {
+        private readonly IImageCacher imageCacher;
         private readonly ILoginController loginController;
 
+        private string currentAvatarPath;
         private uint currentLevelStartExp;
         private uint currentLevelFinishExp;
 
 
-        public MyAccountVisitViewModel() 
+        public MyAccountVisitViewModel(IImageCacher imageCacher) 
         {
+            this.imageCacher = imageCacher;
             loginController = ServiceLocator.Resolve<ILoginController>();
             MyAccountState = loginController.MyAccountState;
 
             CommandEditAccount = new MyCommand(EditAccountImpl);
 
-            SetExpirienceBounds();
+            SetExpirienceValues();
             RaiseCurrentExpChanged();
+
+            var myAvatar = MyAccountState.Account.GetAvatar();
+            UpdateAvatarPath(myAvatar);
 
             this.Subscribe<MessageMyAccountUpdated>(OnMyAccountChanged);
 
@@ -62,6 +70,24 @@ namespace Freengy.UI.ViewModels
         /// State of my account.
         /// </summary>
         public AccountState MyAccountState { get; }
+
+        /// <summary>
+        /// Возвращает путь к моему текущему аватару.
+        /// </summary>
+        public string CurrentAvatarPath 
+        {
+            get => currentAvatarPath;
+
+            private set
+            {
+                // аватар кэшируется в один и тот же файл, при этом меняется содержимое файла
+                //if (currentAvatarPath == value) return;
+
+                currentAvatarPath = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Возвращает начальное значение опыта для данного уровня аккаунта.
@@ -120,6 +146,7 @@ namespace Freengy.UI.ViewModels
         /// </summary>
         public string CancelDescription { get; } = string.Empty;
 
+        
         /// <summary>
         /// Cancel activity.
         /// </summary>
@@ -142,6 +169,7 @@ namespace Freengy.UI.ViewModels
             {
                 Title = StringResources.EditAccountData,
                 MainContent = content,
+                Height = 500,
                 MinHeight = 300,
                 MinWidth = 400,
                 Background = brush
@@ -168,7 +196,7 @@ namespace Freengy.UI.ViewModels
             OnPropertyChanged(nameof(CurrentExpPercentage));
         }
 
-        private void SetExpirienceBounds() 
+        private void SetExpirienceValues() 
         {
             CurrentLevelStartExp = ExpirienceCalculator.GetExpOfLevel(MyAccountState.Account.Level);
             CurrentLevelFinishExp = ExpirienceCalculator.GetExpOfLevel(MyAccountState.Account.Level + 1) - 1;
@@ -176,10 +204,31 @@ namespace Freengy.UI.ViewModels
 
         private void OnMyAccountChanged(MessageMyAccountUpdated message) 
         {
-            SetExpirienceBounds();
+            lock (this)
+            {
+                SetExpirienceValues();
 
-            OnPropertyChanged(nameof(MyAccountState));
-            RaiseCurrentExpChanged();
+                UserAvatarModel avatarModel = message.MyAccountState.Account.GetAvatar();
+
+                UpdateAvatarPath(avatarModel);
+
+                OnPropertyChanged(nameof(MyAccountState));
+                RaiseCurrentExpChanged();
+            }
+        }
+
+        private void UpdateAvatarPath(UserAvatarModel myAvatarModel) 
+        {
+            if (myAvatarModel == null)
+            {
+                return;
+            }
+
+            Result<string> result = imageCacher.CacheAvatar(myAvatarModel);
+            if (result.Success)
+            {
+                CurrentAvatarPath = result.Value;
+            }
         }
     }
 }

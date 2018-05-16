@@ -71,10 +71,18 @@ namespace Freengy.Base.DefaultImpl
         /// <returns>Результат кэширования.</returns>
         public Result<string> CacheAvatar(UserAvatarModel avatarModel) 
         {
+            bool isTempBlob = false;
+
             try
             {
                 var avatarName = $"User_Avatar_{avatarModel.ParentId}";
                 var avatarPath = Path.Combine(cacheFolderPath, avatarName);
+
+                if (avatarModel.AvatarBlob == null)
+                {
+                    isTempBlob = true;
+                    avatarModel.AvatarBlob = File.ReadAllBytes(avatarModel.AvatarPath);
+                }
 
                 if (File.Exists(avatarPath))
                 {
@@ -94,6 +102,13 @@ namespace Freengy.Base.DefaultImpl
             {
                 Console.WriteLine(ex);
                 return Result<string>.Fail(new UnexpectedErrorReason(ex.Message));
+            }
+            finally
+            {
+                if (isTempBlob)
+                {
+                    avatarModel.AvatarBlob = null;
+                }
             }
         }
     }

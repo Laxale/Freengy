@@ -8,8 +8,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
-
+using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Interfaces;
+using Freengy.Base.Messages;
 using Freengy.Base.Models;
 using Freengy.Base.Models.Readonly;
 using Freengy.Base.ViewModels;
@@ -30,6 +32,9 @@ namespace Freengy.UI.ViewModels
         private readonly string myInitialStatus;
         private readonly string myInitialAvatarPath;
         private readonly string myInitialDescription;
+
+        private readonly UserAccount myAaccount;
+        private readonly IAccountManager accountManager;
         private readonly ILoginController loginController;
 
         private string myName;
@@ -41,10 +46,12 @@ namespace Freengy.UI.ViewModels
         public event Action SavedChanges = () => { };
 
 
-        public EditMyAccountViewModel() 
+        public EditMyAccountViewModel(ILoginController loginController, IAccountManager accountManager) 
         {
-            loginController = ServiceLocator.Resolve<ILoginController>();
-            UserAccount myAaccount = loginController.MyAccountState.Account;
+            this.accountManager = accountManager;
+            this.loginController = loginController;
+
+            myAaccount = loginController.MyAccountState.Account;
 
             CommandSave = new MyCommand(SaveImpl, CanSave);
 
@@ -211,6 +218,7 @@ namespace Freengy.UI.ViewModels
 
                 await actor.PostAsync(changeRequest);
 
+                //todo send avatar changed message
                 ClearBusyState();
                 if (actor.ResponceMessage.StatusCode != HttpStatusCode.Accepted)
                 {
@@ -218,6 +226,8 @@ namespace Freengy.UI.ViewModels
                 }
                 else
                 {
+                    accountManager.SaveUserAvatar(myAaccount.Id, File.ReadAllBytes(AvatarPath));
+                    this.Publish(new MessageAvatarChanged(AvatarPath));
                     Saved = true;
                     SavedChanges.Invoke();
                 }

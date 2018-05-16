@@ -51,13 +51,47 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Временная графика вместо реального аватара -->
-            <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left"
-              Data="{StaticResource AccountIconGeometry}" Fill="{StaticResource PurpleBrush}">
-                <Path.LayoutTransform>
-                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="2" ScaleY="2"/>
-                </Path.LayoutTransform>
-            </Path>
+            <!-- Панелька аватара -->
+            <DockPanel Grid.Row="0" Grid.Column="0">
+                <!-- Графика на случай отсутствия аватара -->
+                <Path Style="{StaticResource CommonPathStyle}" HorizontalAlignment="Left" Margin="{StaticResource All4Margin}"
+                      Data="{StaticResource AccountIconGeometry}" Fill="{StaticResource PurpleBrush}"
+                      Visibility="{Binding Path=CurrentAvatarPath, Converter={StaticResource ReversedNullToVisibilityConverter}}">
+                    <Path.LayoutTransform>
+                        <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="2" ScaleY="2"/>
+                    </Path.LayoutTransform>
+                </Path>
+
+                <!-- Аватар -->
+                <Image Height="56" Width="56" Loaded="AvatarImage_OnLoaded" HorizontalAlignment="Left" Name="AvatarImage" Cursor="Help"
+                       Visibility="{Binding Path=CurrentAvatarPath, Converter={StaticResource NullToVisibilityConverter}}" Source="D:/smirk.png">
+                    <Image.Effect>
+                        <DropShadowEffect BlurRadius="10" RenderingBias="Performance" Opacity="0.8" Color="Purple"/>
+                    </Image.Effect>
+
+                    <Image.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Ellipse Fill="{StaticResource PurpleBrush}" Width="12" Height="12"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Image.OpacityMask>
+
+                    <Image.ToolTip>
+                        <ToolTip Placement="Bottom">
+                            <Border Background="{StaticResource LightGrayBrush}">
+                                <DockPanel>
+                                    <Image DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" Loaded="TooltipImage_OnLoaded"
+                                           Width="160" Height="160"/>
+
+                                    <TextBlock DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" Text="{x:Static localization:StringResources.BestAvatarEver}" 
+                                               FontWeight="Bold" Foreground="{StaticResource PurpleBrush}"/>
+                                </DockPanel>
+                            </Border>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+            </DockPanel>
 
             <!-- Account name -->
             <DockPanel Grid.Row="0" Grid.Column="2">
@@ -114,6 +148,7 @@
                         </controls:MyProgressBar.ToolTip>
                     </controls:MyProgressBar>
 
+                    <!-- Блок процентов опыта уровня -->
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource WhiteBrush}" 
                                Margin="0, -1, 0, 0" IsHitTestVisible="False">
                         <TextBlock.LayoutTransform>

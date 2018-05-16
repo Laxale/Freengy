@@ -149,7 +149,15 @@ namespace Freengy.Common.Helpers
                 {
                     StringContent httpRequest = PrepareRequest(request, client);
 
-                    ResponceMessage = client.PostAsync(address, httpRequest).Result;
+                    try
+                    {
+                        ResponceMessage = client.PostAsync(address, httpRequest).Result;
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Failed to post");
+                        ResponceMessage = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                    }
 
                     return ResponceMessage;
                 }

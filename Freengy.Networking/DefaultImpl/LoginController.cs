@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -41,8 +42,11 @@ namespace Freengy.Networking.DefaultImpl
     internal class LoginController : ILoginController 
     {
         private readonly Func<string> clientAddressGetter;
-        private readonly IAccountManager accountManager;
+
+        private readonly IImageCacher imageCacher;
         private readonly ITaskWrapper taskWrapper;
+        private readonly IAccountManager accountManager;
+
         private readonly MessageBase messageLoggedIn;
         private readonly MessageBase messageLogInAttempt;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -58,13 +62,19 @@ namespace Freengy.Networking.DefaultImpl
             messageLoggedIn = new MessageLogInSuccess();
             messageLogInAttempt = new MessageLogInAttempt();
 
+            imageCacher = serviceLocator.Resolve<IImageCacher>();
             taskWrapper = serviceLocator.Resolve<ITaskWrapper>();
             accountManager = serviceLocator.Resolve<IAccountManager>();
             clientAddressGetter = () => serviceLocator.Resolve<IHttpClientParametersProvider>().GetClientAddressAsync().Result;
 
+            this.Subscribe<MessageAvatarChanged>(OnAvatarChanged);
             this.Subscribe<MessageExpirienceGained>(OnExpirienceGained);
         }
 
+
+        /// <summary>
+        /// Единственный инстанс <see cref="LoginController"/>.
+        /// </summary>
         public static ILoginController Instance => instance ?? (instance = new LoginController());
 
         #endregion Singleton
@@ -197,11 +207,6 @@ namespace Freengy.Networking.DefaultImpl
 
             Result<AccountStateModel> loginResult = InvokeLogInOrOut(loginModel);
 
-            if (loginResult.Success)
-            {
-                CacheMyAvatar();
-            }
-
             return loginResult;
         }
 
@@ -246,6 +251,12 @@ namespace Freengy.Networking.DefaultImpl
                 }
 
                 MyAccountState = new AccountState(stateModel);
+
+                if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
+                {
+                    Task.Run(() => CacheMyAvatar());
+                }
+
                 return Result<AccountStateModel>.Ok(stateModel);
             }
             catch (Exception ex)
@@ -296,6 +307,7 @@ namespace Freengy.Networking.DefaultImpl
                     //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
                     accountManager.SaveLoginTime(privateAccountModel);
                     SaveOnlineState(loginModel, auth);
+                    
                     this.Publish(messageLoggedIn);
                 }
                 else if(stateModel.OnlineStatus == AccountOnlineStatus.Offline)
@@ -336,7 +348,39 @@ namespace Freengy.Networking.DefaultImpl
 
         private void OnExpirienceGained(MessageExpirienceGained message) 
         {
+            if (MyAccountState == null)
+            {
+                // так может быть, если сервер начислил опыт за онлайн до того, как закончилась клиентская логика логина
+                return;
+            }
+
             MyAccountState.Account.AddExp(message.Amount);
+
+            this.Publish(new MessageMyAccountUpdated(MyAccountState));
+        }
+
+        private void OnAvatarChanged(MessageAvatarChanged message) 
+        {
+            Result<UserAvatarModel> existingAvatar = MyAccountState.Account.GetExtensionPayload<AvatarExtension, UserAvatarModel>();
+
+            if(existingAvatar.Failure) throw new InvalidOperationException("Failed to get my avatar");
+
+            if (existingAvatar.Value == null)
+            {
+                var newModel = new UserAvatarModel
+                {
+                    AvatarPath = message.NewAvatarPath,
+                    LastModified = DateTime.Now,
+                    ParentId = MyAccountState.Account.Id
+                };
+                var extension = new AvatarExtension(newModel);
+                MyAccountState.Account.AddExtension<AvatarExtension, UserAvatarModel>(extension);
+            }
+            else
+            {
+                existingAvatar.Value.AvatarBlob = null;
+                existingAvatar.Value.AvatarPath = message.NewAvatarPath;
+            }
 
             this.Publish(new MessageMyAccountUpdated(MyAccountState));
         }
@@ -346,7 +390,7 @@ namespace Freengy.Networking.DefaultImpl
             var myAvatarResult = accountManager.GetUserAvatars(new[] { MyAccountState.Account.Id });
             if (myAvatarResult.Failure)
             {
-                return;
+                throw new InvalidOperationException(myAvatarResult.Error.Message);
             }
 
             //аватара у меня может и не быть
@@ -356,8 +400,15 @@ namespace Freengy.Networking.DefaultImpl
                 return;
             }
 
+            if (!File.Exists(myAvatar.AvatarPath))
+            {
+                myAvatar.AvatarPath = imageCacher.CacheAvatar(myAvatar).Value;
+            }
+
             var avatarExtension = new AvatarExtension(myAvatar);
             MyAccountState.Account.AddExtension<AvatarExtension, UserAvatarModel>(avatarExtension);
+
+            this.Publish(new MessageMyAccountUpdated(MyAccountState));
         }
     }
 }

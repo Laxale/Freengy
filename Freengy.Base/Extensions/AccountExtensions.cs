@@ -5,6 +5,7 @@
 using System;
 using Freengy.Base.Models;
 using Freengy.Base.Models.Readonly;
+using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;
 
 
@@ -55,6 +56,20 @@ namespace Freengy.Base.Extensions
             };
 
             return model;
+        }
+
+        /// <summary>
+        /// Получить из расширений аккаунта модель его аватара.
+        /// </summary>
+        /// <param name="account">Модель аккаунта.</param>
+        /// <returns>Модель аватара аккаунта или null.</returns>
+        public static UserAvatarModel GetAvatar(this UserAccount account) 
+        {
+            Result<UserAvatarModel> result = account.GetExtensionPayload<AvatarExtension, UserAvatarModel>();
+
+            if (result.Failure) return null;
+
+            return result.Value;
         }
 
         public static void AcceptProperties(this UserAvatarModel targetModel, UserAvatarModel foreignModel) 
