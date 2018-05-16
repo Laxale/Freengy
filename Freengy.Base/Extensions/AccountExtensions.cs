@@ -2,7 +2,9 @@
 //
 //
 
+using System;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
 
 
@@ -33,6 +35,36 @@ namespace Freengy.Base.Extensions
             privateModel.Albums.AddRange(commonModel.Albums);
 
             return privateModel;
+        }
+
+        /// <summary>
+        /// Convert read-only <see cref="UserAccount"/> to <see cref="UserAccountModel"/>.
+        /// </summary>
+        /// <param name="account">Read-only user account.</param>
+        /// <returns><see cref="UserAccountModel"/> instance.</returns>
+        public static UserAccountModel ToModel(this UserAccount account) 
+        {
+            var model = new UserAccountModel
+            {
+                Id = account.Id,
+                Name = account.Name,
+                Expirience = (int)account.GetCurrentExp(),
+                Privilege = account.Privilege,
+                LastLogInTime = account.LastLogInTime,
+                RegistrationTime = account.RegistrationTime
+            };
+
+            return model;
+        }
+
+        public static void AcceptProperties(this UserAvatarModel targetModel, UserAvatarModel foreignModel) 
+        {
+            if(targetModel.Id != foreignModel.Id) throw new InvalidOperationException($"Avatar id mismatch");
+            if(targetModel.ParentId != foreignModel.ParentId) throw new InvalidOperationException($"Avatar parent id mismatch");
+
+            targetModel.AvatarPath = foreignModel.AvatarPath;
+            targetModel.AvatarBlob = foreignModel.AvatarBlob;
+            targetModel.LastModified = foreignModel.LastModified;
         }
     }
 }

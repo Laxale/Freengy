@@ -5,8 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
-using Freengy.Common.Models.Readonly;
+using Freengy.Base.Models.Readonly;
 
 
 namespace Freengy.Base.Interfaces 

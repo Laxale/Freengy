@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.Chat.DefaultImpl;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using NUnit.Framework;
 
 

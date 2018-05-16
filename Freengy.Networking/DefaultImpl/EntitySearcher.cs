@@ -13,10 +13,9 @@ using Freengy.Common.Models;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.ErrorReason;
 using Freengy.Common.Interfaces;
-using Freengy.Common.Models.Readonly;
-
 using NLog;
 
 

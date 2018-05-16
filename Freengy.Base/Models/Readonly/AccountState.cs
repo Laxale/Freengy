@@ -4,11 +4,10 @@
 
 
 using System;
-
 using Freengy.Common.Enums;
+using Freengy.Common.Models;
 
-
-namespace Freengy.Common.Models.Readonly 
+namespace Freengy.Base.Models.Readonly 
 {
     /// <summary>
     /// Readonly user account state wrapper other volatile <see cref="AccountStateModel"/>.

@@ -21,7 +21,6 @@ using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.FriendList.Views;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
@@ -31,6 +30,8 @@ using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages.Notification;
+using Freengy.Base.Models;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Constants;
 using Freengy.Common.Enums;
 using Freengy.Common.Models.Avatar;
@@ -47,6 +48,8 @@ namespace Freengy.FriendList.ViewModels
     public class FriendListViewModel : WaitableViewModel 
     {
         private readonly IChatHub chatHub;
+        private readonly IImageCacher imageCacher;
+        private readonly IAccountManager accountManager;
         private readonly ICurtainedExecutor curtainedExecutor;
         private readonly IFriendStateController friendStateController;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
@@ -62,6 +65,8 @@ namespace Freengy.FriendList.ViewModels
             base(taskWrapper, guiDispatcher, serviceLocator)
         {
             chatHub = ServiceLocator.Resolve<IChatHub>();
+            imageCacher = ServiceLocator.Resolve<IImageCacher>();
+            accountManager = ServiceLocator.Resolve<IAccountManager>();
             curtainedExecutor = ServiceLocator.Resolve<ICurtainedExecutor>();
             friendStateController = ServiceLocator.Resolve<IFriendStateController>();
 
@@ -163,7 +168,7 @@ namespace Freengy.FriendList.ViewModels
                 GUIDispatcher.InvokeOnGuiThread(() => friendViewModels.Add(viewModel));
             }
 
-            await SearchFriendAvatars();
+            await SyncUserAvatars();
 
             foreach (FriendRequest friendRequest in requests)
             {
@@ -173,6 +178,56 @@ namespace Freengy.FriendList.ViewModels
 
 
         #region privates
+
+        private async Task SyncUserAvatars() 
+        {
+            IEnumerable<Guid> allFriendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
+            UserAvatarsReply remoteAvatarsCache = await GetRemoteAvatarsCache(allFriendIds);
+            Result<IEnumerable<ObjectModificationTime>> localCacheResult = await GetLocalAvatarsCache();
+
+            if (localCacheResult.Failure)
+            {
+                throw new InvalidOperationException($"Failed to get local avatars cache: { localCacheResult.Error.Message }");
+            }
+
+            var outdatedFriendIds = new List<Guid>();
+            List<ObjectModificationTime> localCache = localCacheResult.Value.ToList();
+            foreach (ObjectModificationTime fromServerTime in remoteAvatarsCache.AvatarsModifications)
+            {
+                ObjectModificationTime localTime = localCache.FirstOrDefault(time => time.ObjectId == fromServerTime.ObjectId);
+                if (localTime != null && fromServerTime.ModificationTime > localTime.ModificationTime)
+                {
+                    outdatedFriendIds.Add(localTime.ObjectId);
+                }
+            }
+
+            UserAvatarsReply remoteAvatars = await GetRemoteAvatars(outdatedFriendIds);
+
+            foreach (AvatarModel remoteAvatar in remoteAvatars.UserAvatars)
+            {
+                UserAccount targetAccount = 
+                    friendViewModels
+                        .First(viewModel => viewModel.AccountState.Account.Id == remoteAvatar.ParentId).AccountState.Account;
+
+                var avatarModel = new UserAvatarModel
+                {
+                    AvatarBlob = remoteAvatar.ImageBlob,
+                    Id = remoteAvatar.Id,
+                    ParentId = remoteAvatar.ParentId,
+                    LastModified = remoteAvatar.LastModified
+                };
+
+                Result<string> cacheResult = imageCacher.CacheAvatar(avatarModel);
+                string cachePath = cacheResult.Value;
+                avatarModel.AvatarPath = cachePath;
+                accountManager.SaveUserAvatar(avatarModel);
+                remoteAvatar.ImageBlob = null;
+                avatarModel.AvatarBlob = null;
+
+                var avatarExtension = new AvatarExtension(avatarModel);
+                targetAccount.AddExtension<AvatarExtension, UserAvatarModel>(avatarExtension);
+            }
+        }
 
         private void StartChatImpl(AccountState targetAccountState) 
         {
@@ -219,7 +274,7 @@ namespace Freengy.FriendList.ViewModels
             using (var httpActor = ServiceLocator.Resolve<IHttpActor>())
             {
                 httpActor.SetRequestAddress(Url.Http.Search.SearchFriendRequestsUrl).SetClientSessionToken(mySessionToken);
-                SearchRequest searchRequest = SearchRequest.CreateAlienFriendRequestSearch(myAccount);
+                SearchRequest searchRequest = SearchRequestHelper.CreateAlienFriendRequestSearch(myAccount);
 
                 Result<List<FriendRequest>> result = await httpActor.PostAsync<SearchRequest, List<FriendRequest>>(searchRequest);
 
@@ -232,7 +287,27 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private async Task<UserAvatarsReply> SearchFriendAvatars() 
+        private async Task<Result<IEnumerable<ObjectModificationTime>>> GetLocalAvatarsCache() 
+        {
+            IEnumerable<Guid> friendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
+            return await Task.Run(() => accountManager.GetUserAvatarsCache(friendIds));
+        }
+
+        private async Task<UserAvatarsReply> GetRemoteAvatars(IEnumerable<Guid> friendIds) 
+        {
+            SearchRequest searchRequest = SearchRequestHelper.CreateAvatarSearch(myAccount, friendIds);
+
+            return await ProcessAvatarRequest(searchRequest);
+        }
+
+        private async Task<UserAvatarsReply> GetRemoteAvatarsCache(IEnumerable<Guid> friendIds) 
+        {
+            SearchRequest searchRequest = SearchRequestHelper.CreateAvatarCacheSearch(myAccount, friendIds);
+
+            return await ProcessAvatarRequest(searchRequest);
+        }
+
+        private async Task<UserAvatarsReply> ProcessAvatarRequest(SearchRequest searchRequest) 
         {
             if (!friendViewModels.Any())
             {
@@ -247,7 +322,7 @@ namespace Freengy.FriendList.ViewModels
                     .AddHeader(FreengyHeaders.Client.ClientIdHeaderName, myAccount.Id.ToString());
 
                 IEnumerable<Guid> friendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
-                SearchRequest searchRequest = SearchRequest.CreateAvatarCacheSearch(myAccount, friendIds);
+                
 
                 Result<UserAvatarsReply> result = await httpActor.PostAsync<SearchRequest, UserAvatarsReply>(searchRequest);
 
@@ -255,7 +330,7 @@ namespace Freengy.FriendList.ViewModels
                 {
                     ReportMessage(result.Error.Message);
                 }
-                else if(result.Value == null)
+                else if (result.Value == null)
                 {
                     ReportMessage("Friends not found");
                 }

@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Freengy.Common.Enums;
 using Freengy.Common.Database;
 using Freengy.Common.Extensions;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Common.Models 
@@ -44,24 +43,5 @@ namespace Freengy.Common.Models
         /// Request decision timestamp.
         /// </summary>
         public DateTime DecisionDate { get; set; }
-
-
-        /// <summary>
-        /// Create ready for use <see cref="FriendRequest"/> instance.
-        /// </summary>
-        /// <param name="sender">Request sender account.</param>
-        /// <param name="target">Request target account.</param>
-        /// <returns><see cref="FriendRequest"/> instance.</returns>
-        public static FriendRequest Create(UserAccount sender, UserAccount target) 
-        {
-            var request = new FriendRequest
-            {
-                RequesterAccount = sender.ToModel(),
-                TargetAccount = target.ToModel(),
-                CreationDate = DateTime.Now
-            };
-
-            return request;
-        }
     }
 }

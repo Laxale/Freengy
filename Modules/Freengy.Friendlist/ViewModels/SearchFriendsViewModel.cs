@@ -20,12 +20,12 @@ using Freengy.Networking.Interfaces;
 using Freengy.Networking.Constants;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
-using Freengy.Common.Models.Readonly;
-
 using NLog;
 
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
+using Freengy.Base.Models.Readonly;
 
 
 namespace Freengy.FriendList.ViewModels 
@@ -178,7 +178,7 @@ namespace Freengy.FriendList.ViewModels
                 {
                     httpActor.SetRequestAddress(Url.Http.AddFriendUrl);
 
-                    FriendRequest request = FriendRequest.Create(myAccount, targetAccount);
+                    FriendRequest request = FriendRequestHelper.Create(myAccount, targetAccount);
                     Result<FriendRequest> result = httpActor.PostAsync<FriendRequest, FriendRequest>(request).Result;
 
                     if (result.Failure)

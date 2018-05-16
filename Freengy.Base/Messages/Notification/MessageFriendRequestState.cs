@@ -3,9 +3,9 @@
 //
 
 using Freengy.Base.Messages.Base;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Messages.Notification 

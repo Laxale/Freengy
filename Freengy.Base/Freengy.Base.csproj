@@ -77,8 +77,10 @@
     <Compile Include="Constants\Numeric.cs" />
     <Compile Include="DbConfiguration\ComplexImageConfiguration.cs" />
     <Compile Include="DbConfiguration\ComplexAlbumConfiguration.cs" />
+    <Compile Include="DbConfiguration\UserAvatarConfiguration.cs" />
     <Compile Include="DbContext\AccountContext.cs" />
     <Compile Include="DbContext\ComplexAlbumContext.cs" />
+    <Compile Include="DbContext\UserAvatarContext.cs" />
     <Compile Include="DefaultImpl\AlbumManager.cs" />
     <Compile Include="DefaultImpl\AppDirectoryInspector.cs" />
     <Compile Include="Chat\DefaultImpl\ChatMessageDecorator.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Chat\DefaultImpl\ChatSessionFactory.cs" />
     <Compile Include="DefaultImpl\CurtainedExecutor.cs" />
     <Compile Include="DefaultImpl\DbAccountManager.cs" />
+    <Compile Include="DefaultImpl\ImageCacher.cs" />
     <Compile Include="DefaultImpl\MessageHub.cs" />
     <Compile Include="DefaultImpl\MessageHubExtensions.cs" />
     <Compile Include="DefaultImpl\ResponsibilityChainer.cs" />
@@ -113,6 +116,8 @@
     <Compile Include="Helpers\KeyHandler.cs" />
     <Compile Include="Helpers\Commands\MyCommand.cs" />
     <Compile Include="Helpers\KnownCurtainedIds.cs" />
+    <Compile Include="Helpers\FriendRequestHelper.cs" />
+    <Compile Include="Helpers\SearchRequestHelper.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Helpers\ViewModelWierer.cs" />
     <Compile Include="Helpers\VisualTreeSearcher.cs" />
@@ -127,6 +132,7 @@
     <Compile Include="Interfaces\ICurtainedExecutor.cs" />
     <Compile Include="Interfaces\IFriendStateController.cs" />
     <Compile Include="Interfaces\IGuiDispatcher.cs" />
+    <Compile Include="Interfaces\IImageCacher.cs" />
     <Compile Include="Interfaces\IMyServiceLocator.cs" />
     <Compile Include="Interfaces\IRefreshable.cs" />
     <Compile Include="Interfaces\IRegistrator.cs" />
@@ -151,7 +157,13 @@
     <Compile Include="Messages\Notification\MessageNewFriendRequest.cs" />
     <Compile Include="Messages\Notification\MessageServerOnlineStatus.cs" />
     <Compile Include="Messages\MessageWorkingDirectoryChanged.cs" />
+    <Compile Include="Models\Extension\AccountExtension.cs" />
+    <Compile Include="Models\Extension\GenericAccountExtension.cs" />
+    <Compile Include="Models\AvatarExtension.cs" />
     <Compile Include="Models\PrivateAccountModel.cs" />
+    <Compile Include="Models\Readonly\AccountState.cs" />
+    <Compile Include="Models\Readonly\Album.cs" />
+    <Compile Include="Models\Readonly\UserAccount.cs" />
     <Compile Include="Models\Update\AddressUpdate.cs" />
     <Compile Include="Models\Update\FriendUpdate.cs" />
     <Compile Include="Models\Update\FriendUpdateType.cs" />
@@ -159,6 +171,7 @@
     <Compile Include="Models\Update\NameUpdate.cs" />
     <Compile Include="Models\Update\PrivilegeUpdate.cs" />
     <Compile Include="Models\Update\OnlineStatusUpdate.cs" />
+    <Compile Include="Models\UserAvatarModel.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppSettings.cs" />

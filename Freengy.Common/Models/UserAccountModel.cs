@@ -12,7 +12,6 @@ using Freengy.Common.Enums;
 using Freengy.Common.Helpers;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models.Avatar;
-using Freengy.Common.Models.Readonly;
 
 using Newtonsoft.Json;
 
@@ -22,7 +21,7 @@ namespace Freengy.Common.Models
     /// <summary>
     /// Data model of a user account.
     /// </summary>
-    [Table(nameof(UserAccount) + "s")]
+    [Table("UserAccounts")]
     public class UserAccountModel : ComplexDbObject, INamedObject 
     {
         /// <summary>
@@ -56,11 +55,6 @@ namespace Freengy.Common.Models
         /// Gets or sets last user log-in time.
         /// </summary>
         public DateTime LastLogInTime { get; set; }
-
-        /// <summary>
-        /// Возвращает или задаёт модель аватара пользователя.
-        /// </summary>
-        //public UserAvatarModel Avatar { get; set; }
 
         /// <summary>
         /// Gets or sets user albums list.

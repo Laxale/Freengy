@@ -6,9 +6,8 @@ using System;
 
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
-
 using Res = Freengy.Localization.StringResources;
 
 

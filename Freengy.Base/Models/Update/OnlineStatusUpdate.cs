@@ -2,8 +2,8 @@
 //
 //
 
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Enums;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Models.Update 

@@ -5,7 +5,6 @@
 using System.Data.Entity.ModelConfiguration;
 
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.DbConfiguration 

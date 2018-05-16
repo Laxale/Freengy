@@ -13,9 +13,9 @@ using Freengy.Base.Chat.Interfaces;
 using Freengy.Common.Constants;
 using Freengy.Common.Helpers;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Extensions;
 using Freengy.Networking.Messages;
 

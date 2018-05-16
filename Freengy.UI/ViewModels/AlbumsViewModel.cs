@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows.Data;
 
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Extensions;
 using Freengy.Base.Helpers.Commands;
 using Freengy.UI.Views;
 using Freengy.Common.Helpers;
@@ -17,9 +18,9 @@ using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Extensions;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Helpers.Result;
 
 

@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Models.Readonly;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Constants;
 using Freengy.Common.Interfaces;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Helpers;
 using Freengy.Networking.Interfaces;
 
 
-namespace Freengy.UI.ViewModels
+namespace Freengy.UI.ViewModels 
 {
     internal class EditMyAccountViewModel : WaitableViewModel 
     {

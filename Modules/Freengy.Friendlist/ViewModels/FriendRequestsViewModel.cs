@@ -12,6 +12,7 @@ using System.Windows.Data;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Interfaces;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Enums;
 using Freengy.Common.Models;
 using Freengy.Networking.Constants;
@@ -22,7 +23,6 @@ using Freengy.Common.Constants;
 using Freengy.Common.Database;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.FriendList.ViewModels 

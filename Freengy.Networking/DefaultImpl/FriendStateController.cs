@@ -9,12 +9,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Helpers;
 using Freengy.Base.Interfaces;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
+using Freengy.Base.Models.Readonly;
 using Freengy.Base.Models.Update;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Interfaces;
@@ -99,7 +100,7 @@ namespace Freengy.Networking.DefaultImpl
             using (var httpActor = serviceLocator.Resolve<IHttpActor>())
             {
                 httpActor.SetRequestAddress(Url.Http.Search.SearchUsersUrl).SetClientSessionToken(sessionTokenGetter());
-                SearchRequest searchRequest = SearchRequest.CreateFriendSearch(myAccountGetter(), string.Empty);
+                SearchRequest searchRequest = SearchRequestHelper.CreateFriendSearch(myAccountGetter(), string.Empty);
 
                 Result<List<AccountStateModel>> result = await httpActor.PostAsync<SearchRequest, List<AccountStateModel>>(searchRequest);
                 stateModels = result.Failure ? new List<AccountStateModel>() : result.Value;

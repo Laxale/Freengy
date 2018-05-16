@@ -4,12 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-
-using Freengy.Common.Database;
 using Freengy.Common.Interfaces;
+using Freengy.Common.Models;
 
-
-namespace Freengy.Common.Models.Readonly 
+namespace Freengy.Base.Models.Readonly 
 {
     /// <summary>
     /// Представляет собой readonly обёртку над моделью данных <see cref="AlbumModel"/>.

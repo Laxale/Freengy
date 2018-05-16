@@ -18,7 +18,6 @@ using Freengy.Common.Models;
 using Freengy.Common.Helpers;
 using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.Result;
-using Freengy.Common.Models.Readonly;
 using Freengy.Base.Helpers;
 using Freengy.Base.Settings;
 using Freengy.Base.Messages;
@@ -32,7 +31,7 @@ using Freengy.UI.Views;
 using Freengy.UI.Windows;
 using Freengy.Base.Windows;
 using Freengy.Base.Messages.Notification;
-
+using Freengy.Base.Models.Readonly;
 using NLog;
 
 using Prism.Regions;

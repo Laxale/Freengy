@@ -2,8 +2,7 @@
 //
 //
 
-using Freengy.Common.Models.Readonly;
-
+using Freengy.Base.Models.Readonly;
 
 namespace Freengy.Base.Models.Update 
 {

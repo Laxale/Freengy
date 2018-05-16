@@ -9,14 +9,14 @@ using System.Collections.Generic;
 namespace Freengy.Common.Models.Avatar 
 {
     /// <summary>
-    /// Модель ответа сервера на запрос аватаров пользователей.
+    /// Модель ответа сервера на запрос аватаров (или кэш-информации о них) пользователей.
     /// </summary>
     public class UserAvatarsReply 
     {
         /// <summary>
         /// Возвращает или задаёт коллекцию аватаров пользователей.
         /// </summary>
-        public List<UserAvatarModel> UserAvatars { set; get; }
+        public List<AvatarModel> UserAvatars { set; get; }
 
         /// <summary>
         /// Возвращает или задаёт коллекцию меток времени последней модификации аватаров пользователей.

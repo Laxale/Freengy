@@ -13,7 +13,7 @@ using System.Windows.Data;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.DefaultImpl;
-using Freengy.Common.Models.Readonly;
+using Freengy.Base.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.DefaultImpl 

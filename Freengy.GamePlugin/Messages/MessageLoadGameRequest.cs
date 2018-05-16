@@ -3,9 +3,8 @@
 //
 
 using System.Collections.Generic;
-
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.GamePlugin.Interfaces;
 
 

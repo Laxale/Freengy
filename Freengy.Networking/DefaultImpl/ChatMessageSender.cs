@@ -5,8 +5,8 @@
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Extensions;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Constants;
 

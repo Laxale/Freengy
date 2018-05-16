@@ -3,8 +3,8 @@
 //
 
 using Freengy.Base.Interfaces;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.Interfaces 

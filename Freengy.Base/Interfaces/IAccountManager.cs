@@ -2,10 +2,12 @@
 //
 //
 
+using System;
+using System.Collections.Generic;
 using Freengy.Base.Models;
 using Freengy.Common.Models;
 using Freengy.Common.Helpers.Result;
-using Freengy.Common.Models.Readonly;
+using Freengy.Common.Models.Avatar;
 
 
 namespace Freengy.Base.Interfaces 
@@ -33,7 +35,28 @@ namespace Freengy.Base.Interfaces
         /// Сохранить изменения аккаунта в базу клиента.
         /// </summary>
         /// <param name="myAccountModel"></param>
-        /// <returns></returns>
+        /// <returns>Результат сохранения.</returns>
         Result UpdateMyAccount(PrivateAccountModel myAccountModel);
+
+        /// <summary>
+        /// Сохранить аватар пользователя.
+        /// </summary>
+        /// <param name="avatarModel">Модель аватара пользователя.</param>
+        /// <returns>Результат сохранения аватара.</returns>
+        Result SaveUserAvatar(UserAvatarModel avatarModel);
+
+        /// <summary>
+        /// Получить коллекцию аватаров пользователей.
+        /// </summary>
+        /// <param name="userIds">Коллекция идентификаторов пользователей.</param>
+        /// <returns>Коллекцию сохранённых аватаров пользователей.</returns>
+        Result<IEnumerable<UserAvatarModel>> GetUserAvatars(IEnumerable<Guid> userIds);
+
+        /// <summary>
+        /// Получить информацию о датах модификации аватаров пользователей.
+        /// </summary>
+        /// <param name="userIds">Коллекция идентификаторов пользователей.</param>
+        /// <returns>Коллекцию данных о временах модификации аватаров пользователей.</returns>
+        Result<IEnumerable<ObjectModificationTime>> GetUserAvatarsCache(IEnumerable<Guid> userIds);
     }
 }

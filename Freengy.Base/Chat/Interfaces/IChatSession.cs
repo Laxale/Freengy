@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 
 using Freengy.Base.Interfaces;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Interfaces;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Chat.Interfaces 

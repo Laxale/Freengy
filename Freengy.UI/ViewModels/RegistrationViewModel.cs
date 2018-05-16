@@ -14,7 +14,7 @@ using Freengy.Networking.Interfaces;
 using Freengy.Base.Messages;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Interfaces;
-using Freengy.Common.Models.Readonly;
+using Freengy.Base.Models.Readonly;
 
 
 namespace Freengy.UI.ViewModels 

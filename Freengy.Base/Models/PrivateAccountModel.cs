@@ -2,10 +2,10 @@
 //
 //
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.Models 
@@ -20,5 +20,16 @@ namespace Freengy.Base.Models
         /// Password salt obtained from server during last login or registration action.
         /// </summary>
         public string NextLoginSalt { get; set; }
+
+        /// <summary>
+        /// Возвращает или задаёт пользовательский аватар.
+        /// </summary>
+        [NotMapped]
+        public UserAvatarModel Avatar { get; set; }
+
+        /// <summary>
+        /// Возвращает или задаёт коллекцию пользовательских аватаров.
+        /// </summary>
+        public List<UserAvatarModel> Avatars { get; set; } = new List<UserAvatarModel>();
     }
 }

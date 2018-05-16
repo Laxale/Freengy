@@ -3,8 +3,8 @@
 //
 
 using Freengy.Base.Interfaces;
+using Freengy.Base.Models.Readonly;
 using Freengy.Base.ViewModels;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.FriendList.ViewModels 

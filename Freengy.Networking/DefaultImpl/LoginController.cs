@@ -15,7 +15,6 @@ using Freengy.Common.Models;
 using Freengy.Common.Helpers;
 using Freengy.Common.Extensions;
 using Freengy.Common.Helpers.Result;
-using Freengy.Common.Models.Readonly;
 using Freengy.Common.Interfaces;
 using Freengy.Networking.Helpers;
 using Freengy.Networking.Messages;
@@ -25,6 +24,7 @@ using Freengy.Base.DefaultImpl;
 using Freengy.Base.Extensions;
 using Freengy.Base.Messages.Base;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Constants;
 using Freengy.Common.ErrorReason;
 

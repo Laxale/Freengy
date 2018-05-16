@@ -11,8 +11,8 @@ using Freengy.Base.Extensions;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Messages;
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.ViewModels 

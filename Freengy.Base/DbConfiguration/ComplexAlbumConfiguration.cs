@@ -3,9 +3,8 @@
 //
 
 using System.Data.Entity.ModelConfiguration;
-
+using Freengy.Base.Models.Readonly;
 using Freengy.Common.Models;
-using Freengy.Common.Models.Readonly;
 
 
 namespace Freengy.Base.DbConfiguration 

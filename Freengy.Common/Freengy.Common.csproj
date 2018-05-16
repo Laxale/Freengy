@@ -57,7 +57,7 @@
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\HttpMessageExtensions.cs" />
     <Compile Include="Exceptions\ServerNotAuthorizedException.cs" />
-    <Compile Include="Extensions\AccountExtensions.cs" />
+    <Compile Include="Extensions\CommonAccountExtensions.cs" />
     <Compile Include="Extensions\IpAddressExtensions.cs" />
     <Compile Include="Extensions\NancyHttpMessageExtensions.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
@@ -84,7 +84,6 @@
     <Compile Include="Models\AccountStateModel.cs" />
     <Compile Include="Models\AlbumModel.cs" />
     <Compile Include="Models\Avatar\AvatarModel.cs" />
-    <Compile Include="Models\Avatar\UserAvatarModel.cs" />
     <Compile Include="Models\Avatar\UserAvatarsReply.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\EditAccountModel.cs" />
@@ -94,9 +93,6 @@
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ObjectModificationTime.cs" />
-    <Compile Include="Models\Readonly\AccountState.cs" />
-    <Compile Include="Models\Readonly\Album.cs" />
-    <Compile Include="Models\Readonly\UserAccount.cs" />
     <Compile Include="Models\RegistrationRequest.cs" />
     <Compile Include="Models\SearchRequest.cs" />
     <Compile Include="Models\SessionAuth.cs" />
