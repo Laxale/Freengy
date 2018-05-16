@@ -49,7 +49,35 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Cursor="Help">
+        <!-- Значок времени онлайна -->
+        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" 
+                Cursor="Help" Height="20" Width="20"  Margin="0, -2, 6, 0">
+            <Border.ToolTip>
+                <ToolTip>
+                    <Border>
+                        <DockPanel>
+                            <Path DockPanel.Dock="Left" Data="{StaticResource ClockIconGeometry}" 
+                                  Fill="{StaticResource PurpleBrush}" Margin="{StaticResource All4Margin}">
+                                <Path.LayoutTransform>
+                                    <ScaleTransform ScaleX="0.08" ScaleY="0.08"/>
+                                </Path.LayoutTransform>
+                            </Path>
+
+                            <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}" Text="{Binding Path=OnlinePeriodNotice}"/>
+                        </DockPanel>
+                    </Border>
+                </ToolTip>
+            </Border.ToolTip>
+
+            <Path Data="{StaticResource ClockIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                <Path.LayoutTransform>
+                    <ScaleTransform ScaleX="0.041" ScaleY="0.041"/>
+                </Path.LayoutTransform>
+            </Path>
+        </Border>
+
+        <!-- Значок Доступности сервера -->
+        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Cursor="Help" Margin="{StaticResource 4LeftMargin}">
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>

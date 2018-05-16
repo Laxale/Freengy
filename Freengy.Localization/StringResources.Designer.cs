@@ -448,6 +448,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not logged in.
+        /// </summary>
+        public static string NotLoggedIn {
+            get {
+                return ResourceManager.GetString("NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password changed.
         /// </summary>
         public static string PasswordChanged {

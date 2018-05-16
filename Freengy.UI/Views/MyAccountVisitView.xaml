@@ -64,7 +64,7 @@
 
                 <!-- Аватар -->
                 <Image Height="56" Width="56" Loaded="AvatarImage_OnLoaded" HorizontalAlignment="Left" Name="AvatarImage" Cursor="Help"
-                       Visibility="{Binding Path=CurrentAvatarPath, Converter={StaticResource NullToVisibilityConverter}}" Source="D:/smirk.png">
+                       Visibility="{Binding Path=CurrentAvatarPath, Converter={StaticResource NullToVisibilityConverter}}">
                     <Image.Effect>
                         <DropShadowEffect BlurRadius="10" RenderingBias="Performance" Opacity="0.8" Color="Purple"/>
                     </Image.Effect>

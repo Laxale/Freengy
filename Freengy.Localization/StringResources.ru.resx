@@ -324,4 +324,7 @@
   <data name="BestAvatarEver" xml:space="preserve">
     <value>Лучший аватар в истории</value>
   </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>Вход не выполнен</value>
+  </data>
 </root>
