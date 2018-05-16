@@ -318,4 +318,7 @@
   <data name="LevelExpirience" xml:space="preserve">
     <value>Уровень опыта</value>
   </data>
+  <data name="ServerDeniedInvalidRequest" xml:space="preserve">
+    <value>Сервер отклонил неправильный запрос</value>
+  </data>
 </root>

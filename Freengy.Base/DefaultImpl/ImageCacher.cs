@@ -3,9 +3,13 @@
 //
 
 using System;
+using System.IO;
 
 using Freengy.Base.Interfaces;
 using Freengy.Base.Models;
+using Freengy.Common.Constants;
+using Freengy.Common.ErrorReason;
+using Freengy.Common.Helpers;
 using Freengy.Common.Helpers.Result;
 
 
@@ -20,8 +24,19 @@ namespace Freengy.Base.DefaultImpl
 
         private static ImageCacher instance;
 
+        private readonly string cacheFolderPath;
 
-        private ImageCacher() { }
+
+        private ImageCacher() 
+        {
+            string appDataPath = new FolderHelper().LocalAppDataPath;
+            cacheFolderPath = Path.Combine(appDataPath, FreengyPaths.AppDataRootFolderName, "Avatars");
+
+            if (!Directory.Exists(cacheFolderPath))
+            {
+                Directory.CreateDirectory(cacheFolderPath);
+            }
+        }
 
 
         /// <summary>
@@ -56,7 +71,30 @@ namespace Freengy.Base.DefaultImpl
         /// <returns>Результат кэширования.</returns>
         public Result<string> CacheAvatar(UserAvatarModel avatarModel) 
         {
-            throw new NotImplementedException();
+            try
+            {
+                var avatarName = $"User_Avatar_{avatarModel.ParentId}";
+                var avatarPath = Path.Combine(cacheFolderPath, avatarName);
+
+                if (File.Exists(avatarPath))
+                {
+                    File.WriteAllBytes(avatarPath, avatarModel.AvatarBlob);
+                }
+                else
+                {
+                    using (FileStream stream = File.Create(avatarPath))
+                    {
+                        stream.Write(avatarModel.AvatarBlob, 0, avatarModel.AvatarBlob.Length);
+                    }
+                }
+
+                return Result.Ok(avatarPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Result<string>.Fail(new UnexpectedErrorReason(ex.Message));
+            }
         }
     }
 }

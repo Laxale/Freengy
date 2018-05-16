@@ -98,7 +98,7 @@ namespace Freengy.Base.Views
                 throw new InvalidOperationException("Image source is empty. Both local and remote");
             }
 
-            imageSender.Source = LoadBitmapImage(imgSource);
+            imageSender.Source = new ImageLoader().LoadBitmapImage(imgSource).Value;
         }
 
         private void AlbumView_OnKeyDown(object sender, KeyEventArgs e) 
@@ -137,27 +137,12 @@ namespace Freengy.Base.Views
             this.Publish(new MessageAddImageRequest(inputText));
         }
 
-        private BitmapImage LoadBitmapImage(string imagePath) 
+
+        private void OnParentWindowKeyDown(MessageParentWindowKeyDown message) 
         {
-            using (var stream = new FileStream(imagePath, FileMode.Open))
+            if (message.Window == parentWindow)
             {
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = stream;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze(); // just in case you want to load the image in another thread
-
-                return bitmapImage;
-            }
-        }
-
-
-        private void OnParentWindowKeyDown(MessageParentWindowKeyDown messageParentWindowKeyDown) 
-        {
-            if (messageParentWindowKeyDown.Window == parentWindow)
-            {
-                AlbumView_OnKeyDown(messageParentWindowKeyDown.Window, messageParentWindowKeyDown.Args);
+                AlbumView_OnKeyDown(message.Window, message.Args);
             }
         }
     }

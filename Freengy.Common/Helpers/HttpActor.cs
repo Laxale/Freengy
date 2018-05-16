@@ -242,6 +242,10 @@ namespace Freengy.Common.Helpers
                     errorReason = new InvalidPasswordErrorReason();
                     return true;
 
+                case HttpStatusCode.BadRequest:
+                    errorReason = new InvalidRequestErrorReason();
+                    return true;
+
                 case HttpStatusCode.InternalServerError:
                     errorReason = new UnexpectedErrorReason("Unexpected server error");
                     return true;

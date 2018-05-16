@@ -3,12 +3,14 @@
 //
 
 using System;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Models;
 using Freengy.Base.Models.Readonly;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Constants;
@@ -26,11 +28,13 @@ namespace Freengy.UI.ViewModels
         private readonly string mySessionToken;
         private readonly string myInitialName;
         private readonly string myInitialStatus;
+        private readonly string myInitialAvatarPath;
         private readonly string myInitialDescription;
         private readonly ILoginController loginController;
 
         private string myName;
         private string myStatus;
+        private string avatarPath;
         private string myDescription;
         private SolidColorBrush myColor;
 
@@ -42,7 +46,7 @@ namespace Freengy.UI.ViewModels
             loginController = ServiceLocator.Resolve<ILoginController>();
             UserAccount myAaccount = loginController.MyAccountState.Account;
 
-            CommandSave = new MyCommand(SaveImpl, () => IsChanged);
+            CommandSave = new MyCommand(SaveImpl, CanSave);
 
             MyName = myAaccount.Name;
             mySessionToken = loginController.MySessionToken;
@@ -52,6 +56,14 @@ namespace Freengy.UI.ViewModels
             myInitialName = MyName;
             myInitialStatus = MyStatus;
             myInitialDescription = MyDescription;
+
+            var payloadResult = myAaccount.GetExtensionPayload<AvatarExtension, UserAvatarModel>();
+
+            if (payloadResult.Success)
+            {
+                AvatarPath = payloadResult.Value.AvatarPath;
+                myInitialAvatarPath = AvatarPath;
+            }
         }
 
 
@@ -65,11 +77,6 @@ namespace Freengy.UI.ViewModels
         /// Возвращает значение флага - были ли сохранены изменения на сервере.
         /// </summary>
         public bool Saved { get; private set; }
-
-        /// <summary>
-        /// Возвращает значение - изменились ли мои данные.
-        /// </summary>
-        public bool IsChanged => MyName != myInitialName || MyStatus != myInitialStatus || MyDescription != myInitialDescription;
 
         /// <summary>
         /// Возвращает или задаёт название моего аккаунта.
@@ -126,6 +133,25 @@ namespace Freengy.UI.ViewModels
         }
 
         /// <summary>
+        /// Возвращает путь к моему аватару.
+        /// </summary>
+        public string AvatarPath 
+        {
+            get => avatarPath;
+
+            set
+            {
+                if (avatarPath == value) return;
+
+                avatarPath = value;
+
+                OnPropertyChanged();
+
+                CommandSave.RaiseCanExecuteChanged();
+            }
+        }
+
+        /// <summary>
         /// Возвращает или задаёт цвет моего аккаунта.
         /// </summary>
         public SolidColorBrush MyColor 
@@ -142,6 +168,15 @@ namespace Freengy.UI.ViewModels
             }
         }
 
+
+        private bool CanSave() 
+        {
+            return 
+                MyName != myInitialName 
+                || MyStatus != myInitialStatus 
+                || MyDescription != myInitialDescription
+                || AvatarPath != myInitialAvatarPath;
+        }
 
         private async void SaveImpl() 
         {
@@ -171,7 +206,7 @@ namespace Freengy.UI.ViewModels
                     NewDescription = MyDescription,
                     NewEmoteStatus = MyStatus,
                     NewName = MyName,
-                    NewImageBlob = null
+                    NewImageBlob = File.ReadAllBytes(AvatarPath)
                 };
 
                 await actor.PostAsync(changeRequest);

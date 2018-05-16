@@ -113,6 +113,7 @@
     <Compile Include="Helpers\ExeFileSearchFilter.cs" />
     <Compile Include="Helpers\FileSearchFilterBase.cs" />
     <Compile Include="Chat\Interfaces\IChatMessageFactory.cs" />
+    <Compile Include="Helpers\ImageLoader.cs" />
     <Compile Include="Helpers\KeyHandler.cs" />
     <Compile Include="Helpers\Commands\MyCommand.cs" />
     <Compile Include="Helpers\KnownCurtainedIds.cs" />

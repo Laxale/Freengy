@@ -26,6 +26,7 @@ namespace Freengy.Base.Module
                 var initializer = ViewModelInitializer.Instance;
 
                 MyServiceLocator.Instance.RegisterInstance(ChatHub.Instance);
+                MyServiceLocator.Instance.RegisterInstance(ImageCacher.Instance);
                 MyServiceLocator.Instance.RegisterInstance(CurtainedExecutor.Instance);
                 MyServiceLocator.Instance.RegisterInstance(ChatSessionFactory.Instance);
 

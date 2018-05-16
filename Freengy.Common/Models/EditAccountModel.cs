@@ -26,8 +26,8 @@ namespace Freengy.Common.Models
         public string NewEmoteStatus { get; set; }
 
         /// <summary>
-        /// Возвращает или задаёт Base64 блоб аватара аккаунта.
+        /// Возвращает или задаёт двоичный блоб аватара аккаунта.
         /// </summary>
-        public string NewImageBlob { get; set; }
+        public byte[] NewImageBlob { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 //
 //
 
+using System;
+
 using Freengy.Base.Models.Readonly;
 using Freengy.Common.Extensions;
 using Freengy.Common.Models;
@@ -9,9 +11,6 @@ using Freengy.Common.Models;
 
 namespace Freengy.Base.Extensions 
 {
-    using System;
-
-
     /// <summary>
     /// Содержит расширения для моделей альбомов.
     /// </summary>

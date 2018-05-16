@@ -237,4 +237,7 @@
   <data name="LevelExpirience" xml:space="preserve">
     <value>Level Expirience</value>
   </data>
+  <data name="ServerDeniedInvalidRequest" xml:space="preserve">
+    <value>Server denied invalid request</value>
+  </data>
 </root>

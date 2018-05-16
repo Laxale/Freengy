@@ -565,6 +565,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server denied invalid request.
+        /// </summary>
+        public static string ServerDeniedInvalidRequest {
+            get {
+                return ResourceManager.GetString("ServerDeniedInvalidRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server offline.
         /// </summary>
         public static string ServerOffline {

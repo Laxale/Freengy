@@ -16,11 +16,11 @@ namespace Freengy.Common.Models.Avatar
         /// <summary>
         /// Возвращает или задаёт коллекцию аватаров пользователей.
         /// </summary>
-        public List<AvatarModel> UserAvatars { set; get; }
+        public List<AvatarModel> UserAvatars { set; get; } = new List<AvatarModel>();
 
         /// <summary>
         /// Возвращает или задаёт коллекцию меток времени последней модификации аватаров пользователей.
         /// </summary>
-        public List<ObjectModificationTime> AvatarsModifications { get; set; }
+        public List<ObjectModificationTime> AvatarsModifications { get; set; } = new List<ObjectModificationTime>();
     }
 }

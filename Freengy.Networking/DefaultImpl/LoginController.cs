@@ -195,7 +195,14 @@ namespace Freengy.Networking.DefaultImpl
 
             loginModel.IsLoggingIn = true;
 
-            return InvokeLogInOrOut(loginModel);
+            Result<AccountStateModel> loginResult = InvokeLogInOrOut(loginModel);
+
+            if (loginResult.Success)
+            {
+                CacheMyAvatar();
+            }
+
+            return loginResult;
         }
 
         /// <summary>
@@ -250,7 +257,6 @@ namespace Freengy.Networking.DefaultImpl
                 return Result<AccountStateModel>.Fail(new UnexpectedErrorReason(message));
             }
         }
-
 
         private AccountStateModel LogInImpl(LoginModel loginModel) 
         {
@@ -333,6 +339,25 @@ namespace Freengy.Networking.DefaultImpl
             MyAccountState.Account.AddExp(message.Amount);
 
             this.Publish(new MessageMyAccountUpdated(MyAccountState));
+        }
+
+        private void CacheMyAvatar() 
+        {
+            var myAvatarResult = accountManager.GetUserAvatars(new[] { MyAccountState.Account.Id });
+            if (myAvatarResult.Failure)
+            {
+                return;
+            }
+
+            //аватара у меня может и не быть
+            UserAvatarModel myAvatar = myAvatarResult.Value.FirstOrDefault();
+            if (myAvatar == null)
+            {
+                return;
+            }
+
+            var avatarExtension = new AvatarExtension(myAvatar);
+            MyAccountState.Account.AddExtension<AvatarExtension, UserAvatarModel>(avatarExtension);
         }
     }
 }

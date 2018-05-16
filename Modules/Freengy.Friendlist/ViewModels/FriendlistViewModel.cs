@@ -183,6 +183,12 @@ namespace Freengy.FriendList.ViewModels
         {
             IEnumerable<Guid> allFriendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
             UserAvatarsReply remoteAvatarsCache = await GetRemoteAvatarsCache(allFriendIds);
+
+            if (!remoteAvatarsCache.AvatarsModifications.Any())
+            {
+                return;
+            }
+
             Result<IEnumerable<ObjectModificationTime>> localCacheResult = await GetLocalAvatarsCache();
 
             if (localCacheResult.Failure)
@@ -320,9 +326,6 @@ namespace Freengy.FriendList.ViewModels
                     .SetRequestAddress(Url.Http.Search.SearchAvatarsUrl)
                     .SetClientSessionToken(mySessionToken)
                     .AddHeader(FreengyHeaders.Client.ClientIdHeaderName, myAccount.Id.ToString());
-
-                IEnumerable<Guid> friendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
-                
 
                 Result<UserAvatarsReply> result = await httpActor.PostAsync<SearchRequest, UserAvatarsReply>(searchRequest);
 

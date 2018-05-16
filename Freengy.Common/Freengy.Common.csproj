@@ -53,6 +53,7 @@
     <Compile Include="Enums\GainExpReason.cs" />
     <Compile Include="Enums\RegistrationStatus.cs" />
     <Compile Include="Enums\SearchEntity.cs" />
+    <Compile Include="ErrorReason\InvalidRequestErrorReason.cs" />
     <Compile Include="ErrorReason\UserNotFoundErrorReason.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\HttpMessageExtensions.cs" />

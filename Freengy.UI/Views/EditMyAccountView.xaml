@@ -8,6 +8,7 @@
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
              xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+             xmlns:views="clr-namespace:Freengy.UI.Views"
 
              mc:Ignorable="d" 
              d:DesignWidth="300"
@@ -55,17 +56,78 @@
 
                 <!-- Аватар аккаунта -->
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="My avatar"/>
-                <Border Grid.Row="3" Grid.Column="1">
+                <Border Grid.Row="3" Grid.Column="1" AllowDrop="True" DragEnter="AvatarBorder_OnDragEnter" 
+                        DragLeave="AvatarBorder_OnDragLeave" Drop="AvatarBorder_OnDrop">
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top">
-                            <Path DockPanel.Dock="Left" Style="{StaticResource CommonPathStyle}" 
-                                  Data="{StaticResource ArrowDownIconGeometry}" Fill="{StaticResource PurpleBrush}"/>
+                            <Path DockPanel.Dock="Left" Fill="{StaticResource PurpleBrush}">
+                                <Path.Style>
+                                    <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=IsReadyToDrop}"
+                                                         Value="True">
+                                                <Setter Property="Data" Value="{StaticResource SuccessIconGeometry}"/>
+                                            </DataTrigger>
 
-                            <TextBlock DockPanel.Dock="Left" Text="Drop image here"/>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=IsReadyToDrop}"
+                                                         Value="False">
+                                                <Setter Property="Data" Value="{StaticResource ArrowDownIconGeometry}"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=CanDrop}"
+                                                         Value="False">
+                                                <Setter Property="Fill" Value="{StaticResource FirstMainBrush}"/>
+                                                <Setter Property="Data" Value="{StaticResource WarningIconGeometry}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+
+                            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" TextWrapping="Wrap" TextTrimming="CharacterEllipsis">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=Information,
+                                                                           Converter={StaticResource IsNullToBoolConverter}}"
+                                                         Value="True">
+                                                <Setter Property="Text" Value="Drop image here"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=Information,
+                                                                           Converter={StaticResource IsNullToBoolConverter}}"
+                                                         Value="False">
+                                                <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                                        Path=Information}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </DockPanel>
                         
-                        <Border DockPanel.Dock="Top" Background="{StaticResource FirstMainBrush}" MinHeight="40">
-                            <Image HorizontalAlignment="Center" Height="40"/>
+                        <!-- Панель с картинкой аватара -->
+                        <Border DockPanel.Dock="Top" Background="{StaticResource FirstMainBrush}" MinHeight="40" BorderThickness="2" CornerRadius="4">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},
+                                                                           Path=IsReadyToDrop}"
+                                                     Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource PurpleBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <!-- Картинка аватара -->
+                            <Image HorizontalAlignment="Center" MinHeight="50" MaxHeight="200" Loaded="AvatarImage_OnLoaded"/>
                         </Border>
                     </DockPanel>
                 </Border>

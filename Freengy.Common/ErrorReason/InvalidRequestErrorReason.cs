@@ -10,7 +10,7 @@ namespace Freengy.Common.ErrorReason
     /// <summary>
     /// Ошибка о неправильном пароле.
     /// </summary>
-    public class InvalidPasswordErrorReason : ErrorReason 
+    public class InvalidRequestErrorReason : ErrorReason 
     {
         /// <summary>
         /// Получить сообщение об ошибке.
@@ -18,7 +18,7 @@ namespace Freengy.Common.ErrorReason
         /// <returns>Сообщение об ошибке.</returns>
         protected override string GetMessage() 
         {
-            return LocalizedRes.InvalidPassword;
+            return LocalizedRes.ServerDeniedInvalidRequest;
         }
     }
 }
