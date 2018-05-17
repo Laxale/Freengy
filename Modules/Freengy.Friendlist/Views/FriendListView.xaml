@@ -95,29 +95,42 @@
                                     <MenuItem Header="{x:Static localization:StringResources.StartChat}" 
                                               CommandParameter="{Binding Path=AccountState}"
                                               Command="{Binding Source={StaticResource ContextProxy}, Path=Data.CommandStartChat}"/>
-                                    <MenuItem Header="Remove this faggot!"/>
+
+                                    <MenuItem Header="{x:Static localization:StringResources.RemoveFriend}"/>
+
                                     <Separator/>
-                                    <MenuItem Header="See info"/>
+                                    
+                                    <MenuItem Header="{x:Static localization:StringResources.SeeInfo}"/>
                                 </ContextMenu>
                             </Grid.ContextMenu>
 
                             <!-- Строка названия и статуса аккаунта -->
                             <DockPanel Grid.Row="0" Grid.Column="0" Margin="{StaticResource StdMargin}">
-                                <Path DockPanel.Dock="Left" Data="{StaticResource UserIconGeometry}">
-                                    <Path.Style>
-                                        <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Online}">
-                                                    <Setter Property="Fill" Value="{StaticResource GreenBrush}"/>
-                                                </DataTrigger>
+                                <Border Background="{StaticResource AlmostTransparent}" Cursor="Help">
+                                    <Border.ToolTip>
+                                        <ToolTip Background="{StaticResource LightGrayBrush}">
+                                            <Border>
+                                                <Image Margin="{StaticResource All4Margin}" Height="160" Loaded="FriendAvatarImage_OnLoaded"/>
+                                            </Border>
+                                        </ToolTip>
+                                    </Border.ToolTip>
 
-                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
-                                                    <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Path.Style>
-                                </Path>
+                                    <Path DockPanel.Dock="Left" Data="{StaticResource UserIconGeometry}">
+                                        <Path.Style>
+                                            <Style TargetType="Path" BasedOn="{StaticResource CommonPathStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Online}">
+                                                        <Setter Property="Fill" Value="{StaticResource GreenBrush}"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
+                                                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+                                </Border>
 
                                 <TextBlock DockPanel.Dock="Top" Text="{Binding Path=AccountState.Account.Name}" Margin="{StaticResource 4LeftMargin}"/>
                             </DockPanel>

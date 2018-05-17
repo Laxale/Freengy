@@ -29,8 +29,9 @@ namespace Freengy.UI.ViewModels
         private readonly DelayedEventInvoker delayedInvoker;
 
         private bool isServerOnline;
-        private string serverAddress;
+        private bool isLoggedIn;
         private DateTime loggedInTime;
+        private string serverAddress;
         private string onlinePeriodNotice;
 
 
@@ -64,7 +65,24 @@ namespace Freengy.UI.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
+        /// <summary>
+        /// Возвращает значение - выполнен ли логин.
+        /// </summary>
+        public bool IsLoggedIn 
+        {
+            get => isLoggedIn;
+
+            private set
+            {
+                if (isLoggedIn == value) return;
+
+                isLoggedIn = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Gets current server address.
         /// </summary>
@@ -103,7 +121,16 @@ namespace Freengy.UI.ViewModels
         private void OnTimerTick() 
         {
             var span = DateTime.Now - loggedInTime;
-            string status = $"Online period {span.Hours}:{span.Minutes}:{span.Seconds}";
+
+            var hours = span.Hours;
+            var minus = span.Minutes;
+            var secos = span.Seconds;
+
+            var hourString = hours < 10 ? $"0{ hours }" : hours.ToString();
+            var minuString = minus < 10 ? $"0{ minus }" : minus.ToString();
+            var secoString = secos < 10 ? $"0{ secos }" : secos.ToString();
+
+            string status = $"{ StringResources.OnlinePeriod } { hourString }:{ minuString }:{ secoString }";
 
             OnlinePeriodNotice = status;
 
@@ -117,14 +144,16 @@ namespace Freengy.UI.ViewModels
                 return;
             }
 
+            IsLoggedIn = true;
             loggedInTime = DateTime.Now;
             
             delayedInvoker.RemoveDelayedEventRequest();
             delayedInvoker.RequestDelayedEvent();
         }
 
-        private void OnLoggedOut(MessageLogoutRequest message) 
+        private void OnLoggedOut(MessageLogoutRequest message)
         {
+            IsLoggedIn = false;
             delayedInvoker.RemoveDelayedEventRequest();
             OnlinePeriodNotice = StringResources.NotLoggedIn;
         }

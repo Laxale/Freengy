@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Freengy.Base.DbContext;
 using Freengy.Base.Extensions;
@@ -192,6 +193,53 @@ namespace Freengy.Base.DefaultImpl
                         {
                             AvatarBlob = avatarBlob,
                             AvatarPath = null,
+                            LastModified = DateTime.Now,
+                            ParentId = userId
+                        };
+
+                        context.Objects.Add(newAvatar);
+                    }
+
+                    context.SaveChanges();
+
+                    return Result.Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = "Failed to save user avatar from blob";
+                logger.Error(ex, message);
+
+                return Result<IEnumerable<UserAvatarModel>>.Fail(new UnexpectedErrorReason(message));
+            }
+        }
+
+        /// <summary>
+        /// Сохранить аватар пользователя по пути к файлу изображения.
+        /// </summary>
+        /// <param name="userId">Идентификатор опльзователя.</param>
+        /// <param name="avatarPath">Путь к изображению аватара.</param>
+        /// <returns>Результат сохранения.</returns>
+        public Result SaveUserAvatar(Guid userId, string avatarPath) 
+        {
+            try
+            {
+                using (var context = new UserAvatarContext())
+                {
+                    var savedAvatar = context.Objects.FirstOrDefault(avatar => avatar.ParentId == userId);
+
+                    if (savedAvatar != null)
+                    {
+                        savedAvatar.AvatarPath = avatarPath;
+                        savedAvatar.AvatarBlob = File.ReadAllBytes(avatarPath);
+                        savedAvatar.LastModified = DateTime.Now;
+                    }
+                    else
+                    {
+                        var newAvatar = new UserAvatarModel
+                        {
+                            AvatarBlob = File.ReadAllBytes(avatarPath),
+                            AvatarPath = avatarPath,
                             LastModified = DateTime.Now,
                             ParentId = userId
                         };

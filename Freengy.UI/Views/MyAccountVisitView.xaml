@@ -81,8 +81,7 @@
                         <ToolTip Placement="Bottom">
                             <Border Background="{StaticResource LightGrayBrush}">
                                 <DockPanel>
-                                    <Image DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" Loaded="TooltipImage_OnLoaded"
-                                           Width="160" Height="160"/>
+                                    <Image DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" Loaded="TooltipImage_OnLoaded" Height="160"/>
 
                                     <TextBlock DockPanel.Dock="Top" Margin="{StaticResource All4Margin}" Text="{x:Static localization:StringResources.BestAvatarEver}" 
                                                FontWeight="Bold" Foreground="{StaticResource PurpleBrush}"/>

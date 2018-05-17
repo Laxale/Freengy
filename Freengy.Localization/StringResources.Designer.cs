@@ -205,6 +205,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drop image here.
+        /// </summary>
+        public static string DropImageHere {
+            get {
+                return ResourceManager.GetString("DropImageHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit account data.
         /// </summary>
         public static string EditAccountData {
@@ -421,6 +430,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My avatar.
+        /// </summary>
+        public static string MyAvatar {
+            get {
+                return ResourceManager.GetString("MyAvatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email is not not required, but you will be unable to recover forgotten password without it.
         /// </summary>
         public static string NewAccountEmailHintText {
@@ -453,6 +471,15 @@ namespace Freengy.Localization {
         public static string NotLoggedIn {
             get {
                 return ResourceManager.GetString("NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online period.
+        /// </summary>
+        public static string OnlinePeriod {
+            get {
+                return ResourceManager.GetString("OnlinePeriod", resourceCulture);
             }
         }
         
@@ -529,6 +556,15 @@ namespace Freengy.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove friend.
+        /// </summary>
+        public static string RemoveFriend {
+            get {
+                return ResourceManager.GetString("RemoveFriend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string RemoveText {
@@ -579,6 +615,15 @@ namespace Freengy.Localization {
         public static string SearchNewAwesomeFriends {
             get {
                 return ResourceManager.GetString("SearchNewAwesomeFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See info.
+        /// </summary>
+        public static string SeeInfo {
+            get {
+                return ResourceManager.GetString("SeeInfo", resourceCulture);
             }
         }
         

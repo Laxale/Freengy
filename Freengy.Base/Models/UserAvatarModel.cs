@@ -13,10 +13,19 @@ namespace Freengy.Base.Models
 {
     public class UserAvatarModel : ChildComplexDbObject<PrivateAccountModel> 
     {
+        /// <summary>
+        /// Возвращает или задаёт путь к локальному изображению аватара.
+        /// </summary>
         public string AvatarPath { get; set; }
 
+        /// <summary>
+        /// Возвращает или задаёт двоичный блоб изображения аватара.
+        /// </summary>
         public byte[] AvatarBlob { get; set; }
 
+        /// <summary>
+        /// Возвращает или задаёт дату последней модификации аватара.
+        /// </summary>
         public DateTime LastModified { get; set; }
 
 

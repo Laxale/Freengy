@@ -132,6 +132,9 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+	<Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\FriendListSettingsView.xaml">

@@ -6,10 +6,7 @@
              
              xmlns:prism="http://prismlibrary.com/"
 
-             xmlns:local="clr-namespace:Freengy.UI.Views"
              xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
-             xmlns:commonResources="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
-             xmlns:properties="clr-namespace:Freengy.UI.Properties"
              xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
 
              mc:Ignorable="d" 
@@ -22,9 +19,9 @@
                 <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <VisualBrush x:Key="Visual">
+            <VisualBrush x:Key="ServerIcon">
                 <VisualBrush.Visual>
-                    <Path Data="{StaticResource ServerIconGeometry}" Name="IconPath">
+                    <Path Data="{StaticResource ServerIconGeometry}">
                         <Path.LayoutTransform>
                             <ScaleTransform ScaleX="0.0392" ScaleY="0.035"/>
                         </Path.LayoutTransform>
@@ -45,23 +42,53 @@
                     </Path>
                 </VisualBrush.Visual>
             </VisualBrush>
+            
+            <VisualBrush x:Key="ClockIcon">
+                <VisualBrush.Visual>
+                    <Path Data="{StaticResource ClockIconGeometry}">
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX="0.44" ScaleY="0.42"/>
+                            <!-- ClockIconGeometry -->
+                            <!--
+                            <ScaleTransform ScaleX="0.44" ScaleY="0.42"/>
+                            -->
+                            <!-- ClockIconGeometry1 -->
+                            <!--
+                            <ScaleTransform ScaleX="0.052" ScaleY="0.052"/>
+                            -->
+                            <!-- ClockIconGeometry3 -->
+                            <!--
+                            <ScaleTransform ScaleX="0.064" ScaleY="0.064"/>
+                            -->
+                        </Path.LayoutTransform>
+
+                        <Path.Style>
+                            <Style TargetType="Path">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsLoggedIn}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource PurpleBrush}"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=IsLoggedIn}" Value="False">
+                                        <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Path.Style>
+                    </Path>
+                </VisualBrush.Visual>
+            </VisualBrush>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <DockPanel>
         <!-- Значок времени онлайна -->
-        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" 
-                Cursor="Help" Height="20" Width="20"  Margin="0, -2, 6, 0">
+        <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Cursor="Help" Margin="4, 0, 4, 0">
             <Border.ToolTip>
-                <ToolTip>
+                <ToolTip Background="{StaticResource FirstMainBrush}">
                     <Border>
-                        <DockPanel>
-                            <Path DockPanel.Dock="Left" Data="{StaticResource ClockIconGeometry}" 
-                                  Fill="{StaticResource PurpleBrush}" Margin="{StaticResource All4Margin}">
-                                <Path.LayoutTransform>
-                                    <ScaleTransform ScaleX="0.08" ScaleY="0.08"/>
-                                </Path.LayoutTransform>
-                            </Path>
+                        <DockPanel Margin="{StaticResource All4Margin}">
+                            <Border DockPanel.Dock="Left" Background="{StaticResource ClockIcon}" Height="32" Width="34"/>
 
                             <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}" Text="{Binding Path=OnlinePeriodNotice}"/>
                         </DockPanel>
@@ -69,11 +96,7 @@
                 </ToolTip>
             </Border.ToolTip>
 
-            <Path Data="{StaticResource ClockIconGeometry}" Fill="{StaticResource PurpleBrush}">
-                <Path.LayoutTransform>
-                    <ScaleTransform ScaleX="0.041" ScaleY="0.041"/>
-                </Path.LayoutTransform>
-            </Path>
+            <Border Background="{StaticResource ClockIcon}" Height="20" Width="22" Margin="0, -4, 0, 0"/>
         </Border>
 
         <!-- Значок Доступности сервера -->
@@ -87,7 +110,7 @@
                                     <ToolTip Background="{StaticResource FirstMainBrush}">
                                         <DockPanel Margin="{StaticResource All4Margin}">
                                             <!-- Отображение геометрии иконки в тултип -->
-                                            <Border DockPanel.Dock="Left" Background="{StaticResource Visual}" Height="32" Width="32"/>
+                                            <Border DockPanel.Dock="Left" Background="{StaticResource ServerIcon}" Height="32" Width="32"/>
 
                                             <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
                                                 <TextBlock DockPanel.Dock="Top" Text="{x:Static localization:StringResources.ServerOnline}"
@@ -109,7 +132,7 @@
                 </Style>
             </Border.Style>
 
-            <Border Background="{StaticResource Visual}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
+            <Border Background="{StaticResource ServerIcon}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
         </Border>
     </DockPanel>
 </UserControl>

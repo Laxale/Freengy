@@ -246,4 +246,19 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>Not logged in</value>
   </data>
+  <data name="OnlinePeriod" xml:space="preserve">
+    <value>Online period</value>
+  </data>
+  <data name="DropImageHere" xml:space="preserve">
+    <value>Drop image here</value>
+  </data>
+  <data name="MyAvatar" xml:space="preserve">
+    <value>My avatar</value>
+  </data>
+  <data name="RemoveFriend" xml:space="preserve">
+    <value>Remove friend</value>
+  </data>
+  <data name="SeeInfo" xml:space="preserve">
+    <value>See info</value>
+  </data>
 </root>

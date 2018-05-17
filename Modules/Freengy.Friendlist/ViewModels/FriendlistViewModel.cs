@@ -10,6 +10,7 @@ using System.Windows;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Media;
 
 using Freengy.Base.ViewModels;
@@ -18,6 +19,7 @@ using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Chat.Interfaces;
 using Freengy.Base.DefaultImpl;
+using Freengy.Base.Extensions;
 using Freengy.Base.Helpers;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Common.Models;
@@ -209,14 +211,44 @@ namespace Freengy.FriendList.ViewModels
 
             if (!outdatedFriendIds.Any())
             {
+                var localAvatars = (await GetLocalAvatars()).Value;
+                FillLocalAvatars(localAvatars);
+
                 return;
             }
 
-            UserAvatarsReply remoteAvatars = await GetRemoteAvatars(outdatedFriendIds);
+            UserAvatarsReply remoteReply = await GetRemoteAvatars(outdatedFriendIds);
 
-            foreach (AvatarModel remoteAvatar in remoteAvatars.UserAvatars)
+            FillRemoteAvatars(remoteReply.UserAvatars);
+        }
+
+        private void FillLocalAvatars(IEnumerable<UserAvatarModel> localAvatars) 
+        {
+            foreach (UserAvatarModel localAvatar in localAvatars)
             {
-                UserAccount targetAccount = 
+                UserAccount targetAccount =
+                    friendViewModels
+                        .First(viewModel => viewModel.AccountState.Account.Id == localAvatar.ParentId).AccountState.Account;
+
+                if (!File.Exists(localAvatar.AvatarPath))
+                {
+                    Result<string> cacheResult = imageCacher.CacheAvatar(localAvatar);
+                    localAvatar.AvatarPath = cacheResult.Value;
+
+                    accountManager.SaveUserAvatar(localAvatar.ParentId, localAvatar.AvatarPath);
+                }
+
+                localAvatar.AvatarBlob = null;
+                var avatarExtension = new AvatarExtension(localAvatar);
+                targetAccount.AddExtension<AvatarExtension, UserAvatarModel>(avatarExtension);
+            }
+        }
+
+        private void FillRemoteAvatars(IEnumerable<AvatarModel> avatars) 
+        {
+            foreach (AvatarModel remoteAvatar in avatars)
+            {
+                UserAccount targetAccount =
                     friendViewModels
                         .First(viewModel => viewModel.AccountState.Account.Id == remoteAvatar.ParentId).AccountState.Account;
 
@@ -296,6 +328,12 @@ namespace Freengy.FriendList.ViewModels
 
                 return result.Value;
             }
+        }
+
+        private async Task<Result<IEnumerable<UserAvatarModel>>> GetLocalAvatars() 
+        {
+            IEnumerable<Guid> friendIds = friendViewModels.Select(viewModel => viewModel.AccountState.Account.Id);
+            return await Task.Run(() => accountManager.GetUserAvatars(friendIds));
         }
 
         private async Task<Result<IEnumerable<ObjectModificationTime>>> GetLocalAvatarsCache() 

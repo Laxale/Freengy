@@ -90,6 +90,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+	<Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

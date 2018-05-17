@@ -327,4 +327,19 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>Вход не выполнен</value>
   </data>
+  <data name="OnlinePeriod" xml:space="preserve">
+    <value>Время в онлайне</value>
+  </data>
+  <data name="MyAvatar" xml:space="preserve">
+    <value>Мой аватар</value>
+  </data>
+  <data name="DropImageHere" xml:space="preserve">
+    <value>Перетащите сюда изображение</value>
+  </data>
+  <data name="RemoveFriend" xml:space="preserve">
+    <value>Убрать из друзей</value>
+  </data>
+  <data name="SeeInfo" xml:space="preserve">
+    <value>Узреть подробности</value>
+  </data>
 </root>

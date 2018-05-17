@@ -39,24 +39,25 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Название аккаунта -->
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:StringResources.IAm}"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MyName, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path=MyName, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Текстовый статус аккаунта -->
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="My status"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=MyStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=MyStatus, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Цвет аккаунта -->
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="My color"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="My color" Foreground="{Binding Path=MyColor, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Text="My color" Foreground="{Binding Path=MyColor, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Аватар аккаунта -->
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="My avatar"/>
-                <Border Grid.Row="3" Grid.Column="1" AllowDrop="True" DragEnter="AvatarBorder_OnDragEnter" 
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:StringResources.MyAvatar}" VerticalAlignment="Top" Margin="4, 24, 4, 0"/>
+                <Border Grid.Row="3" Grid.Column="2" AllowDrop="True" DragEnter="AvatarBorder_OnDragEnter" 
                         DragLeave="AvatarBorder_OnDragLeave" Drop="AvatarBorder_OnDrop">
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top">
@@ -95,7 +96,7 @@
                                                                            Path=Information,
                                                                            Converter={StaticResource IsNullToBoolConverter}}"
                                                          Value="True">
-                                                <Setter Property="Text" Value="Drop image here"/>
+                                                <Setter Property="Text" Value="{x:Static localization:StringResources.DropImageHere}"/>
                                             </DataTrigger>
 
                                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:EditMyAccountView},

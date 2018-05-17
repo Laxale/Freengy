@@ -7,6 +7,7 @@ using Freengy.Base.Models;
 using Freengy.Base.Models.Readonly;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;
+using Freengy.Common.Models.Avatar;
 
 
 namespace Freengy.Base.Extensions 

@@ -85,6 +85,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+	<Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="XamlResources\CommonGameResources.xaml">

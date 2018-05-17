@@ -363,8 +363,6 @@ namespace Freengy.Networking.DefaultImpl
         {
             Result<UserAvatarModel> existingAvatar = MyAccountState.Account.GetExtensionPayload<AvatarExtension, UserAvatarModel>();
 
-            if(existingAvatar.Failure) throw new InvalidOperationException("Failed to get my avatar");
-
             if (existingAvatar.Value == null)
             {
                 var newModel = new UserAvatarModel

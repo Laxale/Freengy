@@ -108,6 +108,9 @@
   <ItemGroup>
     <Content Include="Contract\LoginRequest.txt" />
     <Content Include="Contract\RegistrationRequest.txt" />
+	<Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Freengy.Localization\Freengy.Localization.csproj">

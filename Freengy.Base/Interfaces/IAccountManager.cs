@@ -46,12 +46,20 @@ namespace Freengy.Base.Interfaces
         Result SaveUserAvatar(UserAvatarModel avatarModel);
 
         /// <summary>
-        /// Сохранить аватар пользователя.
+        /// Сохранить новый аватар пользователя из блоба.
         /// </summary>
         /// <param name="userId">Идентификатор пользователя.</param>
         /// <param name="avatarBlob">Блоб аватара.</param>
         /// <returns>Результат сохранения.</returns>
         Result SaveUserAvatar(Guid userId, byte[] avatarBlob);
+
+        /// <summary>
+        /// Сохранить аватар пользователя по пути к файлу изображения.
+        /// </summary>
+        /// <param name="userId">Идентификатор опльзователя.</param>
+        /// <param name="avatarPath">Путь к изображению аватара.</param>
+        /// <returns>Результат сохранения.</returns>
+        Result SaveUserAvatar(Guid userId, string avatarPath);
 
         /// <summary>
         /// Получить коллекцию аватаров пользователей.
