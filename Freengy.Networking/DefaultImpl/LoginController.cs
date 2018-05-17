@@ -25,6 +25,7 @@ using Freengy.Base.DefaultImpl;
 using Freengy.Base.Extensions;
 using Freengy.Base.Messages.Base;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Extension;
 using Freengy.Base.Models.Readonly;
 using Freengy.Common.Constants;
 using Freengy.Common.ErrorReason;

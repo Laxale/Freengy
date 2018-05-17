@@ -8,11 +8,13 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
+
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Helpers.Commands;
 using Freengy.Base.Interfaces;
 using Freengy.Base.Messages;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Extension;
 using Freengy.Base.Models.Readonly;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Constants;
@@ -21,10 +23,14 @@ using Freengy.Common.Models;
 using Freengy.Networking.Constants;
 using Freengy.Networking.Helpers;
 using Freengy.Networking.Interfaces;
+using Freengy.UI.Views;
 
 
 namespace Freengy.UI.ViewModels 
 {
+    /// <summary>
+    /// Вьюмодель для <see cref="EditMyAccountView"/>.
+    /// </summary>
     internal class EditMyAccountViewModel : WaitableViewModel 
     {
         private readonly string mySessionToken;

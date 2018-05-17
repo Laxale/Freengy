@@ -9,13 +9,10 @@ using Freengy.Base.Interfaces;
 
 using NLog;
 
-using Freengy.Base.Messages.Base;
-using Microsoft.Practices.ServiceLocation;
-
 
 namespace Freengy.Base.ViewModels 
 {
-    public abstract class WaitableViewModel : IRefreshable, INotifyPropertyChanged 
+    public abstract class WaitableViewModel : BasicViewModel, IRefreshable 
     {
         private bool isWaiting;
         private string busyMessage;
@@ -46,12 +43,6 @@ namespace Freengy.Base.ViewModels
         protected IMyServiceLocator ServiceLocator { get; }
 
         
-        /// <summary>
-        /// Событие изменения значения свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
         /// <summary>
         /// Флаг, обратный флагу IsWaiting. Свободна ли вьюмодель от работы.
         /// </summary>
@@ -148,14 +139,7 @@ namespace Freengy.Base.ViewModels
             Information = message;
         }
 
-        /// <summary>
-        /// Вызов события изменения значения свойства.
-        /// </summary>
-        /// <param name="propertyName">Название свойства.</param>
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) 
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
 
         protected void SetBusySilent() 
         {

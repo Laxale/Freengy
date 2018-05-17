@@ -1,4 +1,4 @@
-﻿// Created by Laxale 16.05.2018
+﻿// Created by Laxale 17.05.2018
 //
 //
 
@@ -9,27 +9,29 @@ using Freengy.Common.Database;
 using Freengy.Common.Models;
 
 
-namespace Freengy.Base.Models 
+namespace Freengy.Base.Models.Readonly 
 {
     /// <summary>
-    /// Модель аватара пользователя.
+    /// Модель пользовательской иконки.
     /// </summary>
-    public class UserAvatarModel : ChildComplexDbObject<PrivateAccountModel> 
+    public class UserIconModel : ChildComplexDbObject<PrivateAccountModel> 
     {
-        /// <summary>
-        /// Возвращает или задаёт путь к локальному изображению аватара.
-        /// </summary>
-        public string AvatarPath { get; set; }
+        public UserIconModel(AchievableIconModel achievableIcon) 
+        {
+            IconBlob = achievableIcon.Blob;
+            RequiredLevel = achievableIcon.RequiredLevel;
+        }
+
 
         /// <summary>
-        /// Возвращает или задаёт двоичный блоб изображения аватара.
+        /// Требуемый для использования иконки уровень аккаунта.
         /// </summary>
-        public byte[] AvatarBlob { get; set; }
+        public uint RequiredLevel { get; }
 
         /// <summary>
-        /// Возвращает или задаёт дату последней модификации аватара.
+        /// Возвращает двоичный блоб иконки.
         /// </summary>
-        public DateTime LastModified { get; set; }
+        public byte[] IconBlob { get; }
 
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace Freengy.Base.Models
         /// </summary>
         /// <param name="dbProxy">Прокси-объект, полученный из базы, который нужно превратить в реальный объект.</param>
         /// <returns>Реальный объект <see cref="DbObject"/>.</returns>
-        public override DbObject CreateFromProxy(DbObject dbProxy) 
+        public override DbObject CreateFromProxy(DbObject dbProxy)
         {
             throw new NotImplementedException();
         }
@@ -47,7 +49,7 @@ namespace Freengy.Base.Models
         /// Обнулить навигационные свойства.
         /// </summary>
         /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями и обнулёнными навигационными.</returns>
-        public override ComplexDbObject PrepareMappedProps() 
+        public override ComplexDbObject PrepareMappedProps()
         {
             throw new NotImplementedException();
         }
@@ -56,7 +58,7 @@ namespace Freengy.Base.Models
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
         /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected override IEnumerable<string> GetIncludedPropNames() 
+        protected override IEnumerable<string> GetIncludedPropNames()
         {
             throw new NotImplementedException();
         }

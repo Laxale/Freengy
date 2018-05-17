@@ -4,10 +4,8 @@
 
 using System;
 
-using Freengy.Base.Models.Extension;
 
-
-namespace Freengy.Base.Models 
+namespace Freengy.Base.Models.Extension 
 {
     /// <summary>
     /// Представляет аватар как расширение свойств аккаунта.

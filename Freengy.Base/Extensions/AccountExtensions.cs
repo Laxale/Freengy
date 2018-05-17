@@ -4,6 +4,7 @@
 
 using System;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Extension;
 using Freengy.Base.Models.Readonly;
 using Freengy.Common.Helpers.Result;
 using Freengy.Common.Models;

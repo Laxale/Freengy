@@ -63,7 +63,7 @@
                 </Path>
 
                 <!-- Аватар -->
-                <Image Height="56" Width="56" Loaded="AvatarImage_OnLoaded" HorizontalAlignment="Left" Name="AvatarImage" Cursor="Help"
+                <Image Height="56" Width="56" Loaded="AvatarImage_OnLoaded" HorizontalAlignment="Left" Cursor="Help"
                        Visibility="{Binding Path=CurrentAvatarPath, Converter={StaticResource NullToVisibilityConverter}}">
                     <Image.Effect>
                         <DropShadowEffect BlurRadius="10" RenderingBias="Performance" Opacity="0.8" Color="Purple"/>
@@ -92,17 +92,34 @@
                 </Image>
             </DockPanel>
 
-            <!-- Account name -->
             <DockPanel Grid.Row="0" Grid.Column="2">
-                <Button DockPanel.Dock="Top" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Left" Command="{Binding Path=CommandEditAccount}">
-                    <Path DockPanel.Dock="Top" HorizontalAlignment="Left" Data="{StaticResource EditDocumentIconGeometry}" Fill="{StaticResource PurpleBrush}">
-                        <Path.LayoutTransform>
-                            <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
-                        </Path.LayoutTransform>
-                    </Path>
-                </Button>
-
                 <DockPanel DockPanel.Dock="Top">
+                    <!-- Кнопка редактирования аккаунта -->
+                    <Button DockPanel.Dock="Left" Style="{StaticResource ImageButtonStyle}" HorizontalAlignment="Left" 
+                            Command="{Binding Path=CommandEditAccount}" VerticalAlignment="Top">
+                        <Path DockPanel.Dock="Top" HorizontalAlignment="Left" Data="{StaticResource EditDocumentIconGeometry}" Fill="{StaticResource PurpleBrush}">
+                            <Path.LayoutTransform>
+                                <ScaleTransform ScaleX="0.15" ScaleY="0.15"/>
+                            </Path.LayoutTransform>
+                        </Path>
+                    </Button>
+
+                    <!-- Кнопка выбора иконки аккаунта -->
+                    <Button DockPanel.Dock="Left" HorizontalAlignment="Right" Height="40" Width="40" Command="{Binding Path=CommandSelectIcon}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ImageButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=CurrentExp}"></DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        
+                        <Path Style="{StaticResource CommonPathStyle}" Data="{StaticResource ArrowDownIconGeometry}" Fill="{StaticResource PurpleBrush}"></Path>
+                    </Button>
+                </DockPanel>
+
+                <!-- Account name -->
+                <DockPanel DockPanel.Dock="Top" VerticalAlignment="Bottom">
                     <TextBlock DockPanel.Dock="Left" Text="{x:Static localization:StringResources.IAm}" Margin="{StaticResource 4LeftMargin}"/>
 
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Path=MyAccountState.Account.Name}" FontWeight="Bold"

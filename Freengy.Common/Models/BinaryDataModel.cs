@@ -3,18 +3,16 @@
 //
 
 using System;
-using System.Collections.Generic;
 
-using Freengy.Common.Database;
 using Freengy.Common.Interfaces;
 
 
-namespace Freengy.Common.Models.Avatar 
+namespace Freengy.Common.Models 
 {
     /// <summary>
-    /// Модель аватара пользователя или альбома или группы или чего угодно.
+    /// Модель двоичного блоба - любых данных в виде байт.
     /// </summary>
-    public class AvatarModel : IObjectWithId 
+    public class BinaryDataModel : IObjectWithId 
     {
         /// <summary>
         /// Returns unique identifier of an implementer object.
@@ -27,12 +25,12 @@ namespace Freengy.Common.Models.Avatar
         public Guid ParentId { get; set; }
 
         /// <summary>
-        /// Возвращает или задаёт бинарный блоб изображения.
+        /// Возвращает или задаёт собственно блоб.
         /// </summary>
-        public byte[] ImageBlob { get; set; }
+        public byte[] Blob { get; set; }
 
         /// <summary>
-        /// Возвращает или задаёт дату последней модификации аватара.
+        /// Возвращает или задаёт дату последней модификации данных.
         /// </summary>
         public DateTime LastModified { get; set; }
     }

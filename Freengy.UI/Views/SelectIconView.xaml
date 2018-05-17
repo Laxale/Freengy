@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="Freengy.UI.Views.SelectIconView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+
+             xmlns:local="clr-namespace:Freengy.UI.Views"
+             xmlns:viewModels="clr-namespace:Freengy.UI.ViewModels"
+             xmlns:readonly="clr-namespace:Freengy.Base.Models.Readonly;assembly=Freengy.Base"
+             xmlns:grayScale="clr-namespace:Freengy.CommonResources.GrayScale;assembly=Freengy.CommonResources"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="400"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:SelectIconViewModel}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Freengy.CommonResources;component/Styles/CommonResourcesHub.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel Margin="{StaticResource All10Margin}">
+        <TextBlock DockPanel.Dock="Top" Margin="{StaticResource All10Margin}">
+            <Run Text="What can i select on my level"/>
+            <Run Text="{Binding Path=MyLevel, Mode=OneTime}" Foreground="{StaticResource PurpleBrush}" FontWeight="Medium"/>
+            <Run Text="?"/>
+        </TextBlock>
+        
+        <Rectangle DockPanel.Dock="Top" Width="Auto" Height="2" Fill="{StaticResource PurpleBrush}"></Rectangle>
+
+        <ListBox DockPanel.Dock="Top" Margin="{StaticResource All10Margin}" ItemsSource="{Binding Path=Icons}" IsSynchronizedWithCurrentItem="True">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ItemHeight="50" ItemWidth="50"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:SelectableIconViewModel">
+                    <Image Loaded="IconImage_OnLoaded" Margin="{StaticResource All4Margin}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Path=IsSelectable}" Value="False">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <grayScale:GrayscaleEffect Input="{Binding RelativeSource={RelativeSource Self}}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

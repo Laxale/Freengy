@@ -33,6 +33,7 @@ using Freengy.Networking.Helpers;
 using Freengy.Common.Helpers.Result;
 using Freengy.Base.Messages.Notification;
 using Freengy.Base.Models;
+using Freengy.Base.Models.Extension;
 using Freengy.Base.Models.Readonly;
 using Freengy.Common.Constants;
 using Freengy.Common.Enums;
@@ -244,9 +245,9 @@ namespace Freengy.FriendList.ViewModels
             }
         }
 
-        private void FillRemoteAvatars(IEnumerable<AvatarModel> avatars) 
+        private void FillRemoteAvatars(IEnumerable<BinaryDataModel> avatars) 
         {
-            foreach (AvatarModel remoteAvatar in avatars)
+            foreach (BinaryDataModel remoteAvatar in avatars)
             {
                 UserAccount targetAccount =
                     friendViewModels
@@ -254,7 +255,7 @@ namespace Freengy.FriendList.ViewModels
 
                 var avatarModel = new UserAvatarModel
                 {
-                    AvatarBlob = remoteAvatar.ImageBlob,
+                    AvatarBlob = remoteAvatar.Blob,
                     Id = remoteAvatar.Id,
                     ParentId = remoteAvatar.ParentId,
                     LastModified = remoteAvatar.LastModified
@@ -264,7 +265,7 @@ namespace Freengy.FriendList.ViewModels
                 string cachePath = cacheResult.Value;
                 avatarModel.AvatarPath = cachePath;
                 accountManager.SaveUserAvatar(avatarModel);
-                remoteAvatar.ImageBlob = null;
+                remoteAvatar.Blob = null;
                 avatarModel.AvatarBlob = null;
 
                 var avatarExtension = new AvatarExtension(avatarModel);

@@ -35,6 +35,7 @@ namespace Freengy.UI.ViewModels
         private readonly IImageCacher imageCacher;
         private readonly ILoginController loginController;
 
+        private byte[] currentIconBlob;
         private string currentAvatarPath;
         private uint currentLevelStartExp;
         private uint currentLevelFinishExp;
@@ -47,6 +48,7 @@ namespace Freengy.UI.ViewModels
             MyAccountState = loginController.MyAccountState;
 
             CommandEditAccount = new MyCommand(EditAccountImpl);
+            CommandSelectIcon = new MyCommand(SelectIconImpl);
 
             SetExpirienceValues();
             RaiseCurrentExpChanged();
@@ -59,11 +61,16 @@ namespace Freengy.UI.ViewModels
             this.Publish(new MessageActivityChanged(this, true));
         }
 
-
+        
         /// <summary>
         /// Команда редактирования данных аккаунта.
         /// </summary>
         public MyCommand CommandEditAccount { get; }
+
+        /// <summary>
+        /// Команда выбора иконки аккаунта.
+        /// </summary>
+        public MyCommand CommandSelectIcon { get; }
 
 
         /// <summary>
@@ -84,6 +91,23 @@ namespace Freengy.UI.ViewModels
                 //if (currentAvatarPath == value) return;
 
                 currentAvatarPath = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает блоб моей текущей иконки.
+        /// </summary>
+        public byte[] CurrentIconBlob 
+        {
+            get => currentIconBlob;
+
+            private set
+            {
+                if (currentIconBlob == value) return;
+
+                currentIconBlob = value;
 
                 OnPropertyChanged();
             }
@@ -158,6 +182,21 @@ namespace Freengy.UI.ViewModels
             return Result.Ok();
         }
 
+
+        private void SelectIconImpl() 
+        {
+            var win = new EmptyCustomToolWindow();
+            var content = new SelectIconView();
+            win.MainContent = content;
+
+            win.Height = 400;
+            win.Width = 300;
+            win.Background = new CommonResourceExposer().GetBrush(CommonResourceExposer.LightGrayBrushKey);
+
+            win.Title = "Select account icon";
+            
+            ServiceLocator.Resolve<ICurtainedExecutor>().ExecuteWithCurtain(KnownCurtainedIds.MainWindowId, () => win.ShowDialog());
+        }
 
         private void EditAccountImpl() 
         {

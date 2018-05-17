@@ -83,8 +83,9 @@
     <Compile Include="Interfaces\IObjectWithId.cs" />
     <Compile Include="Interfaces\IStatisticsCollector.cs" />
     <Compile Include="Models\AccountStateModel.cs" />
+    <Compile Include="Models\AchievableIconModel.cs" />
     <Compile Include="Models\AlbumModel.cs" />
-    <Compile Include="Models\Avatar\AvatarModel.cs" />
+    <Compile Include="Models\BinaryDataModel.cs" />
     <Compile Include="Models\Avatar\UserAvatarsReply.cs" />
     <Compile Include="Models\ChatMessageModel.cs" />
     <Compile Include="Models\EditAccountModel.cs" />
@@ -108,7 +109,7 @@
   <ItemGroup>
     <Content Include="Contract\LoginRequest.txt" />
     <Content Include="Contract\RegistrationRequest.txt" />
-	<Compile Include="..\GlobalAssemblyInfo.cs">
+    <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
