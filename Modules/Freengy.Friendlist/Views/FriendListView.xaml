@@ -124,7 +124,7 @@
                                                     </DataTrigger>
 
                                                     <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
-                                                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
+                                                        <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -132,7 +132,21 @@
                                     </Path>
                                 </Border>
 
-                                <TextBlock DockPanel.Dock="Top" Text="{Binding Path=AccountState.Account.Name}" Margin="{StaticResource 4LeftMargin}"/>
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding Path=AccountState.Account.Name}" Margin="{StaticResource 4LeftMargin}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Online}">
+                                                    <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+                                                </DataTrigger>
+
+                                                <DataTrigger Binding="{Binding Path=AccountState.AccountStatus}" Value="{x:Static enums:AccountOnlineStatus.Offline}">
+                                                    <Setter Property="Foreground" Value="{StaticResource SteelGrayBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </DockPanel>
 
                             <!-- Строка уровня аккаунта -->

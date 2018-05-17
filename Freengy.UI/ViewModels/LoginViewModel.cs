@@ -32,6 +32,7 @@ using Freengy.UI.Windows;
 using Freengy.Base.Windows;
 using Freengy.Base.Messages.Notification;
 using Freengy.Base.Models.Readonly;
+
 using NLog;
 
 using Prism.Regions;
@@ -50,11 +51,14 @@ namespace Freengy.UI.ViewModels
         private static readonly Configuration uiConfiguration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
 
         private readonly string lastLoggedName;
+        private readonly int helloRequestPeriod = 1000;
         private readonly ILoginController loginController;
+        private readonly DelayedEventInvoker delayedInvoker;
         private readonly string lastLoggedParameterName = "LastLoggedUserName";
 
         private bool mustSavePassword;
-        
+        private volatile bool isCheckingServer;
+
         private UserAccount CurrentAccount => loginController.MyAccountState?.Account;
 
 
@@ -64,9 +68,16 @@ namespace Freengy.UI.ViewModels
             lastLoggedName = uiConfiguration.AppSettings.Settings[lastLoggedParameterName].Value;
             loginController = ServiceLocator.Resolve<ILoginController>();
 
-            this.Publish(new MessageInitializeModelRequest(this, "Loading"));
+            delayedInvoker = new DelayedEventInvoker(helloRequestPeriod);
+            delayedInvoker.DelayedEvent += OnDelayedEvent;
 
-            CheckServerAsync();
+            this.Publish(new MessageInitializeModelRequest(this, "Loading"));
+        }
+
+        private async void OnDelayedEvent() 
+        {
+            await CheckServerAsync();
+            delayedInvoker.RequestDelayedEvent();
         }
 
 
@@ -90,9 +101,7 @@ namespace Freengy.UI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext) 
         {
-            // need to log?
-            var t = 0;
-            if (t > 0) { }
+            delayedInvoker.RequestDelayedEvent();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) 
@@ -102,8 +111,8 @@ namespace Freengy.UI.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext) 
         {
-            var t = 0;
-            if (t > 0) { }
+            this.Publish(new MessageServerOnlineStatus(true));
+            delayedInvoker.RemoveDelayedEventRequest();
         }
 
         #endregion INavigationAware
@@ -144,8 +153,12 @@ namespace Freengy.UI.ViewModels
 
         #region Privates
 
-        private async void CheckServerAsync() 
+        private async Task CheckServerAsync() 
         {
+            if (isCheckingServer) return;
+
+            isCheckingServer = true;
+
             using (var client = new HttpClient())
             {
                 try
@@ -160,6 +173,10 @@ namespace Freengy.UI.ViewModels
                 {
                     logger.Warn(ex, "Failed to check server");
                     this.Publish(new MessageServerOnlineStatus(false));
+                }
+                finally
+                {
+                    isCheckingServer = false;
                 }
             }
         }

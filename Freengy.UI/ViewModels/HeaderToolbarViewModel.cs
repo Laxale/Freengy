@@ -44,7 +44,7 @@ namespace Freengy.UI.ViewModels
             OnlinePeriodNotice = StringResources.NotLoggedIn;
 
             this.Subscribe<MessageBase>(OnLoggedIn);
-            this.Subscribe<MessageLogoutRequest>(OnLoggedOut);
+            this.Subscribe<MessageBase>(OnLoggedOut);
             this.Subscribe<MessageServerOnlineStatus>(OnServerStatusInform);
         }
 
@@ -151,8 +151,13 @@ namespace Freengy.UI.ViewModels
             delayedInvoker.RequestDelayedEvent();
         }
 
-        private void OnLoggedOut(MessageLogoutRequest message)
+        private void OnLoggedOut(MessageBase message) 
         {
+            if (!(message is MessageLogoutRequest))
+            {
+                return;
+            }
+
             IsLoggedIn = false;
             delayedInvoker.RemoveDelayedEventRequest();
             OnlinePeriodNotice = StringResources.NotLoggedIn;

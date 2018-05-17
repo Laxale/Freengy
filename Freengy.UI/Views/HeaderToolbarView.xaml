@@ -34,7 +34,7 @@
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
-                                        <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                        <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -70,7 +70,7 @@
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding Path=IsLoggedIn}" Value="False">
-                                        <Setter Property="Fill" Value="{StaticResource DarkGrayBrush}"/>
+                                        <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -90,7 +90,21 @@
                         <DockPanel Margin="{StaticResource All4Margin}">
                             <Border DockPanel.Dock="Left" Background="{StaticResource ClockIcon}" Height="32" Width="34"/>
 
-                            <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}" Text="{Binding Path=OnlinePeriodNotice}"/>
+                            <TextBlock DockPanel.Dock="Left" Margin="{StaticResource All4Margin}" Text="{Binding Path=OnlinePeriodNotice}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsLoggedIn}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
+                                                <Setter Property="Foreground" Value="{StaticResource SteelGrayBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </DockPanel>
                     </Border>
                 </ToolTip>
@@ -101,36 +115,41 @@
 
         <!-- Значок Доступности сервера -->
         <Border DockPanel.Dock="Left" Background="{StaticResource AlmostTransparent}" Cursor="Help" Margin="{StaticResource 4LeftMargin}">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
-                            <Setter Property="ToolTip">
-                                <Setter.Value>
-                                    <ToolTip Background="{StaticResource FirstMainBrush}">
-                                        <DockPanel Margin="{StaticResource All4Margin}">
-                                            <!-- Отображение геометрии иконки в тултип -->
-                                            <Border DockPanel.Dock="Left" Background="{StaticResource ServerIcon}" Height="32" Width="32"/>
+            <Border.ToolTip>
+                <ToolTip Background="{StaticResource FirstMainBrush}">
+                    <DockPanel Margin="{StaticResource All4Margin}">
+                        <!-- Отображение геометрии иконки в тултип -->
+                        <Border DockPanel.Dock="Left" Background="{StaticResource ServerIcon}" Height="32" Width="32"/>
 
-                                            <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
-                                                <TextBlock DockPanel.Dock="Top" Text="{x:Static localization:StringResources.ServerOnline}"
-                                                           Margin="{StaticResource 4LeftMargin}"/>
+                        <DockPanel DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}">
+                            <TextBlock Margin="{StaticResource 4LeftMargin}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource PurpleBrush}"/>
+                                                <Setter Property="DockPanel.Dock" Value="Top"/>
+                                                <Setter Property="Text" Value="{x:Static localization:StringResources.ServerOnline}"/>
+                                            </DataTrigger>
 
-                                                <TextBlock DockPanel.Dock="Top" Margin="{StaticResource 4LeftMargin}"
-                                                           Text="{Binding Path=ServerAddress}" Foreground="{StaticResource PurpleBrush}"/>
-                                            </DockPanel>
-                                        </DockPanel>
-                                    </ToolTip>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
+                                                <Setter Property="DockPanel.Dock" Value="Left"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="{StaticResource SteelGrayBrush}"/>
+                                                <Setter Property="Text" Value="{x:Static localization:StringResources.ServerOffline}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                        <DataTrigger Binding="{Binding Path=IsServerOnline}" Value="False">
-                            <Setter Property="ToolTip" Value="{x:Static localization:StringResources.ServerOffline}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+                            <TextBlock DockPanel.Dock="Top" Margin="{StaticResource 4LeftMargin}"
+                                       Text="{Binding Path=ServerAddress}" Foreground="{StaticResource PurpleBrush}"
+                                       Visibility="{Binding Path=IsServerOnline, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </DockPanel>
+                    </DockPanel>
+                </ToolTip>
+            </Border.ToolTip>
 
             <Border Background="{StaticResource ServerIcon}" Height="20" Width="20" Margin="0, -4, 0, 0"/>
         </Border>
