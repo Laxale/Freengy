@@ -61,10 +61,6 @@
     <Compile Include="Messages\MessageExpirienceGained.cs" />
     <Compile Include="Messages\MessageFriendStateUpdate.cs" />
     <Compile Include="Messages\MessageFriendUpdates.cs" />
-    <Compile Include="Messages\MessageLogInFailed.cs" />
-    <Compile Include="Messages\MessageLogInSuccess.cs" />
-    <Compile Include="Messages\MessageLogInAttempt.cs" />
-    <Compile Include="Messages\MessageLogInBase.cs" />
     <Compile Include="Messages\MessageReceivedMessage.cs" />
     <Compile Include="Modules\ChatModule.cs" />
     <Compile Include="Modules\FromServerModule.cs" />
@@ -90,7 +86,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-	<Compile Include="..\GlobalAssemblyInfo.cs">
+    <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>

@@ -33,8 +33,7 @@ namespace Freengy.FriendList.ViewModels
         {
             FriendUpdates = CollectionViewSource.GetDefaultView(friendUpdates);
 
-            this.Subscribe<MessageFriendUpdates>(OnFriendUpdate);
-
+            this.Publish(new MessageRefreshRequired(this));
             this.Publish(new MessageActivityChanged(this, true));
         }
 
@@ -64,6 +63,18 @@ namespace Freengy.FriendList.ViewModels
             this.Unsubscribe();
 
             return Result.Ok();
+        }
+
+        /// <summary>
+        /// Обновить вьюмодель.
+        /// </summary>
+        public override void Refresh() 
+        {
+            base.Refresh();
+
+            GUIDispatcher.InvokeOnGuiThread(friendUpdates.Clear);
+
+            this.Subscribe<MessageFriendUpdates>(OnFriendUpdate);
         }
 
 

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.ViewModels;
 using Freengy.Base.Interfaces;
@@ -16,11 +17,13 @@ using Freengy.GamePlugin.Interfaces;
 using Freengy.GamePlugin.DefaultImpl;
 using Freengy.Diagnostics.Interfaces;
 using Freengy.Base.Helpers.Commands;
+using Freengy.Base.Messages;
+using Freengy.Common.Helpers.Result;
 
 
 namespace Freengy.GameList.ViewModels 
 {
-    public class GameListViewModel : WaitableViewModel 
+    public class GameListViewModel : WaitableViewModel, IUserActivity 
     {
         private readonly IGameListProvider gameListProvider;
         private readonly IDiagnosticsController diagnosticsController;
@@ -33,21 +36,52 @@ namespace Freengy.GameList.ViewModels
             GameList = CollectionViewSource.GetDefaultView(gameList);
 
             gameListProvider = ServiceLocator.Resolve<IGameListProvider>();
-            this.Subscribe<MessageGamesAdded>(MessageListener);
             diagnosticsController = ServiceLocator.Resolve<IDiagnosticsController>();
+
+            this.Publish(new MessageRefreshRequired(this));
         }
 
 
-        public ICollectionView GameList { get; private set; }
-
-
-        #region commands
-
         public MyCommand CommandResolveProblems { get; private set; }
-
+        
         public MyCommand<IGamePlugin> CommandRequestLoadGame { get; private set; }
 
-        #endregion commands
+
+        public ICollectionView GameList { get; }
+
+        /// <summary>
+        /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+        /// </summary>
+        public bool CanCancelInSilent { get; } = true;
+
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
+
+
+        /// <summary>
+        /// Cancel activity.
+        /// </summary>
+        /// <returns>Result of a cancel attempt.</returns>
+        public Result Cancel() 
+        {
+            this.Unsubscribe();
+
+            return Result.Ok();
+        }
+
+        /// <summary>
+        /// Обновить вьюмодель.
+        /// </summary>
+        public override void Refresh() 
+        {
+            base.Refresh();
+
+            this.Subscribe<MessageGamesAdded>(OnNewGameMessage);
+
+            InitializeImpl();
+        }
 
 
         protected override void SetupCommands() 
@@ -66,12 +100,14 @@ namespace Freengy.GameList.ViewModels
             FillGameList().RunSynchronously();
         }
 
+
         private void CommandRequestLoadGameImpl(IGamePlugin gamePluginToLoad) 
         {
             MessageGameStateRequest loadRequest = new MessageLoadGameRequest(gamePluginToLoad, null);
 
             this.Publish(loadRequest);
         }
+
         private bool CanRequestLoadGame(IGamePlugin gamePluginToLoad) 
         {
             return true;
@@ -113,7 +149,7 @@ namespace Freengy.GameList.ViewModels
             }
         }
 
-        private void MessageListener(MessageGamesAdded newGamesMessage)
+        private void OnNewGameMessage(MessageGamesAdded newGamesMessage) 
         {
             var uiDispatcher = ServiceLocator.Resolve<IGuiDispatcher>();
 

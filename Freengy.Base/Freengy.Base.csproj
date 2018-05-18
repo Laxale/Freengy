@@ -142,6 +142,10 @@
     <Compile Include="Interfaces\IUserActivityHub.cs" />
     <Compile Include="InternalsExposer.cs" />
     <Compile Include="Messages\Collapse\MessageCollapseBase.cs" />
+    <Compile Include="Messages\Login\MessageLogInAttempt.cs" />
+    <Compile Include="Messages\Login\MessageLogInBase.cs" />
+    <Compile Include="Messages\Login\MessageLogInFailed.cs" />
+    <Compile Include="Messages\Login\MessageLogInSuccess.cs" />
     <Compile Include="Messages\MessageActivityChanged.cs" />
     <Compile Include="Messages\MessageAddImageRequest.cs" />
     <Compile Include="Messages\Base\MessageBase.cs" />
@@ -150,6 +154,7 @@
     <Compile Include="Messages\MessageChatSessionChanged.cs" />
     <Compile Include="Messages\MessageCurtainRequest.cs" />
     <Compile Include="Messages\MessageMyAccountUpdated.cs" />
+    <Compile Include="Messages\MessageRefreshRequired.cs" />
     <Compile Include="Messages\MessageShowChatSession.cs" />
     <Compile Include="Messages\Notification\MessageFriendRequestState.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />

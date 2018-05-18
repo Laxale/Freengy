@@ -20,7 +20,7 @@ namespace Freengy.UI.Views
     /// <summary>
     /// Interaction logic for MyAccountVisitView.xaml
     /// </summary>
-    [RegionMemberLifetime(KeepAlive = false)]
+    //[RegionMemberLifetime(KeepAlive = false)]
     [HasViewModel(typeof(MyAccountVisitViewModel))]
     public partial class MyAccountVisitView 
     {

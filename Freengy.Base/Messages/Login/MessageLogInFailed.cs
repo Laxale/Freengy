@@ -3,10 +3,10 @@
 //
 
 
-namespace Freengy.Networking.Messages 
+namespace Freengy.Base.Messages.Login 
 {
     /// <summary>
-    /// Client failed to log in
+    /// Client failed to log in.
     /// </summary>
     public class MessageLogInFailed : MessageLogInBase 
     {

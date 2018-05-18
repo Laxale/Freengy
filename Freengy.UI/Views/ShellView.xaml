@@ -34,14 +34,9 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <controls:WaitableDecorator WaitTemplate="{StaticResource LogoutWaitTemplate}" CollapseContentOnWaiting="True">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="180" />
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="360"/>
-            </Grid.ColumnDefinitions>
-
+    <Grid>
+        <!-- Content -->
+        <Grid Visibility="{Binding Path=IsWaiting, Converter={StaticResource ReverseBoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -49,6 +44,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" MinHeight="60" Loaded="ChatterRegionDefinition_OnLoaded"/>
             </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="180" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="180" MaxWidth="360"/>
+            </Grid.ColumnDefinitions>
 
             <!-- Settings panel -->
             <Border Grid.Row="0" Grid.Column="0" Opacity="0.8" Margin="{StaticResource All4Margin}">
@@ -161,6 +162,34 @@
                 <!-- Chat container region -->
                 <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static const:RegionNames.ChatRegion}"/>
             </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="3" 
+              Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Path=BusyMessage}" Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
+
+                    <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
+                                   IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}">
+                        <controls:GifImage.Effect>
+                            <DropShadowEffect/>
+                        </controls:GifImage.Effect>
+                    </controls:GifImage>
+                </StackPanel>
+            </Grid>
         </Grid>
-    </controls:WaitableDecorator>
+
+        <!-- Wait template -->
+        <Grid Visibility="{Binding Path=IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Path=BusyMessage}" Foreground="{StaticResource PurpleBrush}" FontSize="16" HorizontalAlignment="Center"/>
+
+                <controls:GifImage GifSource="pack://application:,,,/Freengy.CommonResources;component/Images/LoadingIcon2.gif" FrameRate="100"
+                                   IsAutoStart="True" Opacity="0.6" Stretch="Uniform" MaxHeight="{StaticResource CommonMoreLargeIconSize}">
+                    <controls:GifImage.Effect>
+                        <DropShadowEffect/>
+                    </controls:GifImage.Effect>
+                </controls:GifImage>
+            </StackPanel>
+        </Grid>
+    </Grid>
 </UserControl>

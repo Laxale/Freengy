@@ -24,6 +24,7 @@ using Freengy.Networking.Interfaces;
 using Freengy.Base.DefaultImpl;
 using Freengy.Base.Extensions;
 using Freengy.Base.Messages.Base;
+using Freengy.Base.Messages.Login;
 using Freengy.Base.Models;
 using Freengy.Base.Models.Extension;
 using Freengy.Base.Models.Readonly;

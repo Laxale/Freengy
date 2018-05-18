@@ -4,9 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Freengy.Base.Messages;
 using Freengy.Base.Interfaces;
+using Freengy.Base.Messages.Base;
+using Freengy.Base.Messages.Login;
 
 
 namespace Freengy.Base.DefaultImpl 
@@ -20,11 +22,16 @@ namespace Freengy.Base.DefaultImpl
 
         private static UserActivityHub instance;
 
+        private readonly List<IRefreshable> refreshables = new List<IRefreshable>();
         private readonly List<IUserActivity> activities = new List<IUserActivity>();
+
+        private bool wasLoggedIn;
 
 
         private UserActivityHub() 
         {
+            this.Subscribe<MessageBase>(OnLoginOccured);
+            this.Subscribe<MessageRefreshRequired>(OnRefreshableCreated);
             this.Subscribe<MessageActivityChanged>(OnActivityChanged);
         }
 
@@ -53,6 +60,37 @@ namespace Freengy.Base.DefaultImpl
             return activities;
         }
 
+
+        private void OnLoginOccured(MessageBase messageBase) 
+        {
+            if (wasLoggedIn && messageBase is MessageLogInSuccess)
+            {
+                Task.Run(() =>
+                {
+                    foreach (IRefreshable refreshable in refreshables)
+                    {
+                        refreshable.Refresh();
+                    }
+                });
+
+                return;
+            }
+
+            if (messageBase is MessageLogInSuccess)
+            {
+                wasLoggedIn = true;
+            }
+        }
+
+        private void OnRefreshableCreated(MessageRefreshRequired message) 
+        {
+            lock (Locker)
+            {
+                if (refreshables.Contains(message.Refreshable)) return;
+
+                refreshables.Add(message.Refreshable);
+            }
+        }
 
         private void OnActivityChanged(MessageActivityChanged message) 
         {

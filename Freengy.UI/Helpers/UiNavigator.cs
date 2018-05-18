@@ -13,6 +13,7 @@ using Freengy.Base.DefaultImpl;
 using Freengy.Networking.Messages;
 using Freengy.GamePlugin.Messages;
 using Freengy.Base.Messages.Base;
+using Freengy.Base.Messages.Login;
 using Freengy.UI.Messages;
 
 using Prism.Regions;

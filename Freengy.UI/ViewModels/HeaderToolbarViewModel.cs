@@ -8,6 +8,7 @@ using Freengy.Base.DefaultImpl;
 using Freengy.UI.Views;
 using Freengy.Base.Messages;
 using Freengy.Base.Messages.Base;
+using Freengy.Base.Messages.Login;
 using Freengy.Base.Messages.Notification;
 using Freengy.Base.ViewModels;
 using Freengy.Common.Helpers;

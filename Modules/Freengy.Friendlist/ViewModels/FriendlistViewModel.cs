@@ -39,7 +39,9 @@ using Freengy.Common.Constants;
 using Freengy.Common.Enums;
 using Freengy.Common.Models.Avatar;
 using Freengy.CommonResources;
-
+using Prism;
+using Prism.Regions;
+using Prism.Regions.Behaviors;
 using LocalizedRes = Freengy.Localization.StringResources;
 
 
@@ -48,7 +50,7 @@ namespace Freengy.FriendList.ViewModels
     /// <summary>
     /// Viewmodel for a <see cref="FriendListView"/>.
     /// </summary>
-    public class FriendListViewModel : WaitableViewModel 
+    public class FriendListViewModel : WaitableViewModel, IUserActivity 
     {
         private readonly IChatHub chatHub;
         private readonly IImageCacher imageCacher;
@@ -75,18 +77,9 @@ namespace Freengy.FriendList.ViewModels
 
             FriendList = CollectionViewSource.GetDefaultView(friendViewModels);
             FriendRequests = CollectionViewSource.GetDefaultView(friendRequests);
-
-            this.Subscribe<MessageNewFriendRequest>(OnNewFriendRequest);
-            this.Subscribe<MessageReceivedMessage>(OnNewMessaggeReceived);
-            this.Subscribe<MessageFriendStateUpdate>(OnFriendStateUpdated);
-            this.Subscribe<MessageFriendRequestState>(OnFriendRequestReply);
             
+            this.Publish(new MessageRefreshRequired(this));
             this.Publish(new MessageInitializeModelRequest(this, "Loading friends"));
-        }
-
-        ~FriendListViewModel() 
-        {
-            this.Unsubscribe();
         }
 
         
@@ -126,6 +119,7 @@ namespace Freengy.FriendList.ViewModels
         /// </summary>
         public ICollectionView FriendRequests { get; }
 
+
         /// <summary>
         /// Обновить вьюмодель.
         /// </summary>
@@ -133,9 +127,13 @@ namespace Freengy.FriendList.ViewModels
         {
             base.Refresh();
 
-            friendViewModels.Clear();
-            friendRequests.Clear();
-
+            GUIDispatcher.InvokeOnGuiThread(() =>
+            {
+                friendRequests.Clear();
+                friendViewModels.Clear();
+                startedChatSessions.Clear();
+            });
+            
             InitializeImpl();
         }
 
@@ -155,6 +153,11 @@ namespace Freengy.FriendList.ViewModels
         protected override async void InitializeImpl() 
         {
             base.InitializeImpl();
+
+            this.Subscribe<MessageNewFriendRequest>(OnNewFriendRequest);
+            this.Subscribe<MessageReceivedMessage>(OnNewMessaggeReceived);
+            this.Subscribe<MessageFriendStateUpdate>(OnFriendStateUpdated);
+            this.Subscribe<MessageFriendRequestState>(OnFriendRequestReply);
 
             var loginController = ServiceLocator.Resolve<ILoginController>();
             
@@ -526,5 +529,26 @@ namespace Freengy.FriendList.ViewModels
         }
 
         #endregion privates
+
+        /// <summary>
+        /// Cancel activity.
+        /// </summary>
+        /// <returns>Result of a cancel attempt.</returns>
+        public Result Cancel() 
+        {
+            this.Unsubscribe();
+
+            return Result.Ok();
+        }
+
+        /// <summary>
+        /// Возвращает значение - можно ли остановить данную активити без ведома юзера.
+        /// </summary>
+        public bool CanCancelInSilent { get; } = true;
+
+        /// <summary>
+        /// Возвращает описание активности в контексте её остановки.
+        /// </summary>
+        public string CancelDescription { get; } = string.Empty;
     }
 }

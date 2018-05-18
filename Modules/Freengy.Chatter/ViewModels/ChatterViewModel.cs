@@ -26,15 +26,16 @@ namespace Freengy.Chatter.ViewModels
     /// <summary>
     /// Viewmodel for <see cref="ChatterView"/>.
     /// </summary>
-    public class ChatterViewModel : WaitableViewModel, IUserActivity 
+    public class ChatterViewModel : WaitableViewModel, IUserActivity
     {
+        private readonly string firstTestName = "First test session";
+        private readonly string seconTestName = "Secon test session";
+
         private readonly IChatSessionFactory chatSessionFactory;
         private readonly ChatMessageSender messageSender = new ChatMessageSender();
         private readonly ObservableCollection<ChatSessionViewModel> chatSessions = new ObservableCollection<ChatSessionViewModel>();
 
-        private bool isCancelled;
-
-
+        
         public ChatterViewModel(ITaskWrapper taskWrapper, IGuiDispatcher guiDispatcher, IChatSessionFactory chatSessionFactory, IMyServiceLocator serviceLocator) : 
             base(taskWrapper, guiDispatcher, serviceLocator)
         {
@@ -44,9 +45,9 @@ namespace Freengy.Chatter.ViewModels
 
             FillTestSessions();
 
-            this.Subscribe<MessageChatSessionChanged>(OnChatSessionChanged);
-            this.Publish(new MessageInitializeModelRequest(this, "Loading sessions"));
+            this.Publish(new MessageRefreshRequired(this));
             this.Publish(new MessageActivityChanged(this, true));
+            this.Publish(new MessageInitializeModelRequest(this, "Loading sessions"));
         }
 
         
@@ -78,25 +79,49 @@ namespace Freengy.Chatter.ViewModels
         /// <returns>Result of a cancel attempt.</returns>
         public Result Cancel() 
         {
-            if (!isCancelled)
-            {
-                this.Unsubscribe();
-            }
-
-            isCancelled = true;
+            this.Unsubscribe();
 
             return Result.Ok();
         }
 
-        
+        /// <summary>
+        /// Обновить вьюмодель.
+        /// </summary>
+        public override void Refresh() 
+        {
+            base.Refresh();
+
+            GUIDispatcher.InvokeOnGuiThread(() =>
+            {
+                var notTestSessions = chatSessions.Where(viewModel => viewModel.Session.Name != firstTestName && viewModel.Session.Name != seconTestName).ToList();
+
+                foreach (ChatSessionViewModel viewModel in notTestSessions)
+                {
+                    chatSessions.Remove(viewModel);
+                }
+            });
+
+            InitializeImpl();
+        }
+
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
+        {
+            base.InitializeImpl();
+            
+            this.Subscribe<MessageChatSessionChanged>(OnChatSessionChanged);
+        }
+
         private bool CanCreateSession => true;
 
 
         private void FillTestSessions() 
         {
             chatSessionFactory.SetNetworkInterface((msg, acc) => { });
-            var firstSession = chatSessionFactory.CreateInstance("First test session", "First test session");
-            var seconSession = chatSessionFactory.CreateInstance("Secon test session", "Secon test session");
+            var firstSession = chatSessionFactory.CreateInstance(firstTestName, "First test session");
+            var seconSession = chatSessionFactory.CreateInstance(seconTestName, "Secon test session");
             chatSessionFactory.SetNetworkInterface(messageSender.SendMessageToFriend);
 
             var firstViewModel = new ChatSessionViewModel(firstSession);

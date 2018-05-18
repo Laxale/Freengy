@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Networking.Messages 
+namespace Freengy.Base.Messages.Login 
 {
     /// <summary>
     /// Says that client has logged in to a server

@@ -50,11 +50,7 @@ namespace Freengy.UI.ViewModels
             CommandEditAccount = new MyCommand(EditAccountImpl);
             CommandSelectIcon = new MyCommand(SelectIconImpl);
 
-            SetExpirienceValues();
-            RaiseCurrentExpChanged();
-
-            this.Subscribe<MessageMyAccountUpdated>(OnMyAccountChanged);
-
+            this.Publish(new MessageRefreshRequired(this));
             this.Publish(new MessageActivityChanged(this, true));
             this.Publish(new MessageInitializeModelRequest(this, ""));
         }
@@ -188,8 +184,13 @@ namespace Freengy.UI.ViewModels
         {
             base.InitializeImpl();
 
+            SetExpirienceValues();
+            RaiseCurrentExpChanged();
+
             var myAvatar = MyAccountState.Account.GetAvatar();
             UpdateAvatarPath(myAvatar);
+
+            this.Subscribe<MessageMyAccountUpdated>(OnMyAccountChanged);
         }
 
 

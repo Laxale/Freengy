@@ -3,7 +3,7 @@
 //
 
 
-namespace Freengy.Networking.Messages 
+namespace Freengy.Base.Messages.Login 
 {
     /// <summary>
     /// Client is attempting to log in

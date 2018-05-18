@@ -18,7 +18,7 @@ namespace Freengy.UI.Views
     /// <summary>
     /// Main view for a program for logged in user.
     /// </summary>
-    [RegionMemberLifetime(KeepAlive = false)]
+    //[RegionMemberLifetime(KeepAlive = false)]
     [HasViewModel(typeof(ShellViewModel))]
     public partial class ShellView 
     {
@@ -29,11 +29,6 @@ namespace Freengy.UI.Views
         public ShellView() 
         {
             InitializeComponent();
-        }
-
-        ~ShellView()
-        {
-            var t = 0;
         }
 
 

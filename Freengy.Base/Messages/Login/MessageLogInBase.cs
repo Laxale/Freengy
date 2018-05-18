@@ -2,14 +2,11 @@
 //
 //
 
-
 using Freengy.Base.Messages.Base;
 
-namespace Freengy.Networking.Messages 
+
+namespace Freengy.Base.Messages.Login 
 {
-    using Freengy.Base.Messages;
-
-
     /// <summary>
     /// Base class for client LogInAsync-related events
     /// </summary>
