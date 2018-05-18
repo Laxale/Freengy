@@ -12,12 +12,15 @@ using Freengy.Base.Helpers;
 using Freengy.Base.Attributes;
 using Freengy.UI.ViewModels;
 
+using Prism.Regions;
+
 
 namespace Freengy.UI.Views 
 {
     /// <summary>
     /// Interaction logic for MyAccountVisitView.xaml
     /// </summary>
+    [RegionMemberLifetime(KeepAlive = false)]
     [HasViewModel(typeof(MyAccountVisitViewModel))]
     public partial class MyAccountVisitView 
     {

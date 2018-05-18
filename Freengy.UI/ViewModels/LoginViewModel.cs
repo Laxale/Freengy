@@ -102,6 +102,7 @@ namespace Freengy.UI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext) 
         {
             delayedInvoker.RequestDelayedEvent();
+            GcHelper.CollectGarbage();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext) 

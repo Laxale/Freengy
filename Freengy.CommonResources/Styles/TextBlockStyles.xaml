@@ -33,7 +33,7 @@
         <Setter Property="Foreground">
             <Setter.Value>
                 <LinearGradientBrush>
-                    <GradientStop Color="#A00000" Offset="0"/>
+                    <GradientStop Color="Purple" Offset="0"/>
 <!--                    <GradientStop Color="Red" Offset="0.4"/>-->
                     <GradientStop Color="Transparent" Offset="0"/>
                 </LinearGradientBrush>

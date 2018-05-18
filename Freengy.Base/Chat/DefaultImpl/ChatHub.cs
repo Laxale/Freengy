@@ -102,7 +102,7 @@ namespace Freengy.Base.Chat.DefaultImpl
                     return;
                 }
 
-                chatSessions.Add(session.Id, session);                  
+                chatSessions.Add(session.Id, session);
 
                 var message = new MessageChatSessionChanged(session, true);
                 this.Publish(message);

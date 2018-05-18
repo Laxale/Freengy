@@ -9,6 +9,8 @@
         xmlns:const="clr-namespace:Freengy.UI.Constants"
         xmlns:commonRes="clr-namespace:Freengy.CommonResources;assembly=Freengy.CommonResources"
         xmlns:localization="clr-namespace:Freengy.Localization;assembly=Freengy.Localization"
+        xmlns:controls="clr-namespace:Freengy.CommonResources.Controls;assembly=Freengy.CommonResources"
+        xmlns:grayScale="clr-namespace:Freengy.CommonResources.GrayScale;assembly=Freengy.CommonResources"
 
         mc:Ignorable="d"
         Style="{StaticResource CommonWindowStyle}"
@@ -16,15 +18,26 @@
         WindowStartupLocation="CenterScreen" 
         MinHeight="360" MinWidth="630" Width="630" Height="360"
         Icon="pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png">
-
+    
     <!--
+    pack://application:,,,/Freengy.CommonResources;component/Images/AppIcon.png
+    
                     <controls:GifImage GifSource="pack://application:,,,/Freengy.UI;component/Images/snow-animation-3.gif" 
                                        Opacity="0.2" Stretch="UniformToFill" IsAutoStart="True"/>
                     -->
     <Window.Background>
         <VisualBrush>
             <VisualBrush.Visual>
+                <!--
                 <Image Source="/Images/ShellBackground.jpg"/>
+                -->
+                <Border Background="{StaticResource LightGrayBrush}">
+                    <Image Source="pack://application:,,,/Freengy.CommonResources;component/Images/randpurple.jpg" Opacity="0.3" Margin="0">
+                        <Image.Effect>
+                            <grayScale:GrayscaleEffect/>
+                        </Image.Effect>
+                    </Image>
+                </Border>
             </VisualBrush.Visual>
         </VisualBrush>
     </Window.Background>

@@ -53,12 +53,10 @@ namespace Freengy.UI.ViewModels
             SetExpirienceValues();
             RaiseCurrentExpChanged();
 
-            var myAvatar = MyAccountState.Account.GetAvatar();
-            UpdateAvatarPath(myAvatar);
-
             this.Subscribe<MessageMyAccountUpdated>(OnMyAccountChanged);
 
             this.Publish(new MessageActivityChanged(this, true));
+            this.Publish(new MessageInitializeModelRequest(this, ""));
         }
 
         
@@ -180,6 +178,18 @@ namespace Freengy.UI.ViewModels
             this.Unsubscribe();
 
             return Result.Ok();
+        }
+
+
+        /// <summary>
+        /// Непосредственно логика инициализации, которая выполняется в Initialize().
+        /// </summary>
+        protected override void InitializeImpl() 
+        {
+            base.InitializeImpl();
+
+            var myAvatar = MyAccountState.Account.GetAvatar();
+            UpdateAvatarPath(myAvatar);
         }
 
 

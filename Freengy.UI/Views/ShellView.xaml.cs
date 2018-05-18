@@ -31,6 +31,11 @@ namespace Freengy.UI.Views
             InitializeComponent();
         }
 
+        ~ShellView()
+        {
+            var t = 0;
+        }
+
 
         public static readonly DependencyProperty IsChatCollapsedProperty =
             DependencyProperty.Register(nameof(IsChatCollapsed), typeof(bool), typeof(ShellView));
