@@ -27,14 +27,8 @@ namespace Freengy.Common.Models
         public UserAccountModel Account { get; set; }
 
         /// <summary>
-        /// Hash of user password.
-        /// </summary>
-        public string PasswordHash { get; set; }
-
-        /// <summary>
         /// User password.
         /// </summary>
-        [JsonIgnore]
         public string Password { get; set; }
 
         /// <summary>
