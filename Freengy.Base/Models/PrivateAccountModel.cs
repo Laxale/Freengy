@@ -17,11 +17,6 @@ namespace Freengy.Base.Models
     public class PrivateAccountModel : UserAccountModel 
     {
         /// <summary>
-        /// Password salt obtained from server during last login or registration action.
-        /// </summary>
-        public string NextLoginSalt { get; set; }
-
-        /// <summary>
         /// Возвращает или задаёт пользовательский аватар.
         /// </summary>
         [NotMapped]

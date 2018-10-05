@@ -176,8 +176,6 @@ namespace Freengy.Networking.DefaultImpl
 
                     var createdAccount = new UserAccount(result.Value.CreatedAccount);
                     var privateAccountModel = result.Value.CreatedAccount.ToPrivate();
-                    var saltHeaderValue = httpActor.ResponceMessage.Headers.GetValues(FreengyHeaders.Server.NextPasswordSaltHeaderName);
-                    privateAccountModel.NextLoginSalt = saltHeaderValue.First();
 
                     accountManager.SaveLoginTime(privateAccountModel);
 
@@ -279,8 +277,6 @@ namespace Freengy.Networking.DefaultImpl
                 loginModel.Password = LoggedInPassword;
             }
 
-            HashThePassword(loginModel);
-
             using (var actor = serviceLocator.Resolve<IHttpActor>())
             {
                 string myAddress = clientAddressGetter();
@@ -305,8 +301,6 @@ namespace Freengy.Networking.DefaultImpl
                 if (stateModel.OnlineStatus == AccountOnlineStatus.Online)
                 {
                     var privateAccountModel = stateModel.AccountModel.ToPrivate();
-                    //пока что салт не меняется после каждого логина. сервер не проставляет заголовок
-                    //privateAccountModel.NextLoginSalt = actor.ResponceMessage.Headers.GetSaltHeaderValue();
                     accountManager.SaveLoginTime(privateAccountModel);
                     SaveOnlineState(loginModel, auth);
                     
@@ -333,19 +327,6 @@ namespace Freengy.Networking.DefaultImpl
             MySessionToken = string.Empty;
             ServerSessionToken = string.Empty;
             LoggedInPassword = string.Empty;
-        }
-
-        private void HashThePassword(LoginModel loginModel) 
-        {
-            Result<PrivateAccountModel> result = accountManager.GetStoredAccount(loginModel.Account.Name);
-            if (result.Failure)
-            {
-                throw new InvalidOperationException(result.Error.Message);
-            }
-
-            var loginSalt = result.Value.NextLoginSalt;
-
-            loginModel.PasswordHash = new Hasher().GetHash(loginSalt + loginModel.Password);
         }
 
         private void OnExpirienceGained(MessageExpirienceGained message) 

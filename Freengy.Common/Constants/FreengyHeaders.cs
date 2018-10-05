@@ -42,11 +42,6 @@ namespace Freengy.Common.Constants
         public static class Server
         {
             /// <summary>
-            /// The name of custom NextPasswordSalt header.
-            /// </summary>
-            public const string NextPasswordSaltHeaderName = "NextPasswordSalt";
-
-            /// <summary>
             /// The name of custom ServerSessionToken header.
             /// </summary>
             public const string ServerSessionTokenHeaderName = "ServerSessionToken";
